@@ -7,15 +7,7 @@ package Logik;
  */
 public interface I_CardModel {
 
-    enum cardType{
-        hearts,
-        spades,
-        diamonds,
-        clubs
-    }
-
-    enum getCardType{}
-    int getCardValue();
+    CardSuit getSuit();
+    CardRank getRank();
     String toString();
-
 }
