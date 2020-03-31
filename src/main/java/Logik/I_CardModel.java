@@ -5,7 +5,7 @@ package Logik;
  * card value.
  * We only have getters so that we cant change a card once it have been created.
  */
-public interface CardModel {
+public interface I_CardModel {
 
     enum cardType{
         hearts,
