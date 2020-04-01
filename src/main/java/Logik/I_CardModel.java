@@ -12,6 +12,7 @@ public interface I_CardModel {
     E_CardRank getRank();
     int getRankValue();
     boolean isFacedUp();
+    void setFacedUp(boolean facedUp);
     String toString();
     String toStringValue();
 }
