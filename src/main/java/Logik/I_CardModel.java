@@ -7,7 +7,11 @@ package Logik;
  */
 public interface I_CardModel {
 
-    CardSuit getSuit();
-    CardRank getRank();
+    E_CardSuit getSuit();
+    String getSuitText();
+    E_CardRank getRank();
+    int getRankValue();
+    boolean isFacedUp();
     String toString();
+    String toStringValue();
 }
