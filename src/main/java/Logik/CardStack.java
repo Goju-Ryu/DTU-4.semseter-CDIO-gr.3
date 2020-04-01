@@ -28,7 +28,14 @@ public class CardStack implements I_StackModel {
 
     }
 
-    public I_StackModel[] splitAt(int position) {
+    public I_StackModel splitAt(int position) {
+        if (cards == null)
+            return null; //TODO Discuss if we should use Optional to avoid the null
+        if (cards.size() < 1)
+            return null;
+        if (cards.size() < position)
+            throw new IndexOutOfBoundsException("Cannot split at index: " + position + " size of stack is: " + cards.size());
+
         return null;
     }
 
@@ -53,6 +60,8 @@ public class CardStack implements I_StackModel {
             return null; //TODO Discuss if we should use Optional to avoid the null
         if (cards.size() < 1)
             return null;
+        if (cards.size() < position)
+            throw new IndexOutOfBoundsException("Cannot get at index: " + position + " size of stack is: " + cards.size());
 
         return cards.get(position);
     }

@@ -24,9 +24,10 @@ public interface I_StackModel {
     /**
      * Splits a stack into two objects.
      * @param position index at which the stack is split. The first stack contains all elements up to and including position.
-     * @return returns an array of 2 stacks or null.
+     * @return returns the stack split off from this object
+     * @throws IndexOutOfBoundsException if trying to split at index not within 0 to size.
      */
-    I_StackModel[] splitAt(int position);
+    I_StackModel splitAt(int position);
 
 
     /**
