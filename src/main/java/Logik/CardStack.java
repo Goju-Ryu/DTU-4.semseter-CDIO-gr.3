@@ -1,10 +1,19 @@
 package Logik;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CardStack implements I_StackModel {
 
     private List<I_CardModel> cards;
+
+    public CardStack(List<I_CardModel> cards) {
+        this.cards = cards;
+    }
+
+    public CardStack(I_CardModel ... cards) {
+        this.cards = List.of(cards);
+    }
 
     public I_CardModel getFirst() {
         return getCardAt(0);
