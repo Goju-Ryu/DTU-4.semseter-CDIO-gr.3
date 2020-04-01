@@ -1,5 +1,8 @@
 package Logik;
 
+/**
+ * This is a model of a playing card.
+ */
 public class Card implements I_CardModel {
 
     private E_CardSuit suit;
