@@ -1,16 +1,21 @@
 package Logik;
 
+import java.util.List;
+
 public class CardStack implements I_StackModel {
+
+    private List<I_CardModel> cards;
+
     public I_CardModel getFirst() {
-        return null;
+        return getCardAt(0);
     }
 
     public I_CardModel getCardAt(int position) {
-        return null;
+        return cards.get(position);
     }
 
     public I_CardModel getLast() {
-        return null;
+        return getCardAt(cards.size() - 1);
     }
 
     public boolean canMoveTo(I_CardModel cardModel) {
