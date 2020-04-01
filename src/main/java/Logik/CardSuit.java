@@ -16,6 +16,7 @@ public enum CardSuit {
         this.cardSuitText = cardSuitText;
     }
 
+    // Method to print the
     // Dont know if you have to add toString()
     public String printCardSuit(){
         return cardSuitText.toString();
