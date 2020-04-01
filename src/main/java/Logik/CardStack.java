@@ -1,5 +1,7 @@
 package Logik;
 
+import Logik.error.IllegalMoveException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,15 +20,15 @@ public class CardStack implements I_StackModel {
 
 
 
-    public boolean canMoveTo(I_CardModel cardModel) {
+    public boolean canMoveTo(I_StackModel cardModel) {
         return false;
     }
 
-    public boolean moveTo(I_StackModel stackModel) {
-        return false;
+    public void moveTo(I_StackModel stackModel) throws IllegalMoveException {
+
     }
 
-    public I_StackModel splitAt(int position) {
+    public I_StackModel[] splitAt(int position) {
         return null;
     }
 
