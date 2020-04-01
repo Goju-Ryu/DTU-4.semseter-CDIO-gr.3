@@ -51,8 +51,12 @@ public class Cabal implements I_CabalModel{
 
 //---------------------------------------Various methods----------------------------------------------------------------
 
+    // This will take a card from the card pile and put it face up in the turned card pile
     @Override
     public I_CardModel turnCard() {
+
+
+
         return null;
     }
 
