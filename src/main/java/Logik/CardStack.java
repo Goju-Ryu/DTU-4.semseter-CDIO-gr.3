@@ -36,7 +36,9 @@ public class CardStack implements I_StackModel {
         if (cards.size() < position)
             throw new IndexOutOfBoundsException("Cannot split at index: " + position + " size of stack is: " + cards.size());
 
-        return null;
+        List<I_CardModel> returnable = cards.subList(position + 1, cards.size());
+        cards = cards.subList(0, position);
+        return new CardStack(returnable);
     }
 
 
