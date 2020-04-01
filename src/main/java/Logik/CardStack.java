@@ -15,17 +15,8 @@ public class CardStack implements I_StackModel {
         this.cards = List.of(cards);
     }
 
-    public I_CardModel getFirst() {
-        return getCardAt(0);
-    }
 
-    public I_CardModel getCardAt(int position) {
-        return cards.get(position);
-    }
 
-    public I_CardModel getLast() {
-        return getCardAt(cards.size() - 1);
-    }
 
     public boolean canMoveTo(I_CardModel cardModel) {
         return false;
@@ -37,5 +28,37 @@ public class CardStack implements I_StackModel {
 
     public I_StackModel splitAt(int position) {
         return null;
+    }
+
+
+
+    //--------------------------------------------------//
+    //                    Getters                       //
+    //--------------------------------------------------//
+
+    /**
+     * @return the card at the top of the stack or null if not found
+     */
+    public I_CardModel getFirst() {
+        return getCardAt(0);
+    }
+
+    /**
+     * @return the card with index of position in the stack or null if not found
+     */
+    public I_CardModel getCardAt(int position) {
+        if (cards == null)
+            return null; //TODO Discuss if we should use Optional to avoid the null
+        if (cards.size() < 1)
+            return null;
+
+        return cards.get(position);
+    }
+
+    /**
+     * @return the card at the bottom of the stack or null if not found
+     */
+    public I_CardModel getLast() {
+        return getCardAt(cards.size() - 1);
     }
 }
