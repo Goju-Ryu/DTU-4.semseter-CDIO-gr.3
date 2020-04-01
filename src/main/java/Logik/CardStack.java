@@ -2,12 +2,9 @@ package Logik;
 
 import Logik.error.IllegalMoveException;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CardStack implements I_StackModel {
-
-    private List<I_CardModel> cards;
+public class CardStack extends A_StackModel {
 
     public CardStack(List<I_CardModel> cards) {
         this.cards = cards;
@@ -20,15 +17,23 @@ public class CardStack implements I_StackModel {
 
 
 
-    public boolean canMoveTo(I_StackModel cardModel) {
+    public boolean canMoveTo(A_StackModel cardModel) {
         return false;
     }
 
-    public void moveTo(I_StackModel stackModel) throws IllegalMoveException {
+    public void moveTo(A_StackModel stackModel) throws IllegalMoveException {
+        if ( !canMoveTo(stackModel) )
+            throw
+                    new IllegalMoveException(
+                            "You tried to move stack \"" +this+ "\" to stack \"" +stackModel+ "\". Maybe "
+                                    +this.getFirst()+ " and " +stackModel.getLast()+ " don't match?"
+                    );
 
+        stackModel.addToStack(cards);
+        this.cards = List.of();
     }
 
-    public I_StackModel splitAt(int position) {
+    public A_StackModel splitAt(int position) {
         if (cards == null)
             return null; //TODO Discuss if we should use Optional to avoid the null
         if (cards.size() < 1)
@@ -74,4 +79,7 @@ public class CardStack implements I_StackModel {
     public I_CardModel getLast() {
         return getCardAt(cards.size() - 1);
     }
+
+
+
 }
