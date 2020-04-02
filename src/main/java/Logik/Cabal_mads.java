@@ -1,5 +1,6 @@
 package Logik;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 /**
@@ -7,47 +8,39 @@ import java.util.List;
  */
 public class Cabal_mads implements I_CabalModel{
 
-    private List<CardStack> columns;
-    private List<CardStack> acesPile;
-    private List<CardStack> turnedPile;
-    private List<CardStack> cardPile;
-    private boolean isCabalSet;
+    private List<A_StackModel>[] columns;
+    private List<A_StackModel>[] acesPile;
+    private List<A_StackModel> turnedPile;
+    private List<A_StackModel> cardPile;
 
-    public Cabal_mads(List<CardStack> columns, List<CardStack> acesPile, List<CardStack> turnedPile, List<CardStack> cardPile, boolean isCabalSet) {
-        this.columns = columns;
-        this.acesPile = acesPile;
+    public Cabal_mads(List<A_StackModel> turnedPile, List<A_StackModel> cardPile) {
+        this.columns = (List<A_StackModel>[]) Array.newInstance(List.class, 7);
+        this.acesPile = (List<A_StackModel>[]) Array.newInstance(List.class, 4);
         this.turnedPile = turnedPile;
         this.cardPile = cardPile;
-        this.isCabalSet = isCabalSet;
     }
 
     //---------------------------------------Getters------------------------------------------------------------------------
 
-    public List<CardStack> getColumns() {
-        return columns;
+    public List<A_StackModel>[] getColumns() {
+        return  columns;
     }
 
-    public List<CardStack> getAcesPile() {
+    public List<A_StackModel>[] getAcesPile() {
         return acesPile;
     }
 
-    public List<CardStack> getTurnedPile() {
+    public List<A_StackModel> getTurnedPile() {
         return turnedPile;
     }
 
-    public List<CardStack> getCardPile() {
+    public List<A_StackModel> getCardPile() {
         return cardPile;
     }
 
-    public boolean isCabalSet() {
-        return isCabalSet;
-    }
 
 //---------------------------------------Setters------------------------------------------------------------------------
 
-    public void setCabalSet(boolean cabalSet) {
-        isCabalSet = cabalSet;
-    }
 
 //---------------------------------------Various methods----------------------------------------------------------------
 
