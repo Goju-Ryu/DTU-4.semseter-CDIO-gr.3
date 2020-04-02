@@ -11,7 +11,7 @@ public class CardStack extends A_StackModel {
     }
 
     public CardStack(I_CardModel ... cards) {
-        this.cards = List.of(cards);
+        //this.cards = List.of(cards); todo reimplement
     }
 
 
@@ -30,7 +30,7 @@ public class CardStack extends A_StackModel {
                     );
 
         stackModel.addToStack(cards);
-        this.cards = List.of();
+        //this.cards = List.of(); todo reimplement
     }
 
     public A_StackModel splitAt(int position) {

@@ -1,7 +1,10 @@
 package Logik;
 
+
 import java.lang.reflect.Array;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This is the model of the entire cabal
@@ -13,11 +16,24 @@ public class Cabal_mads implements I_CabalModel{
     private List<A_StackModel> turnedPile;
     private List<A_StackModel> cardPile;
 
-    public Cabal_mads(List<A_StackModel> turnedPile, List<A_StackModel> cardPile) {
-        this.columns = (List<A_StackModel>[]) Array.newInstance(List.class, 7);
-        this.acesPile = (List<A_StackModel>[]) Array.newInstance(List.class, 4);
-        this.turnedPile = turnedPile;
-        this.cardPile = cardPile;
+    public Cabal_mads() {
+        columns = (List<A_StackModel>[]) Array.newInstance(List.class, 7);
+        try {
+            fillArrayWithNew(columns, ArrayList.class);
+        } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        acesPile = (List<A_StackModel>[]) Array.newInstance(List.class, 4);
+        try {
+            fillArrayWithNew(acesPile, Stack.class);
+        } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+
+        turnedPile = new Stack<>();
+        cardPile = new Stack<>();
     }
 
     //---------------------------------------Getters------------------------------------------------------------------------
@@ -60,5 +76,12 @@ public class Cabal_mads implements I_CabalModel{
 
     public void initialize() {
 
+    }
+
+    private static <T> void fillArrayWithNew(T[] arr, Class<? extends T> aClass)
+            throws InstantiationException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = aClass.getDeclaredConstructor().newInstance();
+        }
     }
 }

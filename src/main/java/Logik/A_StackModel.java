@@ -77,7 +77,7 @@ public abstract class A_StackModel {
                 }
             }
 
-            cards = List.of(newList);
+            //cards = List.of(newList); todo reimplement
         }
     }
 
