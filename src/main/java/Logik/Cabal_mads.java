@@ -4,7 +4,6 @@ package Logik;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * This is the model of the entire cabal
@@ -62,8 +61,6 @@ public class Cabal_mads implements I_CabalModel{
 
     // This will take a card from the card pile and put it face up in the turned card pile
     public I_CardModel turnCard() {
-
-
 
         return null;
     }
