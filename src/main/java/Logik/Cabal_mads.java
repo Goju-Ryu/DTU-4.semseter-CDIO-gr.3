@@ -53,18 +53,26 @@ public class Cabal_mads implements I_CabalModel{
 
 //---------------------------------------Various methods----------------------------------------------------------------
 
-    // This will take a card from the card pile and put it face up in the turned card pile
+    /**
+     *  This will take a card from the card pile and put it face up in the turned card pile
+     * @return the card drawn from the pile
+     */
     public I_CardModel turnCard() {
 
         return null;
     }
 
-
+    /**
+     * @return the top card of the turned card pile
+     */
     public I_CardModel getTurnedCard() {
         return null;
     }
 
 
+    /**
+     * Make sure all variables are ready for playing the game
+     */
     public void initialize() {
         //empty the acesPile list
         for (A_StackModel stack : acesPile) {
@@ -92,6 +100,18 @@ public class Cabal_mads implements I_CabalModel{
 
 
     //---------------------------------------Helper methods-------------------------------------------------------------
+
+    /**
+     * Method for filling an array with any class  that is either implementing a specific interface or extends a
+     * specific class
+     * @param arr The array to be filled
+     * @param aClass The class to fill the array
+     * @param <T> The type of the array, most often an interface or abstract class
+     * @throws InstantiationException Thrown by internal method call
+     * @throws NoSuchMethodException Thrown by internal method call
+     * @throws InvocationTargetException Thrown by internal method call
+     * @throws IllegalAccessException Thrown by internal method call
+     */
     private static <T> void fillArrayWithNew(T[] arr, Class<? extends T> aClass)
             throws InstantiationException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         for (int i = 0; i < arr.length; i++) {
