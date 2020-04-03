@@ -2,6 +2,8 @@ package Logik;
 
 import Logik.error.IllegalMoveException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CardStack extends A_StackModel {
@@ -11,14 +13,14 @@ public class CardStack extends A_StackModel {
     }
 
     public CardStack(I_CardModel ... cards) {
-        //this.cards = List.of(cards); todo reimplement
+        this.cards = new ArrayList<>();
+        this.cards.addAll(Arrays.asList(cards));
     }
 
 
 
-
     public boolean canMoveTo(A_StackModel cardModel) {
-        return false;
+        return cardModel != null;
     }
 
     public void moveTo(A_StackModel stackModel) throws IllegalMoveException {
@@ -26,11 +28,13 @@ public class CardStack extends A_StackModel {
             throw
                     new IllegalMoveException(
                             "You tried to move stack \"" +this+ "\" to stack \"" +stackModel+ "\". Maybe "
-                                    +this.getFirst()+ " and " +stackModel.getLast()+ " don't match?"
+                                    +this.getFirst()+ " and "
+                                    +(stackModel != null && stackModel.cards != null ? stackModel.getLast() : null)+
+                                    " don't match?"
                     );
 
-        stackModel.addToStack(cards);
-        //this.cards = List.of(); todo reimplement
+        stackModel.addToStack(cards); //Todo: figure out why test throws error
+        this.cards.removeIf(e -> true);
     }
 
     public A_StackModel splitAt(int position) {
