@@ -1,5 +1,6 @@
 package Logik;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,10 +47,19 @@ class Cabal_madsTest {
         final int columnNum = 7;
 
         Cabal_mads cabal = new Cabal_mads();
+        cabal.initialize();
+
         cabal.turnCard();
         cabal.turnCard();
-        cabal.getColumns()[1].get(0).moveTo(cabal.getColumns()[4].get(0));
-        cabal.getAcesPile()[E_CardSuit.CLUBS.ordinal()].addToStack(List.of(new Card(E_CardSuit.CLUBS, E_CardRank.ACE)));
+        cabal.getColumns()[1]
+                .get(0)
+                .moveTo(cabal
+                        .getColumns()[4]
+                        .get(0));
+
+        List<I_CardModel> cards = new ArrayList<>();
+        cards.add(new Card(E_CardSuit.CLUBS, E_CardRank.ACE));
+        cabal.getAcesPile()[E_CardSuit.CLUBS.ordinal()].addToStack(cards);
 
         cabal.initialize();
 
