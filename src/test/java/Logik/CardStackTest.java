@@ -11,6 +11,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class CardStackTest {
 
     @Test
+    void emptyConstructor() {
+        CardStack stack = new CardStack();
+
+        assertNotNull(stack.cards);
+        assertEquals(stack.cards.size(), 0);
+    }
+
+    @Test
     void canMoveTo() {
     }
 
@@ -52,7 +60,7 @@ class CardStackTest {
                          }}
         );
         assertNotNull(stack.getLast());
-        assertEquals(stack.getLast().getRank(), E_CardRank.EIGHT);
-        assertEquals(stack.getLast().getSuit(), E_CardSuit.CLUBS);
+        assertEquals(E_CardRank.EIGHT, stack.getLast().getRank());
+        assertEquals(E_CardSuit.CLUBS, stack.getLast().getSuit());
     }
 }
