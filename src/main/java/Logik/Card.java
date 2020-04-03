@@ -9,6 +9,11 @@ public class Card implements I_CardModel {
     private E_CardRank rank;
     private boolean isFacedUp;
 
+
+    public Card() {
+        isFacedUp = false;
+    }
+
     public Card(E_CardSuit suit, E_CardRank rank) {
         this.suit = suit;
         this.rank = rank;
