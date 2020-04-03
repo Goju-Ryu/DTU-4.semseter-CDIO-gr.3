@@ -24,12 +24,6 @@ public class Cabal_mads implements I_CabalModel{
         }
 
         acesPile = new A_StackModel[4];
-        try {
-            fillArrayWithNew(acesPile, Stack.class);
-        } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
 
         turnedPile = new Stack<>();
         cardPile = new Stack<>();
