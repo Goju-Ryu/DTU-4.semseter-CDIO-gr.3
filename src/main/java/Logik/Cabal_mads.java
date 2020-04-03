@@ -11,9 +11,9 @@ import java.util.*;
 public class Cabal_mads implements I_CabalModel{
 
     private List<A_StackModel>[] columns;
-    private List<A_StackModel>[] acesPile;
-    private List<A_StackModel> turnedPile;
-    private List<A_StackModel> cardPile;
+    private A_StackModel[] acesPile;
+    private List<I_CardModel> turnedPile;
+    private List<I_CardModel> cardPile;
 
     public Cabal_mads() {
         columns = (List<A_StackModel>[]) Array.newInstance(List.class, 7);
@@ -23,7 +23,7 @@ public class Cabal_mads implements I_CabalModel{
             e.printStackTrace();
         }
 
-        acesPile = (List<A_StackModel>[]) Array.newInstance(List.class, 4);
+        acesPile = new A_StackModel[4];
         try {
             fillArrayWithNew(acesPile, Stack.class);
         } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
@@ -41,15 +41,15 @@ public class Cabal_mads implements I_CabalModel{
         return  columns;
     }
 
-    public List<A_StackModel>[] getAcesPile() {
+    public A_StackModel[] getAcesPile() {
         return acesPile;
     }
 
-    public List<A_StackModel> getTurnedPile() {
+    public List<I_CardModel> getTurnedPile() {
         return turnedPile;
     }
 
-    public List<A_StackModel> getCardPile() {
+    public List<I_CardModel> getCardPile() {
         return cardPile;
     }
 
@@ -72,9 +72,32 @@ public class Cabal_mads implements I_CabalModel{
 
 
     public void initialize() {
+        //empty the acesPile list
+        for (A_StackModel stack : acesPile) {
+            stack = new CardStack();
+        }
 
+        //empty the columns list
+        for (List<A_StackModel> a_stackModels : columns) {
+            a_stackModels.removeIf(e -> true);
+        }
+        //fill with face-down cards
+        for (int i = 0; i < columns.length; i++) {
+            for (int j = 0; j < 7 - i; j++) {
+                columns[i].add(new CardStack());
+            }
+        }
+
+        cardPile.removeIf(e -> true); //remove all
+        for (int i = 0; i < 24; i++) { //24 is number of cards left when cabal is ready
+            cardPile.add(new Card());
+        }
+
+        turnedPile.removeIf(e -> true); // empty list
     }
 
+
+    //---------------------------------------Helper methods-------------------------------------------------------------
     private static <T> void fillArrayWithNew(T[] arr, Class<? extends T> aClass)
             throws InstantiationException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         for (int i = 0; i < arr.length; i++) {
