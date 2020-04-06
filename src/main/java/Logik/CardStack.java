@@ -46,7 +46,7 @@ public class CardStack extends A_StackModel {
             throw new IndexOutOfBoundsException("Cannot split at index: " + position + " size of stack is: " + cards.size());
 
         List<I_CardModel> returnable = cards.subList(position + 1, cards.size());
-        cards = cards.subList(0, position);
+        cards = cards.subList(0, position + 1);
         return new CardStack(returnable);
     }
 
