@@ -1,5 +1,7 @@
 package Logik;
 
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -9,6 +11,22 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CardStackTest {
+    CardStack stack;
+
+    @BeforeEach
+    void beforeEach() {
+         stack = new CardStack();
+    }
+
+    void fillStack() {
+        final List<I_CardModel> newCards = new ArrayList<I_CardModel>();
+        newCards.add(new Card(E_CardSuit.DIAMONDS, E_CardRank.FIVE));
+        newCards.add(new Card());
+        newCards.add(new Card());
+        newCards.add(new Card(E_CardSuit.CLUBS, E_CardRank.EIGHT));
+        stack.addToStack(newCards);
+    }
+
 
     @Test
     void emptyConstructor() {
@@ -30,16 +48,10 @@ class CardStackTest {
     void splitAt() {
     }
 
+
     @Test
     void getFirst() {
-        CardStack stack = new CardStack();
-        stack.addToStack(new ArrayList<I_CardModel>(){{
-                new Card(E_CardSuit.DIAMONDS, E_CardRank.FIVE);
-                        new Card();
-                        new Card();
-                        new Card(E_CardSuit.CLUBS, E_CardRank.EIGHT);
-            }}
-        );
+        fillStack();
         assertNotNull(stack.getFirst());
         assertEquals(stack.getFirst().getRank(), E_CardRank.FIVE);
         assertEquals(stack.getFirst().getSuit(), E_CardSuit.DIAMONDS);
@@ -51,14 +63,7 @@ class CardStackTest {
 
     @Test
     void getLast() {
-        CardStack stack = new CardStack();
-        stack.addToStack(new ArrayList<I_CardModel>(){{
-                             new Card(E_CardSuit.DIAMONDS, E_CardRank.FIVE);
-                             new Card();
-                             new Card();
-                             new Card(E_CardSuit.CLUBS, E_CardRank.EIGHT);
-                         }}
-        );
+        fillStack();
         assertNotNull(stack.getLast());
         assertEquals(E_CardRank.EIGHT, stack.getLast().getRank());
         assertEquals(E_CardSuit.CLUBS, stack.getLast().getSuit());
