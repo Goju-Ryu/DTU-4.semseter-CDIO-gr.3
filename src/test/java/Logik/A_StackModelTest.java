@@ -44,7 +44,7 @@ class A_StackModelTest {
         };
         stack.cards = new ArrayList<>();
 
-        stack.addToStack(new ArrayList<I_CardModel>(){{
+        stack.addToStack(new ArrayList<I_CardModel>(){{ //TODO debug this
                              new Card(E_CardSuit.DIAMONDS, E_CardRank.FIVE);
                              new Card();
                              new Card();
