@@ -114,6 +114,17 @@ class CardStackTest {
 
     @Test
     void getCardAt() {
+        stack.addToStack(
+                new Card(E_CardSuit.CLUBS, E_CardRank.ACE, true),
+                new Card(E_CardSuit.CLUBS, E_CardRank.TWO, true),
+                new Card(E_CardSuit.CLUBS, E_CardRank.THREE, true),
+                new Card(E_CardSuit.CLUBS, E_CardRank.FOUR, true),
+                new Card(E_CardSuit.CLUBS, E_CardRank.FIVE, true)
+        );
+
+        assertEquals(stack.getFirst(), stack.getCardAt(0));
+        assertEquals(3, stack.getCardAt(2).getRankValue());
+        assertEquals(stack.getLast(), stack.getCardAt(stack.cards.size()-1));
     }
 
     @Test
