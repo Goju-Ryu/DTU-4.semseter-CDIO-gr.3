@@ -19,8 +19,18 @@ public class CardStack extends A_StackModel {
 
 
 
-    public boolean canMoveTo(A_StackModel cardModel) {
-        return cardModel != null;
+    public boolean canMoveTo(A_StackModel destination) {
+        if (destination == null) //TODO Diskuter om dette burde kaste en exception
+            return false;
+        if (destination.getFirst() == null)
+            return false;
+        if ( !destination.getLast().isFacedUp() )
+            return false;
+        if ( E_CardSuit.isSameColour(destination.getLast().getSuit(), this.getFirst().getSuit()) )
+            return false;
+        if (destination.getLast().getRank().getCardRank()-1 != this.getFirst().getRank().getCardRank() )
+            return false;
+        return true;
     }
 
     public void moveTo(A_StackModel stackModel) throws IllegalMoveException {
