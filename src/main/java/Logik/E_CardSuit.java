@@ -12,23 +12,28 @@ package Logik;
  * The constructor give each enum member its value.
  */
 public enum E_CardSuit {
-    HEARTS("Hearts"),
-    SPADES("Spades"),
-    DIAMONDS("Diamonds"),
-    CLUBS("Clubs");
+    HEARTS("Hearts", true),
+    SPADES("Spades", false),
+    DIAMONDS("Diamonds", true),
+    CLUBS("Clubs", false);
 
     // The private field representing the String values of the enum members
     private final String cardSuitText;
-
+    private final boolean isRed;
     // Constructor
     // this keyword represent each member of the enum
-    private E_CardSuit(String cardSuitText){
+    private E_CardSuit(String cardSuitText, boolean isRed){
         this.cardSuitText = cardSuitText;
+        this.isRed = isRed;
     }
 
     // Method to print the suit
     // Dont know if you have to add toString()
     public String getCardSuit(){
         return cardSuitText;
+    }
+
+    public static boolean isSameColour(E_CardSuit first, E_CardSuit second) {
+        return first.isRed == second.isRed;
     }
 }
