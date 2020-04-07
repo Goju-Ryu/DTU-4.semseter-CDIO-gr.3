@@ -1,5 +1,6 @@
 package Logik;
 
+import Logik.error.IllegalMoveException;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,6 +58,23 @@ class CardStackTest {
 
     @Test
     void moveTo() {
+        final A_StackModel otherStack = new CardStack();
+        fillStack(stack);
+
+        otherStack.addToStack(new Card());
+        assertThrows(IllegalMoveException.class, () -> stack.moveTo(otherStack));
+
+        otherStack.addToStack(new Card(E_CardSuit.SPADES, E_CardRank.FIVE, true));
+        assertThrows(IllegalMoveException.class, () -> stack.moveTo(otherStack));
+
+        otherStack.addToStack(new Card(E_CardSuit.DIAMONDS, E_CardRank.SIX, true));
+        assertThrows(IllegalMoveException.class, () -> stack.moveTo(otherStack));
+
+        otherStack.addToStack(new Card(E_CardSuit.SPADES, E_CardRank.SIX, true));
+        stack.moveTo(otherStack);
+        //TODO: Test that the stack moved successfully
+
+        //TODO: test edge cases
     }
 
     @Test
