@@ -15,6 +15,7 @@ class CardTest {
         faceDown = new Card();
     }
 
+    //TODO: implement tests and agree on expected behavior
     @Test
     void getSuit() {
     }
