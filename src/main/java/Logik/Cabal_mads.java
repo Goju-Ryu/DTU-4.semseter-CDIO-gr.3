@@ -1,28 +1,22 @@
 package Logik;
 
 
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+
 
 /**
  * This is the model of the entire cabal
  */
 public class Cabal_mads implements I_CabalModel{
 
-    private List<A_StackModel>[] columns;
-    private A_StackModel[] acesPile;
-    private List<I_CardModel> turnedPile;
-    private List<I_CardModel> cardPile;
+    final private Column[] columns;
+    final private A_StackModel[] acesPile;
+    final private List<I_CardModel> turnedPile;
+    final private List<I_CardModel> cardPile;
 
     public Cabal_mads() {
-        columns = (List<A_StackModel>[]) Array.newInstance(List.class, 7);
-        try {
-            fillArrayWithNew(columns, ArrayList.class);
-        } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
+        columns = new Column[7];
         acesPile = new A_StackModel[4];
 
         turnedPile = new Stack<>();
@@ -31,8 +25,8 @@ public class Cabal_mads implements I_CabalModel{
 
     //---------------------------------------Getters------------------------------------------------------------------------
 
-    public List<A_StackModel>[] getColumns() {
-        return  columns;
+    public Column[] getColumns() {
+        return columns;
     }
 
     public A_StackModel[] getAcesPile() {
@@ -58,35 +52,30 @@ public class Cabal_mads implements I_CabalModel{
      * @return the card drawn from the pile
      */
     public I_CardModel turnCard() {
-
-        return null;
+        return null; //TODO: Implement
     }
 
     /**
      * @return the top card of the turned card pile
      */
     public I_CardModel getTurnedCard() {
-        return null;
+        return null; //TODO: Implement
     }
 
 
     /**
-     * Make sure all variables are ready for playing the game
+     * Make sure all variables are ready for playing the game. This includes putting all cards in place face down.
      */
     public void initialize() {
         //empty the acesPile list
-        for (A_StackModel stack : acesPile) {
-            stack = new CardStack();
+        for (int i = 0; i < acesPile.length; i++) {
+            acesPile[i] = new CardStack();
         }
 
-        //empty the columns list
-        for (List<A_StackModel> a_stackModels : columns) {
-            a_stackModels.removeIf(e -> true);
-        }
         //fill with face-down cards
         for (int i = 0; i < columns.length; i++) {
             for (int j = 0; j < 7 - i; j++) {
-                columns[i].add(new CardStack());
+                columns[i].initialize(j - 1);
             }
         }
 
@@ -117,5 +106,51 @@ public class Cabal_mads implements I_CabalModel{
         for (int i = 0; i < arr.length; i++) {
             arr[i] = aClass.getDeclaredConstructor().newInstance();
         }
+    }
+
+
+    /**
+     * Class for easily and safely interact with an entire column
+     */
+    public class Column {
+        private final List<A_StackModel> stacks;
+
+        public Column() {
+            stacks = new ArrayList<>(2);
+        }
+
+        public A_StackModel get() {
+            return stacks.get(stacks.size() - 1);
+        }
+
+        public A_StackModel getAt(int i) {
+            return stacks.get(i);
+        }
+
+        public int size() {
+            return stacks.size();
+        }
+
+        public void initialize() {
+            stacks.removeIf(e -> true);
+        }
+
+        public void initialize(int faceDownNum, I_CardModel ... knownCards) {
+            initialize();
+            CardStack empty = new CardStack();
+            for (int i = 0; i < faceDownNum; i++) {
+                empty.addToStack();
+            }
+
+            CardStack known = new CardStack(knownCards);
+
+            stacks.set(0, empty);
+            stacks.set(1, known);
+        }
+
+        public void add(A_StackModel stack){
+            stacks.add(stack);
+        }
+
     }
 }

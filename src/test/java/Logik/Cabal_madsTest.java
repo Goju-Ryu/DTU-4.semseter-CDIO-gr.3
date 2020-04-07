@@ -35,7 +35,7 @@ class Cabal_madsTest {
         for (int i = 0; i < columnNum; i++) {
             assertEquals(cabal.getColumns()[i].size(), 7 - i);
             for (int j = 0; j < cabal.getColumns()[i].size(); j++) {
-                assertNotNull(cabal.getColumns()[i].get(j));
+                assertNotNull(cabal.getColumns()[i].getAt(j));
             }
         }
 
@@ -76,7 +76,7 @@ class Cabal_madsTest {
         for (int i = 0; i < columnNum; i++) {
             assertEquals(cabal.getColumns()[i].size(), 7 - i);
             for (int j = 0; j < cabal.getColumns()[i].size(); j++) {
-                assertNotNull(cabal.getColumns()[i].get(j));
+                assertNotNull(cabal.getColumns()[i].getAt(j));
             }
         }
 
