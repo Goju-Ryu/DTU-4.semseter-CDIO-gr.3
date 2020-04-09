@@ -1,5 +1,6 @@
 package Logik.cabal.internals;
 
+import Logik.cabal.internals.card.I_CardModel;
 import Logik.error.IllegalMoveException;
 
 import java.util.Arrays;

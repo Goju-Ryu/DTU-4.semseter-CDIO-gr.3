@@ -1,4 +1,8 @@
-package Logik.cabal.internals;
+package Logik.cabal.internals.card;
+
+import Logik.cabal.internals.card.E_CardRank;
+import Logik.cabal.internals.card.E_CardSuit;
+import Logik.cabal.internals.card.I_CardModel;
 
 /**
  * This is a model of a playing card.

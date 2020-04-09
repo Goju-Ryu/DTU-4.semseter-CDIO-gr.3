@@ -1,4 +1,4 @@
-package Logik.cabal.internals;
+package Logik.cabal.internals.card;
 
 /**
  * This enumerator is the rank of the card. card can have ranks from 1 - 10 and the Jack,

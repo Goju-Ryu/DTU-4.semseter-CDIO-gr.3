@@ -2,6 +2,8 @@ package Logik.cabal;
 
 
 import Logik.cabal.internals.*;
+import Logik.cabal.internals.card.Card;
+import Logik.cabal.internals.card.I_CardModel;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
