@@ -1,5 +1,7 @@
 package Logik;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,15 +9,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class Cabal_madsTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     void turnCard() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getTurnedCard() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void initialize() {
         final int acePileNum = 4;
         final int columnNum = 7;
@@ -33,7 +35,7 @@ class Cabal_madsTest {
         for (int i = 0; i < columnNum; i++) {
             assertEquals(cabal.getColumns()[i].size(), 7 - i);
             for (int j = 0; j < cabal.getColumns()[i].size(); j++) {
-                assertNotNull(cabal.getColumns()[i].get(j));
+                assertNotNull(cabal.getColumns()[i].getAt(j));
             }
         }
 
@@ -41,21 +43,22 @@ class Cabal_madsTest {
         assertEquals(cabal.getTurnedPile().size(), 0);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void initializeAfterAssigns() {
         final int acePileNum = 4;
         final int columnNum = 7;
 
         Cabal_mads cabal = new Cabal_mads();
         cabal.initialize();
+        cabal.turnCard();
+        cabal.turnCard();
 
-        cabal.turnCard();
-        cabal.turnCard();
-        cabal.getColumns()[1]
-                .get(0)
-                .moveTo(cabal
-                        .getColumns()[4]
-                        .get(0));
+        CardStack stack1 = new CardStack();
+        CardStack stack2 = new CardStack();
+        stack1.addToStack(new Card(E_CardSuit.CLUBS, E_CardRank.FIVE, true));
+        stack2.addToStack(new Card(E_CardSuit.HEARTS, E_CardRank.FOUR, true));
+        cabal.getColumns()[1].add(stack1);
+        cabal.getColumns()[4].add(stack2);
 
         List<I_CardModel> cards = new ArrayList<>();
         cards.add(new Card(E_CardSuit.CLUBS, E_CardRank.ACE));
@@ -73,7 +76,7 @@ class Cabal_madsTest {
         for (int i = 0; i < columnNum; i++) {
             assertEquals(cabal.getColumns()[i].size(), 7 - i);
             for (int j = 0; j < cabal.getColumns()[i].size(); j++) {
-                assertNotNull(cabal.getColumns()[i].get(j));
+                assertNotNull(cabal.getColumns()[i].getAt(j));
             }
         }
 

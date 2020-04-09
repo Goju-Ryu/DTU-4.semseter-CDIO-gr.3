@@ -1,11 +1,15 @@
 package Logik;
 
+import Logik.CardStack;
+import Logik.I_CabalModel;
+import Logik.I_CardModel;
+
 import java.util.List;
 
 /**
  * This is the model of the entire cabal
  */
-public class Cabal implements I_CabalModel{
+public class Cabal implements I_CabalModel {
 
     private List<CardStack> columns;
     private List<CardStack> acesPile;

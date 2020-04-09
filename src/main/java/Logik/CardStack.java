@@ -19,8 +19,18 @@ public class CardStack extends A_StackModel {
 
 
 
-    public boolean canMoveTo(A_StackModel cardModel) {
-        return cardModel != null;
+    public boolean canMoveTo(A_StackModel destination) {
+        if (destination == null) //TODO Diskuter om dette burde kaste en exception
+            return false;
+        if (destination.getFirst() == null)
+            return false;
+        if ( !destination.getLast().isFacedUp() )
+            return false;
+        if ( E_CardSuit.isSameColour(destination.getLast().getSuit(), this.getFirst().getSuit()) )
+            return false;
+        if (destination.getLast().getRank().getCardRank()-1 != this.getFirst().getRank().getCardRank() )
+            return false;
+        return true;
     }
 
     public void moveTo(A_StackModel stackModel) throws IllegalMoveException {
@@ -46,7 +56,7 @@ public class CardStack extends A_StackModel {
             throw new IndexOutOfBoundsException("Cannot split at index: " + position + " size of stack is: " + cards.size());
 
         List<I_CardModel> returnable = cards.subList(position + 1, cards.size());
-        cards = cards.subList(0, position);
+        cards = cards.subList(0, position + 1);
         return new CardStack(returnable);
     }
 

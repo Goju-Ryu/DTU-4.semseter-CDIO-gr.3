@@ -2,6 +2,7 @@ package Logik;
 
 import Logik.error.IllegalMoveException;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -81,4 +82,11 @@ public abstract class A_StackModel {
         }
     }
 
+    /**
+     * Method is for ease of use and is equivalent to the list implementation of the same name
+     * @param newCards an array of cards to be added to the stack
+     */
+    protected void addToStack(I_CardModel ... newCards) {
+        addToStack(Arrays.asList(newCards));
+    }
 }
