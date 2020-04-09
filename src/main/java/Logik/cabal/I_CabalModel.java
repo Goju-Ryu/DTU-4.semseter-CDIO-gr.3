@@ -1,4 +1,6 @@
-package Logik.cabal.internals;
+package Logik.cabal;
+
+import Logik.cabal.internals.I_CardModel;
 
 public interface I_CabalModel {
 

@@ -1,7 +1,7 @@
 package Logik;
 
 import Logik.cabal.internals.CardStack;
-import Logik.cabal.internals.I_CabalModel;
+import Logik.cabal.I_CabalModel;
 import Logik.cabal.internals.I_CardModel;
 
 import java.util.List;
