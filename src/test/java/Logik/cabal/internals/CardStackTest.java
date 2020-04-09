@@ -1,5 +1,6 @@
-package Logik;
+package Logik.cabal.internals;
 
+import Logik.cabal.internals.*;
 import Logik.error.IllegalMoveException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

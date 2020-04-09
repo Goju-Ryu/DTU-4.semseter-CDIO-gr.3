@@ -1,4 +1,4 @@
-package Logik;
+package Logik.cabal.internals;
 
 import Logik.error.IllegalMoveException;
 

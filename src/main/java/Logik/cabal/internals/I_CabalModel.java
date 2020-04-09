@@ -1,4 +1,4 @@
-package Logik;
+package Logik.cabal.internals;
 
 public interface I_CabalModel {
 

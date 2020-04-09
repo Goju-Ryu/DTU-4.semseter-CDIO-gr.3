@@ -1,4 +1,4 @@
-package Logik;
+package Logik.cabal.internals;
 
 /**
  * We have an enumerator with each card symbol, and we have getters for the enumerator

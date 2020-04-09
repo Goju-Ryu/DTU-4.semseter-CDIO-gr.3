@@ -1,5 +1,7 @@
-package Logik;
+package Logik.cabal;
 
+import Logik.cabal.Cabal_mads;
+import Logik.cabal.internals.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

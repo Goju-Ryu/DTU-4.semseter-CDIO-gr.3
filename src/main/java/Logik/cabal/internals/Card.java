@@ -1,4 +1,4 @@
-package Logik;
+package Logik.cabal.internals;
 
 /**
  * This is a model of a playing card.

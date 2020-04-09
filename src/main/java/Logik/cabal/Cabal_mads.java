@@ -1,5 +1,7 @@
-package Logik;
+package Logik.cabal;
 
+
+import Logik.cabal.internals.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -8,7 +10,7 @@ import java.util.*;
 /**
  * This is the model of the entire cabal
  */
-public class Cabal_mads implements I_CabalModel{
+public class Cabal_mads implements I_CabalModel {
 
     final private Column[] columns;
     final private A_StackModel[] acesPile;
@@ -139,7 +141,8 @@ public class Cabal_mads implements I_CabalModel{
             initialize();
             CardStack empty = new CardStack();
             for (int i = 0; i < faceDownNum; i++) {
-                empty.addToStack();
+                new CardStack(new Card()).moveTo(empty);
+                //empty.addToStack();
             }
 
             CardStack known = new CardStack(knownCards);
