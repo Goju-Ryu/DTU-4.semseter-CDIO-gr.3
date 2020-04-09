@@ -58,7 +58,6 @@ public class Cabal_mads implements I_CabalModel{
      * @return the card drawn from the pile
      */
     public I_CardModel turnCard() {
-
         return null;
     }
 
