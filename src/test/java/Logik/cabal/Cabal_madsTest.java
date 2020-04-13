@@ -58,16 +58,17 @@ class Cabal_madsTest {
         cabal.turnCard();
         cabal.turnCard();
 
-        CardStack stack1 = new CardStack();
-        CardStack stack2 = new CardStack();
-        stack1.addToStack(new Card(E_CardSuit.CLUBS, E_CardRank.FIVE, true));
-        stack2.addToStack(new Card(E_CardSuit.HEARTS, E_CardRank.FOUR, true));
+        CardStack stack1 = new CardStack(new Card(E_CardSuit.CLUBS, E_CardRank.FIVE));
+        CardStack stack2 = new CardStack(new Card(E_CardSuit.HEARTS, E_CardRank.FOUR));
         cabal.getColumns()[1].add(stack1);
         cabal.getColumns()[4].add(stack2);
 
         List<I_CardModel> cards = new ArrayList<>();
-        cards.add(new Card(E_CardSuit.CLUBS, E_CardRank.ACE));
-        cabal.getAcesPile()[E_CardSuit.CLUBS.ordinal()].addToStack(cards);
+        new CardStack( new Card(E_CardSuit.CLUBS, E_CardRank.ACE) )
+                .moveTo(
+                        cabal.getAcesPile()[E_CardSuit.CLUBS.ordinal()]
+                )
+        ;
 
         cabal.initialize();
 
