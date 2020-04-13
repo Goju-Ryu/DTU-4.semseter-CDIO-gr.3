@@ -1,5 +1,10 @@
-package Logik;
+package Logik.cabal;
 
+import Logik.cabal.internals.*;
+import Logik.cabal.internals.card.Card;
+import Logik.cabal.internals.card.E_CardRank;
+import Logik.cabal.internals.card.E_CardSuit;
+import Logik.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

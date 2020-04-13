@@ -1,5 +1,9 @@
-package Logik;
+package Logik.cabal.internals;
 
+import Logik.cabal.internals.card.Card;
+import Logik.cabal.internals.card.E_CardRank;
+import Logik.cabal.internals.card.E_CardSuit;
+import Logik.cabal.internals.card.I_CardModel;
 import Logik.error.IllegalMoveException;
 import org.junit.jupiter.api.Test;
 
@@ -44,12 +48,10 @@ class A_StackModelTest {
         };
         stack.cards = new ArrayList<>();
 
-        stack.addToStack(new ArrayList<I_CardModel>(){{ //TODO debug this
-                             new Card(E_CardSuit.DIAMONDS, E_CardRank.FIVE);
-                             new Card();
-                             new Card();
-                             new Card(E_CardSuit.CLUBS, E_CardRank.EIGHT);
-                         }}
+        stack.addToStack(    new Card(E_CardSuit.DIAMONDS, E_CardRank.FIVE),
+                             new Card(),
+                             new Card(),
+                             new Card(E_CardSuit.CLUBS, E_CardRank.EIGHT)
         );
 
         assertNotNull(stack.cards);

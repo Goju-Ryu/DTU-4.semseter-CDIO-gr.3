@@ -1,9 +1,11 @@
-package Logik;
+package Logik.cabal.internals;
 
+import Logik.cabal.internals.card.Card;
+import Logik.cabal.internals.card.E_CardRank;
+import Logik.cabal.internals.card.E_CardSuit;
+import Logik.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CardTest {
     I_CardModel faceUp;

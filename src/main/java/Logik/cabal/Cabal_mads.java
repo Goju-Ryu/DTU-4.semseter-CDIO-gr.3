@@ -1,7 +1,10 @@
-package Logik;
+package Logik.cabal;
 
 
-import java.lang.reflect.Array;
+import Logik.cabal.internals.*;
+import Logik.cabal.internals.card.Card;
+import Logik.cabal.internals.card.I_CardModel;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -9,7 +12,7 @@ import java.util.*;
 /**
  * This is the model of the entire cabal
  */
-public class Cabal_mads implements I_CabalModel{
+public class Cabal_mads implements I_CabalModel {
 
     final private Column[] columns;
     final private A_StackModel[] acesPile;
@@ -73,10 +76,6 @@ public class Cabal_mads implements I_CabalModel{
             acesPile[i] = new CardStack();
         }
 
-        //empty the columns list
-        for (List<A_StackModel> a_stackModels : columns) {
-            a_stackModels.removeIf(e -> true);
-        }
         //fill with face-down cards
         for (int i = 0; i < columns.length; i++) {
             for (int j = 0; j < 7 - i; j++) {
@@ -144,7 +143,8 @@ public class Cabal_mads implements I_CabalModel{
             initialize();
             CardStack empty = new CardStack();
             for (int i = 0; i < faceDownNum; i++) {
-                empty.addToStack();
+                new CardStack(new Card()).moveTo(empty);
+                //empty.addToStack();
             }
 
             CardStack known = new CardStack(knownCards);

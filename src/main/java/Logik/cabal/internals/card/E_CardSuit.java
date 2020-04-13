@@ -1,4 +1,4 @@
-package Logik;
+package Logik.cabal.internals.card;
 
 /**
  * This is the enumerator for the suit of the card.
