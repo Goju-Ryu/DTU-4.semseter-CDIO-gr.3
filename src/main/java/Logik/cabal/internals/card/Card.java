@@ -21,6 +21,7 @@ public class Card implements I_CardModel {
     public Card(E_CardSuit suit, E_CardRank rank) {  //TODO: Skal denne ikke være vendt med forsiden opad som standard i stedet for ned ad?
         this.suit = suit;
         this.rank = rank;
+        isFacedUp = true;
     }
 
     public Card(E_CardSuit suit, E_CardRank rank, boolean isFacedUp) {
@@ -28,6 +29,8 @@ public class Card implements I_CardModel {
         this.rank = rank;
         this.isFacedUp = isFacedUp;
     }
+
+    //TODO: use optional for suit and rank getters
 
     // Get the suit member
     @Override

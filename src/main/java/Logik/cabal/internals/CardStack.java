@@ -22,10 +22,10 @@ public class CardStack extends A_StackModel {
 
 
     public boolean canMoveTo(A_StackModel destination) {
-        if (destination == null) //TODO Diskuter om dette burde kaste en exception
+        if (destination == null) //TODO dette burde kaste en exception
             return false;
         if (destination.getFirst() == null)
-            return false;
+            return false; //TOdo husk konger gerne må dette
         if ( !destination.getLast().isFacedUp() )
             return false;
         if ( E_CardSuit.isSameColour(destination.getLast().getSuit(), this.getFirst().getSuit()) )
