@@ -26,7 +26,15 @@ public class Card implements I_CardModel {
         this.isFacedUp = isFacedUp;
     }
 
-    //TODO: use optional for suit and rank getters
+    @Override
+    public void reveal(E_CardSuit suit, int rank) {
+        if (this.suit != null || this.rank != null) {
+            throw new IllegalStateException("Card can only be assign suit and rank once");
+        }
+        this.rank = rank;
+        this.suit = suit;
+        isFacedUp = true;
+    }
 
     // Get the suit member
     @Override
