@@ -1,4 +1,4 @@
-package Logik.error;
+package model.error;
 
 public class IllegalMoveException extends RuntimeException {
     public IllegalMoveException() {

@@ -1,8 +1,4 @@
-package Logik.cabal.internals.card;
-
-import Logik.cabal.internals.card.E_CardRank;
-import Logik.cabal.internals.card.E_CardSuit;
-import Logik.cabal.internals.card.I_CardModel;
+package model.cabal.internals.card;
 
 /**
  * This is a model of a playing card.
@@ -18,7 +14,7 @@ public class Card implements I_CardModel {
         isFacedUp = false;
     }
 
-    public Card(E_CardSuit suit, E_CardRank rank) {  //TODO: Skal denne ikke være vendt med forsiden opad som standard i stedet for ned ad?
+    public Card(E_CardSuit suit, E_CardRank rank) {
         this.suit = suit;
         this.rank = rank;
         isFacedUp = true;
@@ -35,18 +31,21 @@ public class Card implements I_CardModel {
     // Get the suit member
     @Override
     public E_CardSuit getSuit() {
+        if (suit == null) throw new NullPointerException("Suit hasn't been set yet");
         return suit;
     }
 
     // get the suit members text
     @Override
     public String getSuitText(){
+        if (suit == null) throw new NullPointerException("Suit hasn't been set yet");
         return suit.getCardSuit();
     }
 
     // get the rank member
     @Override
     public E_CardRank getRank() {
+        if (rank == null) throw new NullPointerException("Rank hasn't been set yet");
         return rank;
     }
 

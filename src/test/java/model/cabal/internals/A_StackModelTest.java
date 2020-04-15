@@ -1,10 +1,10 @@
-package Logik.cabal.internals;
+package model.cabal.internals;
 
-import Logik.cabal.internals.card.Card;
-import Logik.cabal.internals.card.E_CardRank;
-import Logik.cabal.internals.card.E_CardSuit;
-import Logik.cabal.internals.card.I_CardModel;
-import Logik.error.IllegalMoveException;
+import model.cabal.internals.card.Card;
+import model.cabal.internals.card.E_CardRank;
+import model.cabal.internals.card.E_CardSuit;
+import model.cabal.internals.card.I_CardModel;
+import model.error.IllegalMoveException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -55,6 +55,6 @@ class A_StackModelTest {
         );
 
         assertNotNull(stack.cards);
-        assertEquals(5, stack.cards.size());
+        assertEquals(4, stack.size());
     }
 }

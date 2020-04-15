@@ -1,7 +1,7 @@
-package Logik.cabal.internals;
+package model.cabal.internals;
 
-import Logik.cabal.internals.card.I_CardModel;
-import Logik.error.IllegalMoveException;
+import model.cabal.internals.card.I_CardModel;
+import model.error.IllegalMoveException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +50,13 @@ public abstract class A_StackModel {
      * @return the card at the bottom of the stack or null if not found
      */
     abstract public I_CardModel getLast();
+
+    /**
+     * @return number of cards in the stack
+     */
+    public int size() {
+        return cards.size();
+    }
 
 
 

@@ -1,4 +1,4 @@
-package Logik.cabal.internals.card;
+package model.cabal.internals.card;
 
 /**
  * This is the enumerator for the suit of the card.
@@ -34,6 +34,8 @@ public enum E_CardSuit {
     }
 
     public static boolean isSameColour(E_CardSuit first, E_CardSuit second) {
+        if (first == null || second == null)
+            return false;
         return first.isRed == second.isRed;
     }
 }

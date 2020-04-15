@@ -1,4 +1,4 @@
-package Logik.cabal.internals.card;
+package model.cabal.internals.card;
 
 /**
  * We have an enumerator with each card symbol, and we have getters for the enumerator
@@ -7,6 +7,9 @@ package Logik.cabal.internals.card;
  */
 public interface I_CardModel {
 
+    /**
+     * @return return
+     */
     E_CardSuit getSuit();
     String getSuitText();
     E_CardRank getRank();
