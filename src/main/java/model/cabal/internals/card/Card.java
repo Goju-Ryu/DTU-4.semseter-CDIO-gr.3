@@ -79,11 +79,27 @@ public class Card implements I_CardModel {
     public String toStringValue() {
         String string = "";
         if (isFacedUp){
-            string += rank + " of " + suit.getCardSuit();
+            string += rankToString() + " of " + suit.getCardSuit();
         }else {
             string = "Card is faced down";
         }
         return string;
+    }
+
+
+    public String rankToString() {
+        switch (rank) {
+            case 1:
+                return "Ace";
+            case 11:
+                return "Jack";
+            case 12:
+                return "Queen";
+            case 13:
+                return "King";
+            default:
+                return rank.toString();
+        }
     }
 
 
