@@ -1,7 +1,6 @@
 package model.cabal.internals;
 
 import model.cabal.internals.card.Card;
-import model.cabal.internals.card.E_CardRank;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
@@ -48,10 +47,10 @@ class A_StackModelTest {
         };
         stack.cards = new ArrayList<>();
 
-        stack.addToStack(    new Card(E_CardSuit.DIAMONDS, E_CardRank.FIVE),
+        stack.addToStack(    new Card(E_CardSuit.DIAMONDS, 5),
                              new Card(),
                              new Card(),
-                             new Card(E_CardSuit.CLUBS, E_CardRank.EIGHT)
+                             new Card(E_CardSuit.CLUBS, 8)
         );
 
         assertNotNull(stack.cards);

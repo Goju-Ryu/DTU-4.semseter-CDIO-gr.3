@@ -6,7 +6,7 @@ package model.cabal.internals.card;
 public class Card implements I_CardModel {
 
     private E_CardSuit suit;
-    private E_CardRank rank;
+    private Integer rank;
     private boolean isFacedUp;
 
 
@@ -14,13 +14,13 @@ public class Card implements I_CardModel {
         isFacedUp = false;
     }
 
-    public Card(E_CardSuit suit, E_CardRank rank) {
+    public Card(E_CardSuit suit, int rank) {
         this.suit = suit;
         this.rank = rank;
         isFacedUp = true;
     }
 
-    public Card(E_CardSuit suit, E_CardRank rank, boolean isFacedUp) {
+    public Card(E_CardSuit suit, int rank, boolean isFacedUp) {
         this.suit = suit;
         this.rank = rank;
         this.isFacedUp = isFacedUp;
@@ -44,15 +44,9 @@ public class Card implements I_CardModel {
 
     // get the rank member
     @Override
-    public E_CardRank getRank() {
+    public Integer getRank() {
         if (rank == null) throw new NullPointerException("Rank hasn't been set yet");
         return rank;
-    }
-
-    // get the rank member value
-    @Override
-    public int getRankValue(){
-        return rank.getCardRank();
     }
 
     // is the card face up or face down
@@ -85,7 +79,7 @@ public class Card implements I_CardModel {
     public String toStringValue() {
         String string = "";
         if (isFacedUp){
-            string += rank.getCardRank() + " of " + suit.getCardSuit();
+            string += rank + " of " + suit.getCardSuit();
         }else {
             string = "Card is faced down";
         }

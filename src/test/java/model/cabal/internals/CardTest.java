@@ -1,7 +1,6 @@
 package model.cabal.internals;
 
 import model.cabal.internals.card.Card;
-import model.cabal.internals.card.E_CardRank;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +12,7 @@ class CardTest {
 
     @BeforeEach
     void beforeEach(){
-        faceUp = new Card(E_CardSuit.DIAMONDS, E_CardRank.FIVE);
+        faceUp = new Card(E_CardSuit.DIAMONDS, 5);
         faceDown = new Card();
     }
 

@@ -2,7 +2,6 @@ package model.cabal;
 
 import model.cabal.internals.*;
 import model.cabal.internals.card.Card;
-import model.cabal.internals.card.E_CardRank;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
@@ -59,13 +58,13 @@ class Cabal_madsTest {
         cabal.turnCard();
         cabal.turnCard();
 
-        CardStack stack1 = new CardStack(new Card(E_CardSuit.CLUBS, E_CardRank.FIVE));
-        CardStack stack2 = new CardStack(new Card(E_CardSuit.HEARTS, E_CardRank.FOUR));
+        CardStack stack1 = new CardStack(new Card(E_CardSuit.CLUBS, 5));
+        CardStack stack2 = new CardStack(new Card(E_CardSuit.HEARTS, 4));
         cabal.getColumns()[1].add(stack1);
         cabal.getColumns()[4].add(stack2);
 
         List<I_CardModel> cards = new ArrayList<>();
-        new CardStack( new Card(E_CardSuit.CLUBS, E_CardRank.ACE) )
+        new CardStack( new Card(E_CardSuit.CLUBS, 1) )
                 .moveTo(
                         cabal.getAcesPile()[E_CardSuit.CLUBS.ordinal()]
                 )
@@ -91,8 +90,4 @@ class Cabal_madsTest {
         assertEquals(cabal.getTurnedPile().size(), 0);
     }
 
-    @Test
-    void test() {
-        System.out.println(Optional.of(((String) null)));
-    }
 }
