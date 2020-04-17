@@ -55,7 +55,7 @@ public class Card implements I_CardModel {
     public Integer getRank() {
         if (rank == null) throw new NullPointerException("Rank hasn't been set yet");
         if (rank > 13 || rank < 1){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Rank has an invalid value");
         }else {
             return rank;
         }
