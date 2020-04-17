@@ -12,14 +12,14 @@ import java.util.*;
 /**
  * This is the model of the entire cabal
  */
-public class Cabal_mads implements I_CabalModel {
+public class Board implements I_CabalModel {
 
     final private Column[] columns;
     final private A_StackModel[] acesPile;
-    final private List<I_CardModel> turnedPile;
-    final private List<I_CardModel> cardPile;
+    final private Stack<I_CardModel> turnedPile;
+    final private Stack<I_CardModel> cardPile;
 
-    public Cabal_mads() {
+    public Board() {
         columns = new Column[7];
         acesPile = new A_StackModel[4];
 
@@ -46,8 +46,6 @@ public class Cabal_mads implements I_CabalModel {
     }
 
 
-//---------------------------------------Setters------------------------------------------------------------------------
-
 
 //---------------------------------------Various methods----------------------------------------------------------------
 
@@ -55,15 +53,26 @@ public class Cabal_mads implements I_CabalModel {
      *  This will take a card from the card pile and put it face up in the turned card pile
      * @return the card drawn from the pile
      */
-    public I_CardModel turnCard() {
-        return null; //TODO: Implement
+    public I_CardModel turnCard() { // TODO Test it.
+
+        I_CardModel card = cardPile.pop();
+        turnedPile.push(card);
+
+        return card;
     }
 
     /**
      * @return the top card of the turned card pile
      */
     public I_CardModel getTurnedCard() {
-        return null; //TODO: Implement
+
+        I_CardModel card = turnedPile.peek();
+
+        if (turnedPile.empty()){
+            return null;
+        }else {
+            return card;
+        }
     }
 
 
