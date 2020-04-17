@@ -1,8 +1,8 @@
-package Logik.cabal.internals;
+package model.cabal.internals;
 
-import Logik.cabal.internals.card.E_CardSuit;
-import Logik.cabal.internals.card.I_CardModel;
-import Logik.error.IllegalMoveException;
+import model.cabal.internals.card.E_CardSuit;
+import model.cabal.internals.card.I_CardModel;
+import model.error.IllegalMoveException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,14 +23,14 @@ public class CardStack extends A_StackModel {
 
     public boolean canMoveTo(A_StackModel destination) {
         if (destination == null) //TODO dette burde kaste en exception
-            return false;
-        if (destination.getFirst() == null)
-            return false; //TOdo husk konger gerne må dette
+            throw new NullPointerException("Destination is null!");
         if ( !destination.getLast().isFacedUp() )
+            return false;
+        if ( destination.size() == 0 && this.getFirst().getRank() != 13)
             return false;
         if ( E_CardSuit.isSameColour(destination.getLast().getSuit(), this.getFirst().getSuit()) )
             return false;
-        if (destination.getLast().getRank().getCardRank()-1 != this.getFirst().getRank().getCardRank() )
+        if (destination.getLast().getRank() - 1 != this.getFirst().getRank() )
             return false;
         return true;
     }
@@ -95,7 +95,6 @@ public class CardStack extends A_StackModel {
     public I_CardModel getLast() {
         return getCardAt(cards.size() - 1);
     }
-
 
 
 }

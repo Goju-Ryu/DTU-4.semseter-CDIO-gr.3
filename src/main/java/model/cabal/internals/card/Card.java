@@ -1,8 +1,4 @@
-package Logik.cabal.internals.card;
-
-import Logik.cabal.internals.card.E_CardRank;
-import Logik.cabal.internals.card.E_CardSuit;
-import Logik.cabal.internals.card.I_CardModel;
+package model.cabal.internals.card;
 
 /**
  * This is a model of a playing card.
@@ -10,7 +6,7 @@ import Logik.cabal.internals.card.I_CardModel;
 public class Card implements I_CardModel {
 
     private E_CardSuit suit;
-    private E_CardRank rank;
+    private Integer rank;
     private boolean isFacedUp;
 
 
@@ -18,42 +14,47 @@ public class Card implements I_CardModel {
         isFacedUp = false;
     }
 
-    public Card(E_CardSuit suit, E_CardRank rank) {  //TODO: Skal denne ikke være vendt med forsiden opad som standard i stedet for ned ad?
+    public Card(E_CardSuit suit, int rank) {
         this.suit = suit;
         this.rank = rank;
         isFacedUp = true;
     }
 
-    public Card(E_CardSuit suit, E_CardRank rank, boolean isFacedUp) {
+    public Card(E_CardSuit suit, int rank, boolean isFacedUp) {
         this.suit = suit;
         this.rank = rank;
         this.isFacedUp = isFacedUp;
     }
 
-    //TODO: use optional for suit and rank getters
+    @Override
+    public void reveal(E_CardSuit suit, int rank) {
+        if (this.suit != null || this.rank != null) {
+            throw new IllegalStateException("Card can only be assign suit and rank once");
+        }
+        this.rank = rank;
+        this.suit = suit;
+        isFacedUp = true;
+    }
 
     // Get the suit member
     @Override
     public E_CardSuit getSuit() {
+        if (suit == null) throw new NullPointerException("Suit hasn't been set yet");
         return suit;
     }
 
     // get the suit members text
     @Override
     public String getSuitText(){
+        if (suit == null) throw new NullPointerException("Suit hasn't been set yet");
         return suit.getCardSuit();
     }
 
     // get the rank member
     @Override
-    public E_CardRank getRank() {
+    public Integer getRank() {
+        if (rank == null) throw new NullPointerException("Rank hasn't been set yet");
         return rank;
-    }
-
-    // get the rank member value
-    @Override
-    public int getRankValue(){
-        return rank.getCardRank();
     }
 
     // is the card face up or face down
@@ -86,11 +87,27 @@ public class Card implements I_CardModel {
     public String toStringValue() {
         String string = "";
         if (isFacedUp){
-            string += rank.getCardRank() + " of " + suit.getCardSuit();
+            string += rankToString() + " of " + suit.getCardSuit();
         }else {
             string = "Card is faced down";
         }
         return string;
+    }
+
+
+    public String rankToString() {
+        switch (rank) {
+            case 1:
+                return "Ace";
+            case 11:
+                return "Jack";
+            case 12:
+                return "Queen";
+            case 13:
+                return "King";
+            default:
+                return rank.toString();
+        }
     }
 
 

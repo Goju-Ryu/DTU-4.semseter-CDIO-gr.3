@@ -1,10 +1,9 @@
-package Logik.cabal.internals;
+package model.cabal.internals;
 
-import Logik.cabal.internals.card.Card;
-import Logik.cabal.internals.card.E_CardRank;
-import Logik.cabal.internals.card.E_CardSuit;
-import Logik.cabal.internals.card.I_CardModel;
-import Logik.error.IllegalMoveException;
+import model.cabal.internals.card.Card;
+import model.cabal.internals.card.E_CardSuit;
+import model.cabal.internals.card.I_CardModel;
+import model.error.IllegalMoveException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,10 +23,10 @@ class CardStackTest {
 
     void fillStack(A_StackModel stack) {
         final List<I_CardModel> newCards = new ArrayList<I_CardModel>();
-        newCards.add(new Card(E_CardSuit.DIAMONDS, E_CardRank.FIVE, true));
+        newCards.add(new Card(E_CardSuit.DIAMONDS, 5, true));
         newCards.add(new Card());
         newCards.add(new Card());
-        newCards.add(new Card(E_CardSuit.CLUBS, E_CardRank.EIGHT, true));
+        newCards.add(new Card(E_CardSuit.CLUBS, 8, true));
         stack.addToStack(newCards);
     }
 
@@ -48,13 +47,13 @@ class CardStackTest {
         otherStack.addToStack(new Card());
         assertFalse(stack.canMoveTo(otherStack)); //TODO: Skal diskuteres om dette bør være en exception i stedet
 
-        otherStack.addToStack(new Card(E_CardSuit.SPADES, E_CardRank.FIVE, true));
+        otherStack.addToStack(new Card(E_CardSuit.SPADES, 5, true));
         assertFalse(stack.canMoveTo(otherStack));
 
-        otherStack.addToStack(new Card(E_CardSuit.DIAMONDS, E_CardRank.SIX, true));
+        otherStack.addToStack(new Card(E_CardSuit.DIAMONDS, 6, true));
         assertFalse(stack.canMoveTo(otherStack));
 
-        otherStack.addToStack(new Card(E_CardSuit.SPADES, E_CardRank.SIX, true));
+        otherStack.addToStack(new Card(E_CardSuit.SPADES, 6, true));
         assertTrue(stack.canMoveTo(otherStack));
     }
 
@@ -66,13 +65,13 @@ class CardStackTest {
         otherStack.addToStack(new Card());
         assertThrows(IllegalMoveException.class, () -> stack.moveTo(otherStack));
 
-        otherStack.addToStack(new Card(E_CardSuit.SPADES, E_CardRank.FIVE, true));
+        otherStack.addToStack(new Card(E_CardSuit.SPADES, 5, true));
         assertThrows(IllegalMoveException.class, () -> stack.moveTo(otherStack));
 
-        otherStack.addToStack(new Card(E_CardSuit.DIAMONDS, E_CardRank.SIX, true));
+        otherStack.addToStack(new Card(E_CardSuit.DIAMONDS, 6, true));
         assertThrows(IllegalMoveException.class, () -> stack.moveTo(otherStack));
 
-        otherStack.addToStack(new Card(E_CardSuit.SPADES, E_CardRank.SIX, true));
+        otherStack.addToStack(new Card(E_CardSuit.SPADES, 6, true));
         stack.moveTo(otherStack);
         //TODO: Test that the stack moved successfully
 
@@ -82,11 +81,11 @@ class CardStackTest {
     @Test
     void splitAt() {
         stack.addToStack(
-                new Card(E_CardSuit.CLUBS, E_CardRank.ACE, true),
-                new Card(E_CardSuit.CLUBS, E_CardRank.TWO, true),
-                new Card(E_CardSuit.CLUBS, E_CardRank.THREE, true),
-                new Card(E_CardSuit.CLUBS, E_CardRank.FOUR, true),
-                new Card(E_CardSuit.CLUBS, E_CardRank.FIVE, true)
+                new Card(E_CardSuit.CLUBS, 1, true),
+                new Card(E_CardSuit.CLUBS, 2, true),
+                new Card(E_CardSuit.CLUBS, 3, true),
+                new Card(E_CardSuit.CLUBS, 4, true),
+                new Card(E_CardSuit.CLUBS, 5, true)
         );
         CardStack newStack = (CardStack) stack.splitAt(2);
 
@@ -97,9 +96,9 @@ class CardStackTest {
         stack.addToStack(
                 new Card(),
                 new Card(),
-                new Card(E_CardSuit.CLUBS, E_CardRank.THREE, true),
-                new Card(E_CardSuit.CLUBS, E_CardRank.FOUR, true),
-                new Card(E_CardSuit.CLUBS, E_CardRank.FIVE, true)
+                new Card(E_CardSuit.CLUBS, 3, true),
+                new Card(E_CardSuit.CLUBS, 4, true),
+                new Card(E_CardSuit.CLUBS, 5, true)
         );
         newStack = (CardStack) stack.splitAt(2);
 
@@ -112,22 +111,22 @@ class CardStackTest {
     void getFirst() {
         fillStack(stack);
         assertNotNull(stack.getFirst());
-        assertEquals(stack.getFirst().getRank(), E_CardRank.FIVE);
+        assertEquals(stack.getFirst().getRank(), 5);
         assertEquals(stack.getFirst().getSuit(), E_CardSuit.DIAMONDS);
     }
 
     @Test
     void getCardAt() {
         stack.addToStack(
-                new Card(E_CardSuit.CLUBS, E_CardRank.ACE, true),
-                new Card(E_CardSuit.CLUBS, E_CardRank.TWO, true),
-                new Card(E_CardSuit.CLUBS, E_CardRank.THREE, true),
-                new Card(E_CardSuit.CLUBS, E_CardRank.FOUR, true),
-                new Card(E_CardSuit.CLUBS, E_CardRank.FIVE, true)
+                new Card(E_CardSuit.CLUBS, 1, true),
+                new Card(E_CardSuit.CLUBS, 2, true),
+                new Card(E_CardSuit.CLUBS, 3, true),
+                new Card(E_CardSuit.CLUBS, 4, true),
+                new Card(E_CardSuit.CLUBS, 5, true)
         );
 
         assertEquals(stack.getFirst(), stack.getCardAt(0));
-        assertEquals(3, stack.getCardAt(2).getRankValue());
+        assertEquals(3, stack.getCardAt(2).getRank());
         assertEquals(stack.getLast(), stack.getCardAt(stack.cards.size()-1));
     }
 
@@ -135,7 +134,7 @@ class CardStackTest {
     void getLast() {
         fillStack(stack);
         assertNotNull(stack.getLast());
-        assertEquals(E_CardRank.EIGHT, stack.getLast().getRank());
+        assertEquals(8, stack.getLast().getRank());
         assertEquals(E_CardSuit.CLUBS, stack.getLast().getSuit());
     }
 }

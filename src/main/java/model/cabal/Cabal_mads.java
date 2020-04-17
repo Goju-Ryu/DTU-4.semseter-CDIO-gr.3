@@ -1,9 +1,9 @@
-package Logik.cabal;
+package model.cabal;
 
 
-import Logik.cabal.internals.*;
-import Logik.cabal.internals.card.Card;
-import Logik.cabal.internals.card.I_CardModel;
+import model.cabal.internals.*;
+import model.cabal.internals.card.Card;
+import model.cabal.internals.card.I_CardModel;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;

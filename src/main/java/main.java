@@ -1,5 +1,5 @@
-import Logik.cabal.Cabal_mads;
-import Logik.cabal.I_CabalModel;
+import model.cabal.Cabal_mads;
+import model.cabal.I_CabalModel;
 
 public class main {
     public static void main(String[] args) {

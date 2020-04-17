@@ -1,14 +1,14 @@
-package Logik.cabal;
+package model.cabal;
 
-import Logik.cabal.internals.*;
-import Logik.cabal.internals.card.Card;
-import Logik.cabal.internals.card.E_CardRank;
-import Logik.cabal.internals.card.E_CardSuit;
-import Logik.cabal.internals.card.I_CardModel;
+import model.cabal.internals.*;
+import model.cabal.internals.card.Card;
+import model.cabal.internals.card.E_CardSuit;
+import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,13 +58,13 @@ class Cabal_madsTest {
         cabal.turnCard();
         cabal.turnCard();
 
-        CardStack stack1 = new CardStack(new Card(E_CardSuit.CLUBS, E_CardRank.FIVE));
-        CardStack stack2 = new CardStack(new Card(E_CardSuit.HEARTS, E_CardRank.FOUR));
+        CardStack stack1 = new CardStack(new Card(E_CardSuit.CLUBS, 5));
+        CardStack stack2 = new CardStack(new Card(E_CardSuit.HEARTS, 4));
         cabal.getColumns()[1].add(stack1);
         cabal.getColumns()[4].add(stack2);
 
         List<I_CardModel> cards = new ArrayList<>();
-        new CardStack( new Card(E_CardSuit.CLUBS, E_CardRank.ACE) )
+        new CardStack( new Card(E_CardSuit.CLUBS, 1) )
                 .moveTo(
                         cabal.getAcesPile()[E_CardSuit.CLUBS.ordinal()]
                 )
@@ -89,4 +89,5 @@ class Cabal_madsTest {
         assertEquals(cabal.getCardPile().size(), 24); //24 cards left in a deck when cabal is prepared
         assertEquals(cabal.getTurnedPile().size(), 0);
     }
+
 }
