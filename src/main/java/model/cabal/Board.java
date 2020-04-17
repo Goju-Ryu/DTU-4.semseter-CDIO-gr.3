@@ -54,17 +54,19 @@ public class Board implements I_CabalModel {
      * @return the card drawn from the pile
      */
     public I_CardModel turnCard() { // TODO Test it.
-
-        I_CardModel card = cardPile.pop();
-        turnedPile.push(card);
-
-        return card;
+        if (cardPile.empty()){
+            return null;
+        } else {
+            I_CardModel card = cardPile.pop();
+            turnedPile.push(card);
+            return card;
+        }
     }
 
     /**
      * @return the top card of the turned card pile
      */
-    public I_CardModel getTurnedCard() {
+    public I_CardModel getTurnedCard() { //TODO Test it.
 
         I_CardModel card = turnedPile.peek();
 
