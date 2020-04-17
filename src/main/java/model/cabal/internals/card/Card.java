@@ -54,7 +54,11 @@ public class Card implements I_CardModel {
     @Override
     public Integer getRank() {
         if (rank == null) throw new NullPointerException("Rank hasn't been set yet");
-        return rank;
+        if (rank > 13 || rank < 1){
+            throw new IllegalArgumentException();
+        }else {
+            return rank;
+        }
     }
 
     // is the card face up or face down
