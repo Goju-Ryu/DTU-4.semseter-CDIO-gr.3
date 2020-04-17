@@ -8,11 +8,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class Cabal_madsTest {
+class BoardTest {
 
     @Test
     void turnCard() {
@@ -27,7 +26,7 @@ class Cabal_madsTest {
         final int acePileNum = 4;
         final int columnNum = 7;
 
-        Cabal_mads cabal = new Cabal_mads();
+        Board cabal = new Board();
         cabal.initialize();
 
         assertEquals(cabal.getAcesPile().length, acePileNum);
@@ -53,7 +52,7 @@ class Cabal_madsTest {
         final int acePileNum = 4;
         final int columnNum = 7;
 
-        Cabal_mads cabal = new Cabal_mads();
+        Board cabal = new Board();
         cabal.initialize();
         cabal.turnCard();
         cabal.turnCard();

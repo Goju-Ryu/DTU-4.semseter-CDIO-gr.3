@@ -19,8 +19,6 @@ public class CardStack extends A_StackModel {
         this.cards.addAll(Arrays.asList(cards));
     }
 
-
-
     public boolean canMoveTo(A_StackModel destination) {
         if (destination == null) //TODO dette burde kaste en exception
             throw new NullPointerException("Destination is null!");
