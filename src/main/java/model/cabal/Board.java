@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * This is the model of the entire cabal
  */
-public class Board implements I_CabalModel {
+public class Board implements I_BoardModel {
 
     final private Column[] columns;
     final private A_StackModel[] acesPile;
