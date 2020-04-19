@@ -11,7 +11,7 @@ import java.util.List;
  */
 public abstract class A_StackModel {
 
-    protected List<I_CardModel> cards;
+    protected List<I_CardModel> cards = List.of();
 
     /**
      * Checks if a move operation is valid
@@ -71,7 +71,7 @@ public abstract class A_StackModel {
      * @param newCards The cards to be added to this stack.
      * @throws RuntimeException if the add
      */
-    protected void addToStack(List<I_CardModel> newCards) {
+    private void addToStack(List<I_CardModel> newCards) {
         //if the addAll method is not implemented in the list type then make new list manually
         if ( !cards.addAll(newCards) ) {
             int newSize = cards.size() + newCards.size();
@@ -86,7 +86,7 @@ public abstract class A_StackModel {
                 }
             }
 
-            //cards = List.of(newList); todo reimplement
+            cards = Arrays.asList(newList);
         }
     }
 
