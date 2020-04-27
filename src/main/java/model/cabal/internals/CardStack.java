@@ -43,7 +43,7 @@ public class CardStack extends A_StackModel {
                                     " don't match?"
                     );
 
-        stackModel.addToStack(cards); //Todo: figure out why test throws error
+        stackModel.addToStack((I_CardModel) cards); //Todo: figure out why test throws error
         this.cards.removeIf(e -> true);
     }
 
