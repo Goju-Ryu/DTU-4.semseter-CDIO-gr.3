@@ -27,7 +27,7 @@ class CardStackTest {
         newCards.add(new Card());
         newCards.add(new Card());
         newCards.add(new Card(E_CardSuit.CLUBS, 8, true));
-        stack.addToStack(newCards);
+        stack.addToStack((I_CardModel) newCards);
     }
 
 
