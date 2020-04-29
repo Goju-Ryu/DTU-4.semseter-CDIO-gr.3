@@ -134,16 +134,24 @@ public class Board implements I_BoardModel {
             stacks = new ArrayList<>(2);
         }
 
+        @Deprecated
         public A_StackModel get() {
             return stacks.get(stacks.size() - 1);
-        }
-
+        } //TODO: should be removed
+        @Deprecated
         public A_StackModel getAt(int i) {
             return stacks.get(i);
-        }
+        } //TODO: should be removed
 
         public int size() {
             return stacks.size();
+        }
+
+        public int totalCards() {
+            return stacks.stream()
+                    .mapToInt(A_StackModel::size)
+                    .reduce(Integer::sum)
+                    .orElseThrow();
         }
 
         public void initialize() {
