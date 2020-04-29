@@ -49,7 +49,7 @@ public class CardStack extends A_StackModel {
 
     public A_StackModel splitAt(int position) {
         if (cards == null)
-            return null; //TODO Discuss if we should use Optional to avoid the null
+            return null;
         if (cards.size() < 1)
             return null;
         if (cards.size() < position)
@@ -78,7 +78,7 @@ public class CardStack extends A_StackModel {
      */
     public I_CardModel getCardAt(int position) {
         if (cards == null)
-            return null; //TODO Discuss if we should use Optional to avoid the null
+            return null;
         if (cards.size() < 1)
             return null;
         if (cards.size() < position)
