@@ -1,6 +1,8 @@
 // The greeting service definition.
 syntax = "proto3";
 
+option java_package = "../java";
+
 service Greeter {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {}
