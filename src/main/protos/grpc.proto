@@ -1,4 +1,6 @@
 // The greeting service definition.
+syntax = "proto3";
+
 service Greeter {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {}
