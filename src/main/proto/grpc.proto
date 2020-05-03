@@ -1,7 +1,11 @@
 // The greeting service definition.
 syntax = "proto3";
 
-option java_package = "../java";
+option java_multiple_files = true; // Makes each definition it's own file
+//option java_package = "../java"; //Path til hvor filen skal ligge. Starter i src folder "java"
+option java_outer_classname = "HelloWorld"; //Name of main output file
+option objc_class_prefix = "HLW";
+
 
 service Greeter {
   // Sends a greeting
