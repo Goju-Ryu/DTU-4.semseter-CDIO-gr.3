@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.target>11</maven.compiler.target>
-        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
 
     <dependencies>
@@ -81,6 +81,7 @@
                         <goals>
                             <goal>compile</goal>
                             <goal>compile-custom</goal>
+                            <goal>compile-python</goal>
                         </goals>
                     </execution>
                 </executions>

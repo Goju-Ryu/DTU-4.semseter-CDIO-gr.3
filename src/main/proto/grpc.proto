@@ -1,12 +1,14 @@
-// To generate sources use the maven commands "protobuf:compile" and "protobuf:compile-python"
+// To generate sources use the maven command "mvn compile"
 
 // The greeting service definition.
 syntax = "proto3"; //Defines which syntax is used in this file proto3 is the newest version of proto
 
-option java_multiple_files = false; // Makes each definition it's own file if true
-//option java_package = "../java"; //Path til hvor filen skal ligge. Starter i src folder "java"
-option java_outer_classname = "GreeterGrpc"; //Name of main output file
+option java_multiple_files = true; // Makes each definition it's own file if true
+option java_package = "examples"; //Path til hvor filen skal ligge. Starter i src folder "java"
+option java_outer_classname = "HelloWorldProto"; //Name of main output file
 option objc_class_prefix = "HLW";
+
+package helloworld;
 
 
 service Greeter {
