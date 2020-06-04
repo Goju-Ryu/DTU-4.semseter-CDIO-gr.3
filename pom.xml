@@ -81,10 +81,26 @@
                         <goals>
                             <goal>compile</goal>
                             <goal>compile-custom</goal>
-                            <goal>compile-python</goal>
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <id>protoc-python</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>src/main/python/proto/protoc.sh</executable>
+                </configuration>
             </plugin>
         </plugins>
     </build>
