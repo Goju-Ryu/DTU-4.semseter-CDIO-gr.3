@@ -48,13 +48,21 @@
             <type>pom</type>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.xolstice.maven.plugins/protobuf-maven-plugin -->
+        <!-- https://mvnrepository.com/artifact/org.xolstice.maven.plugins/protobuf-maven-plugin
+        Plugin for executing scripts during compile-->
         <dependency>
             <groupId>org.xolstice.maven.plugins</groupId>
             <artifactId>protobuf-maven-plugin</artifactId>
             <version>0.6.1</version>
         </dependency>
 
+        <!-- Plugin to clean files outside of target directory during clean -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-clean-plugin</artifactId>
+            <version>3.1.0</version>
+            <type>maven-plugin</type>
+        </dependency>
     </dependencies>
 
 
@@ -100,6 +108,24 @@
                 </executions>
                 <configuration>
                     <executable>src/main/python/proto/protoc.sh</executable>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>src/main/python/proto</directory>
+                            <includes>
+                                <include>*.py</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/protoc.sh</exclude>
+                            </excludes>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
                 </configuration>
             </plugin>
         </plugins>
