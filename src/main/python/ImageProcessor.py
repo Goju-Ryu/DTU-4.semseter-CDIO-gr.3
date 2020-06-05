@@ -6,7 +6,11 @@ class ImageProcessor:
     def __init__(self):
         self.variable = 12
 
-    def getThreshImage(self,image):
+    def getThreshImage(self, image):
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+
+
+    def getThreshImageOld(self,image):
         # color conversion, because different types of images are needed for operations not to crash
         image = cv2.cvtColor(image, cv2.COLOR_BGRA2BGR)
         img = cv2.cvtColor(image, cv2.COLOR_BGRA2GRAY)
@@ -30,7 +34,6 @@ class ImageProcessor:
         #b = 50
         #result = cv2.addWeighted(masked, a,np.zeros(img.shape, img.dtype),0,b )
         #cv2.imshow("img", result)
-        #cv2.imshow( "masked" , masked )
-        #cv2.imshow( "blur" , blur )
+        cv2.imshow( "masked" , masked )
         return masked
 

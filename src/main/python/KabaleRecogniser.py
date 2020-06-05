@@ -22,18 +22,21 @@ class KabaleRecogniser:
             img = frame
             if not empt:
                 rec.release()
-                rec = cv2.VideoCapture('video_01.mp4', 0)
+                rec = cv2.VideoCapture('video_02.mp4', 0)
                 empt, frame = rec.read()
                 img = frame
             # to be re made
             #img = rec.getFrame()
 
+            board = BoardRuler()
+            board.isolate(img)
+
             # find cards two variables, hasCards = boolean, cards list of cards found in the image.
-            cards, succes = cardAnal.findCards(img)
-            if succes:
-                for i in range(len(cards)):
-                    #cv2.imshow("card" + str(i), cards[i].profile)
-                    pass
+            #cards, succes = cardAnal.findCards(img)
+            #if succes:
+            #    for i in range(len(cards)):
+            #        #cv2.imshow("card" + str(i), cards[i].profile)
+            #        pass
 
             if cv2.waitKey(20) & 0xff == ord('q'):
                 break
