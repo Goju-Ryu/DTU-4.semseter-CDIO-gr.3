@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="11">
-      <module name="CDIO_kabale" target="11" />
+      <module name="CDIO_kabale" target="10" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
