@@ -71,10 +71,10 @@ class SVideo:
 
         if not self.empt:
             self.rec.release()
-            rec = cv2.VideoCapture(self.VidName)
-            self.empt, self.frame = rec.read()
+            self.rec = cv2.VideoCapture(self.VidName)
+            self.empt, self.frame = self.rec.read()
 
-        return self.frame
+        return cv2.resize(self.frame,(600,400))
 
     def stop(self):
         self.cancelled = True

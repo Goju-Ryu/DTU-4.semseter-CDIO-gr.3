@@ -17,7 +17,6 @@ ruler = BoardRuler()
 class KabaleRecogniser:
 
     def run(self):
-
         while True:
             img = rec.getFrame()
             if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -26,10 +25,11 @@ class KabaleRecogniser:
 
             cv2.imshow("frame", img)
             board = BoardRuler()
-            image ,succes = board.isolate(img)
+            image ,mask,succes = board.isolate(img)
 
-
-            if succes :
+            cv2.imshow("image",image)
+            cv2.imshow("mask",mask)
+            """if succes :
                 sections = board.cutImageWithRulerLines(image)
 
                 # find cards two variables, hasCards = boolean, cards list of cards found in the image.
@@ -37,5 +37,4 @@ class KabaleRecogniser:
                 if succes:
                     for i in range(len(cards)):
                         pass
-
-
+            """
