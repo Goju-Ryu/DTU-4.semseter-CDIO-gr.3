@@ -9,27 +9,36 @@ import numpy as np
 
 #komment
 
+
 #rec = SVideo()
 cardAnal = CardAnalyser()
 ruler = BoardRuler()
 
 class KabaleRecogniser:
+
     def run(self):
-        rec = cv2.VideoCapture('video_02.mp4',0)
+        rec = cv2.VideoCapture(1)
+        time.sleep(1.000)
         while True:
             # to be removed
-            empt, frame = rec.read()
-            img = frame
-            if not empt:
+            ret, img = rec.read()
+
+            if cv2.waitKey(1) & 0xFF == ord('q'):
                 rec.release()
-                rec = cv2.VideoCapture('video_02.mp4', 0)
-                empt, frame = rec.read()
-                img = frame
+                break
+
+
             # to be re made
             #img = rec.getFrame()
 
             board = BoardRuler()
-            board.isolate(img)
+            image ,succes = board.isolate(img)
+
+
+            if succes :
+                cv2.imshow("res", image)
+                sections = board.cutImageWithRulerLines(image)
+
 
             # find cards two variables, hasCards = boolean, cards list of cards found in the image.
             #cards, succes = cardAnal.findCards(img)

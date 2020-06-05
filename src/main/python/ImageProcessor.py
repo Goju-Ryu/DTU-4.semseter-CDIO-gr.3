@@ -30,10 +30,5 @@ class ImageProcessor:
         masked = cv2.bitwise_and(image, masked)
         masked =  cv2.cvtColor(masked, cv2.COLOR_BGRA2GRAY)
 
-        #a = 50
-        #b = 50
-        #result = cv2.addWeighted(masked, a,np.zeros(img.shape, img.dtype),0,b )
-        #cv2.imshow("img", result)
-        cv2.imshow( "masked" , masked )
         return masked
 

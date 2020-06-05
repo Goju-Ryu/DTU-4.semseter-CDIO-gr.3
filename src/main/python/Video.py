@@ -15,7 +15,7 @@ class Video:
         self.visible = visible
 
         # Video Stats
-        self.rec = cv2.VideoCapture(0)
+        self.rec = cv2.VideoCapture(1)
 
         # starting the Thread
         self.empt, self.frame = self.rec.read() # setting the veryFirst Frame just to avoid null pointers.
@@ -48,7 +48,7 @@ class SVideo:
         self.cancelled = False
 
         # Video Stats
-        self.rec = cv2.VideoCapture('video_01.mp4')
+        self.rec = cv2.VideoCapture(1)
 
         # starting the Thread
         self.empt, self.frame = self.rec.read()  # setting the veryFirst Frame just to avoid null pointers.

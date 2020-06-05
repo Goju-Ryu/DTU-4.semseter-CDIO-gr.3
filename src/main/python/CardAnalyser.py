@@ -83,8 +83,6 @@ class CardAnalyser:
         matrix = cv2.getPerspectiveTransform(pts, nPts)
         result = cv2.warpPerspective(image, matrix, (400,600))
 
-        # cv2.imshow("image", image)
-        # cv2.imshow("temp", result)
 
         return result
 
