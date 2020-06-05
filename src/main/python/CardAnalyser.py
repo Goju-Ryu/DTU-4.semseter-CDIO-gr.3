@@ -52,7 +52,7 @@ class CardAnalyser:
                     cards.append(card)
 
                     # drawing contours
-                    cv2.drawContours(img_color, appr, apprIndex , (0, 0, 255), 1)
+                    cv2.drawContours(img_color, appr, apprIndex , (144, 244, 155), 1)
                     apprIndex += 1
 
         cv2.imshow("contours" ,img_color)

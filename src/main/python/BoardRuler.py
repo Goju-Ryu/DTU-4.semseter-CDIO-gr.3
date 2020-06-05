@@ -46,7 +46,7 @@ class BoardRuler:
         bot = 27.18
         space = 14.28
         image = self.decorateImageRulerLines(image)
-        cv2.imshow("res",image)
+        #cv2.imshow("res",image)
 
         i=0
         arr = []
@@ -94,7 +94,7 @@ class BoardRuler:
 
     def findBoardContour (self, mask,  image):
 
-        cv2.imshow("mask", mask)
+        #cv2.imshow("mask", mask)
         contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL ,cv2.CHAIN_APPROX_SIMPLE)
         if len(contours) == 0:
             return [], False
@@ -116,7 +116,7 @@ class BoardRuler:
                     # drawing contours
                     appr.append(approx)
                     cv2.drawContours(mask, contours, i, (100, 100, 100), 10)
-                    cv2.drawContours(image, appr, apprIndex, (0, 0, 255), 10)
+                    cv2.drawContours(image, appr, apprIndex, (144, 247, 155), 10)
                     apprIndex += 1
             else:
 
@@ -126,7 +126,7 @@ class BoardRuler:
 
                 cv2.drawContours(image, opr, 0, (0, 255, 0), 1)
 
-        cv2.imshow("CONTOUR", image)
+        #cv2.imshow("CONTOUR", image)
         if (len(appr) != 1):
             return None, False
         else:

@@ -7,7 +7,15 @@ class ImageProcessor:
         self.variable = 12
 
     def getThreshImage(self, image):
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        image = cv2.GaussianBlur(image, (11, 11), 0)
+        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+
+        # define range of blue color in HSV
+        lower_blue = np.array([30, 80, 60])
+        upper_blue = np.array([112, 230, 230])
+        # Threshold the HSV image to get only blue colors
+        mask = cv2.inRange(hsv, lower_blue, upper_blue)
+        return mask
 
 
     def getThreshImageOld(self,image):

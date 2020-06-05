@@ -42,13 +42,14 @@ class SVideo:
 
     def __init__(self):
         # finals
+        self.VidName ="video_01.mp4"
         self.FRAME_NAME = " video recording Frame "
 
         # regularly needed Variables
         self.cancelled = False
 
         # Video Stats
-        self.rec = cv2.VideoCapture(1)
+        self.rec = cv2.VideoCapture(self.VidName)
 
         # starting the Thread
         self.empt, self.frame = self.rec.read()  # setting the veryFirst Frame just to avoid null pointers.
@@ -67,6 +68,12 @@ class SVideo:
         self.thread.start()
 
     def getFrame(self):
+
+        if not self.empt:
+            self.rec.release()
+            rec = cv2.VideoCapture(self.VidName)
+            self.empt, self.frame = rec.read()
+
         return self.frame
 
     def stop(self):
