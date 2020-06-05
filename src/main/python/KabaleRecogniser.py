@@ -7,6 +7,7 @@ import time
 import cv2
 import numpy as np
 
+#komment
 
 #rec = SVideo()
 cardAnal = CardAnalyser()
