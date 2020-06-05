@@ -6,7 +6,7 @@ import model.cabal.internals.card.Card;
 public interface I_GameController {
 
     //TODO: Correct the return value and parameters
-    void possibleMoves(Card[] fromCV);
+    Card[] possibleMoves(Card[] fromCV);
 
     void pickMove(Board[] moves);
 }

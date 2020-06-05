@@ -6,7 +6,20 @@ import model.cabal.internals.card.E_CardSuit;
 
 public class GameController implements I_GameController {
     @Override
-    public void possibleMoves(Card[] fromCV) {
+    public Card[] possibleMoves(Card[] fromCV) {
+
+        for (int i = 0; i < fromCV.length - 1; i++) {
+            for (int j = 0; j < fromCV.length - 1; j++) {
+
+                if (legalMove(fromCV[i],fromCV[j])){
+                    return null;
+
+                }
+
+            }
+        }
+
+        return null;
 
     }
 
