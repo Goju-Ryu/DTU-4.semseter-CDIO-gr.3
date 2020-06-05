@@ -7,11 +7,16 @@ import time
 import cv2
 import numpy as np
 
+import os
+from CardValidator import CardValidator
+
 #komment
 
 #rec = SVideo()
 cardAnal = CardAnalyser()
 ruler = BoardRuler()
+
+cardVal = CardValidator()
 
 class KabaleRecogniser:
     def run(self):
@@ -28,23 +33,35 @@ class KabaleRecogniser:
             # to be re made
             #img = rec.getFrame()
 
-            # find cards two variables, hasCards = boolean, cards list of cards found in the image.
-            cards, succes = cardAnal.findCards(img)
-            if succes:
-                for i in range(len(cards)):
-                    #cv2.imshow("card" + str(i), cards[i].profile)
-                    pass
 
-                    # for testing comparison images
-                    path = os.path.dirname(os.path.abspath(__file__))
 
-                    compareSuits = cardVal.loadSuits(path + "/Card_Imgs/")
-                    for i in range(len(compareSuits)):
-                        cv2.imshow(compareSuits[i].name, compareSuits[i].img)
 
-                    compareRanks = cardVal.loadRanks(path + "/Card_Imgs/")
-                    for i in range(len(compareRanks)):
-                        cv2.imshow(compareRanks[i].name, compareRanks[i].img)
+            compareSuits = cardVal.loadSuits(path + "/Card_Imgs/")
+            for i in range(len(compareSuits)):
+                cv2.imshow(compareSuits[i].name, compareSuits[i].img)
+
+            compareRanks = cardVal.loadRanks(path + "/Card_Imgs/")
+            for i in range(len(compareRanks)):
+                cv2.imshow(compareRanks[i].name, compareRanks[i].img)
+
+
+
+
+
+            # # find cards two variables, hasCards = boolean, cards list of cards found in the image.
+            # cards, succes = cardAnal.findCards(img)
+            # if succes:
+            #     for i in range(len(cards)):
+            #         #cv2.imshow("card" + str(i), cards[i].profile)
+            #         pass
+            #
+            #         # for testing comparison images
+            #         path = os.path.dirname(os.path.abspath(__file__))
+
+
+
+
+
 
                     # find cards two variables, hasCards = boolean, cards list of cards found in the image.
                     cards, succes = cardAnal.findCards(img)
@@ -68,11 +85,15 @@ class KabaleRecogniser:
                             print(cards[1].best_rank_match)
                             print(cards[1].best_suit_match)
 
-                            # tested sharpening the image -
-                            # Used https://stackoverflow.com/questions/58231849/how-to-remove-blurriness-from-an-image-using-opencv-python-c
-                            sharpen_kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
-                            sharpen = cv2.filter2D(cards[i].suitImg, -1, sharpen_kernel)
-                            cv2.imshow("sharpen", sharpen)
+                            # # tested sharpening the image -
+                            # # Used https://stackoverflow.com/questions/58231849/how-to-remove-blurriness-from-an-image-using-opencv-python-c
+                            # sharpen_kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
+                            # sharpen = cv2.filter2D(cards[i].suitImg, -1, sharpen_kernel)
+                            # cv2.imshow("sharpen", sharpen)
+
+
+
+
 
             if cv2.waitKey(20) & 0xff == ord('q'):
                 break
