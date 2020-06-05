@@ -13,10 +13,8 @@ cardAnal = CardAnalyser()
 ruler = BoardRuler()
 
 class KabaleRecogniser:
-
     def run(self):
-        #rec = cv2.VideoCapture(0)
-        rec = cv2.VideoCapture('video_01.mp4',0)
+        rec = cv2.VideoCapture('video_02.mp4',0)
         while True:
             # to be removed
             empt, frame = rec.read()
@@ -35,9 +33,6 @@ class KabaleRecogniser:
                 for i in range(len(cards)):
                     #cv2.imshow("card" + str(i), cards[i].profile)
                     pass
-
-            #ruler.decorateImageRulerLines(img)
-
 
             if cv2.waitKey(20) & 0xff == ord('q'):
                 break

@@ -10,7 +10,7 @@ class CardAnalyser:
         self.rotatingColor = (255,0,0)
         self.imgProc = ImageProcessor()
 
-#finds everyting that can be reduced to a Square, and creates a "Card" object from it.
+    #finds everyting that can be reduced to a Square, and creates a "Card" object from it.
     def findCards(self, img_color):
         # href: https://www.youtube.com/watch?v=U70holNWQhI
 
@@ -33,7 +33,7 @@ class CardAnalyser:
             approx = cv2.approxPolyDP(contours[i], 0.04 * peri, True) # now we have a simplified polygon.
             pts = np.float32(approx)   # creates the polygon into vertices, in order m upper left to right to down.
 
-            apprIndex = 0;
+            apprIndex = 0
             appr = []
             # if the vertices ammount is 4. then we count it as a card.
 
