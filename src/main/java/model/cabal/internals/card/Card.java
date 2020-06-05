@@ -8,6 +8,7 @@ public class Card implements I_CardModel {
     private E_CardSuit suit;
     private Integer rank;
     private boolean isFacedUp;
+    private String stacktype = null;
 
 
     public Card() {
@@ -24,6 +25,12 @@ public class Card implements I_CardModel {
         this.suit = suit;
         this.rank = rank;
         this.isFacedUp = isFacedUp;
+    }
+
+    public Card(E_CardSuit suit, int rank, String stackType) {
+        this.suit = suit;
+        this.rank = rank;
+        this.stacktype = stackType;
     }
 
     @Override
@@ -115,4 +122,7 @@ public class Card implements I_CardModel {
     }
 
 
+    public String getStacktype() {
+        return stacktype;
+    }
 }

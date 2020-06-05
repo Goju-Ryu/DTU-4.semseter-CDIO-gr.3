@@ -21,4 +21,5 @@ public interface I_CardModel {
     void setFacedUp(boolean facedUp);
     String toString();
     String toStringValue();
+    String stacktype = null;
 }
