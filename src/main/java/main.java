@@ -7,6 +7,6 @@ public class main {
 //        System.out.println("hej");
 //        VideoCapture vid = new VideoCapture(0);
         I_BoardModel c = new Board();
-        //fsf
+        //change
     }
 }
