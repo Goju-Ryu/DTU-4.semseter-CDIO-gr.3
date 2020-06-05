@@ -36,6 +36,9 @@ class KabaleRecogniser:
 
 
 
+            # for testing comparison images
+            path = os.path.dirname(os.path.abspath(__file__))
+
             compareSuits = cardVal.loadSuits(path + "/Card_Imgs/")
             for i in range(len(compareSuits)):
                 cv2.imshow(compareSuits[i].name, compareSuits[i].img)
@@ -55,41 +58,42 @@ class KabaleRecogniser:
             #         #cv2.imshow("card" + str(i), cards[i].profile)
             #         pass
             #
-            #         # for testing comparison images
-            #         path = os.path.dirname(os.path.abspath(__file__))
 
 
 
 
 
 
-                    # find cards two variables, hasCards = boolean, cards list of cards found in the image.
-                    cards, succes = cardAnal.findCards(img)
-                    if succes:
-                        for i in range(len(cards)):
-                            cv2.imshow("card" + str(1), cards[1].profile)
 
-                            # cardCornorProfile = cards[i].profile[600-135:600-15, 400-52:400-16]
-                            # cv2.imshow("nice",cardCornorProfile)
-                            # rotatedCornorProfile = cv2.rotate(cardCornorProfile, cv2.ROTATE_180)
-                            # cv2.imshow("nice2",rotatedCornorProfile)
-                            # cardCornorZoom = cv2.resize(cardCornorProfile, (0,0), fx=2, fy=2)
-                            # cv2.imshow("tester", cardCornorZoom)
-                            # cards[i].rankImg = cv2.cvtColor(cardCornorZoom[0:125, ], cv2.COLOR_BGR2GRAY)
-                            # cards[i].suitImg = cv2.cvtColor(cardCornorZoom[150:,], cv2.COLOR_BGR2GRAY)
+                # find cards two variables, hasCards = boolean, cards list of cards found in the image.
+                cards, succes = cardAnal.findCards(
+                    # img)
+                    cv2.imread("image2.png"))
+                if succes:
+                    for i in range(len(cards)):
+                        cv2.imshow("card" + str(1), cards[1].profile)
 
-                            cardVal.setCardRankAndSuit(cards[1])
-                            cv2.imshow("rank", cards[1].rankImg)
-                            cv2.imshow("suit", cards[1].suitImg)
-                            cards[i] = cardVal.matchCard(cards[1], compareRanks, compareSuits)
-                            print(cards[1].best_rank_match)
-                            print(cards[1].best_suit_match)
+                        # cardCornorProfile = cards[i].profile[600-135:600-15, 400-52:400-16]
+                        # cv2.imshow("nice",cardCornorProfile)
+                        # rotatedCornorProfile = cv2.rotate(cardCornorProfile, cv2.ROTATE_180)
+                        # cv2.imshow("nice2",rotatedCornorProfile)
+                        # cardCornorZoom = cv2.resize(cardCornorProfile, (0,0), fx=2, fy=2)
+                        # cv2.imshow("tester", cardCornorZoom)
+                        # cards[i].rankImg = cv2.cvtColor(cardCornorZoom[0:125, ], cv2.COLOR_BGR2GRAY)
+                        # cards[i].suitImg = cv2.cvtColor(cardCornorZoom[150:,], cv2.COLOR_BGR2GRAY)
 
-                            # # tested sharpening the image -
-                            # # Used https://stackoverflow.com/questions/58231849/how-to-remove-blurriness-from-an-image-using-opencv-python-c
-                            # sharpen_kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
-                            # sharpen = cv2.filter2D(cards[i].suitImg, -1, sharpen_kernel)
-                            # cv2.imshow("sharpen", sharpen)
+                        cardVal.setCardRankAndSuit(cards[1])
+                        cv2.imshow("rank", cards[1].rankImg)
+                        cv2.imshow("suit", cards[1].suitImg)
+                        cards[i] = cardVal.matchCard(cards[1], compareRanks, compareSuits)
+                        print(cards[1].best_rank_match)
+                        print(cards[1].best_suit_match)
+
+                        # # tested sharpening the image -
+                        # # Used https://stackoverflow.com/questions/58231849/how-to-remove-blurriness-from-an-image-using-opencv-python-c
+                        # sharpen_kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
+                        # sharpen = cv2.filter2D(cards[i].suitImg, -1, sharpen_kernel)
+                        # cv2.imshow("sharpen", sharpen)
 
 
 

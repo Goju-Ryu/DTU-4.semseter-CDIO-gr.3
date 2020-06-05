@@ -67,8 +67,7 @@ class SVideo:
         self.thread.start()
 
     def getFrame(self):
-        return cv2.imread("image2.png")
-        # return self.frame
+        return self.frame
 
     def stop(self):
         self.cancelled = True
