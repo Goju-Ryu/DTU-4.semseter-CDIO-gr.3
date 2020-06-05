@@ -68,7 +68,7 @@ class KabaleRecogniser:
                 # find cards two variables, hasCards = boolean, cards list of cards found in the image.
                 cards, succes = cardAnal.findCards(
                     # img)
-                    cv2.imread("image2.png"))
+                    cv2.imread("test2.png"))
                 if succes:
                     for i in range(len(cards)):
                         cv2.imshow("card" + str(1), cards[1].profile)
