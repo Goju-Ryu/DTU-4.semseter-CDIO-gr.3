@@ -83,46 +83,27 @@ class BoardRuler:
     def SortPoints(self, p1, p2 , p3 , p4, image):
 
         points = [p4,p3,p2,p1]
-        topLeft = p1
-        topRight = p2
-        bottomLeft = p3
-        bottomRight = p4
+        sortedList = sorted(points, key=lambda x: x[1], reverse=False)
+        if sortedList[0][0] > sortedList[1][0]:
+            temp = sortedList[0]
+            sortedList[0] = sortedList[1]
+            sortedList[1] = temp
 
-        for point in points:
-            if point[1] < topRight[1]:
-                if point[1] < topLeft[1]:
-                    topRight = topLeft
-                    topLeft = point
-                else:
-                    topRight = point
-
-            if point[1] > bottomRight[1]:
-                if point[1] > bottomLeft[1]:
-                    bottomRight = bottomLeft
-                    bottomLeft = point
-                else:
-                    bottomRight = point
-
-        if topLeft[0] > topRight[0]:
-            temp = topLeft
-            topLeft = topRight
-            topRight = temp
-
-        if bottomLeft[0] > bottomRight[0]:
-            temp = bottomLeft
-            bottomLeft = bottomRight
-            bottomRight= temp
-
-        image = cv2.circle(image, topLeft, 2, (255, 0, ), 2)
-        image = cv2.circle(image, topRight, 2, (0, 255, 255), 2)
-        image = cv2.circle(image, bottomRight, 2, (255, 0, 255), 2)
-        image = cv2.circle(image, bottomLeft, 2, (255, 255, 255), 2)
+        if sortedList[2][0] > sortedList[3][0]:
+            temp = sortedList[2]
+            sortedList[2] = sortedList[3]
+            sortedList[3] = temp
 
 
-        cv2.imshow("dotImage",image)
+        for point in sortedList:
+            image = cv2.circle(image, sortedList[0], 2, (255, 0, ), 2)
+            image = cv2.circle(image, sortedList[1], 2, (0, 255, 255), 2)
+            image = cv2.circle(image, sortedList[2], 2, (255, 0, 255), 2)
+            image = cv2.circle(image, sortedList[3], 2, (255, 255, 255), 2)
 
+        cv2.imshow("dots",image)
 
-        return topLeft, topRight, bottomRight, bottomLeft
+        return sortedList[3], sortedList[2], sortedList[0], sortedList[1]
 
     def decorateImageRulerLines(self, image):
         height = image.shape[0]

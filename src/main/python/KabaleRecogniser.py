@@ -10,28 +10,32 @@ import numpy as np
 #komment
 
 
-rec = Video()
+#rec = Video()
 cardAnal = CardAnalyser()
 ruler = BoardRuler()
 
 class KabaleRecogniser:
 
     def run(self):
-
+        rec = cv2.VideoCapture("video_01.mp4")
+        counter = 1
         while True:
             # Retrieving an image.
-            img = rec.getFrame()
+            counter +=1
+            _,img = rec.read()
+            img = cv2.resize(img ,(600,400))
+
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 rec.release()
                 break
 
-            #board = BoardRuler()
-            #image, mask, succes = board.isolate(img)
+            board = BoardRuler()
+            image, mask, succes = board.isolate(img)
 
             cv2.imshow("mask",img)
 
-            #if succes:
-            #    cv2.imshow("image",image)
+            if succes:
+                cv2.imshow("image",image)
             """
             if succes :
                 sections = board.cutImageWithRulerLines(image)
