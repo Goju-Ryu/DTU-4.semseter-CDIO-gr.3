@@ -66,6 +66,4 @@ public class GameController implements I_GameController {
         }
         return false;
     }
-
-
 }
