@@ -51,15 +51,14 @@ public class Board implements I_BoardModel {
 
     /**
      *  This will take a card from the card pile and put it face up in the turned card pile
-     * @return the card drawn from the pile
+     *
      */
-    public I_CardModel turnCard() { // TODO Test it.
+    public void turnCard() { // TODO Test it. Fix ithis
         if (cardPile.empty()){
-            return null;
+            System.out.println("No more cards in the card deck.");
         } else {
             I_CardModel card = cardPile.pop();
             turnedPile.push(card);
-            return card;
         }
     }
 
