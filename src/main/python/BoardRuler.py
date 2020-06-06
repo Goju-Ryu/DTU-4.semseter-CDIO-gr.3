@@ -20,8 +20,8 @@ class BoardRuler:
         mask = cv2.dilate(mask,kernel, iterations=1)
 
         #cv2.imshow("dilation", dilation)
-        mask = cv2.GaussianBlur(mask, (3, 3), 0)
-        pts, succes = self.findBoardContour(mask, image)
+        bmask = cv2.GaussianBlur(mask, (3, 3), 0)
+        pts, succes = self.findBoardContour(bmask, image)
 
         if succes:
             # Perspektive Transformation
@@ -33,18 +33,21 @@ class BoardRuler:
             #sorting so theyre orderd clockwise.
             p1,p2,p3,p4 = self.SortPoints(p1,p2,p3,p4 , image)
 
+            width = image.shape[1]
+            height = image.shape[0]
             #making the points translation values
             nPts = np.float32([
                 [0, 0],
-                [600 - 1, 0],
-                [600 - 1, 400 - 1],
-                [0, 400 - 1]
+                [width - 1, 0],
+                [width - 1, height - 1],
+                [0, height - 1]
             ], dtype="float32")
             pts = np.float32([p2, p1, p4, p3])
 
             # making the Perspektive Transform.
             matrix = cv2.getPerspectiveTransform(pts, nPts)
-            result = cv2.warpPerspective(img, matrix, (600, 400))
+            result = cv2.warpPerspective(img, matrix, (width, height))
+            mask = cv2.warpPerspective(mask, matrix, (width, height))
 
             return result ,mask, True
         else:
@@ -152,6 +155,8 @@ class BoardRuler:
 
             startS = int((i) * space)
             endS = int((i + 1) * space)
+            if endS > width:
+                endS = width
             arrTop.append( image[0:endH, startS:endS])
 
         startH = int((height - bot))
@@ -159,6 +164,9 @@ class BoardRuler:
 
             startS = int((i) * space)
             endS = int((i + 1) * space)
+
+            if endS > width:
+                endS = width
             arrBot.append(image[startH:(height), startS:endS])
 
         return arrTop , arrBot

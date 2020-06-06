@@ -31,7 +31,7 @@ class Video:
         self.thread.start()
 
     def getFrame(self):
-        return cv2.resize(self.frame,(600,400))
+        return cv2.resize(self.frame,(1200,800))
 
     def stop(self):
         self.cancelled = True
@@ -65,7 +65,7 @@ class SVideo:
         self.thread.start()
 
     def getFrame(self):
-        return cv2.resize(self.frame,(600,400))
+        return cv2.resize(self.frame,(1200,800))
         #return self.frame
 
     def stop(self):

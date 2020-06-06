@@ -35,7 +35,7 @@ class KabaleRecogniser:
             # Retrieving an image.
             counter +=1
             _,img = rec.read()
-            img = cv2.resize(img ,(600,400))
+            img = cv2.resize(img ,(1200,800))
 
             #cv2.imshow("img", img)
             if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -47,18 +47,17 @@ class KabaleRecogniser:
 
             if succes:
                 #cv2.imshow("mask", mask)
-                cv2.imshow("board",image)
+                #cv2.imshow("board",image)
 
-                sectionsT,sectionsB = board.cutImageWithRulerLines(image)
+                topRow,bottomRow = board.cutImageWithRulerLines(image)
+                topRowMask, bottomRowMask = board.cutImageWithRulerLines(mask)
 
-                i = 1
-                stack = self.stackImages(sectionsT[0],sectionsT)
-                stack2 = self.stackImages(sectionsB[0],sectionsB)
+                stack = self.stackImages(topRow[0],topRow)
+                #stack2 = self.stackImages(sectionsB[0],sectionsB)
                 cv2.imshow("stack",stack)
-                cv2.imshow("stack2", stack2)
+                #cv2.imshow("single",topRow[6])
+                #cv2.imshow("stack2", stack2)
 
                 # find cards two variables, hasCards = boolean, cards list of cards found in the image.
-                cards, succes = cardAnal.findCards(image)
-                if succes:
-                    for i in range(len(cards)):
-                        pass
+                cardAnal.findCards(topRow, topRowMask)
+

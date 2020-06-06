@@ -6,15 +6,26 @@ proc = ImageProcessor()
 
 class CardAnalyser:
 
-    def __init__(self):
-        self.rotatingColor = (255,0,0)
-        self.imgProc = ImageProcessor()
+    def findCards(self, rowImages, rowImagesMasks):
+        i = 0
+        for i in range(0,len(rowImages)):
+            image = rowImages[i]
+            mask = rowImagesMasks[i]
 
-    #finds everyting that can be reduced to a Square, and creates a "Card" object from it.
-    def findCards(self, img_color):
-        # href: https://www.youtube.com/watch?v=U70holNWQhI
+            #no need for a Threshold image because the mask is already there. from before.
+            # finding the Contours
+            contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            if len(contours) == 0:
+                return [], False
 
-        # getting threshhold image
+            for contour in contours:
+                cv2.drawContours(image, contours, -1, (0,0,255),1)
+
+            cv2.imshow("card", image)
+            #Aproximating that to a Polygon.
+
+    def findCardsOld(self, img_color):
+
         thresh_image = proc.getThreshImage(img_color)
         cv2.imshow("tresh",thresh_image)
 
