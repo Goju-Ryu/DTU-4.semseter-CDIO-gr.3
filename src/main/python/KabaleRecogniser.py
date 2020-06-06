@@ -7,9 +7,9 @@ import time
 import cv2
 import numpy as np
 
-#komment
+# komment
 
-#rec = SVideo()
+# rec = SVideo()
 cardAnal = CardAnalyser()
 ruler = BoardRuler()
 
@@ -26,13 +26,13 @@ class KabaleRecogniser:
                 empt, frame = rec.read()
                 img = frame
             # to be re made
-            #img = rec.getFrame()
+            # img = rec.getFrame()
 
             # find cards two variables, hasCards = boolean, cards list of cards found in the image.
             cards, succes = cardAnal.findCards(img)
             if succes:
                 for i in range(len(cards)):
-                    #cv2.imshow("card" + str(i), cards[i].profile)
+                    # cv2.imshow("card" + str(i), cards[i].profile)
                     pass
 
             if cv2.waitKey(20) & 0xff == ord('q'):

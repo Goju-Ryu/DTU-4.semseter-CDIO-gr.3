@@ -10,7 +10,7 @@ class CardAnalyser:
         self.rotatingColor = (255,0,0)
         self.imgProc = ImageProcessor()
 
-    #finds everyting that can be reduced to a Square, and creates a "Card" object from it.
+    # finds everyting that can be reduced to a Square, and creates a "Card" object from it.
     def findCards(self, img_color):
         # href: https://www.youtube.com/watch?v=U70holNWQhI
 
