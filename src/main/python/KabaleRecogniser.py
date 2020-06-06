@@ -54,7 +54,7 @@ class KabaleRecogniser:
 
                 stack = self.stackImages(topRow[0],topRow)
                 #stack2 = self.stackImages(sectionsB[0],sectionsB)
-                cv2.imshow("stack",stack)
+               # cv2.imshow("stack",stack)
                 #cv2.imshow("single",topRow[6])
                 #cv2.imshow("stack2", stack2)
 
