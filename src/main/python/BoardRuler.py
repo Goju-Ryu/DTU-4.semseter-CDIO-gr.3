@@ -136,19 +136,32 @@ class BoardRuler:
         widthPercent = width / 100
         heightPercent = height / 100
 
-        top = 28.15
-        bot = 27.18
-        space = 14.28
+        # cv2.imshow("res",image)
+        top = 28.15 * heightPercent
+        bot = 27.18 * heightPercent
+        space = 14.28 * widthPercent
         image = self.decorateImageRulerLines(image)
-        #cv2.imshow("res",image)
 
-        i=0
-        arr = []
+        i=1
+
+        arrTop =[]
+        arrBot =[]
+
+        endH = int(top)
+        for i in range (0,7):  #crop_img = img[y:y+h, x:x+w]
+
+            startS = int((i) * space)
+            endS = int((i + 1) * space)
+            arrTop.append( image[0:endH, startS:endS])
+
+        startH = int((height - bot))
         for i in range (0,7):
-            im = cv2.getRectSubPix(image, (98, 33), (1, 1))
 
+            startS = int((i) * space)
+            endS = int((i + 1) * space)
+            arrBot.append(image[startH:(height), startS:endS])
 
-
+        return arrTop , arrBot
 
 
 
