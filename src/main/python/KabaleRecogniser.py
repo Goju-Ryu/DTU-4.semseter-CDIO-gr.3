@@ -32,7 +32,7 @@ class KabaleRecogniser:
             board = BoardRuler()
             image, mask, succes = board.isolate(img)
 
-            cv2.imshow("mask",img)
+            cv2.imshow("mask",mask)
 
             if succes:
                 cv2.imshow("image",image)

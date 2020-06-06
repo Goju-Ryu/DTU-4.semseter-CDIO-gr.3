@@ -17,13 +17,11 @@ class BoardRuler:
 
         #cv2.imshow("erode",erosion)
         mask = cv2.erode(mask, kernel, iterations=1)
-        mask = cv2.dilate(mask,kernel, iterations=3)
-        mask = cv2.erode(mask, kernel, iterations=2)
+        mask = cv2.dilate(mask,kernel, iterations=1)
 
         #cv2.imshow("dilation", dilation)
         mask = cv2.GaussianBlur(mask, (3, 3), 0)
         pts, succes = self.findBoardContour(mask, image)
-
 
         if succes:
             # Perspektive Transformation
@@ -100,9 +98,6 @@ class BoardRuler:
             image = cv2.circle(image, sortedList[1], 2, (0, 255, 255), 2)
             image = cv2.circle(image, sortedList[2], 2, (255, 0, 255), 2)
             image = cv2.circle(image, sortedList[3], 2, (255, 255, 255), 2)
-
-        cv2.imshow("dots",image)
-
         return sortedList[3], sortedList[2], sortedList[0], sortedList[1]
 
     def decorateImageRulerLines(self, image):
