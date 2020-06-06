@@ -2,6 +2,128 @@ import cv2
 import numpy as np
 
 class BoardRuler:
+
+    def isolate(self, img):
+        image = cv2.GaussianBlur(img, (5,5), 0)
+
+        #Creating a Mask
+        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        lower_blue = np.array([50, 60, 60])
+        upper_blue = np.array([90, 230, 230])
+        mask = cv2.inRange(hsv, lower_blue, upper_blue)
+
+        #noise Removal on Mask
+        kernel = np.ones((5,5),np.uint8)
+
+        #cv2.imshow("erode",erosion)
+        mask = cv2.erode(mask, kernel, iterations=1)
+        mask = cv2.dilate(mask,kernel, iterations=3)
+        mask = cv2.erode(mask, kernel, iterations=2)
+
+        #cv2.imshow("dilation", dilation)
+        mask = cv2.GaussianBlur(mask, (3, 3), 0)
+        pts, succes = self.findBoardContour(mask, image)
+
+
+        if succes:
+            # Perspektive Transformation
+            p1 = (pts[0][0][0], pts[0][0][1])
+            p2 = (pts[1][0][0], pts[1][0][1])
+            p3 = (pts[2][0][0], pts[2][0][1])
+            p4 = (pts[3][0][0], pts[3][0][1])
+
+            #sorting so theyre orderd clockwise.
+            p1,p2,p3,p4 = self.SortPoints(p1,p2,p3,p4 , image)
+
+            #making the points translation values
+            nPts = np.float32([
+                [0, 0],
+                [600 - 1, 0],
+                [600 - 1, 400 - 1],
+                [0, 400 - 1]
+            ], dtype="float32")
+            pts = np.float32([p2, p1, p4, p3])
+
+            # making the Perspektive Transform.
+            matrix = cv2.getPerspectiveTransform(pts, nPts)
+            result = cv2.warpPerspective(img, matrix, (600, 400))
+
+            return result ,mask, True
+        else:
+            return None , mask , False
+
+    def findBoardContour(self, mask, image):
+
+        # finding external contours with simple aproximation.
+        contours, hiarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+        # if there are no Contours then end it.
+        if len(contours) == 0:
+            return [], False
+
+        for contour in contours:
+            # Simplify into Polygon.
+            epsilon = cv2.arcLength(contour, True)
+            approx = cv2.approxPolyDP(contour, 0.04 * epsilon, True)  # now we have a simplified polygon.
+
+            appr = []
+            if len(approx) == 4: # if the aproximation is a square
+                if contour.size > 200: # and size is considerable.
+                    appr.append(approx)
+                    cv2.drawContours(image, appr, -1, (144, 247, 155), 10)
+
+        # when done we sort to find the largest contour.
+
+        contours = sorted(contours, key=lambda x: cv2.contourArea(x))
+        if (len(appr) == 0):
+            return None, False
+        else:
+            return appr[0], True
+
+    def SortPoints(self, p1, p2 , p3 , p4, image):
+
+        points = [p4,p3,p2,p1]
+        topLeft = p1
+        topRight = p2
+        bottomLeft = p3
+        bottomRight = p4
+
+        for point in points:
+            if point[1] < topRight[1]:
+                if point[1] < topLeft[1]:
+                    topRight = topLeft
+                    topLeft = point
+                else:
+                    topRight = point
+
+            if point[1] > bottomRight[1]:
+                if point[1] > bottomLeft[1]:
+                    bottomRight = bottomLeft
+                    bottomLeft = point
+                else:
+                    bottomRight = point
+
+        if topLeft[0] > topRight[0]:
+            temp = topLeft
+            topLeft = topRight
+            topRight = temp
+
+        if bottomLeft[0] > bottomRight[0]:
+            temp = bottomLeft
+            bottomLeft = bottomRight
+            bottomRight= temp
+
+        image = cv2.circle(image, topLeft, 2, (255, 0, ), 2)
+        image = cv2.circle(image, topRight, 2, (0, 255, 255), 2)
+        image = cv2.circle(image, bottomRight, 2, (255, 0, 255), 2)
+        image = cv2.circle(image, bottomLeft, 2, (255, 255, 255), 2)
+
+
+        cv2.imshow("dotImage",image)
+
+
+        return topLeft, topRight, bottomRight, bottomLeft
+
     def decorateImageRulerLines(self, image):
         height = image.shape[0]
         width = image.shape[1]
@@ -49,86 +171,9 @@ class BoardRuler:
         for i in range (0,7):
             im = cv2.getRectSubPix(image, (98, 33), (1, 1))
 
-    def isolate(self, img):
-        # Get the Green Color
-        image = cv2.GaussianBlur(img, (5,5), 0)
 
-        mask = self.interactiveMaskWindow(image)
-        pts, succes = self.findBoardContour(mask, image)
-        if succes:
-            p1 = (pts[0][0][0], pts[0][0][1])
-            p2 = (pts[1][0][0], pts[1][0][1])
-            p3 = (pts[2][0][0], pts[2][0][1])
-            p4 = (pts[3][0][0], pts[3][0][1])
 
-            self.SortPoints(p1,p2,p3,p4)
 
-            nPts = np.float32([
-                [0, 0],
-                [600 - 1, 0],
-                [600 - 1, 400 - 1],
-                [0, 400 - 1]
-            ], dtype="float32")
-            pts = np.float32([p2, p1, p4, p3])
 
-            matrix = cv2.getPerspectiveTransform(pts, nPts)
-            result = cv2.warpPerspective(img, matrix, (600, 400))
 
-            return result ,mask, True
-        else:
-            return None,mask, False
 
-    def empty(self,a):
-        pass
-
-    def interactiveMaskWindow(self, image):
-
-        """windowName = "BoardMaskEditor"
-        cv2.namedWindow(windowName)
-        cv2.resizeWindow(windowName,600,200)
-
-        cv2.createTrackbar("Hue Min", windowName, 0 , 179, self.empty)
-        cv2.createTrackbar("Sat Min", windowName, 0, 179, self.empty)
-        cv2.createTrackbar("Val Min", windowName, 0, 179, self.empty)
-        """
-
-        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-
-        # define range of blue color in HSV
-        lower_blue = np.array([60,60,60])
-        upper_blue = np.array([90,230,230])
-        mask = cv2.inRange(hsv, lower_blue, upper_blue)  # Threshold the HSV image to get only blue colors
-        return mask
-
-    def findBoardContour (self, mask,  image):
-        contours, hiarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL ,cv2.CHAIN_APPROX_SIMPLE)
-
-        # if there are no Contours
-        if len(contours) == 0:
-            return [], False
-        mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
-        for i in range(len(contours)):
-            # Simplify into Polygon.
-            epsilon = cv2.arcLength(contours[i], True)
-            approx = cv2.approxPolyDP(contours[i], 0.04 * epsilon, True)  # now we have a simplified polygon.
-
-            # an array of size 1, to show that Contour.
-            appr = []
-            appr.append(approx)
-
-            if len(approx) == 4:
-                if contours[i].size > 200:
-                    cv2.drawContours( mask , appr, -1  , (0, 255, 0), 5)
-                    cv2.drawContours( image, appr       , -1  , (144, 247, 155), 10)
-            else:
-                cv2.drawContours(image, contours[i], -1, (255, 0, 0), 1)
-                cv2.drawContours(image, appr, -1, (0, 255, 0), 1)
-
-        #cv2.imshow("CONTOUR", image)
-        if (len(appr) != 1):
-            return None, False
-        else:
-            return appr[0],True
-
-    def SortPoints(self, p1, p2 , p3 , p4):
-        pass

@@ -2,7 +2,7 @@ from BoardRuler import BoardRuler
 from Card import Card
 from CardAnalyser import CardAnalyser
 from ImageProcessor import ImageProcessor
-from Video import SVideo
+from Video import SVideo, Video
 import time
 import cv2
 import numpy as np
@@ -10,28 +10,32 @@ import numpy as np
 #komment
 
 
-rec = SVideo()
+rec = Video()
 cardAnal = CardAnalyser()
 ruler = BoardRuler()
 
 class KabaleRecogniser:
 
     def run(self):
+
         while True:
+            # Retrieving an image.
             img = rec.getFrame()
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 rec.release()
                 break
 
-            cv2.imshow("frame", img)
-            board = BoardRuler()
-            image ,mask,succes = board.isolate(img)
+            #board = BoardRuler()
+            #image, mask, succes = board.isolate(img)
 
-            cv2.imshow("image",image)
-            cv2.imshow("mask",mask)
-            """if succes :
+            cv2.imshow("mask",img)
+
+            #if succes:
+            #    cv2.imshow("image",image)
+            """
+            if succes :
                 sections = board.cutImageWithRulerLines(image)
-
+    
                 # find cards two variables, hasCards = boolean, cards list of cards found in the image.
                 cards, succes = cardAnal.findCards(image)
                 if succes:
