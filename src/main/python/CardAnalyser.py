@@ -177,7 +177,5 @@ class CardAnalyser:
 
         matrix = cv2.getPerspectiveTransform(pts, nPts)
         result = cv2.warpPerspective(image, matrix, (400,600))
-
-
         return result
 
