@@ -49,9 +49,9 @@ class SettingsGUI():
 
             cv2.imshow(self.windowName, mask )
 
-            k = cv2.waitKey(1) & 0xFF
-            if k == 27:
+            if cv2.waitKey(1) & 0xFF == ord('q'):
                 vid.stop()
+                cv2.destroyAllWindows()
                 break
 
         Sett = SettingsObject()

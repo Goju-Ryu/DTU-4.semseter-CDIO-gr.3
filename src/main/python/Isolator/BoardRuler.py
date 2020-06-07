@@ -3,14 +3,23 @@ import numpy as np
 
 class BoardRuler:
 
-    def isolate(self, img):
+    def isolate(self, img,Settings):
         image = cv2.GaussianBlur(img, (5,5), 0)
 
         #Creating a Mask
+        HueMin, HueMax = Settings.getHue()
+        SatMin, SatMax = Settings.getSat()
+        ValMin, ValMax = Settings.getVal()
+
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        lower_blue = np.array([HueMin, SatMin, ValMin])
+        upper_blue = np.array([HueMax, SatMax, ValMax])
+        mask = cv2.inRange(hsv, lower_blue, upper_blue)
+
+        """hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         lower_blue = np.array([50, 60, 60])
         upper_blue = np.array([90, 230, 230])
-        mask = cv2.inRange(hsv, lower_blue, upper_blue)
+        mask = cv2.inRange(hsv, lower_blue, upper_blue)"""
 
         #noise Removal on Mask
         kernel = np.ones((5,5),np.uint8)

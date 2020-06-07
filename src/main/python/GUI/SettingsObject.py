@@ -27,5 +27,5 @@ class SettingsObject():
     def getSat(self):
         return self.Smin, self.Smax
 
-    def getVak(self):
+    def getVal(self):
         return self.Vmin, self.Vmax

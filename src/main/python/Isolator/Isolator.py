@@ -16,7 +16,7 @@ class Isolator:
 
         cardAnal = CardAnalyser()
         board = BoardRuler()
-        image, mask, succes = board.isolate(image)
+        image, mask, succes = board.isolate(image,Settings)
         if succes:
             if self.showBoard:
                 cv2.imshow("board",image)
