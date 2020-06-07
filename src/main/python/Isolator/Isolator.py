@@ -12,7 +12,7 @@ class Isolator:
         self.showCards = showCards
         self.showCardsMask = showCardsMask
 
-    def isolateCards(self, image):
+    def isolateCards(self, image, Settings):
 
         cardAnal = CardAnalyser()
         board = BoardRuler()

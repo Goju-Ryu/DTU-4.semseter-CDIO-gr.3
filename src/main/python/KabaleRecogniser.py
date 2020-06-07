@@ -6,7 +6,7 @@ rec = SVideo()
 
 class KabaleRecogniser:
 
-    def run(self):
+    def run(self,Settings):
         while True:
             # Retrieving an image.
             img = rec.getFrame()
@@ -17,6 +17,6 @@ class KabaleRecogniser:
                 break
 
             isolator = Isolator(True,False,True,False)
-            cards = isolator.isolateCards(img)
+            cards = isolator.isolateCards(img, Settings)
 
 

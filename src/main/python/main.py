@@ -1,6 +1,10 @@
 from KabaleRecogniser import KabaleRecogniser
+from GUI.SettingsGUI import SettingsGUI
+
+s = SettingsGUI()
 k = KabaleRecogniser()
-k.run()
+Settings = s.run()
+k.run(Settings)
 
 """FRAME_NAME = "main frame"
 #vid = Video(True)
