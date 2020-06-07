@@ -1,4 +1,4 @@
-package model.cabal.internals;
+package model.cabal.internals.card;
 
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
