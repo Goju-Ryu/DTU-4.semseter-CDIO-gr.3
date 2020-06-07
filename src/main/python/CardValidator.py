@@ -15,9 +15,14 @@ class CardValidator:
 
         for Suit in ["Hearts", "Spades", "Clubs", "Diamonds"]:
             compareSuit = CompareSuit()
-            filename = Suit + ".jpg"
+            filename = Suit + "2.jpg"
             compareSuit.name = Suit
             compareSuit.img = cv2.imread(filepath + filename, cv2.IMREAD_GRAYSCALE) #pic is 100*70
+
+            # compareSuit.img = cv2.imread("cardProfile_Ace_" + filename, cv2.IMREAD_GRAYSCALE) #this is grayscaled profile
+
+            cv2.imshow("cardProfile_Ace_" + filename, compareSuit.img)
+
 
             compareSuits.append(compareSuit)
 
@@ -29,7 +34,7 @@ class CardValidator:
         for Rank in ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven",
                      "Eight", "Nine", "Ten", "Jack", "Queen", "King"]:
             compareRank = CompareRank()
-            filename = Rank + ".jpg"
+            filename = Rank + "2.jpg"
             compareRank.name = Rank
             compareRank.img = cv2.imread(filepath+filename, cv2.IMREAD_GRAYSCALE)   #pic is 125*70
 
@@ -69,8 +74,12 @@ class CardValidator:
                 # print(Rank.name)
                 # print(rankDiff)
 
+
+
             for Suit in compareSuits:
                 suitDiff = int(np.sum(cv2.absdiff(invertedSuitImg, Suit.img)) / 255)
+
+                # suitDiff = int(np.sum(cv2.absdiff(card.profile, Suit.img) / 255))
 
                 if (suitDiff < best_suit_match_difference_value):
                     best_suit_match_difference_value = suitDiff
@@ -95,15 +104,18 @@ class CardValidator:
     def setCardRankAndSuit(self, card):
         # rotate to check buttom right cornor instead
         # to avoid problems if cards have faulty contours due to rows with stacked cards
-        rotatedProfile = cv2.rotate(card.profile, cv2.ROTATE_180)
+        # rotatedProfile = cv2.rotate(card.profile, cv2.ROTATE_180)
+        rotatedProfile = card.profile
 
-        cardCornorProfile = rotatedProfile[18:150, 15:75]
+        cardCornorProfile = rotatedProfile[18:170, 15:75]
+        cv2.imshow("cardCornorProfile", cardCornorProfile)
+
         # cardCornorProfile = card.profile[15:135, 8:48]
         cardCornorZoom = cv2.resize(cardCornorProfile, (0, 0), fx=2, fy=2)
         cv2.imshow("tester", cardCornorZoom)
-        card.rankImg = cv2.cvtColor(cardCornorZoom[0:125, 0:70], cv2.COLOR_BGR2GRAY)
-        card.suitImg = cv2.cvtColor(cardCornorZoom[150:250, 0:70], cv2.COLOR_BGR2GRAY)
-
+        card.rankImg = cv2.cvtColor(cardCornorZoom[30:155, 10:80], cv2.COLOR_BGR2GRAY)
+        card.suitImg = cv2.cvtColor(cardCornorZoom[180:280, 10:80], cv2.COLOR_BGR2GRAY)
+        # cv2.imwrite("Card_Imgs2/King2.jpg", card.rankImg)
         return card
 
 

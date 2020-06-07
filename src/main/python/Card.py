@@ -5,6 +5,20 @@ class Card():
         self.profile = profile
         self.number= None
         self.color= None
+        self.compCenter= None
+        self.compPoints= None
+        self.compContour= None
+        self.counter = 1
+
+        #Is set before comparison when validating which card the filmed card represents
+        self.rankImg = []   # 125*70
+        self.suitImg = []   # 100*70
+
+
+        self.best_rank_match = None #name of the best matched rank
+        self.best_suit_match = None #name of the best matched suit
+        self.rank_match_difference_value = 0 #difference between the best matching rank image and the checking image
+        self.suit_match_difference_value = 0 #difference between the best matching rank image and the checking image
 
     def initiateCard(self, contour, points):
         self.compContour = contour

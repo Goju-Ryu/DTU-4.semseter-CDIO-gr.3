@@ -33,11 +33,11 @@ class KabaleRecogniser:
             # for testing comparison images
             path = os.path.dirname(os.path.abspath(__file__))
 
-            compareSuits = cardVal.loadSuits(path + "/Card_Imgs/")
+            compareSuits = cardVal.loadSuits(path + "/Card_Imgs2/")
             # for i in range(len(compareSuits)):
             #     cv2.imshow(compareSuits[i].name, compareSuits[i].img)
 
-            compareRanks = cardVal.loadRanks(path + "/Card_Imgs/")
+            compareRanks = cardVal.loadRanks(path + "/Card_Imgs2/")
             # for i in range(len(compareRanks)):
             #     cv2.imshow(compareRanks[i].name, compareRanks[i].img)
 
@@ -52,8 +52,30 @@ class KabaleRecogniser:
 
             print(succes)
 
+            # cards[0].profile = cv2.imread("cardProfile_Ace_Clubs.jpg")
+            # cards[1].profile = cv2.imread("cardProfile_Ace_Diamonds.jpg")
+            # cards[2].profile = cv2.imread("cardProfile_Ace_Hearts.jpg")
+            # cards[3].profile = cv2.imread("cardProfile_Ace_Spades.jpg")
+            # cards[0].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Two.jpg")
+            # cards[1].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Three.jpg")
+            # cards[2].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Four.jpg")
+            # cards[3].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Five.jpg")
+            # cards[4].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Six.jpg")
+
+            # cards[0].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Seven.jpg")
+            # cards[1].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Eight.jpg")
+            # cards[2].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Nine.jpg")
+            # cards[3].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Ten.jpg")
+            # cards[4].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Jack.jpg")
+            # cards[5].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Queen.jpg")
+            # cards[6].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_King.jpg")
+
+
+
             if succes:
-                for i in range(len(cards)-1):
+                # for i in range(len(cards)-1):
+                for i in range(7):
+
                     cv2.imshow("card" + str(i), cards[i].profile)
 
                     # cardCornorProfile = cards[i].profile[600-135:600-15, 400-52:400-16]
@@ -67,13 +89,13 @@ class KabaleRecogniser:
 
 
 
-
-                    cardVal.setCardRankAndSuit(cards[1])
-                    cv2.imshow("rank", cards[1].rankImg)
-                    cv2.imshow("suit", cards[1].suitImg)
-                    cards[i] = cardVal.matchCard(cards[1], compareRanks, compareSuits)
-                    print(cards[1].best_rank_match)
-                    print(cards[1].best_suit_match)
+                    thisCard = cards[0]
+                    cardVal.setCardRankAndSuit(thisCard)
+                    cv2.imshow("rank", thisCard.rankImg)
+                    cv2.imshow("suit", thisCard.suitImg)
+                    cards[i] = cardVal.matchCard(thisCard, compareRanks, compareSuits)
+                    print(thisCard.best_rank_match)
+                    print(thisCard.best_suit_match)
 
 
 
