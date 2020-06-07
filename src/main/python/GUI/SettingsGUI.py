@@ -3,15 +3,16 @@ from cv2 import cv2
 
 from GUI.SettingsObject import SettingsObject
 from VideoInput.Video import SVideo
-
+#Author : Hans
 def empty(x):
     pass
-
+#Author : Hans
 class SettingsGUI():
-
+    # Author : Hans
     def __init__(self):
         self.hej = 1
 
+    # Author : Hans
     def run(self):
         vid = SVideo()
         img = vid.getFrame()

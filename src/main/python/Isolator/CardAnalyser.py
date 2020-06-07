@@ -7,7 +7,7 @@ from Card import Card
 
 
 class CardAnalyser:
-
+    # Author : Hans
     def findCards(self, rowImages, rowImagesMasks):
         i = 0
         arr = []
@@ -30,6 +30,7 @@ class CardAnalyser:
 
         return arr, mrr, cards
 
+    # Author : Hans
     def findContour(self,image,mask):
 
         # no need for a Threshold image because the mask is already there. from before.
@@ -65,6 +66,7 @@ class CardAnalyser:
         else:
             return 0, False , mask
 
+    # Author : Hans
     def perspectiveTransform(self, image,points):
         # Perspektive Transformation
         p1 = (points[0][0][0], points[0][0][1])
@@ -92,6 +94,7 @@ class CardAnalyser:
 
         return result
 
+    # Author : Hans
     def SortPoints(self, p1, p2 , p3 , p4):
 
         points = [p4,p3,p2,p1]
@@ -108,6 +111,7 @@ class CardAnalyser:
 
         return sortedList[3], sortedList[2], sortedList[0], sortedList[1]
 
+    # Author : Hans
     def createProfile(self,pts, image):
 
         p1 = (pts[0][0][0], pts[0][0][1])
