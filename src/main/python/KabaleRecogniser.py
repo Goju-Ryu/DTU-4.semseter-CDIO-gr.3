@@ -14,12 +14,12 @@ ruler = BoardRuler()
 class KabaleRecogniser:
     def stackImages(self,image,imageArr, i = 1):
 
-        """
-        if image.shape[0] > imageArr[i].shape[0]:
+
+        """if image.shape[0] > imageArr[i].shape[0]:
             imageArr[i] = cv2.resize( imageArr[i], ( imageArr[i].shape[0], image.shape[0] ))
         else:
-            image = cv2.resize(image, (image.shape[0],imageArr[i].shape[0] ))
-        """
+            image = cv2.resize(image, (image.shape[0],imageArr[i].shape[0] ))"""
+
         img = np.concatenate((image, imageArr[i]), axis=1)
 
         if i == (len(imageArr) - 1):
@@ -37,6 +37,7 @@ class KabaleRecogniser:
             _,img = rec.read()
             img = cv2.resize(img ,(1200,800))
 
+            time.sleep(0.1)
             #cv2.imshow("img", img)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 rec.release()
@@ -52,12 +53,16 @@ class KabaleRecogniser:
                 topRow,bottomRow = board.cutImageWithRulerLines(image)
                 topRowMask, bottomRowMask = board.cutImageWithRulerLines(mask)
 
-                stack = self.stackImages(topRow[0],topRow)
+
                 #stack2 = self.stackImages(sectionsB[0],sectionsB)
                # cv2.imshow("stack",stack)
                 #cv2.imshow("single",topRow[6])
                 #cv2.imshow("stack2", stack2)
 
                 # find cards two variables, hasCards = boolean, cards list of cards found in the image.
-                cardAnal.findCards(topRow, topRowMask)
 
+                SuccesArray , CardArray ,maskArray  = cardAnal.findCards(topRow, topRowMask)
+                stack = self.stackImages(maskArray[0], maskArray)
+                stack2 = self.stackImages(CardArray[0], CardArray)
+                cv2.imshow("stack", stack)
+                cv2.imshow("stack2", stack2)

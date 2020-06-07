@@ -1,3 +1,5 @@
+import time
+
 from Card import Card
 from ImageProcessor import ImageProcessor
 import numpy as np
@@ -8,32 +10,46 @@ class CardAnalyser:
 
     def findCards(self, rowImages, rowImagesMasks):
         i = 0
+        arr = []
+        Srr = []
+        mrr = []
         for i in range(0,len(rowImages)):
             image = rowImages[i]
             mask = rowImagesMasks[i]
 
-            contour, succes = self.findContour(image,mask)
+            contour, succes, mask1 = self.findContour(image,mask)
 
+            mrr.append(mask1)
             if succes:
-                profile = self.perspectiveTransform(image,contour)
+                arr.append( self.perspectiveTransform(image,contour))
+                Srr.append(True)
+            else:
+                arr.append( image )
+                Srr.append(False)
+                pass
 
-                cv2.imshow("card", profile)
-                #cv2.imshow("mask", mask)
-                #Aproximating that to a Polygon.
+        return Srr, arr, mrr
 
     def findContour(self,image,mask):
+
         # no need for a Threshold image because the mask is already there. from before.
         kernel = np.ones((5, 5), np.uint8)              # finding the Contours
         mask = cv2.dilate(mask, kernel, iterations=1)
         mask = cv2.erode(mask, kernel, iterations=1)
         mask = cv2.bitwise_not(mask)
-        contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+        contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
         if len(contours) == 0:
             return [], False
 
         succes = False
         cardContour = []
+
         for contour in contours:
+
+            """for point in contour:
+                image = cv2.circle(image, (point[0][0], point[0][1]), 2, (255, 0, 0), 1)
+            """
             # Simplify into Polygon.
             epsilon = cv2.arcLength(contour, True)
             approx = cv2.approxPolyDP(contour, 0.04 * epsilon, True)  # now we have a simplified polygon.
@@ -41,13 +57,14 @@ class CardAnalyser:
             if len(approx) == 4:  # if the aproximation is a square
                 if contour.size > 200:  # and size is considerable.
                     cardContour.append(approx)
-                    cv2.drawContours(image, approx, -1, (144, 247, 155), 10)
+                    cv2.drawContours(image, approx, -1, (0, 0, 255), 1)
                     succes = True
 
         if succes:
-            return cardContour[0],succes
+            return cardContour[0],succes, mask
         else:
-            return None,False
+            return None,False, mask
+
     def perspectiveTransform(self, image,points):
         # Perspektive Transformation
         p1 = (points[0][0][0], points[0][0][1])
