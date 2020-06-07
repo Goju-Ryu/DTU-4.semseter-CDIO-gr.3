@@ -43,7 +43,8 @@ class Isolator:
                 cv2.imshow("stack Top Mask", stack)
 
             topCards.append(botCards)
-            return topCards
+            return topCards, succes
+        return [], False
 
     def stackImages(self,image,imageArr, i = 1):
 
