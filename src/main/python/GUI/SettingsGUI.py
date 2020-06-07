@@ -58,4 +58,3 @@ class SettingsGUI():
         Sett.setSat(Smin,Smax)
         Sett.setVal(Vmin,Vmax)
         return Sett
-

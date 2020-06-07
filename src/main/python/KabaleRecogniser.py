@@ -16,7 +16,6 @@ class KabaleRecogniser:
                 rec.stop()
                 break
 
-            isolator = Isolator(True,False,True,False)
+            isolator = Isolator(False,False,True,False)
             cards = isolator.isolateCards(img, Settings)
-
 
