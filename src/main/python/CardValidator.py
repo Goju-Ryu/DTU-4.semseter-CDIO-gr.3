@@ -105,10 +105,31 @@ class CardValidator:
         # rotate to check buttom right cornor instead
         # to avoid problems if cards have faulty contours due to rows with stacked cards
         # rotatedProfile = cv2.rotate(card.profile, cv2.ROTATE_180)
-        rotatedProfile = card.profile
 
-        cardCornorProfile = rotatedProfile[18:170, 15:75]
+
+
+        # Isolated cornor profile
+        cardCornorProfile = card.profile[0:140, 0:70]
         cv2.imshow("cardCornorProfile", cardCornorProfile)
+
+        #TODO check for contours on cornorprofile
+        img = cv2.bitwise_not(cardCornorProfile)
+        imggray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        ret, thresh = cv2.threshold(imggray, 127, 255, 0)
+        cv2.imshow("imggray", imggray)
+
+        contours, hierachy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+
+
+        cv2.imshow("cardCornorThresh", thresh)
+        cv2.drawContours(thresh, contours, -1, (100, 30, 255), 3)
+        cv2.imshow("cardCornorThreshContour", thresh)
+
+        #TODO add boundingRectangle around contour
+        rectangle = cv2.boundingRect(thresh)
+        # cv2.imshow("rectangle",rectangle)
+        #TODO compare boundingRectangle with Card_Imgs
+
 
         # cardCornorProfile = card.profile[15:135, 8:48]
         cardCornorZoom = cv2.resize(cardCornorProfile, (0, 0), fx=2, fy=2)
@@ -118,6 +139,28 @@ class CardValidator:
         # cv2.imwrite("Card_Imgs2/King2.jpg", card.rankImg)
         return card
 
+    #__________________________
+    def SortPoints(self, p1, p2 , p3 , p4, image):
+
+        points = [p4,p3,p2,p1]
+        sortedList = sorted(points, key=lambda x: x[1], reverse=False)
+        if sortedList[0][0] > sortedList[1][0]:
+            temp = sortedList[0]
+            sortedList[0] = sortedList[1]
+            sortedList[1] = temp
+
+        if sortedList[2][0] > sortedList[3][0]:
+            temp = sortedList[2]
+            sortedList[2] = sortedList[3]
+            sortedList[3] = temp
+
+        for point in sortedList:
+            image = cv2.circle(image, sortedList[0], 2, (255, 0, ), 2)
+            image = cv2.circle(image, sortedList[1], 2, (0, 255, 255), 2)
+            image = cv2.circle(image, sortedList[2], 2, (255, 0, 255), 2)
+            image = cv2.circle(image, sortedList[3], 2, (255, 255, 255), 2)
+        return sortedList[3], sortedList[2], sortedList[0], sortedList[1]
+    #__________________________
 
 class CompareRank:
     def __init__(self):

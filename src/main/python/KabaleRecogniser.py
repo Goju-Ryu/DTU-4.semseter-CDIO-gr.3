@@ -52,10 +52,11 @@ class KabaleRecogniser:
 
             print(succes)
 
-            # cards[0].profile = cv2.imread("cardProfile_Ace_Clubs.jpg")
-            # cards[1].profile = cv2.imread("cardProfile_Ace_Diamonds.jpg")
-            # cards[2].profile = cv2.imread("cardProfile_Ace_Hearts.jpg")
-            # cards[3].profile = cv2.imread("cardProfile_Ace_Spades.jpg")
+            cards[0].profile = cv2.imread("cardProfile_Ace_Clubs.jpg")
+            cards[1].profile = cv2.imread("cardProfile_Ace_Diamonds.jpg")
+            cards[2].profile = cv2.imread("cardProfile_Ace_Hearts.jpg")
+            cards[3].profile = cv2.imread("cardProfile_Ace_Spades.jpg")
+            cards[3].profile = cv2.resize(cards[3].profile, (225,300))
             # cards[0].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Two.jpg")
             # cards[1].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Three.jpg")
             # cards[2].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Four.jpg")
@@ -89,7 +90,7 @@ class KabaleRecogniser:
 
 
 
-                    thisCard = cards[0]
+                    thisCard = cards[3]
                     cardVal.setCardRankAndSuit(thisCard)
                     cv2.imshow("rank", thisCard.rankImg)
                     cv2.imshow("suit", thisCard.suitImg)
