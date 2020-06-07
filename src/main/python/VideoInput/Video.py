@@ -3,7 +3,6 @@ import time
 import cv2
 import threading
 
-
 class Video:
     def __init__(self):
 
@@ -36,7 +35,6 @@ class Video:
     def stop(self):
         self.cancelled = True
 
-
 class SVideo:
 
     def __init__(self, truthVal:bool):
@@ -56,8 +54,9 @@ class SVideo:
     def getFrame(self):
         self.empt, self.frame = self.rec.read()
         img = self.frame
-        return cv2.resize(img, (1200, 800))
-        #return self.frame
+        #return cv2.resize(img, (1200, 800))
+        return self.frame
 
     def stop(self):
         self.rec.release()
+

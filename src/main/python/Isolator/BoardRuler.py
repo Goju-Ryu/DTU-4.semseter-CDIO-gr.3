@@ -133,6 +133,8 @@ class BoardRuler:
         return image
 
     def cutImageWithRulerLines(self, image):
+
+
         height = image.shape[0]
         width = image.shape[1]
 
@@ -146,11 +148,12 @@ class BoardRuler:
         image = self.decorateImageRulerLines(image)
 
         i=1
-
         arrTop =[]
         arrBot =[]
 
+        #Cropping Top
         endH = int(top)
+        print("from 0 to" + str(endH))
         for i in range (0,7):  #crop_img = img[y:y+h, x:x+w]
 
             startS = int((i) * space)
@@ -159,7 +162,9 @@ class BoardRuler:
                 endS = width
             arrTop.append( image[0:endH, startS:endS])
 
+        #Cropping Bottom
         startH = int((height - bot))
+        print("from " + str(startH) + " to " + str(height))
         for i in range (0,7):
 
             startS = int((i) * space)
