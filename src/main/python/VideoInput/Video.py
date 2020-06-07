@@ -40,6 +40,7 @@ class Video:
     def stop(self):
         self.cancelled = True
 
+#Author : Hans
 class SVideo:
 
     # Author : Hans
