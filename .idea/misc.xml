@@ -7,5 +7,8 @@
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.8 (venv)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="false">
+    <option name="JAVA_HOME" value="/usr/bin/java" />
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
 </project>
