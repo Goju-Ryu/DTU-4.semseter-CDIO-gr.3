@@ -4,7 +4,6 @@ from cv2 import cv2
 from GUI.SettingsObject import SettingsObject
 from VideoInput.Video import SVideo
 
-
 def empty(x):
     pass
 
@@ -59,3 +58,4 @@ class SettingsGUI():
         Sett.setSat(Smin,Smax)
         Sett.setVal(Vmin,Vmax)
         return Sett
+
