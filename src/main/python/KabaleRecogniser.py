@@ -2,7 +2,7 @@ import cv2
 from Isolator.Isolator import Isolator
 from VideoInput.Video import SVideo
 
-rec = SVideo(True)
+rec = SVideo()
 
 class KabaleRecogniser:
 
@@ -18,4 +18,5 @@ class KabaleRecogniser:
 
             isolator = Isolator(False,False,True,False)
             cards = isolator.isolateCards(img)
+
 

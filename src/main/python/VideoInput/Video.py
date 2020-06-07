@@ -37,8 +37,7 @@ class Video:
 
 class SVideo:
 
-    def __init__(self, truthVal:bool):
-        print(truthVal)
+    def __init__(self):
         # finals
         self.VidName ="VideoInput/video_01.mp4"
         self.FRAME_NAME = " video recording Frame "

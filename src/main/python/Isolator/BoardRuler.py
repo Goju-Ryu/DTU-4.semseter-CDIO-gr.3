@@ -153,7 +153,6 @@ class BoardRuler:
 
         #Cropping Top
         endH = int(top)
-        print("from 0 to" + str(endH))
         for i in range (0,7):  #crop_img = img[y:y+h, x:x+w]
 
             startS = int((i) * space)
@@ -164,7 +163,6 @@ class BoardRuler:
 
         #Cropping Bottom
         startH = int((height - bot))
-        print("from " + str(startH) + " to " + str(height))
         for i in range (0,7):
 
             startS = int((i) * space)
@@ -175,7 +173,3 @@ class BoardRuler:
             arrBot.append(image[startH:(height), startS:endS])
 
         return arrTop , arrBot
-
-
-
-
