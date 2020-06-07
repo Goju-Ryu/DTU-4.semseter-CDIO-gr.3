@@ -1,13 +1,10 @@
 class Card():
 
-    def Card(self):
-        self.profile = None
+    def __init__(self, profile, exists):
+        self.exists = exists
+        self.profile = profile
         self.number= None
         self.color= None
-        self.compCenter= None
-        self.compPoints= None
-        self.compContour= None
-        self.counter = 1
 
     def initiateCard(self, contour, points):
         self.compContour = contour

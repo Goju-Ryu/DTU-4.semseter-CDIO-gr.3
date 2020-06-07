@@ -27,17 +27,23 @@ class Isolator:
         if succes:
             topRow, bottomRow = board.cutImageWithRulerLines(image)
             topRowMask, bottomRowMask = board.cutImageWithRulerLines(mask)
-            SuccesArray, CardArray, maskArray = cardAnal.findCards(topRow, topRowMask)
+            topCardArray, topMaskArray, topCards = cardAnal.findCards(topRow, topRowMask)
+            botCardArray, botMaskArray, botCards = cardAnal.findCards(bottomRow, bottomRowMask)
 
             if(self.showCards):
-                cards = self.stackImages(CardArray[0], CardArray)
-                cv2.imshow("stack", cards)
+                stack1= self.stackImages(botCardArray[0], botCardArray)
+                stack = self.stackImages(topCardArray[0], topCardArray)
+                cv2.imshow("stack Bottom", stack1)
+                cv2.imshow("stack Top", stack)
 
             if(self.showCardsMask):
-                cardsMask = self.stackImages(maskArray[0], maskArray)
-                cv2.imshow("stack2", cardsMask)
+                stack1= self.stackImages(botMaskArray[0], botMaskArray)
+                stack = self.stackImages(topMaskArray[0], topMaskArray)
+                cv2.imshow("stack Bottom Mask", stack1)
+                cv2.imshow("stack Top Mask", stack)
 
-            return cards
+            topCards.append(botCards)
+            return topCards
 
     def stackImages(self,image,imageArr, i = 1):
 

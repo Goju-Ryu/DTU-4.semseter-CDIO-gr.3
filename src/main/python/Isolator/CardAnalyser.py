@@ -3,13 +3,16 @@ import time
 import numpy as np
 import cv2
 
+from Card import Card
+
+
 class CardAnalyser:
 
     def findCards(self, rowImages, rowImagesMasks):
         i = 0
         arr = []
-        Srr = []
         mrr = []
+        cards = []
         for i in range(0,len(rowImages)):
             image = rowImages[i]
             mask = rowImagesMasks[i]
@@ -18,14 +21,14 @@ class CardAnalyser:
 
             mrr.append(mask1)
             if succes:
-                arr.append( self.perspectiveTransform(image,contour))
-                Srr.append(True)
+                cards.append( Card( self.perspectiveTransform(image, contour) , True ) )
+                arr.append(self.perspectiveTransform(image, contour))
             else:
+                cards.append( Card( None , False ))
                 arr.append( image )
-                Srr.append(False)
                 pass
 
-        return Srr, arr, mrr
+        return arr, mrr, cards
 
     def findContour(self,image,mask):
 
