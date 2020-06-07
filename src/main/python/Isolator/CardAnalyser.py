@@ -1,6 +1,5 @@
 import time
 
-from Card import Card
 import numpy as np
 import cv2
 

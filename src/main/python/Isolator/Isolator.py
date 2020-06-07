@@ -25,9 +25,6 @@ class Isolator:
             cv2.imshow("boardMask", mask)
 
         if succes:
-            # cv2.imshow("mask", mask)
-            # cv2.imshow("board",image)
-
             topRow, bottomRow = board.cutImageWithRulerLines(image)
             topRowMask, bottomRowMask = board.cutImageWithRulerLines(mask)
             SuccesArray, CardArray, maskArray = cardAnal.findCards(topRow, topRowMask)

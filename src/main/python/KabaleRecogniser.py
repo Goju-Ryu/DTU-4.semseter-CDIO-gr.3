@@ -10,7 +10,6 @@ rec = SVideo(True)
 class KabaleRecogniser:
 
     def run(self):
-
         while True:
             # Retrieving an image.
             img = rec.getFrame()
