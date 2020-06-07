@@ -1,10 +1,8 @@
 import time
 
 from Card import Card
-from ImageProcessor import ImageProcessor
 import numpy as np
 import cv2
-proc = ImageProcessor()
 
 class CardAnalyser:
 
@@ -107,51 +105,6 @@ class CardAnalyser:
             sortedList[3] = temp
 
         return sortedList[3], sortedList[2], sortedList[0], sortedList[1]
-
-    def findCardsOld(self, img_color):
-
-        thresh_image = proc.getThreshImage(img_color)
-        cv2.imshow("tresh",thresh_image)
-
-        # this is a command reference several places to do it this way. that finds contours.
-        contours, _ = cv2.findContours(thresh_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-        # if nothing is found, then return that result.
-        if len(contours) == 0:
-            return [], False
-
-        cards = []
-        for i in range(len(contours)):
-
-            # reduces the contour vertices, with strange constants. that somehow works, look at reference.
-            peri = cv2.arcLength(contours[i], True)
-            approx = cv2.approxPolyDP(contours[i], 0.04 * peri, True) # now we have a simplified polygon.
-            pts = np.float32(approx)   # creates the polygon into vertices, in order m upper left to right to down.
-
-            apprIndex = 0
-            appr = []
-            # if the vertices ammount is 4. then we count it as a card.
-
-            if len(approx) == 4:
-                appr.append(approx)
-                if contours[i].size > 25  :
-                    # for each square we find we create a Card object.
-                    card = Card()
-                    card.initiateCard(contours[i], pts)
-
-                    # getting the profile image and setting it
-                    profile = self.createProfile(pts, img_color)
-                    card.setProfile(profile)
-
-                    # adding to list.
-                    cards.append(card)
-
-                    # drawing contours
-                    cv2.drawContours(img_color, appr, apprIndex , (144, 244, 155), 1)
-                    apprIndex += 1
-
-        cv2.imshow("contours" ,img_color)
-        return cards, True
 
     def createProfile(self,pts, image):
 
