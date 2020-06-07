@@ -20,4 +20,4 @@ class KabaleRecogniser:
                 break
 
             isolator = Isolator(False,False,True,True)
-            isolator.isolateCards(img)
+            cards = isolator.isolateCards(img)
