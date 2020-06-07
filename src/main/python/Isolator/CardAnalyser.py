@@ -40,7 +40,7 @@ class CardAnalyser:
 
         contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
         if len(contours) == 0:
-            return [], False
+            return [], False, None
 
         succes = False
         cardContour = []
@@ -63,7 +63,7 @@ class CardAnalyser:
         if succes:
             return cardContour[0],succes, mask
         else:
-            return None,False, mask
+            return 0, False , mask
 
     def perspectiveTransform(self, image,points):
         # Perspektive Transformation

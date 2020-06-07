@@ -17,14 +17,13 @@ class Isolator:
         cardAnal = CardAnalyser()
         board = BoardRuler()
         image, mask, succes = board.isolate(image)
-
-        if self.showBoard:
-            cv2.imshow("board",image)
-
-        if self.showBoardMask:
-            cv2.imshow("boardMask", mask)
-
         if succes:
+            if self.showBoard:
+                cv2.imshow("board",image)
+
+            if self.showBoardMask:
+                cv2.imshow("boardMask", mask)
+
             topRow, bottomRow = board.cutImageWithRulerLines(image)
             topRowMask, bottomRowMask = board.cutImageWithRulerLines(mask)
             topCardArray, topMaskArray, topCards = cardAnal.findCards(topRow, topRowMask)

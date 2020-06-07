@@ -16,12 +16,12 @@ class BoardRuler:
         kernel = np.ones((5,5),np.uint8)
 
         #cv2.imshow("erode",erosion)
-        mask = cv2.erode(mask, kernel, iterations=1)
-        mask = cv2.dilate(mask,kernel, iterations=1)
-
+        mask1 = cv2.erode(mask, kernel, iterations=1)
+        mask1 = cv2.dilate(mask1, kernel, iterations=2)
+        mask1 = cv2.erode(mask1, kernel, iterations=1)
         #cv2.imshow("dilation", dilation)
-        bmask = cv2.GaussianBlur(mask, (3, 3), 0)
-        pts, succes = self.findBoardContour(bmask, image)
+        #bmask = cv2.GaussianBlur(mask, (3, 3), 0)
+        pts, succes = self.findBoardContour(mask1, image)
 
         if succes:
             # Perspektive Transformation
@@ -55,8 +55,8 @@ class BoardRuler:
 
     def findBoardContour(self, mask, image):
 
-        # finding external contours with simple aproximation.
-        contours, hiarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        # finding external   contours with simple aproximation.
+        contours, hiarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
         # if there are no Contours then end it.
         if len(contours) == 0:
@@ -64,16 +64,21 @@ class BoardRuler:
 
         for contour in contours:
             # Simplify into Polygon.
+            
+            """ box = cv2.convexHull(contour)
+            box2 = self.extreme_points(box)"""
             epsilon = cv2.arcLength(contour, True)
+            val = 0.04
             approx = cv2.approxPolyDP(contour, 0.04 * epsilon, True)  # now we have a simplified polygon.
 
             appr = []
             if len(approx) == 4: # if the aproximation is a square
                 if contour.size > 200: # and size is considerable.
                     appr.append(approx)
-                    cv2.drawContours(image, appr, -1, (144, 247, 155), 10)
+                    #cv2.drawContours(mask, appr, -1, (144, 247, 155), 1)
 
         # when done we sort to find the largest contour.
+        #cv2.imshow("im",mask)
 
         contours = sorted(contours, key=lambda x: cv2.contourArea(x))
         if (len(appr) == 0):
@@ -103,6 +108,17 @@ class BoardRuler:
             image = cv2.circle(image, sortedList[3], 2, (255, 255, 255), 2)
         return sortedList[3], sortedList[2], sortedList[0], sortedList[1]
 
+    def extreme_points(self, contour):
+        #kilde
+        #https://books.google.dk/books?id=w86PDwAAQBAJ&pg=PA228&lpg=PA228&dq=openCV+reduce+oply+to+4+points&source=bl&ots=q1J4Hk58wc&sig=ACfU3U1Y4r22M0HokjOUKBunPM_IYZ2CLA&hl=da&sa=X&ved=2ahUKEwigy56MzO_pAhVqkIsKHVXWD0UQ6AEwAHoECAgQAQ#v=onepage&q=openCV%20reduce%20oply%20to%204%20points&f=false
+
+        extLeft = tuple(contour[contour[:, :, 0].argmin()][0])
+        extRight = tuple(contour[contour[:, :, 0].argmax()][0])
+        extTop = tuple(contour[contour[:, :, 1].argmin()][0])
+        extBot = tuple(contour[contour[:, :, 1].argmax()][0])
+        
+        return [extLeft, extRight, extTop ,extBot]
+        
     def decorateImageRulerLines(self, image):
         height = image.shape[0]
         width = image.shape[1]
