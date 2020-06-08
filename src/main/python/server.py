@@ -23,12 +23,19 @@ import proto.grpc_pb2_grpc as grpc_pb2_grpc
 
 #import TkGui as gui
 
+
+
 class Greeter(grpc_pb2_grpc.GreeterServicer):
 
     def SayHello(self, request, context):
         print('I got a message from \"%s\"!' % request.name)
-        os.system("python TkGui.py")
-        return grpc_pb2.HelloReply(message='Hello, %s! I\'m Python world!' % request.name)
+        #x = os.system("python TkGui.py")
+        #TODO: make this inside an if statment depending on weather the user wants GUI og OpenCV
+        #TODO: Make Man Gui Return the string we want to return to the java server
+        from ManGui import ManGUI
+        x = ManGUI()
+        x.run()
+        return grpc_pb2.HelloReply(message='Hello, %s! I\'m Python world!' % request.name)#request.name
 
 
 def serve():

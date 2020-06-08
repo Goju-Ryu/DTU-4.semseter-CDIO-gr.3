@@ -59,12 +59,6 @@ ecol6.grid(row =8, column=6)
 ecol6.grid(row =9, column=7)
 
 
-
-
-
-
-
-
 #Labels I use
 myLabel0 = Label(root, text="Solitare Klodinke CDIO DTU GR. 3")
 myLabel1 = Label(root, text = "Pile")
