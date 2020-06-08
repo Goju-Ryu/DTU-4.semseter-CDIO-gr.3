@@ -1,32 +1,14 @@
 package control;
 
-import model.cabal.Board;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 
-public class GameController implements I_GameController {
-    @Override
-    public Card[] possibleMoves(Card[] fromCV) {
+public class GameController {
 
-        for (int i = 0; i < fromCV.length - 1; i++) {
-            for (int j = 0; j < fromCV.length - 1; j++) {
 
-                if (legalMove(fromCV[i],fromCV[j])){
-                    return null;
 
-                }
 
-            }
-        }
-
-        return null;
-
-    }
-
-    @Override
-    public void pickMove(Board[] moves) {
-
-    }
+    //TODO Remove this
 
     /**
      * Check if a card can be moved to another card
@@ -37,7 +19,7 @@ public class GameController implements I_GameController {
      *
      * @return True or False, depending on if the move is legal or not
      */
-    public boolean legalMove(Card card1, Card card2){
+    public boolean legalMoveDONT(Card card1, Card card2){
         //Move card (not king) from column to column
         if (card1.getRank() == card2.getRank() - 1 && card1.getRank() != 13 &&
                 ((( card1.getSuit() == E_CardSuit.DIAMONDS || card1.getSuit() == E_CardSuit.HEARTS ) &&

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class GameControllerTest {
+class GameControllerTestToBeRemoved {
 
     @Test
     void possibleMoves() {
@@ -32,13 +32,13 @@ class GameControllerTest {
         Card heart9 = new Card(E_CardSuit.HEARTS,9,"column");
         Card spade8 = new Card(E_CardSuit.SPADES,8, "column");
 
-        assertTrue(control.legalMove(clubs6,diamond7));
-        assertTrue(control.legalMove(diamond7,spade8));
-        assertTrue(control.legalMove(spade8,heart9));
+        assertTrue(control.legalMoveDONT(clubs6,diamond7));
+        assertTrue(control.legalMoveDONT(diamond7,spade8));
+        assertTrue(control.legalMoveDONT(spade8,heart9));
 
-        assertFalse(control.legalMove(clubs6,clubs6));
-        assertFalse(control.legalMove(heart9,spade8));
-        assertFalse(control.legalMove(clubs6,clubs7));
+        assertFalse(control.legalMoveDONT(clubs6,clubs6));
+        assertFalse(control.legalMoveDONT(heart9,spade8));
+        assertFalse(control.legalMoveDONT(clubs6,clubs7));
 
         // Move a king to an empty spot in a column
 
@@ -49,7 +49,7 @@ class GameControllerTest {
         Card missingCard = new Card(E_CardSuit.CLUBS,4,"emptyColumn");
 
         //assertTrue(control.legalMove(kingClubs,missingCard)); //TODO not working. See logic, implement legalMove so the test passes
-        assertFalse(control.legalMove(kingDiamond,spade8));
+        assertFalse(control.legalMoveDONT(kingDiamond,spade8));
 
         // Move a card from the turnedPile or the columns to the acePile
 
@@ -57,10 +57,10 @@ class GameControllerTest {
         Card clubs7NotInAce = new Card(E_CardSuit.CLUBS,7,"column");
         Card clubs7InTurnedPile = new Card(E_CardSuit.CLUBS,7,"turnedPile");
 
-        assertTrue(control.legalMove(clubs7NotInAce,clubs6InAce));
-        assertTrue(control.legalMove(clubs7InTurnedPile,clubs6InAce));
-        assertTrue(control.legalMove(clubs6InAce,diamond7));
-        assertFalse(control.legalMove(diamond7,clubs6InAce));
+        assertTrue(control.legalMoveDONT(clubs7NotInAce,clubs6InAce));
+        assertTrue(control.legalMoveDONT(clubs7InTurnedPile,clubs6InAce));
+        assertTrue(control.legalMoveDONT(clubs6InAce,diamond7));
+        assertFalse(control.legalMoveDONT(diamond7,clubs6InAce));
 
     }
 }
