@@ -14,27 +14,29 @@ import java.util.*;
  */
 public class Board implements I_BoardModel {
 
-    final private Column[] columns;
-    final private A_StackModel[] acesPile;
+    final private Column[] buildStacks;
+    final private A_StackModel[] suitPile; //aces pile
     final private Stack<I_CardModel> turnedPile;
     final private Stack<I_CardModel> cardPile;
 
     public Board() {
-        columns = new Column[7];
-        acesPile = new A_StackModel[4];
+        buildStacks = new Column[7];
+        suitPile = new A_StackModel[4];
 
         turnedPile = new Stack<>();
         cardPile = new Stack<>();
+
+        //TODO initialize the list contents
     }
 
     //---------------------------------------Getters------------------------------------------------------------------------
 
-    public Column[] getColumns() {
-        return columns;
+    public Column[] getBuildStacks() {
+        return buildStacks;
     }
 
-    public A_StackModel[] getAcesPile() {
-        return acesPile;
+    public A_StackModel[] getSuitPile() {
+        return suitPile;
     }
 
     public List<I_CardModel> getTurnedPile() {
@@ -53,11 +55,15 @@ public class Board implements I_BoardModel {
      *  This will take a card from the card pile and put it face up in the turned card pile
      * @return the card drawn from the pile
      */
-    public void turnCard() { // TODO Test it.
-        if (!cardPile.empty()) {
-            I_CardModel card = cardPile.pop();
-            turnedPile.push(card);
+    public I_CardModel turnCard() { // TODO Test it.
+        if (cardPile.empty()) {
+
+            //TODO reshuffle
+
         }
+        I_CardModel card = cardPile.pop();
+        turnedPile.push(card);
+        return card;
     }
 
     /**
@@ -79,14 +85,14 @@ public class Board implements I_BoardModel {
      */
     public void initialize() {
         //empty the acesPile list
-        for (int i = 0; i < acesPile.length; i++) {
-            acesPile[i] = new CardStack();
+        for (int i = 0; i < suitPile.length; i++) {
+            suitPile[i] = new CardStack();
         }
 
         //fill with face-down cards
-        for (int i = 0; i < columns.length; i++) {
+        for (int i = 0; i < buildStacks.length; i++) {
             for (int j = 0; j < 7 - i; j++) {
-                columns[i].initialize(j - 1);
+                buildStacks[i].initialize(j - 1);
             }
         }
 
@@ -97,6 +103,7 @@ public class Board implements I_BoardModel {
 
         turnedPile.removeIf(e -> true); // empty list
     }
+
 
 
     //---------------------------------------Helper methods-------------------------------------------------------------
