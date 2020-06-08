@@ -151,7 +151,7 @@ public class Board implements I_BoardModel {
             return stacks.stream()
                     .mapToInt(A_StackModel::size)
                     .reduce(Integer::sum)
-                    .orElseThrow();//TODO: find out if ArithmeticException::new makes sense here
+                    .orElseThrow(ArithmeticException::new);//TODO: find out if ArithmeticException::new makes sense here
         }
 
         public void initialize() {
