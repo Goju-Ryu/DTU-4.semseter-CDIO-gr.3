@@ -39,7 +39,7 @@ class CardValidator:
             p4 = (x, y + h)
 
             # finding the perspective transformed image, then rotated.
-            imageTrans, mask, succes = self.fourPointTransform([[p1], [p2], [p3], [p4]], gray)
+            imageTrans, mask, succes = self.fourPointTransform([[p1], [p2], [p3], [p4]], thresh)
             imageTrans = cv2.rotate(imageTrans, cv2.ROTATE_180)
             imageTrans = cv2.resize(imageTrans, (70, 125))
 
