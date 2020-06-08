@@ -33,11 +33,11 @@ class KabaleRecogniser:
             # for testing comparison images
             path = os.path.dirname(os.path.abspath(__file__))
 
-            compareSuits = cardVal.loadSuits(path + "/Card_Imgs/")
+            # compareSuits = cardVal.loadSuits(path + "/Card_Imgs/")
             # for i in range(len(compareSuits)):
             #     cv2.imshow(compareSuits[i].name, compareSuits[i].img)
 
-            compareRanks = cardVal.loadRanks(path + "/Card_Imgs/")
+            # compareRanks = cardVal.loadRanks(path + "/Card_Imgs/")
             # for i in range(len(compareRanks)):
             #     cv2.imshow(compareRanks[i].name, compareRanks[i].img)
 
@@ -50,7 +50,6 @@ class KabaleRecogniser:
             # cv2.imshow("test", img)
             # cards, succes = isolator.isolateCards(img)
 
-            print(succes)
 
             cards[0].profile = cv2.imread("cardProfile_Ace_Clubs.jpg")
             cards[1].profile = cv2.imread("cardProfile_Ace_Diamonds.jpg")
