@@ -3,15 +3,33 @@ package model.cabal;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
-public interface I_BoardModel {
+import java.beans.PropertyEditor;
+import java.util.List;
+
+public interface I_BoardModel extends PropertyEditor {
 
     //Methods for the cardPile and the turnPile
 
+    /**
+     *
+     * @return
+     */
     I_CardModel turnCard();
+
+    /**
+     *
+     * @return
+     */
     I_CardModel getTurnedCard();
 
     //Methods for the suitPile
 
+    /**
+     * Check if you can add more cards to the Stack.
+     *
+     *   -  If a build stack has an ace on the top then you cant push anything to it
+     *   -  If a suitPile has a King on top then it is complete
+     */
     boolean isStackComplete();
 
     //Move card methods
@@ -49,7 +67,7 @@ public interface I_BoardModel {
      * @throws IllegalMoveException
      * @return true if legal or false if illegal
      */
-    boolean isLegalMove(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException;
+    boolean canMove(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException;
 
     /**
      * This function will do the same as the one above, but you dont have to define the position where you
@@ -64,8 +82,15 @@ public interface I_BoardModel {
      * @throws IllegalMoveException
      * @return true if legal or false if illegal
      */
-    default boolean isLegalMove(E_PileID origin, E_PileID destination) throws IllegalMoveException{
-        return isLegalMove(origin,0,destination);
+    default boolean canMove(E_PileID origin, E_PileID destination) throws IllegalMoveException{
+        return canMove(origin,0,destination);
     }
+
+    /**
+     *
+     * @param pile
+     * @return
+     */
+    List<I_CardModel> getPile(E_PileID pile);
 
 }

@@ -1,5 +1,7 @@
 package model.cabal.internals.card;
 
+import java.security.InvalidParameterException;
+
 /**
  * We have an enumerator with each card symbol, and we have getters for the enumerator
  * card value.
@@ -9,17 +11,30 @@ public interface I_CardModel {
 
     /**
      * A method to assign values to suit and rank when a card is first revealed
+     *
      * @param suit the suit to be assigned
      * @param rank the rank to be assigned
      */
-    void reveal(E_CardSuit suit, int rank);
+    void reveal(E_CardSuit suit, int rank) throws InvalidParameterException;
 
+    /**
+     * Get the suit of the card
+     */
     E_CardSuit getSuit();
-    String getSuitText();
+
+    /**
+     * Get the rank of the Card
+     * @return
+     */
     Integer getRank();
+
+    /**
+     *
+     */
     boolean isFacedUp();
-    void setFacedUp(boolean facedUp);
+
+    /**
+     * A normal toString method that returns the
+     */
     String toString();
-    String toStringValue();
-    String stacktype = null;
 }

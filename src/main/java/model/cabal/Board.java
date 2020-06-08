@@ -1,13 +1,12 @@
 package model.cabal;
 
 
-import model.cabal.internals.*;
-import model.cabal.internals.card.Card;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.awt.*;
+import java.beans.PropertyChangeListener;
+import java.util.List;
 
 
 /**
@@ -15,71 +14,15 @@ import java.util.*;
  */
 public class Board implements I_BoardModel {
 
-    final private Column[] buildStacks;
-    final private A_StackModel[] suitPile; //aces pile
-    final private Stack<I_CardModel> turnedPile;
-    final private Stack<I_CardModel> cardPile;
 
-    public Board() {
-        buildStacks = new Column[7];
-        suitPile = new A_StackModel[4];
-
-        turnedPile = new Stack<>();
-        cardPile = new Stack<>();
-
-        //TODO initialize the list contents
+    @Override
+    public I_CardModel turnCard() {
+        return null;
     }
 
-    //---------------------------------------Getters------------------------------------------------------------------------
-
-    public Column[] getBuildStacks() {
-        return buildStacks;
-    }
-
-    public A_StackModel[] getSuitPile() {
-        return suitPile;
-    }
-
-    public List<I_CardModel> getTurnedPile() {
-        return turnedPile;
-    }
-
-    public List<I_CardModel> getCardPile() {
-        return cardPile;
-    }
-
-
-
-//---------------------------------------Various methods----------------------------------------------------------------
-
-    /**
-     *  This will take a card from the card pile and put it face up in the turned card pile
-     * @return the card drawn from the pile
-     */
-    public I_CardModel turnCard() { // TODO Test it.
-        if (cardPile.empty()) {
-
-            turnedPile.addAll(cardPile);
-            turnedPile.clear();
-            //TODO reshuffle
-
-        }
-        I_CardModel card = cardPile.pop();
-        turnedPile.push(card);
-        return card;
-    }
-
-    /**
-     * @return the top card of the turned card pile
-     */
-    public I_CardModel getTurnedCard() { //TODO Test it.
-
-        I_CardModel card = turnedPile.peek();
-        if (turnedPile.empty()){
-            return null;
-        }else {
-            return card;
-        }
+    @Override
+    public I_CardModel getTurnedCard() {
+        return null;
     }
 
     @Override
@@ -93,109 +36,75 @@ public class Board implements I_BoardModel {
     }
 
     @Override
-    public boolean isLegalMove(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException {
+    public boolean canMove(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException {
         return false;
     }
 
-
-    /**
-     * Make sure all variables are ready for playing the game. This includes putting all cards in place face down.
-     */
-    public void initialize() {
-        //empty the acesPile list
-        for (int i = 0; i < suitPile.length; i++) {
-            suitPile[i] = new CardStack();
-        }
-
-        //fill with face-down cards
-        for (int i = 0; i < buildStacks.length; i++) {
-            for (int j = 0; j < 7 - i; j++) {
-                buildStacks[i].initialize(j - 1);
-            }
-        }
-
-        cardPile.removeIf(e -> true); //remove all
-        for (int i = 0; i < 24; i++) { //24 is number of cards left when cabal is ready
-            cardPile.add(new Card());
-        }
-
-        turnedPile.removeIf(e -> true); // empty list
+    @Override
+    public List<I_CardModel> getPile(E_PileID pile) {
+        return null;
     }
 
 
+//-----------------------------------PropertyEditor methods-------------------------------------------------------------
 
-    //---------------------------------------Helper methods-------------------------------------------------------------
+    @Override
+    public void setValue(Object value) {
 
-    /**
-     * Method for filling an array with any class  that is either implementing a specific interface or extends a
-     * specific class
-     * @param arr The array to be filled
-     * @param aClass The class to fill the array
-     * @param <T> The type of the array, most often an interface or abstract class
-     * @throws InstantiationException Thrown by internal method call
-     * @throws NoSuchMethodException Thrown by internal method call
-     * @throws InvocationTargetException Thrown by internal method call
-     * @throws IllegalAccessException Thrown by internal method call
-     */
-    private static <T> void fillArrayWithNew(T[] arr, Class<? extends T> aClass)
-            throws InstantiationException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = aClass.getDeclaredConstructor().newInstance();
-        }
     }
 
+    @Override
+    public Object getValue() {
+        return null;
+    }
 
-    /**
-     * Class for easily and safely interact with an entire column
-     */
-    public class Column {
-        private final List<A_StackModel> stacks;
+    @Override
+    public boolean isPaintable() {
+        return false;
+    }
 
-        public Column() {
-            stacks = new ArrayList<>(2);
-        }
+    @Override
+    public void paintValue(Graphics gfx, Rectangle box) {
 
-        @Deprecated
-        public A_StackModel get() {
-            return stacks.get(stacks.size() - 1);
-        } //TODO: should be removed
-        @Deprecated
-        public A_StackModel getAt(int i) {
-            return stacks.get(i);
-        } //TODO: should be removed
+    }
 
-        public int size() {
-            return stacks.size();
-        }
+    @Override
+    public String getJavaInitializationString() {
+        return null;
+    }
 
-        public int totalCards() {
-            return stacks.stream()
-                    .mapToInt(A_StackModel::size)
-                    .reduce(Integer::sum)
-                    .orElseThrow(ArithmeticException::new);//TODO: find out if ArithmeticException::new makes sense here
-        }
+    @Override
+    public String getAsText() {
+        return null;
+    }
 
-        public void initialize() {
-            stacks.removeIf(e -> true);
-        }
+    @Override
+    public void setAsText(String text) throws IllegalArgumentException {
 
-        public void initialize(int faceDownNum, I_CardModel ... knownCards) {
-            initialize();
-            CardStack empty = new CardStack();
-            for (int i = 0; i < faceDownNum; i++) {
-                new CardStack(new Card()).moveTo(empty);
-                //empty.addToStack();
-            }
+    }
 
-            CardStack known = new CardStack(knownCards);
+    @Override
+    public String[] getTags() {
+        return new String[0];
+    }
 
-            stacks.set(0, empty);
-            stacks.set(1, known);
-        }
+    @Override
+    public Component getCustomEditor() {
+        return null;
+    }
 
-        public void add(A_StackModel stack){
-            stacks.add(stack);
-        }
+    @Override
+    public boolean supportsCustomEditor() {
+        return false;
+    }
+
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+
+    }
+
+    @Override
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
 
     }
 }
