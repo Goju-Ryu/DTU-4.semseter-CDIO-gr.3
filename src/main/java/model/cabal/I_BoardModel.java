@@ -7,5 +7,8 @@ public interface I_BoardModel {
     void turnCard();
     I_CardModel getTurnedCard();
     void initialize();
+//    void legalMove();
+//    void getPossibleMoves();
+//    void pickMove();
 
 }

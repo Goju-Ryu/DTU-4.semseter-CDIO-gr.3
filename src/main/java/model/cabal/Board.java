@@ -66,7 +66,6 @@ public class Board implements I_BoardModel {
     public I_CardModel getTurnedCard() { //TODO Test it.
 
         I_CardModel card = turnedPile.peek();
-
         if (turnedPile.empty()){
             return null;
         }else {
