@@ -1,9 +1,11 @@
+import os
 from tkinter import *
 #====================================
 # This file containing a GUI is
 # intented to work as to test sercer communication
 # as well as a back-up should open CV not work
 #====================================
+from proto import grpc_pb2
 
 root = Tk()
 
@@ -22,6 +24,7 @@ def myClick():
     input = inPile + " | "+ inSuits + "| "+inCols
     #Todo: instead of making this print out make this send to the server
     print(input)
+
 
 #Buttons
 myButton = Button(root, text="Make New Move",command = myClick)

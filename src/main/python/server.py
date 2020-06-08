@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """The Python implementation of the GRPC helloworld.Greeter server."""
-
+import os
 from concurrent import futures
 import logging
 
@@ -21,11 +21,13 @@ import grpc
 import proto.grpc_pb2 as grpc_pb2
 import proto.grpc_pb2_grpc as grpc_pb2_grpc
 
+#import TkGui as gui
 
 class Greeter(grpc_pb2_grpc.GreeterServicer):
 
     def SayHello(self, request, context):
         print('I got a message from \"%s\"!' % request.name)
+        os.system("python TkGui.py")
         return grpc_pb2.HelloReply(message='Hello, %s! I\'m Python world!' % request.name)
 
 
