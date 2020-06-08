@@ -4,6 +4,7 @@ package model.cabal;
 import model.cabal.internals.*;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.I_CardModel;
+import model.error.IllegalMoveException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -58,6 +59,8 @@ public class Board implements I_BoardModel {
     public I_CardModel turnCard() { // TODO Test it.
         if (cardPile.empty()) {
 
+            turnedPile.addAll(cardPile);
+            turnedPile.clear();
             //TODO reshuffle
 
         }
@@ -77,6 +80,21 @@ public class Board implements I_BoardModel {
         }else {
             return card;
         }
+    }
+
+    @Override
+    public boolean isStackComplete() {
+        return false;
+    }
+
+    @Override
+    public void move(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException {
+
+    }
+
+    @Override
+    public boolean isLegalMove(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException {
+        return false;
     }
 
 
