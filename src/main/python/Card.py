@@ -13,6 +13,8 @@ class Card():
         #Is set before comparison when validating which card the filmed card represents
         self.rankImg = []   # 125*70
         self.suitImg = []   # 100*70
+        
+        self.rankAndSuitContourImgs = [] # 125*70
 
 
         self.best_rank_match = None #name of the best matched rank

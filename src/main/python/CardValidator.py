@@ -2,6 +2,8 @@
 import cv2
 import numpy as np
 
+import os
+
 #TODO lav genkendelse af rank og suit NEDE i venstre hjørne af kortbillede:
 # - sammenlign antal matchende pixels med billeder af rank og suit
 # - sæt kortets best_rank_match og best_suit_match til de bedst matchende billeder
@@ -9,19 +11,21 @@ import numpy as np
 
 class CardValidator:
     """For matching cards with suits and ranks"""
-
+    def __init__(self):
+        self.compareRanks = loadRanks(os.path.dirname(os.path.abspath(__file__) + "/Card_Imgs/"))
+        self.compareSuits = loadSuits(os.path.dirname(os.path.abspath(__file__) + "/Card_Imgs/"))
+        pass
+        
     def loadSuits(self, filepath):
         compareSuits = []
 
         for Suit in ["Hearts", "Spades", "Clubs", "Diamonds"]:
             compareSuit = CompareSuit()
-            filename = Suit + "2.jpg"
+            filename = Suit + ".jpg"
             compareSuit.name = Suit
-            compareSuit.img = cv2.imread(filepath + filename, cv2.IMREAD_GRAYSCALE) #pic is 100*70
+            compareSuit.img = cv2.imread(filepath + filename, cv2.IMREAD_GRAYSCALE) #pic is 125*70 (before it was 100*70)
 
             # compareSuit.img = cv2.imread("cardProfile_Ace_" + filename, cv2.IMREAD_GRAYSCALE) #this is grayscaled profile
-
-            cv2.imshow("cardProfile_Ace_" + filename, compareSuit.img)
 
 
             compareSuits.append(compareSuit)
@@ -34,7 +38,7 @@ class CardValidator:
         for Rank in ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven",
                      "Eight", "Nine", "Ten", "Jack", "Queen", "King"]:
             compareRank = CompareRank()
-            filename = Rank + "2.jpg"
+            filename = Rank + ".jpg"
             compareRank.name = Rank
             compareRank.img = cv2.imread(filepath+filename, cv2.IMREAD_GRAYSCALE)   #pic is 125*70
 
@@ -101,6 +105,30 @@ class CardValidator:
 
         return card
 
+    """Takes threshholded image over contour in card cornor"""
+    def matchCard2(self, image):
+        comparisonImages = compareRanks + compareSuits
+
+        best_rank_match_name = "[Card rank name here]"
+        best_suit_match_name = "[Card suit name here]"
+
+        # initial difference values. Less is better, as can be seen in comparison in following code
+        best_rank_match_difference_value = 10000
+        best_suit_match_difference_value = 10000
+
+        for comparisonImage in comparisonImages:
+            diff = int(np.sum(cv2.absdiff(invertedRankImg, comparisonImage.img)) / 255)
+
+            if rankDiff < best_rank_match_difference_value:
+                best_rank_match_difference_value = rankDiff
+                best_rank_match_name = comparisonImage.name
+
+
+        return best_rank_match_name
+        
+        
+        
+
     def setCardRankAndSuit(self, card):
         # rotate to check buttom right cornor instead
         # to avoid problems if cards have faulty contours due to rows with stacked cards
@@ -116,30 +144,63 @@ class CardValidator:
         img = cv2.bitwise_not(cardCornorProfile)
         imggray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         ret, thresh = cv2.threshold(imggray, 127, 255, 0)
-        cv2.imshow("imggray", imggray)
+
+        """ kernel = np.ones((5, 5), np.uint8)
+        cv2.imshow("thresholding1", thresh)
+        thresh = cv2.erode(thresh, kernel, iterations=1)
+        thresh = cv2.dilate(thresh, kernel, iterations=1)"""
 
         contours, hierachy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
 
-        cv2.imshow("cardCornorThresh", thresh)
-        cv2.drawContours(thresh, contours, -1, (100, 30, 255), 3)
-        cv2.imshow("cardCornorThreshContour", thresh)
+        # cv2.drawContours(thresh, contours, -1, (100, 30, 255), 3)
 
         #TODO add boundingRectangle around contour
-        rectangle = cv2.boundingRect(thresh)
-        # cv2.imshow("rectangle",rectangle)
-        #TODO compare boundingRectangle with Card_Imgs
+
+        i= 0
+        for contour in contours:
+            x, y, w, h = cv2.boundingRect(contour)
+            
+            p1 = (x,y)
+            p2 = (x+w,y)
+            p3 = (x+w,y+h)
+            p4 = (x,y+h)
+            
+        
+            # cv2.rectangle(img, (x, y), (x+w, y+h), (0,255,0), 2)
+
+            # imgSize = np.zeros([125,70,3], dtype=np.uint8)
+            # cv2.imshow("imageSize", imgSize)
+            nice, mask, succes = self.fourPointTransform([[p1],[p2],[p3],[p4]], img)
+            niceRotated = cv2.rotate(nice, cv2.ROTATE_180)
 
 
-        # cardCornorProfile = card.profile[15:135, 8:48]
+            cv2.imshow("nice"+str(i), niceRotated)
+            i = i+1
+            card.rankAndSuitContourImgs.append(niceRotated)
+            
+            # sammen lign dette ud skårdede billede med resourcecrne og skaf en char for resultatet.
+            rankName, suitName = self.matchCard2(image)
+            
+            # tilføj char til en array instantiered udenfor dette loop. 
+            
+        # analyser resultatet
+        # hvis : 1, 0 , s  = 10 spar
+        # hvis 7, 1, s = hvad så?
+        # hvis A 6 s = hvad så 
+    
+
+            
+
+
+        #TODO lav sammenligning med conturer
         cardCornorZoom = cv2.resize(cardCornorProfile, (0, 0), fx=2, fy=2)
-        cv2.imshow("tester", cardCornorZoom)
         card.rankImg = cv2.cvtColor(cardCornorZoom[30:155, 10:80], cv2.COLOR_BGR2GRAY)
-        card.suitImg = cv2.cvtColor(cardCornorZoom[180:280, 10:80], cv2.COLOR_BGR2GRAY)
+        card.suitImg = cv2.cvtColor(cardCornorZoom[0:125, 10:80], cv2.COLOR_BGR2GRAY)
         # cv2.imwrite("Card_Imgs2/King2.jpg", card.rankImg)
         return card
 
-    #__________________________
+#__________________________
     def SortPoints(self, p1, p2 , p3 , p4, image):
 
         points = [p4,p3,p2,p1]
@@ -154,14 +215,39 @@ class CardValidator:
             sortedList[2] = sortedList[3]
             sortedList[3] = temp
 
-        for point in sortedList:
-            image = cv2.circle(image, sortedList[0], 2, (255, 0, ), 2)
-            image = cv2.circle(image, sortedList[1], 2, (0, 255, 255), 2)
-            image = cv2.circle(image, sortedList[2], 2, (255, 0, 255), 2)
-            image = cv2.circle(image, sortedList[3], 2, (255, 255, 255), 2)
-        return sortedList[3], sortedList[2], sortedList[0], sortedList[1]
-    #__________________________
 
+        return sortedList[3], sortedList[2], sortedList[0], sortedList[1]
+#__________________________
+
+    def fourPointTransform(self, pts, image):
+        # Perspektive Transformation
+        p1 = (pts[0][0][0], pts[0][0][1])
+        p2 = (pts[1][0][0], pts[1][0][1])
+        p3 = (pts[2][0][0], pts[2][0][1])
+        p4 = (pts[3][0][0], pts[3][0][1])
+
+        # sorting so theyre orderd clockwise.
+        p1, p2, p3, p4 = self.SortPoints(p1, p2, p3, p4, image)
+
+        width = image.shape[1]
+        height = image.shape[0]
+        # making the points translation values
+        nPts = np.float32([
+            [0, 0],
+            [width - 1, 0],
+            [width - 1, height - 1],
+            [0, height - 1]
+        ], dtype="float32")
+        pts = np.float32([p2, p1, p4, p3])
+
+        # making the Perspektive Transform.
+        matrix = cv2.getPerspectiveTransform(pts, nPts)
+        result = cv2.warpPerspective(image, matrix, (width, height))
+
+        mask = None
+        return result, mask, True
+#__________________________
+    
 class CompareRank:
     def __init__(self):
         self.img = []

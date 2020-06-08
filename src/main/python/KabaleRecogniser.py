@@ -33,17 +33,17 @@ class KabaleRecogniser:
             # for testing comparison images
             path = os.path.dirname(os.path.abspath(__file__))
 
-            compareSuits = cardVal.loadSuits(path + "/Card_Imgs2/")
+            compareSuits = cardVal.loadSuits(path + "/Card_Imgs/")
             # for i in range(len(compareSuits)):
             #     cv2.imshow(compareSuits[i].name, compareSuits[i].img)
 
-            compareRanks = cardVal.loadRanks(path + "/Card_Imgs2/")
+            compareRanks = cardVal.loadRanks(path + "/Card_Imgs/")
             # for i in range(len(compareRanks)):
             #     cv2.imshow(compareRanks[i].name, compareRanks[i].img)
 
 
 
-            isolator = Isolator(True,False,True,False)
+            isolator = Isolator(False,False,False,False)
             cards, succes = isolator.isolateCards(img)
 
             # img = cv2.imread("test.png")
@@ -56,7 +56,10 @@ class KabaleRecogniser:
             cards[1].profile = cv2.imread("cardProfile_Ace_Diamonds.jpg")
             cards[2].profile = cv2.imread("cardProfile_Ace_Hearts.jpg")
             cards[3].profile = cv2.imread("cardProfile_Ace_Spades.jpg")
-            cards[3].profile = cv2.resize(cards[3].profile, (225,300))
+            cards[0].profile = cv2.resize(cards[3].profile, (225,300))
+            cards[1].profile = cv2.resize(cards[3].profile, (225, 300))
+            cards[2].profile = cv2.resize(cards[3].profile, (225, 300))
+            cards[3].profile = cv2.resize(cards[3].profile, (225, 300))
             # cards[0].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Two.jpg")
             # cards[1].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Three.jpg")
             # cards[2].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Four.jpg")
@@ -77,7 +80,7 @@ class KabaleRecogniser:
                 # for i in range(len(cards)-1):
                 for i in range(7):
 
-                    cv2.imshow("card" + str(i), cards[i].profile)
+                    # cv2.imshow("card" + str(i), cards[i].profile)
 
                     # cardCornorProfile = cards[i].profile[600-135:600-15, 400-52:400-16]
                     # cv2.imshow("nice",cardCornorProfile)
@@ -88,23 +91,29 @@ class KabaleRecogniser:
                     # cards[i].rankImg = cv2.cvtColor(cardCornorZoom[0:125, ], cv2.COLOR_BGR2GRAY)
                     # cards[i].suitImg = cv2.cvtColor(cardCornorZoom[150:,], cv2.COLOR_BGR2GRAY)
 
-
-
                     thisCard = cards[3]
                     cardVal.setCardRankAndSuit(thisCard)
-                    cv2.imshow("rank", thisCard.rankImg)
-                    cv2.imshow("suit", thisCard.suitImg)
-                    cards[i] = cardVal.matchCard(thisCard, compareRanks, compareSuits)
-                    print(thisCard.best_rank_match)
-                    print(thisCard.best_suit_match)
+                    for img in thisCard.rankAndSuitContourImgs:
+                        thisCard.rankImg = img
+                        thisCard.suitImg = img
+                        cardVal.matchCard(thisCard, compareRanks, compareSuits)
+
+                        print(thisCard.rank_match_difference_value)
+                        print(thisCard.suit_match_difference_value)
+                        print(thisCard.best_rank_match)
+                        print(thisCard.best_suit_match)
 
 
 
-                    # tested sharpening the image -
-                    # Used https://stackoverflow.com/questions/58231849/how-to-remove-blurriness-from-an-image-using-opencv-python-c
-                    # sharpen_kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
-                    # sharpen = cv2.filter2D(cards[i].suitImg, -1, sharpen_kernel)
-                    # cv2.imshow("sharpen", sharpen)
+                    # thisCard = cards[3]
+                    # cardVal.setCardRankAndSuit(thisCard)
+                    # # cv2.imshow("rank", thisCard.rankImg)
+                    # # cv2.imshow("suit", thisCard.suitImg)
+                    # cards[i] = cardVal.matchCard(thisCard, compareRanks, compareSuits)
+                    # print(thisCard.best_rank_match)
+                    # print(thisCard.best_suit_match)
+
+
 
 
 
