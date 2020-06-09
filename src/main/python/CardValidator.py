@@ -22,22 +22,22 @@ class CardValidator:
 
     def setCardRankAndSuit(self, card):
         # Isolated cornor profile
-        cardCornorProfile = card.profile[0:140, 0:60]
+        cardCornorProfile = card.profile[0:140, 0:50]
         #cv2.imshow("cardCornorProfile", cardCornorProfile)
 
         # making the Threshold so we can use it to find the contours
         #img = cv2.bitwise_not(cardCornorProfile)
-        img = cv2.resize(cardCornorProfile , (120,280))
+        img = cv2.resize(cardCornorProfile , (100,280))
 
 
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         # _, thresh = cv2.threshold(gray, 127, 255, 0)
         thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 1)
 
-        kernel = np.ones((3, 3), np.uint8)
         thresh = cv2.bitwise_not(thresh)
+        kernel = np.ones((3, 3), np.uint8)
         thresh = cv2.erode(thresh, kernel, iterations=1)
-        thresh = cv2.dilate(thresh, kernel, iterations=1)
+        thresh = cv2.dilate(thresh, kernel, iterations=2)
         #cv2.imshow("erode",erosion)
 
 
@@ -55,26 +55,43 @@ class CardValidator:
                 # bounding rect is the smallest square that fits the contour.
                 x, y, w, h = cv2.boundingRect(contour)
 
+                # fix for when the King and Queen contours mix with the cards middle-image-border, and gets out of proportion
+                # TODO alternative fix is to ignore, instead of modifying, contours with height over 100
+                if h > 250:
+                    print("test___________________________________________________" + str(h))
+                    h = 95
+                    w -= 10
+
                 p1 = (x, y)
                 p2 = (x + w, y)
                 p3 = (x + w, y + h)
                 p4 = (x, y + h)
 
-                if w > 20:
-                    if h > 20 :
-                        # finding the perspective transformed image, then rotated.
+                # condition for ignoring irrelevant contours, to minimize noise
+                if w > 20 and h > 20:
 
-                        imageTrans, mask, succes = self.fourPointTransform([[p1], [p2], [p3], [p4]], thresh)
-                        imageTrans = cv2.rotate(imageTrans, cv2.ROTATE_180)
-                        imageTrans = cv2.resize(imageTrans, (70, 125))
+                    # finding the perspective transformed image, then rotated.
 
-                        cv2.imshow("nice" + str(i), imageTrans)
-                        i += 1
+                    imageTrans, mask, succes = self.fourPointTransform([[p1], [p2], [p3], [p4]], thresh)
+                    imageTrans = cv2.rotate(imageTrans, cv2.ROTATE_180)
+                    imageTrans = cv2.resize(imageTrans, (70, 125))
 
-                        # now give the image to see if it matches a prefinded standard for a symbol
-                        results.append(self.matchCard2(imageTrans))
-                        cv2.drawContours(img, contour, -1, (0,255,0), 1)
-                        cv2.rectangle( img , (p1), (p3), (255,0,0), 2)
+                    cv2.imshow("nice" + str(i), imageTrans)
+                    i += 1
+
+                    # now give the image to see if it matches a prefinded standard for a symbol
+
+                    mSymbol = self.matchCard2(imageTrans)
+
+                    if mSymbol.symbolName is "Queen":
+                        print("Queen" + str(h))
+
+                    if mSymbol.symbolName is "Jack":
+                        print("Jack" + str(h))
+
+                    results.append(mSymbol)
+                    cv2.drawContours(img, contour, -1, (0,255,0), 1)
+                    cv2.rectangle( img , (p1), (p3), (255,0,0), 2)
 
             # check the best 2 matches in results
         cv2.imshow("her Hans!!!!!!!", img)
@@ -85,12 +102,15 @@ class CardValidator:
 
         # print("\n\n\n")
         # for result in sortedList:
-        # 
+        #
         #     print(result.symbolName + "  : " + str(result.bestMatchDiff), end = "\n")
         # print("\n\n\n matches: \n")
         # 
         # # takes the best two matches and saves them in a new list. These should be the rank and the suit for the card
-        bestTwoMatches = sortedList[0:2]
+        if len(sortedList) > 1:
+            bestTwoMatches = sortedList[0:2]
+        else:
+            bestTwoMatches = sortedList
         # 
         # for matches in bestTwoMatches:
         #     print(matches.symbolName + "  : " + str(matches.bestMatchDiff), end = "\n")
@@ -99,9 +119,13 @@ class CardValidator:
         matchNames = []
         for match in bestTwoMatches:
             matchNames.append(match.symbolName)
-        
-        return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName
 
+        if len(bestTwoMatches) is 2:
+            return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName
+        if len(bestTwoMatches) is 1:
+            return bestTwoMatches[0].symbolName, "no match"
+        if len(bestTwoMatches) is 0:
+            return "no match", "no match"
     # Takes threshholded image over contour in card cornor
     def matchCard2(self, image):
         symbols = self.compareSymbols

@@ -1,4 +1,5 @@
 import os
+from operator import itemgetter
 
 import cv2
 from Isolator.Isolator import Isolator
@@ -88,7 +89,7 @@ class KabaleRecogniser:
                     # cards[i].rankImg = cv2.cvtColor(cardCornorZoom[0:125, ], cv2.COLOR_BGR2GRAY)
                     # cards[i].suitImg = cv2.cvtColor(cardCornorZoom[150:,], cv2.COLOR_BGR2GRAY)
 
-                    thisCard = cards[3]
+                    thisCard = cards[0]
                     name1, name2 = cardVal.setCardRankAndSuit(thisCard)
 
 
@@ -98,8 +99,22 @@ class KabaleRecogniser:
                             sName[1] += 1
                         if name2 == sName[0]:
                             sName[1] += 1
+                    print(name1 + "\n" + name2 + "\n")
+                    print("all symbols counted: " + str(sNameCnts))
 
-                    print(sNameCnts)
+
+
+                    #sorted lists and the found card identity
+                    cardSortedSuitDiffs = sorted(sNameCnts[0:4], key=itemgetter(1), reverse=True)
+                    print("sorted suits: " + str(cardSortedSuitDiffs))
+
+                    cardSortedRankDiffs = sorted(sNameCnts[4:], key=itemgetter(1), reverse=True)
+                    print("sorted ranks: " + str(cardSortedRankDiffs))
+
+                    cardIdentity = cardSortedRankDiffs[0][0] + " " + cardSortedSuitDiffs[0][0]
+                    print("THE CARD IS: " + cardIdentity)
+
+
                     # for sname in sNameCnts:
                     #     print(sname )
                     #
@@ -114,7 +129,7 @@ class KabaleRecogniser:
                     for img in thisCard.rankAndSuitContourImgs:
                         thisCard.rankImg = img
                         thisCard.suitImg = img
-                        cardVal.matchCard(thisCard, compareRanks, compareSuits)
+                        cardVal.matchCard2(thisCard)
 
                         print(thisCard.rank_match_difference_value)
                         print(thisCard.suit_match_difference_value)
