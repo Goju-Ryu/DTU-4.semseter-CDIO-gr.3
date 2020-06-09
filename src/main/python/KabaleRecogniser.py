@@ -2,6 +2,8 @@ import os
 from operator import itemgetter
 
 import cv2
+
+from Card import Card
 from Isolator.Isolator import Isolator
 from VideoInput.Video import SVideo
 from CardValidator import CardValidator
@@ -43,7 +45,7 @@ class KabaleRecogniser:
 
             # checking the next card if i is pressed
             if keyPressed == ord('i'):
-                if i is 6:
+                if i is len(cards) - 2:
                     i = 0
                 else:
                     i = i + 1
