@@ -55,13 +55,7 @@ class KabaleRecogniser:
 # KEY PRESS CASES ________________
 
 
-
-
-            # img = cv2.imread("test.png")
-            # cv2.imshow("test", img)
-            # cards, succes = isolator.isolateCards(img)
-
-
+        #TODO overwriting test images for testing with easy to read profiles
             # cards[0].profile = cv2.imread("cardProfile_Ace_Clubs.jpg")
             # cards[1].profile = cv2.imread("cardProfile_Ace_Diamonds.jpg")
             # cards[2].profile = cv2.imread("cardProfile_Ace_Hearts.jpg")
@@ -100,17 +94,10 @@ class KabaleRecogniser:
             print("THE CARD IS: " + cardIdentity)
 
 
-            # for sname in sNameCnts:
-            #     print(sname )
-            #
-            #     string a = ""
-            #     for sname in sNameCnts2:
-            #         if yaydada
-            #             then
-            #             a = asdad
 
 
-            #
+
+        # TODO delete every non-used-attribute for the Card() class and cleanup by deleting and commenting
             # for img in thisCard.rankAndSuitContourImgs:
             #     thisCard.rankImg = img
             #     thisCard.suitImg = img
