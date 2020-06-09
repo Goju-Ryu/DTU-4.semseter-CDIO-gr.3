@@ -8,6 +8,7 @@
     <artifactId>CDIO_kabale</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -46,7 +47,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <executable>src/main/python/proto/protoc.sh</executable>
+                    <executable>src/main/python/proto/protoc${script.extension}</executable>
                 </configuration>
             </plugin>
             <plugin>
@@ -87,6 +88,31 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>Windows</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
+            <properties>
+                <script.extension>.bat</script.extension>
+            </properties>
+        </profile>
+        <profile>
+            <id>unix</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+            <properties>
+                <script.extension>.sh</script.extension>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/io.grpc/grpc-core -->
