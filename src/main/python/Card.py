@@ -1,16 +1,19 @@
 class Card():
 
+    # Author : Hans
     def __init__(self, profile, exists):
         self.exists = exists
         self.profile = profile
         self.number= None
         self.color= None
 
+    # Author : Hans
     def initiateCard(self, contour, points):
         self.compContour = contour
         self.compPoints = points
         return self
 
+    # Author : Hans
     def setProfile(self, image):
         self.profile = image
 

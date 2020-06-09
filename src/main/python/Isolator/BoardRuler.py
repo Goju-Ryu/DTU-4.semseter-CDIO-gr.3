@@ -3,14 +3,24 @@ import numpy as np
 
 class BoardRuler:
 
-    def isolate(self, img):
+    #Author : Hans
+    def isolate(self, img,Settings):
         image = cv2.GaussianBlur(img, (5,5), 0)
 
         #Creating a Mask
+        HueMin, HueMax = Settings.getHue()
+        SatMin, SatMax = Settings.getSat()
+        ValMin, ValMax = Settings.getVal()
+
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        lower_blue = np.array([HueMin, SatMin, ValMin])
+        upper_blue = np.array([HueMax, SatMax, ValMax])
+        mask = cv2.inRange(hsv, lower_blue, upper_blue)
+
+        """hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         lower_blue = np.array([50, 60, 60])
         upper_blue = np.array([90, 230, 230])
-        mask = cv2.inRange(hsv, lower_blue, upper_blue)
+        mask = cv2.inRange(hsv, lower_blue, upper_blue)"""
 
         #noise Removal on Mask
         kernel = np.ones((5,5),np.uint8)
@@ -53,6 +63,7 @@ class BoardRuler:
         else:
             return None , mask , False
 
+    # Author : Hans
     def findBoardContour(self, mask, image):
 
         # finding external   contours with simple aproximation.
@@ -86,6 +97,7 @@ class BoardRuler:
         else:
             return appr[0], True
 
+    # Author : Hans
     def SortPoints(self, p1, p2 , p3 , p4, image):
 
         points = [p4,p3,p2,p1]
@@ -108,6 +120,7 @@ class BoardRuler:
             image = cv2.circle(image, sortedList[3], 2, (255, 255, 255), 2)
         return sortedList[3], sortedList[2], sortedList[0], sortedList[1]
 
+    # Author : Hans
     def extreme_points(self, contour):
         #kilde
         #https://books.google.dk/books?id=w86PDwAAQBAJ&pg=PA228&lpg=PA228&dq=openCV+reduce+oply+to+4+points&source=bl&ots=q1J4Hk58wc&sig=ACfU3U1Y4r22M0HokjOUKBunPM_IYZ2CLA&hl=da&sa=X&ved=2ahUKEwigy56MzO_pAhVqkIsKHVXWD0UQ6AEwAHoECAgQAQ#v=onepage&q=openCV%20reduce%20oply%20to%204%20points&f=false
@@ -118,7 +131,8 @@ class BoardRuler:
         extBot = tuple(contour[contour[:, :, 1].argmax()][0])
         
         return [extLeft, extRight, extTop ,extBot]
-        
+
+    # Author : Hans
     def decorateImageRulerLines(self, image):
         height = image.shape[0]
         width = image.shape[1]
@@ -148,6 +162,7 @@ class BoardRuler:
 
         return image
 
+    # Author : Hans
     def cutImageWithRulerLines(self, image):
 
 

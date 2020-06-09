@@ -4,19 +4,21 @@ from Isolator.BoardRuler import BoardRuler
 from Isolator.CardAnalyser import CardAnalyser
 import numpy as np
 
+#Author : Hans
 class Isolator:
-
+    # Author : Hans
     def __init__(self, showBoard, showBoardMask, showCards, showCardsMask ):
         self.showBoard = showBoard
         self.showBoardMask = showBoardMask
         self.showCards = showCards
         self.showCardsMask = showCardsMask
 
+    # Author : Hans
     def isolateCards(self, image, Settings):
 
         cardAnal = CardAnalyser()
         board = BoardRuler()
-        image, mask, succes = board.isolate(image)
+        image, mask, succes = board.isolate(image,Settings)
         if succes:
             if self.showBoard:
                 cv2.imshow("board",image)
@@ -44,6 +46,7 @@ class Isolator:
             topCards.append(botCards)
             return topCards
 
+    # Author : Hans
     def stackImages(self,image,imageArr, i = 1):
 
 

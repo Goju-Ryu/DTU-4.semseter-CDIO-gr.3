@@ -3,9 +3,9 @@ from Isolator.Isolator import Isolator
 from VideoInput.Video import SVideo
 
 rec = SVideo()
-
+#Author : Hans
 class KabaleRecogniser:
-
+    # Author : Hans
     def run(self,Settings):
         while True:
             # Retrieving an image.
@@ -16,7 +16,6 @@ class KabaleRecogniser:
                 rec.stop()
                 break
 
-            isolator = Isolator(True,False,True,False)
+            isolator = Isolator(False,False,True,False)
             cards = isolator.isolateCards(img, Settings)
-
 

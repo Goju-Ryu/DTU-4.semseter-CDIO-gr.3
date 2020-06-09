@@ -2,8 +2,9 @@ import time
 
 import cv2
 import threading
-
+#Author : Hans
 class Video:
+    # Author : Hans
     def __init__(self):
 
         # finals
@@ -19,6 +20,7 @@ class Video:
         self.empt, self.frame = self.rec.read() # setting the veryFirst Frame just to avoid null pointers.
         self.thread = threading.Thread(target=self.run, args=()).start()
 
+    # Author : Hans
     def run(self):
         while True:
             self.empt, self.frame = self.rec.read()
@@ -26,17 +28,22 @@ class Video:
                 self.rec.release()
                 return
 
+    # Author : Hans
     def start(self):
         self.thread.start()
 
+    # Author : Hans
     def getFrame(self):
         return cv2.resize(self.frame,(1200,800))
 
+    # Author : Hans
     def stop(self):
         self.cancelled = True
 
+#Author : Hans
 class SVideo:
 
+    # Author : Hans
     def __init__(self):
         # finals
         self.VidName ="VideoInput/video_01.mp4"
@@ -49,13 +56,14 @@ class SVideo:
         self.empt, self.frame = self.rec.read()  # setting the veryFirst Frame just to avoid null pointers.
         self.empt, self.frame = self.rec.read()
 
-
+    # Author : Hans
     def getFrame(self):
         self.empt, self.frame = self.rec.read()
         img = self.frame
         return cv2.resize(img, (800,500))
         #return self.frame
 
+    # Author : Hans
     def stop(self):
         self.rec.release()
 
