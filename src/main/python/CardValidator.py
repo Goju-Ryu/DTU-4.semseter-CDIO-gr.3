@@ -58,7 +58,7 @@ class CardValidator:
                 # fix for when the King and Queen contours mix with the cards middle-image-border, and gets out of proportion
                 # TODO alternative fix is to ignore, instead of modifying, contours with height over 100
                 if h > 250:
-                    print("test___________________________________________________" + str(h))
+                    print("this contour height is ____________________________________ " + str(h))
                     h = 95
                     w -= 10
 
@@ -81,7 +81,6 @@ class CardValidator:
                     i += 1
 
                     # now give the image to see if it matches a prefinded standard for a symbol
-
                     mSymbol = self.matchCard2(imageTrans)
 
                     if mSymbol.symbolName is "Queen":
