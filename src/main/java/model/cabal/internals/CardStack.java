@@ -9,7 +9,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CardStack implements I_SolitaireStacks {
-    List<I_CardModel> list = new LinkedList<>();
+
+    private List<I_CardModel> list;
+
+    public CardStack(List<I_CardModel> list) {
+        this.list = list;
+    }
+
+    public CardStack(){
+        list = new LinkedList<>();
+    }
 
     @Override
     public boolean addAll(Collection c) throws IllegalMoveException {

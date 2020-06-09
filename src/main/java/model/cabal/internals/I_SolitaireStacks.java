@@ -35,6 +35,9 @@ public interface I_SolitaireStacks<I_CardModel> extends Collection<I_CardModel> 
 
 
     /**
+     * Checks if you can move a Stack of the CardStack from that position in the Build stack
+     *
+     *
      *
      * @param range
      * @return
