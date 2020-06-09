@@ -1,8 +1,12 @@
 # DTU-4.semseter-CDIO-gr.3
 A program that allows you to play soliatre, you give it a picture and it gives you a move
 
-# User guide
+# User guide - for the Manual GUI
 coming soon.
+
+# User guide - for the OpenCV GUI
+coming soon.
+
 
 # Developer guide(java back-end side):
 you need to make sure you are using       
