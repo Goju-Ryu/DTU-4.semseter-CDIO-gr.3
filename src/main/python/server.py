@@ -31,8 +31,11 @@ class Greeter(grpc_pb2_grpc.GreeterServicer):
         print('I got a message from \"%s\"!' % request.name)
         #x = os.system("python TkGui.py")
         #TODO: make this inside an if statment depending on weather the user wants GUI og OpenCV
-        from ManGui import ManGUI
-        x = ManGUI()
+        if(request.name == "Java world"):
+            from ManGui import ManGUI
+            x = ManGUI()
+        else:
+            pass #TODO: call openCV here
         b = x.run()
         #print("it works: "+b)
         returnMSG ='Hello, %s! I\'m Python world! here is a msg for you:' % request.name

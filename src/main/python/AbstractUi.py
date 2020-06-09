@@ -11,5 +11,5 @@ from abc import ABC, abstractmethod
 
 class AbstractUI():
     @abstractmethod
-    def foo(self):
-        pass
+    def run(self):
+        return ""
