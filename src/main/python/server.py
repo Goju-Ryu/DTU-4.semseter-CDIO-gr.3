@@ -31,12 +31,12 @@ class Greeter(grpc_pb2_grpc.GreeterServicer):
         print('I got a message from \"%s\"!' % request.name)
         #x = os.system("python TkGui.py")
         #TODO: make this inside an if statment depending on weather the user wants GUI og OpenCV
-        #TODO: Make Man Gui Return the string we want to return to the java server
         from ManGui import ManGUI
         x = ManGUI()
         b = x.run()
-        print("it works: "+b)
-        returnMSG ='Hello, %s! I\'m Python world!' % request.name
+        #print("it works: "+b)
+        returnMSG ='Hello, %s! I\'m Python world! here is a msg for you:' % request.name
+        returnMSG += b
         return grpc_pb2.HelloReply(message=returnMSG)#request.name
 
 
