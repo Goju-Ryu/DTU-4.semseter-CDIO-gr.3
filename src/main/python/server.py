@@ -34,8 +34,10 @@ class Greeter(grpc_pb2_grpc.GreeterServicer):
         #TODO: Make Man Gui Return the string we want to return to the java server
         from ManGui import ManGUI
         x = ManGUI()
-        x.run()
-        return grpc_pb2.HelloReply(message='Hello, %s! I\'m Python world!' % request.name)#request.name
+        b = x.run()
+        print("it works: "+b)
+        returnMSG ='Hello, %s! I\'m Python world!' % request.name
+        return grpc_pb2.HelloReply(message=returnMSG)#request.name
 
 
 def serve():

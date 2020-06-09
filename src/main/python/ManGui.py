@@ -1,13 +1,21 @@
 from AbstractUi import AbstractUI
 from tkinter import *
-
-#Look into using this when everything else works.
+#====================================
+# ManGUI or Manual GUI - requres you to manully enter the input data
+#------------------------------------
+# This file containing a GUI is
+# intented to work as to test sercer communication
+# as well as a back-up should open CV not work
+#====================================
 
 
 class ManGUI(AbstractUI):
+    input =""
+    def updateInp(self,newString):
+        self.input = newString
+
     def run(self):
         root = Tk()
-
         #Input fields
         ePile = Entry(root)
         eSuit1 = Entry(root)
@@ -55,15 +63,15 @@ class ManGUI(AbstractUI):
             inPile = ePile.get()
             inSuits = eSuit1.get()+", "+eSuit2.get()+", "+eSuit3.get()+", "+eSuit4.get()
             inCols = ecol1.get()+", "+ecol2.get()+", "+ecol3.get()+", "+ecol4.get()+", "+ecol5.get()+", "+ecol6.get()+", "+ecol7.get()
-            input = inPile + " | "+ inSuits + "| "+inCols
-            #Todo: instead of making this print out make this send to the server
-            print(input)
+            inp = inPile + " | "+ inSuits + "| "+inCols
+            self.updateInp(inp)
+            print(inp)
             root.destroy()
-            #root.quit()
-    #Buttons
+
+        #Buttons
         myButton = Button(root, text="Make New Move",command = myClick)
         myButton.grid(row =4, column=7)
 
-
         root.mainloop()
+        return self.input
         print("GUI ended")
