@@ -2,6 +2,7 @@
 import cv2
 import numpy as np
 import os
+from operator import attrgetter
 
 
 class CardValidator:
@@ -9,6 +10,11 @@ class CardValidator:
         def __init__(self):
             self.img = []
             self.name = "[Symbol name here]"
+
+    class MatchedSymbol:
+        def __init__(self):
+            self.bestMatchDiff = None
+            self.symbolName = None
 
     def __init__(self):
         self.compareSymbols = self.loadCompareSymbols()
@@ -49,6 +55,25 @@ class CardValidator:
             # now give the image to see if it matches a prefinded standard for a symbol
             results.append(self.matchCard2(imageTrans))
 
+            # check the best 2 matches in results
+
+
+        # sorts the list of symbol results from smallest differense value to greatest
+        sortedList = sorted(results, key=attrgetter('bestMatchDiff'))
+
+        print("\n\n\n")
+        for result in sortedList:
+
+            print(result.symbolName + "  : " + str(result.bestMatchDiff), end = "\n")
+        print("\n\n\n matches: \n")
+        
+        # takes the best two matches and saves them in a new list. These should be the rank and the suit for the card
+        bestTwoMatches = sortedList[0:2]
+        
+        for matches in bestTwoMatches:
+            print(matches.symbolName + "  : " + str(matches.bestMatchDiff), end = "\n")
+        print("\n\n")
+        
         return None
 
     # Takes threshholded image over contour in card cornor
@@ -67,7 +92,11 @@ class CardValidator:
                 bestMatchDiff = diff
                 symbolName = symbol.name
 
-        return symbolName
+            matchedSymbol = self.MatchedSymbol()
+            matchedSymbol.bestMatchDiff = bestMatchDiff
+            matchedSymbol.symbolName = symbolName
+
+        return matchedSymbol
 
     def loadCompareSymbols(self):
         compareSymbols = []

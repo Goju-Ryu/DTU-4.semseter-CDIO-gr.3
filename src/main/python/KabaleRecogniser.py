@@ -43,7 +43,7 @@ class KabaleRecogniser:
 
 
 
-            isolator = Isolator(False,False,False,False)
+            isolator = Isolator(True,False,True,False)
             cards, succes = isolator.isolateCards(img)
 
             # img = cv2.imread("test.png")
@@ -51,14 +51,14 @@ class KabaleRecogniser:
             # cards, succes = isolator.isolateCards(img)
 
 
-            cards[0].profile = cv2.imread("cardProfile_Ace_Clubs.jpg")
-            cards[1].profile = cv2.imread("cardProfile_Ace_Diamonds.jpg")
-            cards[2].profile = cv2.imread("cardProfile_Ace_Hearts.jpg")
-            cards[3].profile = cv2.imread("cardProfile_Ace_Spades.jpg")
-            cards[0].profile = cv2.resize(cards[3].profile, (225,300))
-            cards[1].profile = cv2.resize(cards[3].profile, (225, 300))
-            cards[2].profile = cv2.resize(cards[3].profile, (225, 300))
-            cards[3].profile = cv2.resize(cards[3].profile, (225, 300))
+            # cards[0].profile = cv2.imread("cardProfile_Ace_Clubs.jpg")
+            # cards[1].profile = cv2.imread("cardProfile_Ace_Diamonds.jpg")
+            # cards[2].profile = cv2.imread("cardProfile_Ace_Hearts.jpg")
+            # cards[3].profile = cv2.imread("cardProfile_Ace_Spades.jpg")
+            # cards[0].profile = cv2.resize(cards[0].profile, (225,300))
+            # cards[1].profile = cv2.resize(cards[1].profile, (225, 300))
+            # cards[2].profile = cv2.resize(cards[2].profile, (225, 300))
+            # cards[3].profile = cv2.resize(cards[3].profile, (225, 300))
             # cards[0].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Two.jpg")
             # cards[1].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Three.jpg")
             # cards[2].profile = cv2.imread("C:\\Users\\Emil\\Dropbox\\Sent files\\kabale\\cardRanks\\profile_Four.jpg")
@@ -90,7 +90,7 @@ class KabaleRecogniser:
                     # cards[i].rankImg = cv2.cvtColor(cardCornorZoom[0:125, ], cv2.COLOR_BGR2GRAY)
                     # cards[i].suitImg = cv2.cvtColor(cardCornorZoom[150:,], cv2.COLOR_BGR2GRAY)
 
-                    thisCard = cards[3]
+                    thisCard = cards[0]
                     cardVal.setCardRankAndSuit(thisCard)
                     for img in thisCard.rankAndSuitContourImgs:
                         thisCard.rankImg = img
