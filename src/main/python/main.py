@@ -1,6 +1,6 @@
 from KabaleRecogniser import KabaleRecogniser
 from GUI.SettingsGUI import SettingsGUI
-
+#Author : Hans
 s = SettingsGUI()
 k = KabaleRecogniser()
 Settings = s.run()

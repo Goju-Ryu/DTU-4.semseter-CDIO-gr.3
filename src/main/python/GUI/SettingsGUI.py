@@ -3,16 +3,16 @@ from cv2 import cv2
 
 from GUI.SettingsObject import SettingsObject
 from VideoInput.Video import SVideo
-
-
+#Author : Hans
 def empty(x):
     pass
-
+#Author : Hans
 class SettingsGUI():
-
+    # Author : Hans
     def __init__(self):
         self.hej = 1
 
+    # Author : Hans
     def run(self):
         vid = SVideo()
         img = vid.getFrame()
@@ -49,9 +49,9 @@ class SettingsGUI():
 
             cv2.imshow(self.windowName, mask )
 
-            k = cv2.waitKey(1) & 0xFF
-            if k == 27:
+            if cv2.waitKey(1) & 0xFF == ord('q'):
                 vid.stop()
+                cv2.destroyAllWindows()
                 break
 
         Sett = SettingsObject()
