@@ -10,34 +10,29 @@ import java.util.List;
 
 public class CardStack implements I_SolitaireStacks {
 
-    private List<I_CardModel> list;
+    private List<I_CardModel> stack;
 
     public CardStack(List<I_CardModel> list) {
-        this.list = list;
+        this.stack = list;
     }
 
     public CardStack(){
-        list = new LinkedList<>();
+        stack = new LinkedList<>();
     }
 
     @Override
     public boolean addAll(Collection c) throws IllegalMoveException {
-
-        for (int i = 0; i < c.size(); i++) {
-
-        }
-
-        return false;
+        return stack.addAll(c);
     }
 
     @Override
     public void clear() {
-        list.clear();
+        stack.clear();
     }
 
     @Override
     public boolean retainAll(Collection c) {
-        return list.retainAll(c);
+        return stack.retainAll(c);
     }
 
     @Override
@@ -73,30 +68,30 @@ public class CardStack implements I_SolitaireStacks {
     @Override
     public I_CardModel getCard(int position) {
 
-        //I_CardModel card = stack.get(position);
+        I_CardModel card = stack.get(position);
 
-        return null; // card;
+        return card;
     }
 
     @Override
     public int size() {
-        return 0; //stack.size();
+        return stack.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return stack.isEmpty();
     }
 
     @Override
     public boolean contains(Object o) {
-        return false;
+        return stack.contains(o);
     }
 
 
     @Override
     public Iterator iterator() {
-        return null;
+        return stack.iterator();
     }
 
     @Override
@@ -116,7 +111,7 @@ public class CardStack implements I_SolitaireStacks {
 
     @Override
     public boolean containsAll(Collection c) {
-        return false;
+        return stack.containsAll(c);
     }
 
     @Override

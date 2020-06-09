@@ -29,7 +29,7 @@ public interface I_CardModel {
     Integer getRank();
 
     /**
-     *
+     * Check if the card is face up
      */
     boolean isFacedUp();
 
