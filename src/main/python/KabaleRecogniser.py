@@ -89,7 +89,7 @@ class KabaleRecogniser:
                     # cards[i].rankImg = cv2.cvtColor(cardCornorZoom[0:125, ], cv2.COLOR_BGR2GRAY)
                     # cards[i].suitImg = cv2.cvtColor(cardCornorZoom[150:,], cv2.COLOR_BGR2GRAY)
 
-                    thisCard = cards[0]
+                    thisCard = cards[2]
                     name1, name2 = cardVal.setCardRankAndSuit(thisCard)
 
 
