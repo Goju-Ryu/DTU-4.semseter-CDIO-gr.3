@@ -2,7 +2,8 @@
 A program that allows you to play soliatre, you give it a picture and it gives you a move
 
 # User guide 
-## coming soon.
+## for the Manual GUI
+coming soon.
 
 ## for the OpenCV GUI
 coming soon.
