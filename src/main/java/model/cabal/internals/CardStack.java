@@ -19,16 +19,10 @@ public class CardStack<T> extends ArrayList implements I_SolitaireStacks {
         List<T> list = this.subList(point,top);
 
         // remove the sublist from the original CardStack
-
-        Iterator<T> it = this.iterator();
-        while(it.hasNext()){
-            it.remove();
+        for (int i = 0; i < point; i++) {
+            int a = top - i;
+            this.remove(a);
         }
-
-//        for (int i = 0; i < point; i++) {
-//            int a = top - i;
-//            this.remove(a);
-//        }
 
         return list;
 
