@@ -37,10 +37,10 @@ public interface I_SolitaireStacks<I_CardModel> extends Collection<I_CardModel> 
     /**
      * Checks if you can move a Stack of the CardStack from that position in the Build stack
      *
+     * - If some of the cards in the Stack are face down then you cant move the stack
      *
-     *
-     * @param range
-     * @return
+     * @param range the range that will be moved from
+     * @return true if the stack can be moved and false if it cant
      */
     boolean canMoveFrom(int range);
 
@@ -50,10 +50,10 @@ public interface I_SolitaireStacks<I_CardModel> extends Collection<I_CardModel> 
     }
 
     /**
+     * Check if you can move a stack of cards to this stack
      *
-     *
-     * @param cards
-     * @return
+     * @param cards The stack that wants to be moved to this stack
+     * @return true if it is legal and false if otherwise
      */
     boolean canMoveTo(Collection<I_CardModel> cards);
 
