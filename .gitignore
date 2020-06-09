@@ -131,7 +131,7 @@ dmypy.json
 
 
 # ignore our generated sources in the python folder
-*/python/proto/*.py
+**/python/proto/*.py
 # Default ignored files
 /.idea/workspace.xml
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
