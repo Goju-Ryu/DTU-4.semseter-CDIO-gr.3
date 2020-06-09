@@ -3,32 +3,36 @@ package model.cabal.internals;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+
+import java.util.LinkedList;
+import java.util.List;
 
 class CardStackTest {
 
     @Test
     void popSubset() {
 
-        CardStack<I_CardModel> stack = new CardStack<>();
+        CardStack stack = new CardStack();
 
         for (int i = 0; i < 6; i++) {
             I_CardModel card = new Card(E_CardSuit.DIAMONDS,i);
-            stack.add(card);
+            //stack.push(i);
         }
 
-        for (int i = 0; i < stack.size(); i++) {
-            System.out.println("id at " + i +" = " + stack.get(i));
-        }
+//        for (int i = 0; i < stack.size(); i++) {
+//            System.out.println("id at " + i +" = " + stack.get(i));
+//        }
 
         int x = stack.size();
 
         System.out.println(x);
 
-        CardStack<I_CardModel> cards = (CardStack<I_CardModel>) stack.popSubset(1);
-        int c = cards.size();
+        //CardStack<Integer> cards = stack.popSubset(1);
+        //int c = (int) cards.get(0);
 
-        System.out.println(c);
+        //System.out.println(c);
 
         //Assert.assertEquals(0, c);
 
@@ -37,6 +41,13 @@ class CardStackTest {
 
     @Test
     void getCard() {
+        LinkedList<Integer> l = new LinkedList();
+
+        Assert.assertTrue(l.addAll(List.of(1, 2, 3, 4, 5)));
+        Assert.assertTrue(l.removeAll(List.of(1, 5)));
+
+
+
     }
 
     @Test

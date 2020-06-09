@@ -1,15 +1,20 @@
 package model.cabal.internals;
 
-import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
 import java.util.Collection;
-import java.util.List;
 
-public interface I_SolitaireStacks<T> extends List {
+public interface I_SolitaireStacks<I_CardModel> extends Collection<I_CardModel> {
 
+    /**
+     * Adds a Collection to another Collection
+     *
+     * @param c the Collection we want to add to another collection
+     * @return If the Collection was added return true, otherwise return false
+     * @throws IllegalMoveException
+     */
     @Override
-    boolean addAll(Collection c) throws IllegalMoveException;
+    boolean addAll(Collection<? extends I_CardModel> c) throws IllegalMoveException;
 
     /**
      * Removes a subset of the solitaire stack. all the cards must be face up
@@ -18,7 +23,7 @@ public interface I_SolitaireStacks<T> extends List {
      * @return The new sublist
      * @throws IllegalMoveException
      */
-    List<T> popSubset(int range) throws IllegalMoveException;
+    Collection<I_CardModel> popSubset(int range) throws IllegalMoveException;
 
     /**
      * Returns a card from the list on a specified position.
@@ -26,20 +31,8 @@ public interface I_SolitaireStacks<T> extends List {
      * @param position The position in the list
      * @return The card
      */
-    T getCard(int position);
+    I_CardModel getCard(int position);
 
-    /**
-     * returns the size of the list
-     */
-    int size();
-
-    /**
-     * Checks if the list contains a certain card
-     *
-     * @param card The card we are looking for
-     * @return true if the list contains the card and false if it dosent
-     */
-    boolean contains(I_CardModel card);
 
     /**
      *
@@ -56,8 +49,9 @@ public interface I_SolitaireStacks<T> extends List {
     /**
      *
      *
+     * @param cards
      * @return
      */
-    boolean canMoveTo(Collection cards);
+    boolean canMoveTo(Collection<I_CardModel> cards);
 
 }
