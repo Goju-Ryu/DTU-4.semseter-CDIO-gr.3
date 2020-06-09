@@ -13,8 +13,8 @@ public interface I_SolitaireStacks extends Collection {
     /**
      * Removes a subset of the solitaire stack. all the cards must be face up
      *
-     * @param range
-     * @return
+     * @param range The position in the list where you would like to split it to make the new subset of the list
+     * @return The new sublist
      * @throws IllegalMoveException
      */
     Collection<I_CardModel> popSubset(int range) throws IllegalMoveException;
