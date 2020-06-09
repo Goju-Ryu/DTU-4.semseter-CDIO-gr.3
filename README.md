@@ -13,8 +13,11 @@ prereqs:
 - having bash installed in your terminal
 - having python 3.4(or higher installed)
 - having maven installed in bash
+- make sure your pip is up to date
 Then you need to install grpc, you can do that by
-
+```
+pip install grpcio-tools
+```
 finally you can run a
 ```
 mvn clean
