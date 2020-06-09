@@ -21,15 +21,11 @@ import grpc
 import proto.grpc_pb2 as grpc_pb2
 import proto.grpc_pb2_grpc as grpc_pb2_grpc
 
-#import TkGui as gui
-
-
 
 class Greeter(grpc_pb2_grpc.GreeterServicer):
 
     def SayHello(self, request, context):
         print('I got a message from \"%s\"!' % request.name)
-        #x = os.system("python TkGui.py")
         #TODO: make this inside an if statment depending on weather the user wants GUI og OpenCV
         if(request.name == "Java world"):
             from ManGui import ManGUI
@@ -37,7 +33,6 @@ class Greeter(grpc_pb2_grpc.GreeterServicer):
         else:
             pass #TODO: call openCV here
         b = x.run()
-        #print("it works: "+b)
         returnMSG ='Hello, %s! I\'m Python world! here is a msg for you:' % request.name
         returnMSG += b
         return grpc_pb2.HelloReply(message=returnMSG)#request.name
