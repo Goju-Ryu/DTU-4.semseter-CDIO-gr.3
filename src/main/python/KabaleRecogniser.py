@@ -17,6 +17,13 @@ cardVal = CardValidator()
 class KabaleRecogniser:
 
     def run(self):
+
+        sNameCnts = [["Hearts", 0], ["Spades", 0], ["Clubs", 0], ["Diamonds", 0], ["Ace", 0], ["Two", 0],
+                  ["Three", 0], [ "Four", 0], ["Five", 0], ["Six", 0], ["Seven", 0],
+                  ["Eight", 0], [ "Nine", 0], [ "Ten", 0], ["Jack", 0], [ "Queen", 0], [ "King", 0]]
+
+
+
         while True:
             # Retrieving an image.
             img = rec.getFrame()
@@ -30,20 +37,11 @@ class KabaleRecogniser:
 
             # img2 = cv2.imread()
 
-            # for testing comparison images
-            path = os.path.dirname(os.path.abspath(__file__))
-
-            # compareSuits = cardVal.loadSuits(path + "/Card_Imgs/")
-            # for i in range(len(compareSuits)):
-            #     cv2.imshow(compareSuits[i].name, compareSuits[i].img)
-
-            # compareRanks = cardVal.loadRanks(path + "/Card_Imgs/")
-            # for i in range(len(compareRanks)):
-            #     cv2.imshow(compareRanks[i].name, compareRanks[i].img)
 
 
 
-            isolator = Isolator(True,False,True,False)
+
+            isolator = Isolator(False,False,True,False)
             cards, succes = isolator.isolateCards(img)
 
             # img = cv2.imread("test.png")
@@ -90,8 +88,29 @@ class KabaleRecogniser:
                     # cards[i].rankImg = cv2.cvtColor(cardCornorZoom[0:125, ], cv2.COLOR_BGR2GRAY)
                     # cards[i].suitImg = cv2.cvtColor(cardCornorZoom[150:,], cv2.COLOR_BGR2GRAY)
 
-                    thisCard = cards[0]
-                    cardVal.setCardRankAndSuit(thisCard)
+                    thisCard = cards[3]
+                    name1, name2 = cardVal.setCardRankAndSuit(thisCard)
+
+
+                    for sName in sNameCnts:
+
+                        if name1 == sName[0]:
+                            sName[1] += 1
+                        if name2 == sName[0]:
+                            sName[1] += 1
+
+                    print(sNameCnts)
+                    # for sname in sNameCnts:
+                    #     print(sname )
+                    #
+                    #     string a = ""
+                    #     for sname in sNameCnts2:
+                    #         if yaydada
+                    #             then
+                    #             a = asdad
+
+
+
                     for img in thisCard.rankAndSuitContourImgs:
                         thisCard.rankImg = img
                         thisCard.suitImg = img
