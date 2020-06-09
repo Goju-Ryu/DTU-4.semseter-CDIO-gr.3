@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """The Python implementation of the GRPC helloworld.Greeter server."""
-
+import os
 from concurrent import futures
 import logging
 
@@ -26,7 +26,16 @@ class Greeter(grpc_pb2_grpc.GreeterServicer):
 
     def SayHello(self, request, context):
         print('I got a message from \"%s\"!' % request.name)
-        return grpc_pb2.HelloReply(message='Hello, %s! I\'m Python world!' % request.name)
+        #TODO: make this inside an if statment depending on weather the user wants GUI og OpenCV
+        if(request.name == "Java world"):
+            from ManGui import ManGUI
+            x = ManGUI()
+        else:
+            pass #TODO: call openCV here
+        b = x.run()
+        returnMSG ='Hello, %s! I\'m Python world! here is a msg for you:' % request.name
+        returnMSG += b
+        return grpc_pb2.HelloReply(message=returnMSG)#request.name
 
 
 def serve():
