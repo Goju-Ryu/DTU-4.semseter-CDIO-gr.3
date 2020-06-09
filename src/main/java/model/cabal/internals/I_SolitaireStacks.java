@@ -11,7 +11,7 @@ public interface I_SolitaireStacks extends Collection {
     boolean addAll(Collection c) throws IllegalMoveException;
 
     /**
-     * Removes a subset of the solitaire stack. The top card must be face up.
+     * Removes a subset of the solitaire stack. all the cards must be face up
      *
      * @param range
      * @return
@@ -20,26 +20,30 @@ public interface I_SolitaireStacks extends Collection {
     Collection<I_CardModel> popSubset(int range) throws IllegalMoveException;
 
     /**
+     * Returns a card from the list on a specified position.
      *
-     * @param position
-     * @return
+     * @param position The position in the list
+     * @return The card
      */
     I_CardModel getCard(int position);
 
     /**
-     * returns
+     * returns the size of the list
      */
     int size();
 
     /**
+     * Checks if the list contains a certain card
      *
-     * @param card
-     * @return
+     * @param card The card we are looking for
+     * @return true if the list contains the card and false if it dosent
      */
     boolean contains(I_CardModel card);
 
+
     /**
      *
+     * @param range
      * @return
      */
     boolean canMoveFrom(int range);
@@ -50,6 +54,7 @@ public interface I_SolitaireStacks extends Collection {
     }
 
     /**
+     *
      *
      * @return
      */

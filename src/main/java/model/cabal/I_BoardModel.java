@@ -87,9 +87,10 @@ public interface I_BoardModel extends PropertyEditor {
     }
 
     /**
+     * Returns a certain pile
      *
-     * @param pile
-     * @return
+     * @param pile The pile
+     * @return The pile
      */
     List<I_CardModel> getPile(E_PileID pile);
 
