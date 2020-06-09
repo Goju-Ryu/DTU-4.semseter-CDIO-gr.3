@@ -16,8 +16,8 @@ prereqs:
 Then you need to install grpc, you can do that by
 
 finally you can run a
-'''
+```
 mvn clean
 mvn compile
-'''
+```
 to make sure every you target is clean and generate the files you neeed 
