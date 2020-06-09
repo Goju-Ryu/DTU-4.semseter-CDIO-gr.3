@@ -4,8 +4,9 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
 import java.util.Collection;
+import java.util.List;
 
-public interface I_SolitaireStacks extends Collection {
+public interface I_SolitaireStacks<T> extends List {
 
     @Override
     boolean addAll(Collection c) throws IllegalMoveException;
@@ -17,7 +18,7 @@ public interface I_SolitaireStacks extends Collection {
      * @return The new sublist
      * @throws IllegalMoveException
      */
-    Collection<I_CardModel> popSubset(int range) throws IllegalMoveException;
+    List<T> popSubset(int range) throws IllegalMoveException;
 
     /**
      * Returns a card from the list on a specified position.
@@ -25,7 +26,7 @@ public interface I_SolitaireStacks extends Collection {
      * @param position The position in the list
      * @return The card
      */
-    I_CardModel getCard(int position);
+    T getCard(int position);
 
     /**
      * returns the size of the list
@@ -39,7 +40,6 @@ public interface I_SolitaireStacks extends Collection {
      * @return true if the list contains the card and false if it dosent
      */
     boolean contains(I_CardModel card);
-
 
     /**
      *
