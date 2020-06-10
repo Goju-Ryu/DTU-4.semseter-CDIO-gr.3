@@ -1,7 +1,7 @@
 from cv2 import cv2
 
 from Isolator.BoardRuler import BoardRuler
-from CardAnalyser import CardAnalyser
+from Isolator.CardAnalyser import CardAnalyser
 import numpy as np
 
 #Author : Hans
