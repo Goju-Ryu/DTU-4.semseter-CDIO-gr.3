@@ -23,8 +23,7 @@ public interface I_CardModel {
     E_CardSuit getSuit();
 
     /**
-     * Get the rank of the Card
-     * @return
+     * @return The rank of the Card
      */
     Integer getRank();
 

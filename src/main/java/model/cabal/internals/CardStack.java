@@ -3,16 +3,18 @@ package model.cabal.internals;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
+import javax.annotation.Nonnull;
+import java.beans.PropertyEditorSupport;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CardStack implements I_SolitaireStacks {
+public class CardStack<cardType extends I_CardModel> extends PropertyEditorSupport implements I_SolitaireStacks<cardType> {
 
-    private List<I_CardModel> stack;
+    private List<cardType> stack;
 
-    public CardStack(List<I_CardModel> list) {
+    public CardStack(List<cardType> list) {
         this.stack = list;
     }
 
@@ -21,7 +23,7 @@ public class CardStack implements I_SolitaireStacks {
     }
 
     @Override
-    public boolean addAll(Collection c) throws IllegalMoveException {
+    public boolean addAll(@Nonnull Collection<? extends cardType> c) throws IllegalMoveException {
         return stack.addAll(c);
     }
 
@@ -31,23 +33,18 @@ public class CardStack implements I_SolitaireStacks {
     }
 
     @Override
-    public boolean retainAll(Collection c) {
+    public boolean retainAll(@Nonnull Collection<?> c) {
         return stack.retainAll(c);
     }
 
     @Override
-    public boolean removeAll(Collection c) {
+    public boolean removeAll(@Nonnull Collection<?> c) {
         return false; //should not be implemented
     }
 
     @Override
-    public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
-
-
-
+    public Collection<cardType> popSubset(int range) throws IllegalMoveException {
         return null;
-
-
 
 //        int top = this.size() - 1;
 //        int point = top - range;
@@ -66,11 +63,8 @@ public class CardStack implements I_SolitaireStacks {
     }
 
     @Override
-    public I_CardModel getCard(int position) {
-
-        I_CardModel card = stack.get(position);
-
-        return card;
+    public cardType getCard(int position) {
+        return stack.get(position);
     }
 
     @Override
@@ -84,23 +78,28 @@ public class CardStack implements I_SolitaireStacks {
     }
 
     @Override
-    public boolean contains(Object o) {
+    public boolean contains(@Nonnull Object o) {
         return stack.contains(o);
     }
 
 
     @Override
-    public Iterator iterator() {
+    public @Nonnull Iterator<cardType> iterator() {
         return stack.iterator();
     }
 
     @Override
-    public Object[] toArray() {
+    public @Nonnull Object[] toArray() {
         return new Object[0];
     }
 
     @Override
-    public boolean add(Object o) {
+    public @Nonnull <T> T[] toArray(@Nonnull T[] ts) {
+        return (T[]) stack.toArray(ts);
+    }
+
+    @Override
+    public boolean add(cardType o) {
         return false;
     }
 
@@ -110,14 +109,10 @@ public class CardStack implements I_SolitaireStacks {
     }
 
     @Override
-    public boolean containsAll(Collection c) {
+    public boolean containsAll(@Nonnull Collection c) {
         return stack.containsAll(c);
     }
 
-    @Override
-    public Object[] toArray(Object[] a) {
-        return new Object[0];
-    }
 
     @Override
     public boolean canMoveFrom(int range) {
@@ -125,7 +120,7 @@ public class CardStack implements I_SolitaireStacks {
     }
 
     @Override
-    public boolean canMoveTo(Collection cards) {
+    public boolean canMoveTo(@Nonnull Collection<cardType> cards) {
         return false;
     }
 }
