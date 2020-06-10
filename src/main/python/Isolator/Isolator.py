@@ -43,6 +43,7 @@ class Isolator:
                 cv2.imshow("stack Bottom Mask", stack1)
                 cv2.imshow("stack Top Mask", stack)
 
+            #HER EMIL
             for card in botCards:
                 topCards.append(card)
             return topCards, succes
