@@ -60,8 +60,8 @@ class SVideo:
     def getFrame(self):
         self.empt, self.frame = self.rec.read()
         img = self.frame
-        return cv2.resize(img, (800,500))
-        #return self.frame
+        #return cv2.resize(img, (800,500))
+        return self.frame
 
     # Author : Hans
     def stop(self):

@@ -19,7 +19,7 @@ cardVal = CardValidator()
 
 class KabaleRecogniser:
 
-    def run(self):
+    def run(self, settings ):
 
         sNameCnts = [["Hearts", 0], ["Spades", 0], ["Clubs", 0], ["Diamonds", 0], ["Ace", 0], ["Two", 0],
                   ["Three", 0], [ "Four", 0], ["Five", 0], ["Six", 0], ["Seven", 0],
@@ -32,7 +32,7 @@ class KabaleRecogniser:
 
 # CARD ISOLATION AND ASSIGNMENT TO LIST _________________
             isolator = Isolator(False,False,True,False)
-            cards, succes = isolator.isolateCards(img)
+            cards, succes = isolator.isolateCards(img, settings)
 # CARD ISOLATION AND ASSIGNMENT TO LIST _________________
 
 
