@@ -6,7 +6,7 @@ import cv2
 from Card import Card
 from Isolator.Isolator import Isolator
 from VideoInput.Video import SVideo
-from CardValidator import CardValidator
+from Validator.CardValidator import CardValidator
 
 
 from Isolator.CardAnalyser import CardAnalyser
