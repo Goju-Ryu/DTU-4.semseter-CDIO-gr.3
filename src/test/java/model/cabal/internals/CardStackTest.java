@@ -3,11 +3,12 @@ package model.cabal.internals;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CardStackTest {
 
@@ -43,8 +44,8 @@ class CardStackTest {
     void getCard() {
         LinkedList<Integer> l = new LinkedList();
 
-        Assert.assertTrue(l.addAll(List.of(1, 2, 3, 4, 5)));
-        Assert.assertTrue(l.removeAll(List.of(1, 5)));
+        assertTrue(l.addAll(List.of(1, 2, 3, 4, 5)));
+        assertTrue(l.removeAll(List.of(1, 5)));
 
 
 
