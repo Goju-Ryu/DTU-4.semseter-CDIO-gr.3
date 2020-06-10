@@ -1,5 +1,6 @@
 class Card():
 
+    # Author : Hans
     def __init__(self, profile, exists):
         self.exists = exists
         self.profile = profile
@@ -22,11 +23,13 @@ class Card():
         self.rank_match_difference_value = 0 #difference between the best matching rank image and the checking image
         self.suit_match_difference_value = 0 #difference between the best matching rank image and the checking image
 
+    # Author : Hans
     def initiateCard(self, contour, points):
         self.compContour = contour
         self.compPoints = points
         return self
 
+    # Author : Hans
     def setProfile(self, image):
         self.profile = image
 

@@ -20,6 +20,7 @@ public enum E_CardSuit {
     // The private field representing the String values of the enum members
     private final String cardSuitText;
     private final boolean isRed;
+
     // Constructor
     // this keyword represent each member of the enum
     private E_CardSuit(String cardSuitText, boolean isRed){
@@ -29,7 +30,9 @@ public enum E_CardSuit {
 
     // Method to print the suit
     // Dont know if you have to add toString()
-    public String getCardSuit(){
+
+    @Override
+    public String toString(){
         return cardSuitText;
     }
 

@@ -1,98 +1,136 @@
 package model.cabal.internals;
 
-import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
-public class CardStack extends A_StackModel {
+public class CardStack implements I_SolitaireStacks {
 
-    public CardStack(List<I_CardModel> cards) {
-        this.cards = cards;
+    private List<I_CardModel> list;
+
+    public CardStack(List<I_CardModel> list) {
+        this.list = list;
     }
 
-    public CardStack(I_CardModel ... cards) {
-        this.cards = new ArrayList<>();
-        this.cards.addAll(Arrays.asList(cards));
+    public CardStack(){
+        list = new LinkedList<>();
     }
 
-    public boolean canMoveTo(A_StackModel destination) {
-        if (destination == null) //TODO dette burde kaste en exception
-            throw new NullPointerException("Destination is null!");
-        if ( !destination.getLast().isFacedUp() )
-            return false;
-        if ( destination.size() == 0 && this.getFirst().getRank() != 13)
-            return false;
-        if ( E_CardSuit.isSameColour(destination.getLast().getSuit(), this.getFirst().getSuit()) )
-            return false;
-        if (destination.getLast().getRank() - 1 != this.getFirst().getRank() )
-            return false;
-        return true;
+    @Override
+    public boolean addAll(Collection c) throws IllegalMoveException {
+
+        for (int i = 0; i < c.size(); i++) {
+
+        }
+
+        return false;
     }
 
-    public void moveTo(A_StackModel stackModel) throws IllegalMoveException {
-        if ( !canMoveTo(stackModel) )
-            throw
-                    new IllegalMoveException(
-                            "You tried to move stack \"" +this+ "\" to stack \"" +stackModel+ "\". Maybe "
-                                    +this.getFirst()+ " and "
-                                    +(stackModel != null && stackModel.cards != null ? stackModel.getLast() : null)+
-                                    " don't match?"
-                    );
-
-        stackModel.addToStack((I_CardModel) cards); //Todo: figure out why test throws error
-        this.cards.removeIf(e -> true);
+    @Override
+    public void clear() {
+        list.clear();
     }
 
-    public A_StackModel splitAt(int position) {
-        if (cards == null)
-            return null;
-        if (cards.size() < 1)
-            return null;
-        if (cards.size() < position)
-            throw new IndexOutOfBoundsException("Cannot split at index: " + position + " size of stack is: " + cards.size());
-
-        List<I_CardModel> returnable = cards.subList(position + 1, cards.size());
-        cards = cards.subList(0, position + 1);
-        return new CardStack(returnable);
+    @Override
+    public boolean retainAll(Collection c) {
+        return list.retainAll(c);
     }
 
-
-
-    //--------------------------------------------------//
-    //                    Getters                       //
-    //--------------------------------------------------//
-
-    /**
-     * @return the card at the top of the stack or null if not found
-     */
-    public I_CardModel getFirst() {
-        return getCardAt(0);
+    @Override
+    public boolean removeAll(Collection c) {
+        return false; //should not be implemented
     }
 
-    /**
-     * @return the card with index of position in the stack or null if not found
-     */
-    public I_CardModel getCardAt(int position) {
-        if (cards == null)
-            return null;
-        if (cards.size() < 1)
-            return null;
-        if (cards.size() < position)
-            throw new IndexOutOfBoundsException("Cannot get at index: " + position + " size of stack is: " + cards.size());
+    @Override
+    public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
 
-        return cards.get(position);
+
+
+        return null;
+
+
+
+//        int top = this.size() - 1;
+//        int point = top - range;
+//
+//        List<T> list = new CardStack<T>();
+//        list = this.subList(point,top);
+//
+//        // remove the sublist from the original CardStack
+//
+//        for (int i = 0; i < point; i++) {
+//            int a = top - i;
+//            this.remove(a);
+//        }
+//
+//        return list;
     }
 
-    /**
-     * @return the card at the bottom of the stack or null if not found
-     */
-    public I_CardModel getLast() {
-        return getCardAt(cards.size() - 1);
+    @Override
+    public I_CardModel getCard(int position) {
+
+        //I_CardModel card = stack.get(position);
+
+        return null; // card;
+    }
+
+    @Override
+    public int size() {
+        return 0; //stack.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return false;
     }
 
 
+    @Override
+    public Iterator iterator() {
+        return null;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    @Override
+    public boolean add(Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection c) {
+        return false;
+    }
+
+    @Override
+    public Object[] toArray(Object[] a) {
+        return new Object[0];
+    }
+
+    @Override
+    public boolean canMoveFrom(int range) {
+        return false;
+    }
+
+    @Override
+    public boolean canMoveTo(Collection cards) {
+        return false;
+    }
 }

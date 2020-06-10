@@ -9,7 +9,6 @@ public class Card implements I_CardModel {
     private Integer rank;
     private boolean isFacedUp;
 
-
     public Card() {
         isFacedUp = false;
     }
@@ -41,13 +40,6 @@ public class Card implements I_CardModel {
     public E_CardSuit getSuit() {
         if (suit == null) throw new NullPointerException("Suit hasn't been set yet");
         return suit;
-    }
-
-    // get the suit members text
-    @Override
-    public String getSuitText(){
-        if (suit == null) throw new NullPointerException("Suit hasn't been set yet");
-        return suit.getCardSuit();
     }
 
     // get the rank member
@@ -87,11 +79,11 @@ public class Card implements I_CardModel {
 
     // If the card is face up it will return the cards rank and suit
     // otherwise it will return an empty string
-    @Override
+    @Deprecated
     public String toStringValue() {
         String string = "";
         if (isFacedUp){
-            string += rankToString() + " of " + suit.getCardSuit();
+            string += rankToString() + " of " + suit.toString();
         }else {
             string = "Card is faced down";
         }
@@ -113,6 +105,5 @@ public class Card implements I_CardModel {
                 return rank.toString();
         }
     }
-
 
 }

@@ -1,4 +1,8 @@
 package control;
 
-public interface I_GameHistory {
+import java.beans.PropertyChangeListener;
+
+public interface I_GameHistory extends PropertyChangeListener {
+
+
 }
