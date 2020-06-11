@@ -59,7 +59,7 @@ class CardStackTest {
     @Test
     void clear() {
 
-        I_SolitaireStacks<I_CardModel> stack = createCardStack(4);
+        CardStack<I_CardModel> stack = createCardStack(4);
 
         assertEquals(4,stack.size());
 

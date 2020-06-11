@@ -33,9 +33,7 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
     @Override
     public void clear() {
-        for (int i = 0; i < stack.size() ; i++) {
-         stack.remove(i);
-        }
+        stack.clear();
     }
 
     @Override
