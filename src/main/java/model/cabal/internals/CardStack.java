@@ -3,7 +3,6 @@ package model.cabal.internals;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
-import javax.annotation.Nonnull;
 import java.beans.PropertyEditorSupport;
 import java.util.Collection;
 import java.util.Iterator;
@@ -23,7 +22,7 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     @Override
-    public boolean addAll(@Nonnull Collection<? extends cardType> c) throws IllegalMoveException {
+    public boolean addAll(Collection<? extends cardType> c) throws IllegalMoveException {
         return stack.addAll(c);
     }
 
@@ -33,12 +32,12 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     @Override
-    public boolean retainAll(@Nonnull Collection<?> c) {
+    public boolean retainAll(Collection<?> c) {
         return stack.retainAll(c);
     }
 
     @Override
-    public boolean removeAll(@Nonnull Collection<?> c) {
+    public boolean removeAll( Collection<?> c) {
         return false; //should not be implemented
     }
 
@@ -71,23 +70,23 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     @Override
-    public boolean contains(@Nonnull Object o) {
+    public boolean contains(Object o) {
         return stack.contains(o);
     }
 
 
     @Override
-    public @Nonnull Iterator<cardType> iterator() {
+    public Iterator<cardType> iterator() {
         return stack.iterator();
     }
 
     @Override
-    public @Nonnull Object[] toArray() {
+    public Object[] toArray() {
         return new Object[0];
     }
 
     @Override
-    public @Nonnull <T> T[] toArray(@Nonnull T[] ts) {
+    public  <T> T[] toArray( T[] ts) {
         return (T[]) stack.toArray(ts);
     }
 
@@ -104,7 +103,7 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     @Override
-    public boolean containsAll(@Nonnull Collection c) {
+    public boolean containsAll(Collection c) {
         return stack.containsAll(c);
     }
 
@@ -116,7 +115,7 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     @Override
-    public boolean canMoveTo(@Nonnull Collection<cardType> cards) {
+    public boolean canMoveTo(Collection<cardType> cards) {
         // todo forklar hvad dette betyder. dette giver ikke intuitiv mening
         return false;
     }
