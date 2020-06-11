@@ -6,9 +6,9 @@ import model.cabal.internals.card.I_CardModel;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 class CardStackTest {
 
@@ -29,9 +29,9 @@ class CardStackTest {
                 new Card(E_CardSuit.SPADES,11,true)
         };
 
-        LinkedList<I_CardModel> list1 = new LinkedList(Arrays.asList(cards1));
+        ArrayList<I_CardModel> list1 = new ArrayList<>(Arrays.asList(cards1));
 
-        LinkedList<I_CardModel> list2 = new LinkedList(Arrays.asList(cards2));
+        ArrayList<I_CardModel> list2 = new ArrayList<>(Arrays.asList(cards2));
 
         CardStack<I_CardModel> stack1 = new CardStack<>();
         CardStack<I_CardModel> stack2 = new CardStack<>();
@@ -57,6 +57,25 @@ class CardStackTest {
 
     @Test
     void clear() {
+
+        Card[] cards1 = {
+                new Card(E_CardSuit.DIAMONDS,3,true),
+                new Card(E_CardSuit.CLUBS,4,true),
+                new Card(E_CardSuit.HEARTS,5,true),
+                new Card(E_CardSuit.SPADES,6,true)
+        };
+
+        CardStack<I_CardModel> stack = new CardStack<I_CardModel>(Arrays.asList(cards1));
+
+        System.out.println(stack.size());
+
+        Assert.assertEquals(4,stack.size());
+
+        stack.clear();
+
+        System.out.println(stack.size());
+
+        Assert.assertEquals(0,stack.size());
     }
 
     @Test
