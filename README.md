@@ -16,6 +16,9 @@ you need to make sure you are using
 [project SDK: 12]     
 [Project language level: 11 - local variabel for lambda parameteres]
 
+## python front-end and openCV:
+You need to have Python 3.8
+
 ## java python communication:
 Once the above is done comes the tricky part, setting grpc up allowing the java side to talk to the server side.
 prereqs:
