@@ -1,5 +1,6 @@
 package model.cabal.internals;
 
+import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
