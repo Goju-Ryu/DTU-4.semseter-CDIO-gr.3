@@ -39,7 +39,7 @@ otherwise you can use intellij or a simmilar ui
 
 should that not work you can manually try to run
 ```
-proto_py.bat(for windows) or grpc.proto(for linux)
+protoc.bat(for windows) or protoc.sh(for linux)
 ```
 to set up grpc and then clean and compile
 
