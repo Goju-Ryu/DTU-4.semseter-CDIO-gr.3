@@ -1,5 +1,6 @@
 package model.cabal.internals;
 
+import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
@@ -98,8 +99,8 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
     @Override
     public boolean remove(Object o) {
-        // todo forklar hvad dette betyder. dette giver ikke intuitiv mening
-        return false;
+        stack.remove(o);
+        return true;
     }
 
     @Override
@@ -110,13 +111,24 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
     @Override
     public boolean canMoveFrom(int range) {
-        // todo forklar hvad dette betyder. dette giver ikke intuitiv mening
-        return false;
+        int top = stack.size() -1;
+        return  stack.get(top - range).isFacedUp();
     }
 
     @Override
     public boolean canMoveTo(Collection<cardType> cards) {
-        // todo forklar hvad dette betyder. dette giver ikke intuitiv mening
-        return false;
+        int top = stack.size() -1;
+
+        cardType card = null;
+        for(cardType element: cards){
+            card = element;
+        }
+
+        E_CardSuit mySuit = stack.get(top).getSuit();
+        E_CardSuit otSuit = card.getSuit();
+
+        E_CardSuit.isSameColour(mySuit, otSuit);
+
+        return E_CardSuit.isSameColour(mySuit, otSuit);
     }
 }
