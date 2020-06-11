@@ -24,7 +24,10 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
     @Override
     public boolean addAll(Collection<? extends cardType> c) throws IllegalMoveException {
-        return stack.addAll(c);
+        for (cardType element: c) {
+            stack.add(element);
+        }
+        return true;
     }
 
     @Override
