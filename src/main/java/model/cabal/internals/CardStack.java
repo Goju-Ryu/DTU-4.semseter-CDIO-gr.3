@@ -1,18 +1,18 @@
 package model.cabal.internals;
 
-import jdk.jshell.spi.ExecutionControl;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
+import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
-import java.beans.PropertyEditorSupport;
+import javax.annotation.Nonnull;
 import java.util.*;
 
-public class CardStack<cardType extends I_CardModel> extends PropertyEditorSupport implements I_SolitaireStacks<cardType> {
+public class CardStack implements I_SolitaireStacks {
 
-    private List<cardType> stack;
+    private List<I_CardModel> stack;
 
-    public CardStack(List<cardType> list) {
+    public CardStack(List<I_CardModel> list) {
         this.stack = list;
     }
 
@@ -21,11 +21,12 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     @Override
-    public boolean addAll(Collection<? extends cardType> c) throws IllegalMoveException {
-        for (cardType element: c) {
-            stack.add(element);
-        }
-        return true;
+    public boolean addAll(@Nonnull Collection<? extends I_CardModel> c) throws IllegalMoveException {
+        return stack.addAll(c);
+//        for (I_CardModel element: c) {
+//            stack.add(element);
+//        }
+//        return true;
     }
 
     @Override
@@ -34,10 +35,10 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     @Override
-    public boolean retainAll(Collection<?> c) {
+    public boolean retainAll(@Nonnull Collection c) {
         Objects.requireNonNull(c);
         boolean modified = false;
-        Iterator<cardType> it = this.iterator();
+        Iterator<I_CardModel> it = this.iterator();
         while (it.hasNext()) {
 
             if (!c.contains(it.next())) {
@@ -49,43 +50,33 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     @Override
-    public boolean removeAll( Collection<?> c) {
-        try {
-            throw new ExecutionControl.NotImplementedException("Not implemented yet");
-        } catch (ExecutionControl.NotImplementedException e) {
-            e.printStackTrace();
-        }
-        return false; //should not be implemented
+    public boolean removeAll(@Nonnull Collection c) {
+        throw new IllegalCallerException("This method should not be called"); //should not be implemented
     }
 
     @Override
-    public CardStack<cardType> popSubset(int range) throws IllegalMoveException {
+    public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException { // TODO i'm pretty sure this does the opposite of the expected
 
-            int toIndex = stack.size() - 1;
-            int frIndex = toIndex - range;
+        int toIndex = stack.size() - 1;
+        int frIndex = toIndex - range;
 
-            List<cardType> sublist = stack.subList(frIndex, toIndex);
-            List<cardType> newStack = stack.subList(frIndex, toIndex);
+        List<I_CardModel> sublist = stack.subList(frIndex, toIndex);
 
-            this.stack = newStack;
+        this.stack = stack.subList(frIndex, toIndex);
 
-            CardStack<cardType> cardStack = new CardStack<>(sublist);
-
-            return cardStack;
+        return new CardStack(sublist);
     }
 
     @Override
-    public cardType getCard(int position) {
+    public I_CardModel getCard(int position) {
         return stack.get(position);
     }
 
     @Override
-    public Collection<cardType> getSubset(int range) {
+    public Collection<I_CardModel> getSubset(int range) {
         int toIndex = stack.size() - 1;
         int frIndex = toIndex - range;
-        List<cardType> sublist = stack.subList(frIndex, toIndex);
-        CardStack<cardType> cardStack = new CardStack<>(sublist);
-        return cardStack;
+        return stack.subList(frIndex, toIndex);
     }
 
     @Override
@@ -100,44 +91,47 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
     @Override
     public boolean contains(Object o) {
-
-        if(o instanceof I_CardModel) {
-            cardType c = (cardType) o;
-            for (cardType card : this.stack) {
-                if (c.equals(card)){
-                    return true;
-                }
-            }
-        }else {
-            try {
-                throw new ExecutionControl.NotImplementedException("object is not of correct type");
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        return false;
+        return stack.contains(o);
+//        if(o instanceof model.cabal.internals.card.I_CardModel) {
+//            I_CardModel c = (I_CardModel) o;
+//            for (I_CardModel card : this.stack) {
+//                if (c.equals(card)){
+//                    return true;
+//                }
+//            }
+//        }else {
+//            try {
+//                throw new ExecutionControl.NotImplementedException("object is not of correct type");
+//            }catch (Exception e){
+//                e.printStackTrace();
+//            }
+//        }
+//        return false;
     }
 
 
     @Override
-    public Iterator<cardType> iterator() {
+    public @NonNullType Iterator<I_CardModel> iterator() {
         return stack.iterator();
     }
 
     @Override
+    @NonNullType
+    @Nonnull
     public Object[] toArray() {
         return stack.toArray();
     }
 
     @Override
-    public  <T> T[] toArray( T[] ts) {
+    @NonNullType
+    @Nonnull
+    public <T> T[] toArray(@Nonnull T[] ts) {
         return (T[]) stack.toArray(ts);
     }
 
     @Override
-    public boolean add(cardType o) {
-        stack.add(o);
-        return true;
+    public boolean add(I_CardModel o) {
+        return stack.add(o);
     }
 
     /**
@@ -152,7 +146,7 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     @Override
-    public boolean containsAll(Collection c) {
+    public boolean containsAll(@Nonnull Collection c) {
         return stack.containsAll(c);
     }
 
@@ -168,13 +162,15 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     @Override
-    public boolean canMoveTo(Collection<cardType> cards) {
+    public boolean canMoveTo(@Nonnull Collection<I_CardModel> cards) {
+        // TODO shouldn't this method check some of these for all cards it gets?
 
-        cardType card = null; // Getting the last card "the top card"
-        for(cardType element: cards){
+        I_CardModel card = null; // Getting the last card "the top card"
+        for(I_CardModel element: cards){
             card = element;
         }
 
+        assert (card != null);
         if(!(stack.get(0).isFacedUp() && card.isFacedUp())){
             return false;
         }
@@ -193,20 +189,20 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
         int otRank = card.getRank();
 
         // ot rank must be equals to one higher than my rank. otherwise it is illigal.
-        if(otRank - myRank != 1){
+        if(otRank - myRank != 1)
             return false;
-        }
+
         return true;
     }
 
     @Override
     public boolean containsCard(I_CardModel card) {
-
-        for (int i = 0; i < stack.size(); i++) {
-            if (stack.get(i).equals(card)){
-                return true;
-            }
-        }
-        return false;
+        return stack.contains(card);
+//        for (I_CardModel i_cardModel : stack) {
+//            if (i_cardModel.equals(card)) {
+//                return true;
+//            }
+//        }
+//        return false;
     }
 }
