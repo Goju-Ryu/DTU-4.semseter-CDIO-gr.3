@@ -26,7 +26,7 @@ public interface I_SolitaireStacks<cardType extends I_CardModel> extends Collect
      * @return The new sublist
      * @throws IllegalMoveException If the canMoveFrom(range) method would return false
      */
-    CardStack<cardType> popSubset(int range) throws IllegalMoveException;
+    Collection<cardType> popSubset(int range) throws IllegalMoveException;
 
     /**
      * Returns a card from the list on a specified position.
@@ -34,7 +34,15 @@ public interface I_SolitaireStacks<cardType extends I_CardModel> extends Collect
      * @param position The position in the list
      * @return The card
      */
-    cardType getCard(int position); //TODO should this be copies to avoid outside interference?
+    I_CardModel getCard(int position); //TODO should this be copies to avoid outside interference?
+
+    /**
+     * Returns a subset of the solitaire stack.
+     *
+     * @param range The position in the list where you would like to split it to make the new subset of the list
+     * @return The new sublist
+     */
+    Collection<I_CardModel> getSubset(int range);
 
 
     /**

@@ -3,12 +3,13 @@ package model.cabal.internals;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class CardStackTest {
 
@@ -39,8 +40,8 @@ class CardStackTest {
         stack1.addAll(list1);
         stack2.addAll(list2);
 
-        Assert.assertEquals(4, stack1.size());
-        Assert.assertEquals(4, stack2.size());
+        assertEquals(4, stack1.size());
+        assertEquals(4, stack2.size());
 
         list1.addAll(list2);
         stack1.addAll(stack2);
@@ -51,7 +52,7 @@ class CardStackTest {
         it2 = stack1.iterator();
 
         while (it.hasNext()){
-            Assert.assertEquals(it.next(),it2.next());
+            assertEquals(it.next(),it2.next());
         }
     }
 
@@ -60,11 +61,11 @@ class CardStackTest {
 
         I_SolitaireStacks<I_CardModel> stack = createCardStack(4);
 
-        Assert.assertEquals(4,stack.size());
+        assertEquals(4,stack.size());
 
         stack.clear();
 
-        Assert.assertEquals(0,stack.size());
+        assertEquals(0,stack.size());
     }
 
     //Test will fail
@@ -79,11 +80,11 @@ class CardStackTest {
         System.out.println(stack.size());
         System.out.println(stack2.size());
 
-        Assert.assertTrue(stack2.retainAll(stack));
+        assertTrue(stack2.retainAll(stack));
 
         System.out.println(stack2.size());
 
-        Assert.assertEquals(4,stack2.size());
+        assertEquals(4,stack2.size());
 
     }
 
@@ -100,7 +101,7 @@ class CardStackTest {
 
         System.out.println(stack2.size());
 
-        Assert.assertEquals(2,stack2.size());
+        assertEquals(2,stack2.size());
     }
 
     @Test
@@ -109,8 +110,8 @@ class CardStackTest {
         CardStack<I_CardModel> stack = createCardStack(4);
         CardStack<I_CardModel> stack2 = stack.popSubset(2);
 
-        Assert.assertEquals(2,stack2.size());
-        Assert.assertEquals(2,stack.size());
+        assertEquals(2,stack2.size());
+        assertEquals(2,stack.size());
 
 
     }
@@ -122,11 +123,11 @@ class CardStackTest {
         I_CardModel cardModel = new Card(E_CardSuit.HEARTS,3,true);
         I_CardModel card = stack.getCard(2);
 
-        Assert.assertEquals(cardModel.getRank(),card.getRank());
-        Assert.assertEquals(cardModel.getSuit(),card.getSuit());
-        Assert.assertEquals(cardModel.isFacedUp(),card.isFacedUp());
+        assertEquals(cardModel.getRank(),card.getRank());
+        assertEquals(cardModel.getSuit(),card.getSuit());
+        assertEquals(cardModel.isFacedUp(),card.isFacedUp());
 
-        Assert.assertTrue(card.equals(cardModel));
+        assertTrue(card.equals(cardModel));
 
     }
 
@@ -137,7 +138,7 @@ class CardStackTest {
 
         int arrSize = stack.size();
 
-        Assert.assertEquals(4,arrSize);
+        assertEquals(4,arrSize);
 
         for (int i = 0; i < 5; i++) {
             I_CardModel card = new Card(E_CardSuit.SPADES,i+1,true);
@@ -146,7 +147,7 @@ class CardStackTest {
 
         int arrSize2 = stack.size();
 
-        Assert.assertEquals(9,arrSize2);
+        assertEquals(9,arrSize2);
         
     }
 
@@ -155,12 +156,12 @@ class CardStackTest {
 
         CardStack<I_CardModel> stack = createCardStack(4);
 
-        Assert.assertFalse(stack.isEmpty());
+        assertFalse(stack.isEmpty());
 
         stack.clear();
         System.out.println(stack.size());
 
-        Assert.assertTrue(stack.isEmpty());
+        assertTrue(stack.isEmpty());
 
     }
 
@@ -177,7 +178,7 @@ class CardStackTest {
 
         boolean b = stack.contains(card);
 
-        Assert.assertTrue(stack.contains(card));
+        assertTrue(stack.contains(card));
     }
 
     @Test
@@ -188,7 +189,7 @@ class CardStackTest {
         I_CardModel card = new Card(E_CardSuit.HEARTS,3,true);
         boolean assesment = stack.containsCard(card);
 
-        Assert.assertTrue(assesment);
+        assertTrue(assesment);
 
     }
 
