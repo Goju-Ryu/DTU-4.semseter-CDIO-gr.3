@@ -96,10 +96,15 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
         return true;
     }
 
+    /**
+     * This overridden version of remove will remove a card from the top of the stack of cards
+     *
+     * @param o The object in the list that is to be removed.
+     * @return true when the object is removed, and false if otherwise
+     */
     @Override
     public boolean remove(Object o) {
-        // todo forklar hvad dette betyder. dette giver ikke intuitiv mening
-        return false;
+        return stack.remove(o);
     }
 
     @Override
