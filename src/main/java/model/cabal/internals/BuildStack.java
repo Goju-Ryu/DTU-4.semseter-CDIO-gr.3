@@ -8,15 +8,15 @@ import org.checkerframework.checker.nullness.compatqual.NonNullType;
 import javax.annotation.Nonnull;
 import java.util.*;
 
-public class CardStack implements I_SolitaireStacks {
+public class BuildStack implements I_SolitaireStacks {
 
     private List<I_CardModel> stack;
 
-    public CardStack(List<I_CardModel> list) {
+    public BuildStack(List<I_CardModel> list) {
         this.stack = list;
     }
 
-    public CardStack(){
+    public BuildStack(){
         stack = new ArrayList<>();
     }
 
@@ -64,7 +64,7 @@ public class CardStack implements I_SolitaireStacks {
 
         this.stack = stack.subList(frIndex, toIndex);
 
-        return new CardStack(sublist);
+        return new BuildStack(sublist);
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CardStackTest {
+class BuildStackTest {
 
     @Test
     void addAll() {
@@ -34,8 +34,8 @@ class CardStackTest {
 
         ArrayList<I_CardModel> list2 = new ArrayList<>(Arrays.asList(cards2));
 
-        CardStack stack1 = new CardStack();
-        CardStack stack2 = new CardStack();
+        BuildStack stack1 = new BuildStack();
+        BuildStack stack2 = new BuildStack();
 
         stack1.addAll(list1);
         stack2.addAll(list2);
@@ -59,7 +59,7 @@ class CardStackTest {
     @Test
     void clear() {
 
-        CardStack stack = createCardStack(4);
+        BuildStack stack = createCardStack(4);
 
         assertEquals(4,stack.size());
 
@@ -74,8 +74,8 @@ class CardStackTest {
 
         //TODO: when removeAll is implemented correct this should work.
 
-        CardStack stack = createCardStack(4);
-        CardStack stack2 = createCardStack(6);
+        BuildStack stack = createCardStack(4);
+        BuildStack stack2 = createCardStack(6);
 
         System.out.println(stack.size());
         System.out.println(stack2.size());
@@ -120,7 +120,7 @@ class CardStackTest {
     @Test
     void getCard() {
 
-        CardStack stack = createCardStack(4);
+        BuildStack stack = createCardStack(4);
         I_CardModel cardModel = new Card(E_CardSuit.HEARTS,3,true);
         I_CardModel card = stack.getCard(2);
 
@@ -135,7 +135,7 @@ class CardStackTest {
     @Test
     void size() {
         
-        CardStack stack = createCardStack(4);
+        BuildStack stack = createCardStack(4);
 
         int arrSize = stack.size();
 
@@ -155,7 +155,7 @@ class CardStackTest {
     @Test
     void isEmpty() {
 
-        CardStack stack = createCardStack(4);
+        BuildStack stack = createCardStack(4);
 
         assertFalse(stack.isEmpty());
 
@@ -168,8 +168,8 @@ class CardStackTest {
 
     @Test
     void contains() {
-        CardStack stk = createCardStack(4);
-        CardStack stk2 = createCardStack(4);
+        BuildStack stk = createCardStack(4);
+        BuildStack stk2 = createCardStack(4);
 
         int i = 0;
         for( I_CardModel e : stk ){
@@ -181,7 +181,7 @@ class CardStackTest {
     @Test
     void containsCard(){
 
-        CardStack stack = createCardStack(4);
+        BuildStack stack = createCardStack(4);
 
         I_CardModel card = new Card(E_CardSuit.HEARTS,3,true);
         boolean assesment = stack.containsCard(card);
@@ -192,7 +192,7 @@ class CardStackTest {
 
     @Test
     void iterator() {
-        CardStack stk = createCardStack(4);
+        BuildStack stk = createCardStack(4);
         Iterator itk = stk.iterator();
         int i = 1;
         while(itk.hasNext())
@@ -201,7 +201,7 @@ class CardStackTest {
 
     @Test
     void toArray() {
-        CardStack stk = createCardStack(4);
+        BuildStack stk = createCardStack(4);
         Object arr[] = stk.toArray();
         int i = 0;
         for(I_CardModel e:stk){
@@ -211,7 +211,7 @@ class CardStackTest {
 
     @Test
     void add() {
-        CardStack stack = createCardStack(4);
+        BuildStack stack = createCardStack(4);
         I_CardModel card = new Card(E_CardSuit.CLUBS,6,true);
 
         assertEquals(4,stack.size());
@@ -223,7 +223,7 @@ class CardStackTest {
 
     @Test
     void remove() {
-        CardStack stack = createCardStack(4);
+        BuildStack stack = createCardStack(4);
 
         assertEquals(4,stack.size());
 
@@ -235,8 +235,8 @@ class CardStackTest {
 
     @Test
     void containsAll() { //TODO how does this test containsAll without using the method?
-        CardStack stack = createCardStack(4);
-        CardStack stack1 = createCardStack(3);
+        BuildStack stack = createCardStack(4);
+        BuildStack stack1 = createCardStack(3);
 //        boolean c = true;
 //        for(I_CardModel e: stack1){
 //            if( !stack.contains(e) ){
@@ -260,7 +260,7 @@ class CardStackTest {
 
     @Test
     void canMoveFrom() {
-        CardStack stack = new CardStack();
+        BuildStack stack = new BuildStack();
         stack.add(new Card(E_CardSuit.SPADES, 7, true));
         stack.add(new Card(E_CardSuit.HEARTS, 6, true));
         stack.add(new Card(E_CardSuit.SPADES, 5, true));
@@ -289,22 +289,22 @@ class CardStackTest {
 
     @Test
     void canMoveTo() {
-        CardStack stackSpades = new CardStack();
+        BuildStack stackSpades = new BuildStack();
         stackSpades.add(new Card(E_CardSuit.SPADES, 3, true));
 
-        CardStack stackClubs = new CardStack();
+        BuildStack stackClubs = new BuildStack();
         stackClubs.add(new Card(E_CardSuit.CLUBS, 3, true));
 
-        CardStack stackDiamond = new CardStack();
+        BuildStack stackDiamond = new BuildStack();
         stackDiamond.add(new Card(E_CardSuit.DIAMONDS, 3, true));
 
-        CardStack stackHeart = new CardStack();
+        BuildStack stackHeart = new BuildStack();
         stackHeart.add(new Card(E_CardSuit.DIAMONDS, 3, true));
 
 
         // red Card Tests
         // Heart
-        CardStack stack2 = new CardStack();
+        BuildStack stack2 = new BuildStack();
         stack2.add(new Card(E_CardSuit.HEARTS, 2, true));
         stack2.add(new Card(E_CardSuit.SPADES, 1, true));
         // succes = Color is correct, numbers are correct, and faceupp
@@ -328,20 +328,20 @@ class CardStackTest {
 
 
         // fail due to Numbers
-        CardStack stack4 = new CardStack();
+        BuildStack stack4 = new BuildStack();
         stack4.add(new Card(E_CardSuit.SPADES, 6, true));
         stack4.add(new Card(E_CardSuit.HEARTS, 5, true));
         assertFalse(  stack4.canMoveTo(stackSpades) );
 
         // fail due to faceUp
-        CardStack stack5 = new CardStack();
+        BuildStack stack5 = new BuildStack();
         stack5.add(new Card(E_CardSuit.SPADES, 2, false));
         stack5.add(new Card(E_CardSuit.HEARTS, 1, false));
         assertFalse(  stack5.canMoveTo(stackSpades) );
     }
 
-    private CardStack createCardStack(int stacksize){
-        CardStack stack = new CardStack();
+    private BuildStack createCardStack(int stacksize){
+        BuildStack stack = new BuildStack();
 
         for (int i = 0; i < stacksize; i++) {
             I_CardModel card = new Card(E_CardSuit.HEARTS,i + 1,true);

@@ -1,7 +1,7 @@
 package model.cabal;
 
 import static model.cabal.E_PileID.*;
-import model.cabal.internals.CardStack;
+import model.cabal.internals.BuildStack;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
@@ -30,7 +30,7 @@ public final class Board implements I_BoardModel {
         piles = new I_SolitaireStacks[12];
 
         for (I_SolitaireStacks pile : piles) {
-            pile = new CardStack();
+            pile = new BuildStack();
         }
     }
 
