@@ -41,6 +41,6 @@ proto_py.bat(for windows) or grpc.proto(for linux)
 to set up grpc and then clean and compile
 
 if this is not working and you are on a windows computer you can try
-- having bash installed in your terminal
-- having maven installed in bash
+- installing bash in your terminal
+- installed maven in you bash terminal
 
