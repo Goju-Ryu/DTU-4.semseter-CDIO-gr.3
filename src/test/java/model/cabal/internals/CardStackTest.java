@@ -59,7 +59,7 @@ class CardStackTest {
     @Test
     void clear() {
 
-        I_SolitaireStacks<I_CardModel> stack = createCardStack(4);
+        CardStack<I_CardModel> stack = createCardStack(4);
 
         assertEquals(4,stack.size());
 
@@ -167,18 +167,7 @@ class CardStackTest {
 
     @Test
     void contains() {
-
-        CardStack<I_CardModel> stack = createCardStack(4);
-
-        I_CardModel card = new Card(E_CardSuit.HEARTS,3,true);
-
-//        for (int i = 0; i < stack.size() ; i++) {
-//            if ()
-//        }
-
-        boolean b = stack.contains(card);
-
-        assertTrue(stack.contains(card));
+        //Not to be tested unless we need to use it
     }
 
     @Test
@@ -210,10 +199,26 @@ class CardStackTest {
 
     @Test
     void add() {
+        CardStack<I_CardModel> stack = createCardStack(4);
+        I_CardModel card = new Card(E_CardSuit.CLUBS,6,true);
+
+        assertEquals(4,stack.size());
+
+        stack.add(card);
+
+        assertEquals(5,stack.size());
     }
 
     @Test
     void remove() {
+        CardStack<I_CardModel> stack = createCardStack(4);
+
+        assertEquals(4,stack.size());
+
+        stack.remove(stack.getCard(1));
+
+        assertEquals(3,stack.size());
+
     }
 
     @Test
