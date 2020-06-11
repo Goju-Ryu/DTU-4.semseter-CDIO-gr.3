@@ -2,7 +2,9 @@ package model.cabal;
 
 import static model.cabal.E_PileID.*;
 import model.cabal.internals.BuildStack;
+import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
+import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
@@ -22,15 +24,21 @@ public final class Board implements I_BoardModel {
     private PropertyChangeSupport change;
 
     private I_SolitaireStacks[] piles;
-    private int drawPosition;
 
     public Board() {
         change = new PropertyChangeSupport(this);
-        drawPosition = 0;
-        piles = new I_SolitaireStacks[12];
+        piles = new I_SolitaireStacks[values().length];
 
-        for (I_SolitaireStacks pile : piles) {
-            pile = new BuildStack();
+        for (E_PileID id : E_PileID.values()) {
+            if (id == TURNPILE)
+                piles[id.ordinal()] = new DrawStack();
+            else if (id.isBuildStack())
+                piles[id.ordinal()] = new BuildStack();
+            else if (id == HEARTSACEPILE || id == DIAMONDACEPILE || id == CLUBSACEPILE || id == SPADESACEPILE)
+                piles[id.ordinal()] = new SuitStack();
+            else {
+                throw new RuntimeException("An unknown E_Pile_ID was encountered: " + id);
+            }
         }
     }
 
@@ -66,13 +74,19 @@ public final class Board implements I_BoardModel {
 
     @Override
     public I_CardModel turnCard() { //TODO make this handle unknown cards
-        var turnPile = get(TURNPILE);
-        return turnPile.getCard(drawPosition++ % turnPile.size() );
+        var turnPile = (DrawStack) get(TURNPILE);
+
+        if (turnPile.isEmpty())
+                throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
+
+        //TODO validate that this acts like drawing cards physically would
+        return turnPile.turnCard();
     }
 
     @Override
     public I_CardModel getTurnedCard() {
-        return get(TURNPILE).getCard(drawPosition);
+        var turnPile = (DrawStack) get(TURNPILE);
+        return turnPile.getTopCard();
     }
 
 
@@ -83,12 +97,15 @@ public final class Board implements I_BoardModel {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
+        if (!isValidMove(from, to))
+            throw new IllegalMoveException("Cards cannot be moved between " + origin + " and " + destination);
+
         if (!from.canMoveFrom(originPos))
-            throw new IllegalMoveException(origin.getPileIDText() + " Cannot move cards at position " + originPos);
+            throw new IllegalMoveException(origin + " Cannot move cards at position " + originPos);
 
         Collection<I_CardModel> moveCards = from.getSubset(originPos);
         if (!to.canMoveTo(moveCards))
-            throw new IllegalMoveException(destination.getPileIDText() + " Cannot receive cards: " + moveCards);
+            throw new IllegalMoveException(destination + " Cannot receive cards: " + moveCards);
 
         //save state before operation
         Collection<I_CardModel> oldOrigin = Collections.unmodifiableCollection(get(origin));
@@ -107,7 +124,21 @@ public final class Board implements I_BoardModel {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
-        return from.canMoveFrom(originPos) && to.canMoveTo(from.getSubset(originPos));
+        return isValidMove(from, to)
+               && from.canMoveFrom(originPos)
+               && to.canMoveTo(from.getSubset(originPos));
+    }
+
+    private boolean isValidMove(I_SolitaireStacks from, I_SolitaireStacks to) {
+        if(from == to)
+            return false;
+
+        var turnPile = get(TURNPILE);
+
+        if (to.equals(turnPile))
+            return false;
+
+        return true;
     }
 
 
