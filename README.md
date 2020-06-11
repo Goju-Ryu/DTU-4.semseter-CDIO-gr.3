@@ -10,25 +10,40 @@ coming soon.
 
 
 # Developer guide
+NB: No guarantee this works on IOS
 ## java back-end side:
 you need to make sure you are using       
 [project SDK: 12]     
 [Project language level: 11 - local variabel for lambda parameteres]
 
+## python front-end and openCV:
+You need to have Python 3.8
+
 ## java python communication:
 Once the above is done comes the tricky part, setting grpc up allowing the java side to talk to the server side.
 prereqs:
-- having bash installed in your terminal
 - having python 3.4(or higher installed)
-- having maven installed in bash
-- make sure your pip is up to date
+- Having pip installed and up to date
 Then you need to install grpc, you can do that by
 ```
 pip install grpcio-tools
 ```
-finally you can run a
+finally(if you are in linux) you can run a
 ```
 mvn clean
 mvn compile
 ```
 to make sure every you target is clean and generate the files you neeed 
+
+otherwise you can use intellij or a simmilar ui
+
+should that not work you can manually try to run
+```
+proto_py.bat(for windows) or grpc.proto(for linux)
+```
+to set up grpc and then clean and compile
+
+if this is not working and you are on a windows computer you can try
+- installing bash in your terminal
+- installed maven in you bash terminal
+
