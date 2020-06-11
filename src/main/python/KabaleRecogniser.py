@@ -1,13 +1,9 @@
-import os
 from operator import itemgetter
-
 import cv2
-
-from Card import Card
 from Isolator.Isolator import Isolator
 from VideoInput.Video import SVideo, Video
 from Validator.CardValidator import CardValidator
-
+import time as TIME
 
 from Isolator.CardAnalyser import CardAnalyser
 cardAnal = CardAnalyser()
@@ -20,6 +16,7 @@ cardVal = CardValidator()
 class KabaleRecogniser:
 
     def run(self, Settings):
+        timeStart = TIME.time()
         rec = Video()
         sNameCnts = [["Hearts", 0], ["Spades", 0], ["Clubs", 0], ["Diamonds", 0], ["Ace", 0], ["Two", 0],
                   ["Three", 0], [ "Four", 0], ["Five", 0], ["Six", 0], ["Seven", 0],
@@ -54,7 +51,10 @@ class KabaleRecogniser:
                         if name2 == name[0]:
                             name[1] += 1
                 i += 1
-
+            timeNow = TIME.time()
+            timeDiff = timeNow - timeStart
+            if ( timeDiff ) > 3:
+                break
 
 # KEY PRESS CASES ________________
             keyPressed = cv2.waitKey(1) & 0xFF
