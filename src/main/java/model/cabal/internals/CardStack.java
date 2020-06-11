@@ -6,10 +6,7 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
 import java.beans.PropertyEditorSupport;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class CardStack<cardType extends I_CardModel> extends PropertyEditorSupport implements I_SolitaireStacks<cardType> {
 
@@ -40,12 +37,17 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        try {
-            throw new ExecutionControl.NotImplementedException("Not implemented yet");
-        } catch (ExecutionControl.NotImplementedException e) {
-            e.printStackTrace();
+        Objects.requireNonNull(c);
+        boolean modified = false;
+        Iterator<cardType> it = this.iterator();
+        while (it.hasNext()) {
+
+            if (!c.contains(it.next())) {
+                it.remove();
+                modified = true;
+            }
         }
-        return false;
+        return modified;
     }
 
     @Override
@@ -100,12 +102,21 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
     @Override
     public boolean contains(Object o) {
-        try {
-            throw new ExecutionControl.NotImplementedException("Not implemented");
-        } catch (ExecutionControl.NotImplementedException e) {
-            e.printStackTrace();
-        }
 
+        if(o instanceof I_CardModel) {
+            cardType c = (cardType) o;
+            for (cardType card : this.stack) {
+                if (c.equals(card)){
+                    return true;
+                }
+            }
+        }else {
+            try {
+                throw new ExecutionControl.NotImplementedException("object is not of correct type");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
         return false;
     }
 

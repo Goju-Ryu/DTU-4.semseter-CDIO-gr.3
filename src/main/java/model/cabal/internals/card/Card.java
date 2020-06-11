@@ -83,7 +83,7 @@ public class Card implements I_CardModel {
 
     @Override
     public boolean equals(I_CardModel card) {
-        if (this.rank == card.getRank() && this.suit == card.getSuit() && this.isFacedUp() == card.isFacedUp()){
+        if (this.rank == card.getRank() && this.suit.equals(card.getSuit()) && this.isFacedUp() == card.isFacedUp()){
             return true;
         }
         return false;
