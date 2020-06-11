@@ -80,8 +80,12 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     @Override
-    public Collection<I_CardModel> getSubset(int range) {
-        return null;
+    public Collection<cardType> getSubset(int range) {
+        int toIndex = stack.size() - 1;
+        int frIndex = toIndex - range;
+        List<cardType> sublist = stack.subList(frIndex, toIndex);
+        CardStack<cardType> cardStack = new CardStack<>(sublist);
+        return cardStack;
     }
 
     @Override

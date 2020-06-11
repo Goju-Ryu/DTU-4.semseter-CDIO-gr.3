@@ -42,7 +42,7 @@ public interface I_SolitaireStacks<cardType extends I_CardModel> extends Collect
      * @param range The position in the list where you would like to split it to make the new subset of the list
      * @return The new sublist
      */
-    Collection<I_CardModel> getSubset(int range);
+    Collection<cardType> getSubset(int range);
 
 
     /**
