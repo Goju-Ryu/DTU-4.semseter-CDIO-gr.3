@@ -5,9 +5,7 @@ import java.util.Collection;
 /**
  * This is a model of a playing card.
  */
-public class Card implements I_CardModel {
-
-    Collection c;
+public class Card implements I_CardModel  {
 
     private E_CardSuit suit;
     private Integer rank;
@@ -81,12 +79,20 @@ public class Card implements I_CardModel {
             return string;
     }
 
-    @Override
     public boolean equals(I_CardModel card) {
-        if (this.rank == card.getRank() && this.suit.equals(card.getSuit()) && this.isFacedUp() == card.isFacedUp()){
+        System.out.println("Card.equals has been called");
+        return this.rank.equals(card.getRank()) && this.suit.equals(card.getSuit()) && this.isFacedUp() == card.isFacedUp();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        }
-        return false;
+        if (this.getClass() != obj.getClass())
+            return false;
+
+        return equals( (I_CardModel) obj );
+
     }
 
     // If the card is face up it will return the cards rank and suit
@@ -116,17 +122,5 @@ public class Card implements I_CardModel {
             default:
                 return rank.toString();
         }
-    }
-
-    @Override
-    public int compareTo(I_CardModel o) {
-        int b = this.rank.compareTo(o.getRank());
-
-        System.out.println(b);
-        if (this.suit.equals(o.getSuit()) && b == 0 && this.isFacedUp == o.isFacedUp()){
-
-            return 0;
-        }
-        return b;
     }
 }

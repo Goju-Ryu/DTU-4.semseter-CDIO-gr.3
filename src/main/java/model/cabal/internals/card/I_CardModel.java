@@ -7,7 +7,7 @@ import java.security.InvalidParameterException;
  * card value.
  * We only have getters so that we cant change a card once it have been created.
  */
-public interface I_CardModel extends Comparable<I_CardModel> {
+public interface I_CardModel {
 
     /**
      * A method to assign values to suit and rank when a card is first revealed
@@ -36,14 +36,5 @@ public interface I_CardModel extends Comparable<I_CardModel> {
      * A normal toString method that returns the
      */
     String toString();
-
-    /**
-     * Checks to see if a I_CardModel object is the same as another I_CardModel object
-     *
-     * @param card the object that needs to be equal to the calling object
-     * @return true if they are equal and false if they aint.
-     */
-    boolean equals(I_CardModel card);
-
 
 }
