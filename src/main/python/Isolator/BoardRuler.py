@@ -4,7 +4,7 @@ import numpy as np
 class BoardRuler:
 
     #Author : Hans
-    def isolate(self, img,Settings):
+    def isolate(self, img, Settings):
         image = cv2.GaussianBlur(img, (5,5), 0)
 
         #Creating a Mask

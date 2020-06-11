@@ -5,14 +5,14 @@ import cv2
 
 from Card import Card
 from Isolator.Isolator import Isolator
-from VideoInput.Video import SVideo
+from VideoInput.Video import SVideo, Video
 from Validator.CardValidator import CardValidator
 
 
 from Isolator.CardAnalyser import CardAnalyser
 cardAnal = CardAnalyser()
 
-rec = SVideo()
+rec = Video()
 cardVal = CardValidator()
 
 
@@ -22,15 +22,15 @@ class KabaleRecogniser:
     def run(self, Settings):
 
         sNameCnts = [["Hearts", 0], ["Spades", 0], ["Clubs", 0], ["Diamonds", 0], ["Ace", 0], ["Two", 0],
-                  ["Three", 0], [ "Four", 0], ["Five", 0], ["Six", 0], ["Seven", 0],
-                  ["Eight", 0], [ "Nine", 0], [ "Ten", 0], ["Jack", 0], [ "Queen", 0], [ "King", 0]]
+                     ["Three", 0], [ "Four", 0], ["Five", 0], ["Six", 0], ["Seven", 0],
+                     ["Eight", 0], [ "Nine", 0], [ "Ten", 0], ["Jack", 0], [ "Queen", 0], [ "King", 0]]
         # statestik = [sNameCnts] * 14
         statistics = []
 
         for q in range(14):
             statistics.append([["Hearts", 0], ["Spades", 0], ["Clubs", 0], ["Diamonds", 0], ["Ace", 0], ["Two", 0],
-                      ["Three", 0], [ "Four", 0], ["Five", 0], ["Six", 0], ["Seven", 0],
-                      ["Eight", 0], [ "Nine", 0], [ "Ten", 0], ["Jack", 0], [ "Queen", 0], [ "King", 0]])
+                               ["Three", 0], [ "Four", 0], ["Five", 0], ["Six", 0], ["Seven", 0],
+                               ["Eight", 0], [ "Nine", 0], [ "Ten", 0], ["Jack", 0], [ "Queen", 0], [ "King", 0]])
 
 
 
@@ -38,10 +38,19 @@ class KabaleRecogniser:
             # Retrieving an image.
             img = rec.getFrame()
 
-# CARD ISOLATION AND ASSIGNMENT TO LIST _________________
+            # KEY PRESS CASES ________________
+            keyPressed = cv2.waitKey(1) & 0xFF
+            # stopping the program if 'q' is pressed
+            if keyPressed == ord('q'):
+                rec.stop()
+                break
+
+            # CARD ISOLATION AND ASSIGNMENT TO LIST _________________
             isolator = Isolator(False,False,True,False)
             cards, succes = isolator.isolateCards(img, Settings)
-# CARD ISOLATION AND ASSIGNMENT TO LIST _________________
+            # CARD ISOLATION AND ASSIGNMENT TO LIST _________________
+
+
             i = 0
             for c in cards:
                 stat = statistics[i]
@@ -57,13 +66,11 @@ class KabaleRecogniser:
                             name[1] += 1
                 i += 1
 
+            # for card in cards:
+            #     cv2.imshow("card " + str(i), card.profile)
 
-# KEY PRESS CASES ________________
-            keyPressed = cv2.waitKey(1) & 0xFF
-            # stopping the program if 'q' is pressed
-            if keyPressed == ord('q'):
-                rec.stop()
-                break
+
+
 
 
         k = 0
@@ -85,13 +92,17 @@ class KabaleRecogniser:
             print("card " + str(k) + "  : " + cards[k].rank + " " + cards[k].suit)
 
 
+
             # print("stat " + str(k) + "  " + str(stat))
             k += 1
+
 
         # j = 0
         # for card in matchedCards:
         #     print("element " + str(j) + " " + card.rank + " " + card.suit)
         #     j += 1
+
+
 
 
 
