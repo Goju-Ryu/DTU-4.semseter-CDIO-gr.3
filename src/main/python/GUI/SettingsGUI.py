@@ -18,8 +18,7 @@ class SettingsGUI():
     def run(self):
         vid = Video()
         img = vid.getFrame()
-        size=(700,300)
-        img = cv2.resize(img, size)
+        size=(900,100)
 
         self.windowName = "window"
         cv2.namedWindow(self.windowName)
