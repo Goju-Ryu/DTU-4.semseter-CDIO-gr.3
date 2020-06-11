@@ -1,30 +1,32 @@
 package model.cabal;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
-
-    @org.junit.jupiter.api.Test
+    //TODO implement tests
+    @Test
     void turnCard() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getTurnedCard() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void isStackComplete() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void move() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void canMove() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getPile() {
     }
 }
