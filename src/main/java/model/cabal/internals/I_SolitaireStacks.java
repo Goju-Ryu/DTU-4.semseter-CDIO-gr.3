@@ -4,10 +4,9 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
-import java.beans.PropertyEditor;
 import java.util.Collection;
 
-public interface I_SolitaireStacks<cardType extends I_CardModel> extends Collection<cardType>, PropertyEditor {
+public interface I_SolitaireStacks extends Collection<I_CardModel> {
 
     /**
      * Adds a Collection to another Collection
@@ -17,7 +16,7 @@ public interface I_SolitaireStacks<cardType extends I_CardModel> extends Collect
      * @throws IllegalMoveException If the canMoveTo(c) method would return false
      */
     @Override
-    boolean addAll(@NonNullType Collection<? extends cardType> c) throws IllegalMoveException;
+    boolean addAll(@NonNullType Collection c) throws IllegalMoveException;
 
     /**
      * Removes a subset of the solitaire stack. all the cards must be face up
@@ -26,7 +25,7 @@ public interface I_SolitaireStacks<cardType extends I_CardModel> extends Collect
      * @return The new sublist
      * @throws IllegalMoveException If the canMoveFrom(range) method would return false
      */
-    Collection<cardType> popSubset(int range) throws IllegalMoveException;
+    Collection<I_CardModel> popSubset(int range) throws IllegalMoveException;
 
     /**
      * Returns a card from the list on a specified position.
@@ -34,7 +33,7 @@ public interface I_SolitaireStacks<cardType extends I_CardModel> extends Collect
      * @param position The position in the list
      * @return The card
      */
-    cardType getCard(int position); //TODO should this be copies to avoid outside interference?
+    I_CardModel getCard(int position); //TODO should this be copies to avoid outside interference?
 
 
     /**
@@ -63,6 +62,6 @@ public interface I_SolitaireStacks<cardType extends I_CardModel> extends Collect
      * @param cards The stack that wants to be moved to this stack. Can't be null.
      * @return true if it is legal and false if otherwise.
      */
-    boolean canMoveTo(@NonNullType Collection<cardType> cards);
+    boolean canMoveTo(@NonNullType Collection<I_CardModel> cards);
 
 }

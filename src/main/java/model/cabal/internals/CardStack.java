@@ -2,19 +2,19 @@ package model.cabal.internals;
 
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
+import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
 import javax.annotation.Nonnull;
-import java.beans.PropertyEditorSupport;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CardStack<cardType extends I_CardModel> extends PropertyEditorSupport implements I_SolitaireStacks<cardType> {
+public class CardStack implements I_SolitaireStacks {
 
-    private List<cardType> stack;
+    private List<I_CardModel> stack;
 
-    public CardStack(List<cardType> list) {
+    public CardStack(List<I_CardModel> list) {
         this.stack = list;
     }
 
@@ -23,7 +23,7 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     @Override
-    public boolean addAll(@Nonnull Collection<? extends cardType> c) throws IllegalMoveException {
+    public boolean addAll(@Nonnull @NonNullType Collection c) throws IllegalMoveException {
         return stack.addAll(c);
     }
 
@@ -43,7 +43,7 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     @Override
-    public Collection<cardType> popSubset(int range) throws IllegalMoveException {
+    public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
         return null;
 
 //        int top = this.size() - 1;
@@ -63,7 +63,7 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     @Override
-    public cardType getCard(int position) {
+    public I_CardModel getCard(int position) {
         return stack.get(position);
     }
 
@@ -84,7 +84,7 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
 
     @Override
-    public @Nonnull Iterator<cardType> iterator() {
+    public @Nonnull Iterator<I_CardModel> iterator() {
         return stack.iterator();
     }
 
@@ -95,11 +95,11 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
     @Override
     public @Nonnull <T> T[] toArray(@Nonnull T[] ts) {
-        return (T[]) stack.toArray(ts);
+        return (T[]) stack.toArray(ts); //this cast makes some warnings disappear for some reason
     }
 
     @Override
-    public boolean add(cardType o) {
+    public boolean add(I_CardModel o) {
         return false;
     }
 
@@ -120,7 +120,8 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     @Override
-    public boolean canMoveTo(@Nonnull Collection<cardType> cards) {
+    public boolean canMoveTo(@Nonnull Collection<I_CardModel> cards) {
         return false;
     }
+
 }
