@@ -7,6 +7,7 @@ class Video:
 
     # Author : Hans
     def __init__(self):
+
         # finals
         self.VidName = 1
         self.FRAME_NAME = " video recording Frame "

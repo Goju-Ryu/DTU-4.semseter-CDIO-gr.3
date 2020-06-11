@@ -1,5 +1,9 @@
+import os
 from operator import itemgetter
+
 import cv2
+
+from Card import Card
 from Isolator.Isolator import Isolator
 from VideoInput.Video import SVideo, Video
 from Validator.CardValidator import CardValidator
@@ -29,11 +33,20 @@ class KabaleRecogniser:
                       ["Three", 0], [ "Four", 0], ["Five", 0], ["Six", 0], ["Seven", 0],
                       ["Eight", 0], [ "Nine", 0], [ "Ten", 0], ["Jack", 0], [ "Queen", 0], [ "King", 0]])
 
+
+
         while True:
             # Retrieving an image.
             img = rec.getFrame()
 
-# CARD ISOLATION AND ASSIGNMENT TO LIST _________________
+            # KEY PRESS CASES ________________
+            keyPressed = cv2.waitKey(1) & 0xFF
+            # stopping the program if 'q' is pressed
+            if keyPressed == ord('q'):
+                rec.stop()
+                break
+
+            # CARD ISOLATION AND ASSIGNMENT TO LIST _________________
             isolator = Isolator(False,False,True,False)
             cards, succes = isolator.isolateCards(img, Settings)
 # CARD ISOLATION AND ASSIGNMENT TO LIST _________________
@@ -55,14 +68,6 @@ class KabaleRecogniser:
             timeDiff = timeNow - timeStart
             if ( timeDiff ) > 3:
                 break
-
-# KEY PRESS CASES ________________
-            keyPressed = cv2.waitKey(1) & 0xFF
-            # stopping the program if 'q' is pressed
-            if keyPressed == ord('q'):
-                rec.stop()
-                break
-
 
         k = 0
         for stat in statistics:
