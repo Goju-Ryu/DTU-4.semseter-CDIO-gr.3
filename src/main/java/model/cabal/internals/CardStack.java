@@ -115,13 +115,24 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
     @Override
     public boolean canMoveFrom(int range) {
-        // todo forklar hvad dette betyder. dette giver ikke intuitiv mening
-        return false;
+        int top = stack.size() -1;
+        return  stack.get(top - range).isFacedUp();
     }
 
     @Override
     public boolean canMoveTo(Collection<cardType> cards) {
-        // todo forklar hvad dette betyder. dette giver ikke intuitiv mening
-        return false;
+        int top = stack.size() -1;
+
+        cardType card = null;
+        for(cardType element: cards){
+            card = element;
+        }
+
+        E_CardSuit mySuit = stack.get(top).getSuit();
+        E_CardSuit otSuit = card.getSuit();
+
+        E_CardSuit.isSameColour(mySuit, otSuit);
+
+        return E_CardSuit.isSameColour(mySuit, otSuit);
     }
 }
