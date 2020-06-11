@@ -31,7 +31,7 @@ class ManGUI(AbstractUI):
         ecol7 = Entry(root)
 
         #making sure they are shown onscreen
-        ePile.grid(row =2, column=0)
+        ePile.grid(row =6, column=0)
         eSuit1.grid(row =1, column=2)
         eSuit2.grid(row =1, column=3)
         eSuit3.grid(row =1, column=4)
@@ -45,13 +45,26 @@ class ManGUI(AbstractUI):
         ecol6.grid(row =9, column=7)
 
         #Labels I use
-        myLabel0 = Label(root, text="Solitare Klodinke CDIO DTU GR. 3")
-        myLabel1 = Label(root, text = "Pile")
-        myLabel2 = Label(root, text = "Coulumns")
-        myLabel3 = Label(root, text = "Suits")
+        myLabel0 = Label(root, text="SOLITARE KLODINKE")
+        myLabel1 = Label(root, text = "Pile : below")
+        myLabel2 = Label(root, text = "Coulumns: below")
+        myLabel3 = Label(root, text = "Suits: right")
+        myLabel4 = Label(root, text="CDIO DTU GR. 3")
+        myLabel5 = Label(root, text="h1 = hearts 1")
+        myLabel6 = Label(root, text="c2 = clubs 2")
+        myLabel7 = Label(root, text="d1 = dimonds 1")
+        myLabel8 = Label(root, text="s5 = spades 5")
 
-        myLabel0.grid(row =0, column=1)
-        myLabel1.grid(row =1, column=0)
+
+        myLabel0.grid(row =0, column=0)
+        myLabel4.grid(row =0, column=1)
+        myLabel5.grid(row =0, column=2)
+        myLabel6.grid(row =0, column=3)
+        myLabel7.grid(row =0, column=4)
+        myLabel8.grid(row =0, column=5)
+
+
+        myLabel1.grid(row =5, column=0)
         myLabel2.grid(row =2, column=1)
         myLabel3.grid(row =1, column=1)
 
@@ -61,9 +74,9 @@ class ManGUI(AbstractUI):
             butLabel = Label(root, text =clickCount)
             butLabel.grid(row =3, column=7)
             inPile = ePile.get()
-            inSuits = eSuit1.get()+", "+eSuit2.get()+", "+eSuit3.get()+", "+eSuit4.get()
-            inCols = ecol1.get()+", "+ecol2.get()+", "+ecol3.get()+", "+ecol4.get()+", "+ecol5.get()+", "+ecol6.get()+", "+ecol7.get()
-            inp = inPile + " | "+ inSuits + "| "+inCols
+            inSuits = eSuit1.get()+",su1; "+eSuit2.get()+",su2; "+eSuit3.get()+",su3;"+eSuit4.get()+",su4;"
+            inCols = ecol1.get()+",co1; "+ecol2.get()+",co2; "+ecol3.get()+",co3; "+ecol4.get()+",co4; "+ecol5.get()+",co5; "+ecol6.get()+",co6; "+ecol7.get()+",co7;"
+            inp = inPile + " | "+ inSuits + "| "+inCols +"| "
             self.updateInp(inp)
             print(inp)
             root.destroy()
@@ -71,6 +84,16 @@ class ManGUI(AbstractUI):
         #Buttons
         myButton = Button(root, text="Make New Move",command = myClick)
         myButton.grid(row =4, column=7)
+        #----------------------------------------------
+        #this is a button made for testing purposes
+        # should be comented out when not developing
+        def myMove():
+            inp ="| ,su1; ,su2; ,su3;,su4;| h3,co1; h4,co2; d10,co3; d11,co4; d12,co5; d9,co6; d10,co7;| "
+            self.updateInp(inp)
+            root.destroy()
+        myButton = Button(root, text="testmove",command = myMove)
+        myButton.grid(row =2, column=7)
+        #----------------------------------------------
 
         root.mainloop()
         return self.input
