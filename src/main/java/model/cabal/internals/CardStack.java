@@ -126,7 +126,7 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        return stack.toArray();
     }
 
     @Override
@@ -160,24 +160,43 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     @Override
     public boolean canMoveFrom(int range) {
         int top = stack.size() -1;
-        return  stack.get(top - range).isFacedUp();
+        if( top - (range-1) <0 ){
+            return false;
+        }
+
+        return  stack.get(top - (range-1)).isFacedUp();
     }
 
     @Override
     public boolean canMoveTo(Collection<cardType> cards) {
-        int top = stack.size() -1;
 
-        cardType card = null;
+        cardType card = null; // Getting the last card "the top card"
         for(cardType element: cards){
             card = element;
         }
 
-        E_CardSuit mySuit = stack.get(top).getSuit();
+        if(!(stack.get(0).isFacedUp() && card.isFacedUp())){
+            return false;
+        }
+        //color matching
+        E_CardSuit mySuit = stack.get(0).getSuit();
         E_CardSuit otSuit = card.getSuit();
 
-        E_CardSuit.isSameColour(mySuit, otSuit);
+        // a card cannot move to a card of the same color.
+        boolean sameColor = E_CardSuit.isSameColour(mySuit, otSuit);
+        if(sameColor){
+            return false;
+        }
 
-        return E_CardSuit.isSameColour(mySuit, otSuit);
+        //number matching
+        int myRank = stack.get(0).getRank();
+        int otRank = card.getRank();
+
+        // ot rank must be equals to one higher than my rank. otherwise it is illigal.
+        if(otRank - myRank != 1){
+            return false;
+        }
+        return true;
     }
 
     @Override

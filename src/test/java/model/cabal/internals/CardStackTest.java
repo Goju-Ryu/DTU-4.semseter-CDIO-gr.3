@@ -167,7 +167,12 @@ class CardStackTest {
 
     @Test
     void contains() {
-        //Not to be tested unless we need to use it
+        CardStack<I_CardModel> stk = createCardStack(4);
+        CardStack<I_CardModel> stk2 = createCardStack(4);
+
+        for( I_CardModel e : stk ){
+            assertTrue(stk2.contains(e));
+        }
     }
 
     @Test
@@ -184,17 +189,21 @@ class CardStackTest {
 
     @Test
     void iterator() {
-        //Not to be tested unless we need to use it
+        CardStack<I_CardModel> stk = createCardStack(4);
+        Iterator itk = stk.iterator();
+        int i = 1;
+        while(itk.hasNext())
+            assertEquals(i++, ((I_CardModel) itk.next()).getRank() );
     }
 
     @Test
     void toArray() {
-        //Not to be tested unless we need to use it
-    }
-
-    @Test
-    void testToArray() {
-        //Not to be tested unless we need to use it
+        CardStack<I_CardModel> stk = createCardStack(4);
+        Object arr[] = stk.toArray();
+        int i = 0;
+        for(I_CardModel e:stk){
+            assertEquals(((I_CardModel) arr[i++]),e);
+        }
     }
 
     @Test
@@ -223,14 +232,108 @@ class CardStackTest {
 
     @Test
     void containsAll() {
+        CardStack<I_CardModel> stack = createCardStack(4);
+        CardStack<I_CardModel> stack1 = createCardStack(3);
+        boolean c = true;
+        for(I_CardModel e: stack1){
+            if( !stack.contains(e) ){
+                c = false;
+            }
+        }
+        assertTrue(c);
+
+        stack = createCardStack(4);
+        stack1 = createCardStack(5);
+        c = true;
+        for(I_CardModel e: stack1){
+            if( !stack.contains(e) ){
+                c = false;
+            }
+        }
+        assertFalse(c);
+
     }
 
     @Test
     void canMoveFrom() {
+        CardStack<I_CardModel> stack = new CardStack<>();
+        stack.add(new Card(E_CardSuit.SPADES, 7, true));
+        stack.add(new Card(E_CardSuit.HEARTS, 6, true));
+        stack.add(new Card(E_CardSuit.SPADES, 5, true));
+        stack.add(new Card(E_CardSuit.DIAMONDS, 4, true));
+        stack.add(new Card(E_CardSuit.CLUBS, 3, true));
+        stack.add(new Card(E_CardSuit.HEARTS, 2, true));
+        stack.add(new Card(E_CardSuit.SPADES, 1, true));
+
+        assertTrue(stack.canMoveFrom(7));
+        stack.clear();
+
+        stack.add(new Card(E_CardSuit.SPADES, 7, false));
+        stack.add(new Card(E_CardSuit.HEARTS, 6, false));
+        stack.add(new Card(E_CardSuit.SPADES, 5, false));
+        stack.add(new Card(E_CardSuit.DIAMONDS, 4, true));
+        stack.add(new Card(E_CardSuit.CLUBS, 3, true));
+        stack.add(new Card(E_CardSuit.HEARTS, 2, true));
+        stack.add(new Card(E_CardSuit.SPADES, 1, true));
+
+        assertFalse(stack.canMoveFrom(5));
+
+        stack.clear();
+        stack.add(new Card(E_CardSuit.SPADES, 7, false));
+        assertFalse(stack.canMoveFrom(2));
     }
 
     @Test
     void canMoveTo() {
+        CardStack<I_CardModel> stackSpades = new CardStack<>();
+        stackSpades.add(new Card(E_CardSuit.SPADES, 3, true));
+
+        CardStack<I_CardModel> stackClubs = new CardStack<>();
+        stackClubs.add(new Card(E_CardSuit.CLUBS, 3, true));
+
+        CardStack<I_CardModel> stackDiamond = new CardStack<>();
+        stackDiamond.add(new Card(E_CardSuit.DIAMONDS, 3, true));
+
+        CardStack<I_CardModel> stackHeart = new CardStack<>();
+        stackHeart.add(new Card(E_CardSuit.DIAMONDS, 3, true));
+
+
+        // red Card Tests
+        // Heart
+        CardStack<I_CardModel> stack2 = new CardStack<>();
+        stack2.add(new Card(E_CardSuit.HEARTS, 2, true));
+        stack2.add(new Card(E_CardSuit.SPADES, 1, true));
+        // succes = Color is correct, numbers are correct, and faceupp
+        assertTrue(  stack2.canMoveTo(stackSpades) );
+        assertTrue(  stack2.canMoveTo(stackClubs) );
+        // fail, wrong color
+        assertFalse( stack2.canMoveTo(stackDiamond) );
+        assertFalse( stack2.canMoveTo(stackHeart) );
+
+        stack2.clear();
+        // Diamonds
+
+        stack2.add(new Card(E_CardSuit.DIAMONDS, 2, true));
+        stack2.add(new Card(E_CardSuit.CLUBS, 1, true));
+        // succes = Color is correct, numbers are correct, and faceupp
+        assertTrue(  stack2.canMoveTo(stackSpades) );
+        assertTrue(  stack2.canMoveTo(stackClubs) );
+        // fail, wrong color
+        assertFalse( stack2.canMoveTo(stackDiamond) );
+        assertFalse( stack2.canMoveTo(stackHeart) );
+
+
+        // fail due to Numbers
+        CardStack<I_CardModel> stack4 = new CardStack<>();
+        stack4.add(new Card(E_CardSuit.SPADES, 6, true));
+        stack4.add(new Card(E_CardSuit.HEARTS, 5, true));
+        assertFalse(  stack4.canMoveTo(stackSpades) );
+
+        // fail due to faceUp
+        CardStack<I_CardModel> stack5 = new CardStack<>();
+        stack5.add(new Card(E_CardSuit.SPADES, 2, false));
+        stack5.add(new Card(E_CardSuit.HEARTS, 1, false));
+        assertFalse(  stack5.canMoveTo(stackSpades) );
     }
 
     private CardStack<I_CardModel> createCardStack(int stacksize){
