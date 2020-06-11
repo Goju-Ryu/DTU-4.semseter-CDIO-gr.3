@@ -26,7 +26,7 @@ public interface I_SolitaireStacks<cardType extends I_CardModel> extends Collect
      * @return The new sublist
      * @throws IllegalMoveException If the canMoveFrom(range) method would return false
      */
-    Collection<cardType> popSubset(int range) throws IllegalMoveException;
+    CardStack<cardType> popSubset(int range) throws IllegalMoveException;
 
     /**
      * Returns a card from the list on a specified position.
@@ -64,5 +64,13 @@ public interface I_SolitaireStacks<cardType extends I_CardModel> extends Collect
      * @return true if it is legal and false if otherwise.
      */
     boolean canMoveTo(@NonNullType Collection<cardType> cards);
+
+    /**
+     * Checks if the list contains a specific card
+     *
+     * @param card The card in the list
+     * @return true if it does contain the card and false if it doesent
+     */
+    boolean containsCard(I_CardModel card);
 
 }

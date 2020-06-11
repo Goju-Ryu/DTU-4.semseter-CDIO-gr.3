@@ -1,11 +1,15 @@
 package model.cabal.internals;
 
+import jdk.jshell.spi.ExecutionControl;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
 import java.beans.PropertyEditorSupport;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 public class CardStack<cardType extends I_CardModel> extends PropertyEditorSupport implements I_SolitaireStacks<cardType> {
 
@@ -29,23 +33,31 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
     @Override
     public void clear() {
-        for (int i = 0; i < stack.size() ; i++) {
-         stack.remove(i);
-        }
+        stack.clear();
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return stack.retainAll(c);
+        try {
+            throw new ExecutionControl.NotImplementedException("Not implemented yet");
+        } catch (ExecutionControl.NotImplementedException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
     public boolean removeAll( Collection<?> c) {
+        try {
+            throw new ExecutionControl.NotImplementedException("Not implemented yet");
+        } catch (ExecutionControl.NotImplementedException e) {
+            e.printStackTrace();
+        }
         return false; //should not be implemented
     }
 
     @Override
-    public Collection<cardType> popSubset(int range) throws IllegalMoveException {
+    public CardStack<cardType> popSubset(int range) throws IllegalMoveException {
 
             int toIndex = stack.size() - 1;
             int frIndex = toIndex - range;
@@ -54,10 +66,12 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
             List<cardType> newStack = stack.subList(frIndex, toIndex);
 
             this.stack = newStack;
-            return sublist;
+
+            CardStack<cardType> cardStack = new CardStack<>(sublist);
+
+            return cardStack;
     }
 
-    @Override
     public cardType getCard(int position) {
         return stack.get(position);
     }
@@ -74,7 +88,13 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
     @Override
     public boolean contains(Object o) {
-        return stack.contains(o);
+        try {
+            throw new ExecutionControl.NotImplementedException("Not implemented");
+        } catch (ExecutionControl.NotImplementedException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
 
@@ -137,5 +157,16 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
         E_CardSuit.isSameColour(mySuit, otSuit);
 
         return E_CardSuit.isSameColour(mySuit, otSuit);
+    }
+
+    @Override
+    public boolean containsCard(I_CardModel card) {
+
+        for (int i = 0; i < stack.size(); i++) {
+            if (stack.get(i).equals(card)){
+                return true;
+            }
+        }
+        return false;
     }
 }

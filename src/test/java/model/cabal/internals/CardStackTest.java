@@ -58,64 +58,153 @@ class CardStackTest {
     @Test
     void clear() {
 
-        Card[] cards1 = {
-                new Card(E_CardSuit.DIAMONDS,3,true),
-                new Card(E_CardSuit.CLUBS,4,true),
-                new Card(E_CardSuit.HEARTS,5,true),
-                new Card(E_CardSuit.SPADES,6,true)
-        };
-
-        CardStack<I_CardModel> stack = new CardStack<I_CardModel>(Arrays.asList(cards1));
-
-        System.out.println(stack.size());
+        I_SolitaireStacks<I_CardModel> stack = createCardStack(4);
 
         Assert.assertEquals(4,stack.size());
 
         stack.clear();
 
-        System.out.println(stack.size());
-
         Assert.assertEquals(0,stack.size());
     }
 
+    //Test will fail
     @Test
     void retainAll() {
+
+        //TODO: when removeAll is implemented correct this should work.
+
+        CardStack<I_CardModel> stack = createCardStack(4);
+        CardStack<I_CardModel> stack2 = createCardStack(6);
+
+        System.out.println(stack.size());
+        System.out.println(stack2.size());
+
+        Assert.assertTrue(stack2.retainAll(stack));
+
+        System.out.println(stack2.size());
+
+        Assert.assertEquals(4,stack2.size());
+
     }
 
+    //Test will fail
     @Test
     void removeAll() {
+
+        //TODO: when removeAll is implemented correct this should work.
+
+        CardStack<I_CardModel> stack = createCardStack(4);
+        CardStack<I_CardModel> stack2 = createCardStack(6);
+
+        stack2.removeAll(stack);
+
+        System.out.println(stack2.size());
+
+        Assert.assertEquals(2,stack2.size());
     }
 
     @Test
     void popSubset() {
+
+        CardStack<I_CardModel> stack = createCardStack(4);
+        CardStack<I_CardModel> stack2 = stack.popSubset(2);
+
+        Assert.assertEquals(2,stack2.size());
+        Assert.assertEquals(2,stack.size());
+
+
     }
 
     @Test
     void getCard() {
+
+        CardStack<I_CardModel> stack = createCardStack(4);
+        I_CardModel cardModel = new Card(E_CardSuit.HEARTS,3,true);
+        I_CardModel card = stack.getCard(2);
+
+        Assert.assertEquals(cardModel.getRank(),card.getRank());
+        Assert.assertEquals(cardModel.getSuit(),card.getSuit());
+        Assert.assertEquals(cardModel.isFacedUp(),card.isFacedUp());
+
+        Assert.assertTrue(card.equals(cardModel));
+
     }
 
     @Test
     void size() {
+        
+        CardStack<I_CardModel> stack = createCardStack(4);
+
+        int arrSize = stack.size();
+
+        Assert.assertEquals(4,arrSize);
+
+        for (int i = 0; i < 5; i++) {
+            I_CardModel card = new Card(E_CardSuit.SPADES,i+1,true);
+            stack.add(card);
+        }
+
+        int arrSize2 = stack.size();
+
+        Assert.assertEquals(9,arrSize2);
+        
     }
 
     @Test
     void isEmpty() {
+
+        CardStack<I_CardModel> stack = createCardStack(4);
+
+        Assert.assertFalse(stack.isEmpty());
+
+        stack.clear();
+        System.out.println(stack.size());
+
+        Assert.assertTrue(stack.isEmpty());
+
     }
 
     @Test
     void contains() {
+
+        CardStack<I_CardModel> stack = createCardStack(4);
+
+        I_CardModel card = new Card(E_CardSuit.HEARTS,3,true);
+
+//        for (int i = 0; i < stack.size() ; i++) {
+//            if ()
+//        }
+
+        boolean b = stack.contains(card);
+
+        Assert.assertTrue(stack.contains(card));
+    }
+
+    @Test
+    void containsCard(){
+
+        CardStack<I_CardModel> stack = createCardStack(4);
+
+        I_CardModel card = new Card(E_CardSuit.HEARTS,3,true);
+        boolean assesment = stack.containsCard(card);
+
+        Assert.assertTrue(assesment);
+
     }
 
     @Test
     void iterator() {
+        //Not to be tested unless we need to use it
     }
 
     @Test
     void toArray() {
+        //Not to be tested unless we need to use it
     }
 
     @Test
     void testToArray() {
+        //Not to be tested unless we need to use it
     }
 
     @Test
@@ -136,5 +225,16 @@ class CardStackTest {
 
     @Test
     void canMoveTo() {
+    }
+
+    private CardStack<I_CardModel> createCardStack(int stacksize){
+        CardStack<I_CardModel> stack = new CardStack<I_CardModel>();
+
+        for (int i = 0; i < stacksize; i++) {
+            I_CardModel card = new Card(E_CardSuit.HEARTS,i + 1,true);
+            stack.add(card);
+        }
+
+        return stack;
     }
 }
