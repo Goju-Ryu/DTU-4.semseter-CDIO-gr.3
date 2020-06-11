@@ -44,22 +44,15 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
     @Override
     public Collection<cardType> popSubset(int range) throws IllegalMoveException {
-        return null;
 
-//        int top = this.size() - 1;
-//        int point = top - range;
-//
-//        List<T> list = new CardStack<T>();
-//        list = this.subList(point,top);
-//
-//        // remove the sublist from the original CardStack
-//
-//        for (int i = 0; i < point; i++) {
-//            int a = top - i;
-//            this.remove(a);
-//        }
-//
-//        return list;
+            int toIndex = stack.size() - 1;
+            int frIndex = toIndex - range;
+
+            List<cardType> sublist = stack.subList(frIndex, toIndex);
+            List<cardType> newStack = stack.subList(frIndex, toIndex);
+
+            this.stack = newStack;
+            return sublist;
     }
 
     @Override
@@ -100,11 +93,13 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
     @Override
     public boolean add(cardType o) {
-        return false;
+        stack.add(o);
+        return true;
     }
 
     @Override
     public boolean remove(Object o) {
+        // todo forklar hvad dette betyder. dette giver ikke intuitiv mening
         return false;
     }
 
@@ -116,11 +111,13 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
 
     @Override
     public boolean canMoveFrom(int range) {
+        // todo forklar hvad dette betyder. dette giver ikke intuitiv mening
         return false;
     }
 
     @Override
     public boolean canMoveTo(@Nonnull Collection<cardType> cards) {
+        // todo forklar hvad dette betyder. dette giver ikke intuitiv mening
         return false;
     }
 }
