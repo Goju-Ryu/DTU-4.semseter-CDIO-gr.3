@@ -35,6 +35,14 @@ public interface I_SolitaireStacks extends Collection<I_CardModel> {
      */
     I_CardModel getCard(int position); //TODO should this be copies to avoid outside interference?
 
+    /**
+     * Returns a subset of the solitaire stack.
+     *
+     * @param range The position in the list where you would like to split it to make the new subset of the list
+     * @return The new sublist
+     */
+    Collection<I_CardModel> getSubset(int range);
+
 
     /**
      * Checks if you can move a Stack of the CardStack from that position in the Build stack

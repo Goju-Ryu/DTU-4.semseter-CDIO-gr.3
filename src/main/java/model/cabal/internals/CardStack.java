@@ -65,6 +65,11 @@ public class CardStack implements I_SolitaireStacks {
     }
 
     @Override
+    public Collection<I_CardModel> getSubset(int range) {
+        return stack.subList(0, range);
+    }
+
+    @Override
     public int size() {
         return stack.size();
     }
