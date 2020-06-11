@@ -12,7 +12,6 @@ if this is not the case. then you can use the requirements.txt with the command
 ```
 pip install -r requirements.txt
 ```
-
 ### Using the program
 first the program runs a HSV Settings window, where if the original settings are incorrect they can be corrected for the remainder of the programs run time. 
 ```

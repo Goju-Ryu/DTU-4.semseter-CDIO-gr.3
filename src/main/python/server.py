@@ -21,6 +21,8 @@ import grpc
 import proto.grpc_pb2 as grpc_pb2
 import proto.grpc_pb2_grpc as grpc_pb2_grpc
 
+from openCvCode import openCVCode
+
 
 class Greeter(grpc_pb2_grpc.GreeterServicer):
 
@@ -31,7 +33,8 @@ class Greeter(grpc_pb2_grpc.GreeterServicer):
             from ManGui import ManGUI
             x = ManGUI()
         else:
-            pass #TODO: call openCV here
+            x = openCVCode()
+
         b = x.run()
         returnMSG ='Hello, %s! I\'m Python world! here is a msg for you:' % request.name
         returnMSG += b
