@@ -12,7 +12,7 @@ from Validator.CardValidator import CardValidator
 from Isolator.CardAnalyser import CardAnalyser
 cardAnal = CardAnalyser()
 
-rec = Video()
+
 cardVal = CardValidator()
 
 
@@ -20,7 +20,7 @@ cardVal = CardValidator()
 class KabaleRecogniser:
 
     def run(self, Settings):
-
+        rec = Video()
         sNameCnts = [["Hearts", 0], ["Spades", 0], ["Clubs", 0], ["Diamonds", 0], ["Ace", 0], ["Two", 0],
                      ["Three", 0], [ "Four", 0], ["Five", 0], ["Six", 0], ["Seven", 0],
                      ["Eight", 0], [ "Nine", 0], [ "Ten", 0], ["Jack", 0], [ "Queen", 0], [ "King", 0]]
