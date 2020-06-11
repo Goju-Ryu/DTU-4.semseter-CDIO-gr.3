@@ -14,6 +14,8 @@ class Video:
 
         # Video Stats
         self.rec = cv2.VideoCapture(self.VidName,cv2.CAP_DSHOW)
+        self.rec.set(3, 1920)
+        self.rec.set(4, 1080)
 
         # starting the Thread
         self.empt, self.frame = self.rec.read()  # setting the veryFirst Frame just to avoid null pointers.
@@ -39,8 +41,11 @@ class SVideo:
         self.VidName ="VideoInput/video_01.mp4"
         self.FRAME_NAME = " video recording Frame "
 
+
         # Video Stats
         self.rec = cv2.VideoCapture(self.VidName)
+        self.rec.set(3,1920)
+        self.rec.set(4,1080)
 
         # starting the Thread
         self.empt, self.frame = self.rec.read()  # setting the veryFirst Frame just to avoid null pointers.
