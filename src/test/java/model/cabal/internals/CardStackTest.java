@@ -3,56 +3,131 @@ package model.cabal.internals;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 
 class CardStackTest {
 
     @Test
-    void popSubset() {
+    void addAll() {
 
-        CardStack stack = new CardStack();
+        Card[] cards1 = {
+                new Card(E_CardSuit.DIAMONDS,3,true),
+                new Card(E_CardSuit.CLUBS,4,true),
+                new Card(E_CardSuit.HEARTS,5,true),
+                new Card(E_CardSuit.SPADES,6,true)
+        };
 
-        for (int i = 0; i < 6; i++) {
-            I_CardModel card = new Card(E_CardSuit.DIAMONDS,i);
-            //stack.push(i);
+        Card[] cards2 = {
+                new Card(E_CardSuit.DIAMONDS,8,true),
+                new Card(E_CardSuit.CLUBS,9,true),
+                new Card(E_CardSuit.HEARTS,10,true),
+                new Card(E_CardSuit.SPADES,11,true)
+        };
+
+        ArrayList<I_CardModel> list1 = new ArrayList<>(Arrays.asList(cards1));
+
+        ArrayList<I_CardModel> list2 = new ArrayList<>(Arrays.asList(cards2));
+
+        CardStack<I_CardModel> stack1 = new CardStack<>();
+        CardStack<I_CardModel> stack2 = new CardStack<>();
+
+        stack1.addAll(list1);
+        stack2.addAll(list2);
+
+        Assert.assertEquals(4, stack1.size());
+        Assert.assertEquals(4, stack2.size());
+
+        list1.addAll(list2);
+        stack1.addAll(stack2);
+
+        Iterator it, it2;
+
+        it = list1.iterator();
+        it2 = stack1.iterator();
+
+        while (it.hasNext()){
+            Assert.assertEquals(it.next(),it2.next());
         }
+    }
 
-//        for (int i = 0; i < stack.size(); i++) {
-//            System.out.println("id at " + i +" = " + stack.get(i));
-//        }
+    @Test
+    void clear() {
 
-        int x = stack.size();
+        Card[] cards1 = {
+                new Card(E_CardSuit.DIAMONDS,3,true),
+                new Card(E_CardSuit.CLUBS,4,true),
+                new Card(E_CardSuit.HEARTS,5,true),
+                new Card(E_CardSuit.SPADES,6,true)
+        };
 
-        System.out.println(x);
+        CardStack<I_CardModel> stack = new CardStack<I_CardModel>(Arrays.asList(cards1));
 
-        //CardStack<Integer> cards = stack.popSubset(1);
-        //int c = (int) cards.get(0);
+        System.out.println(stack.size());
 
-        //System.out.println(c);
+        Assert.assertEquals(4,stack.size());
 
-        //Assert.assertEquals(0, c);
+        stack.clear();
 
+        System.out.println(stack.size());
 
+        Assert.assertEquals(0,stack.size());
+    }
+
+    @Test
+    void retainAll() {
+    }
+
+    @Test
+    void removeAll() {
+    }
+
+    @Test
+    void popSubset() {
     }
 
     @Test
     void getCard() {
-        LinkedList<Integer> l = new LinkedList();
+    }
 
-        assertTrue(l.addAll(List.of(1, 2, 3, 4, 5)));
-        assertTrue(l.removeAll(List.of(1, 5)));
+    @Test
+    void size() {
+    }
 
-
-
+    @Test
+    void isEmpty() {
     }
 
     @Test
     void contains() {
+    }
+
+    @Test
+    void iterator() {
+    }
+
+    @Test
+    void toArray() {
+    }
+
+    @Test
+    void testToArray() {
+    }
+
+    @Test
+    void add() {
+    }
+
+    @Test
+    void remove() {
+    }
+
+    @Test
+    void containsAll() {
     }
 
     @Test

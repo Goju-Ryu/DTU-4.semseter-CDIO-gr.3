@@ -1,5 +1,6 @@
 package model.cabal.internals;
 
+import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
@@ -7,7 +8,7 @@ import org.checkerframework.checker.nullness.compatqual.NonNullType;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CardStack implements I_SolitaireStacks {
@@ -19,12 +20,16 @@ public class CardStack implements I_SolitaireStacks {
     }
 
     public CardStack(){
-        stack = new LinkedList<>();
+        stack = new ArrayList<>();
     }
 
     @Override
     public boolean addAll(@Nonnull @NonNullType Collection c) throws IllegalMoveException {
         return stack.addAll(c);
+//        for (I_CardModel element: c) {
+//            stack.add(element);
+//        }
+//        return true;
     }
 
     @Override
@@ -44,22 +49,14 @@ public class CardStack implements I_SolitaireStacks {
 
     @Override
     public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
-        return null;
+        int toIndex = stack.size() - 1;
+        int frIndex = toIndex - range;
 
-//        int top = this.size() - 1;
-//        int point = top - range;
-//
-//        List<T> list = new CardStack<T>();
-//        list = this.subList(point,top);
-//
-//        // remove the sublist from the original CardStack
-//
-//        for (int i = 0; i < point; i++) {
-//            int a = top - i;
-//            this.remove(a);
-//        }
-//
-//        return list;
+        List<I_CardModel> sublist = stack.subList(frIndex, toIndex);
+        List<I_CardModel> newStack = stack.subList(frIndex, toIndex);
+
+        this.stack = newStack;
+        return sublist;
     }
 
     @Override
@@ -100,12 +97,18 @@ public class CardStack implements I_SolitaireStacks {
 
     @Override
     public boolean add(I_CardModel o) {
-        return false;
+        return stack.add(o);
     }
 
+    /**
+     * This overridden version of remove will remove a card from the top of the stack of cards
+     *
+     * @param o The object in the list that is to be removed.
+     * @return true when the object is removed, and false if otherwise
+     */
     @Override
     public boolean remove(Object o) {
-        return false;
+        return stack.remove(o);
     }
 
     @Override
@@ -116,12 +119,24 @@ public class CardStack implements I_SolitaireStacks {
 
     @Override
     public boolean canMoveFrom(int range) {
-        return false;
+        int top = stack.size() -1;
+        return  stack.get(top - range).isFacedUp();
     }
 
     @Override
     public boolean canMoveTo(@Nonnull Collection<I_CardModel> cards) {
-        return false;
-    }
+        int top = stack.size() -1;
 
+        I_CardModel card = null;
+        for(I_CardModel element: cards){
+            card = element;
+        }
+
+        E_CardSuit mySuit = stack.get(top).getSuit();
+        E_CardSuit otSuit = card.getSuit();
+
+        E_CardSuit.isSameColour(mySuit, otSuit);
+
+        return E_CardSuit.isSameColour(mySuit, otSuit);
+    }
 }
