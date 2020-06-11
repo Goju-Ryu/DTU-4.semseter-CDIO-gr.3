@@ -41,7 +41,7 @@ should that not work you can manually try to run
 ```
 protoc.bat(for windows) or protoc.sh(for linux)
 ```
-to set up grpc and then clean and compile
+found under 'src/python/proto', to set up grpc and then clean and compile
 
 if this is not working and you are on a windows computer you can try
 - installing bash in your terminal
