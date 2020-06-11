@@ -1,5 +1,5 @@
 # DTU-4.semseter-CDIO-gr.3
-A program that allows you to play soliatre, you give it a picture and it gives you a move
+A program that allows you to play soliatre, you give it a pictute or number representation of the board and it gives you a move
 
 # User guide 
 ## for the Manual GUI
