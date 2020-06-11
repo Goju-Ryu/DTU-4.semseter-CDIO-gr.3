@@ -11,15 +11,15 @@ coming soon.
 
 # Developer guide
 NB: No guarantee this works on IOS
-## java back-end side:
+### java back-end side:
 you need to make sure you are using       
 [project SDK: 12]     
 [Project language level: 11 - local variabel for lambda parameteres]
 
-## python front-end and openCV:
+### python front-end and openCV:
 You need to have Python 3.8
 
-## java python communication:
+### java python communication:
 Once the above is done comes the tricky part, setting grpc up allowing the java side to talk to the server side.
 prereqs:
 - having python 3.4(or higher installed)
