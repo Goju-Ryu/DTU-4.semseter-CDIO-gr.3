@@ -5,10 +5,7 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
 import java.beans.PropertyEditorSupport;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class CardStack<cardType extends I_CardModel> extends PropertyEditorSupport implements I_SolitaireStacks<cardType> {
 
@@ -19,7 +16,7 @@ public class CardStack<cardType extends I_CardModel> extends PropertyEditorSuppo
     }
 
     public CardStack(){
-        stack = new LinkedList<>();
+        stack = new ArrayList<>();
     }
 
     @Override
