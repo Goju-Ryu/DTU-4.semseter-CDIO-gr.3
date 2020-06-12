@@ -18,6 +18,8 @@ class imageOperator:
             return self.stackImages(img, imageArr , i)
 
     ## sorting an array of 4 points, must be 2d points, from top left -> top Right -> bottom Right -> bottom Left;
+    # the way we discuss top left point is not top left in the image. but the corner furtherst away from the camera
+    # to its left. wich are reversed of the camera image results.. strange as it may seem
     def SortPoints(self, points):
 
         sortedList = sorted(points, key=lambda x: x[1], reverse=True)
