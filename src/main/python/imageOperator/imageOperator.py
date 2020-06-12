@@ -50,6 +50,8 @@ class imageOperator:
             matrix = cv2.getPerspectiveTransform(points, nPts)
             return matrix
 
+    # finds a "contour" for the board, using  the mask, and returns the best aproximation of a square.
+    # asuming the largest square is the best one.
     def getBestSquareContour(self,mask):
 
         # finding external   contours with simple aproximation.

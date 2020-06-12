@@ -35,7 +35,7 @@ class BoardRuler:
         mask1 = cv2.erode(mask, kernel, iterations=1)
         mask1 = cv2.dilate(mask1, kernel, iterations=2)
         mask1 = cv2.erode(mask1, kernel, iterations=1)"""
-        pts, succes = self.findBoardContour(mask)
+        pts, succes = self.imageOperator.getBestSquareContour(mask)
 
         if succes:
             # Getting a Point Matrix.
@@ -59,35 +59,6 @@ class BoardRuler:
             return result ,mask, True
         else:
             return None , mask , False
-
-    #finds a "contour" for the board, using  the mask
-    def findBoardContour(self, mask):
-
-        # finding external   contours with simple aproximation.
-        contours, hiarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-
-        # if there are no Contours then end it.
-        if len(contours) == 0:
-            return [], False
-
-        # the job now is to go through every contour and check wich ones can be simplyfied to a square.
-        appr = []
-        for contour in contours:
-
-           # this is math that just works, dont question it, dont change it,
-           # it is a nightmare to adjust to find the correct values.
-            epsilon = cv2.arcLength(contour, True)
-            approx = cv2.approxPolyDP(contour, 0.04 * epsilon, True)  # now we have a simplified polygon.
-
-            if len(approx) == 4: # if the aproximation is a square
-                if contour.size > 200: # and size is considerable.
-                    appr.append(approx)
-
-        contours = sorted(appr, key=lambda x: -cv2.contourArea(x))
-        if (len(appr) == 0):
-            return None, False
-        else:
-            return contours[0], True
 
     #draws lines one the image for where we want to place images.
     def decorateImageRulerLines(self, image):

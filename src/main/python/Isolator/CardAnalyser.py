@@ -6,12 +6,13 @@ import cv2
 from Card import Card
 from imageOperator.imageOperator import imageOperator
 
-
+# has the responsibility to know about cards, and be able to find them as images.
 class CardAnalyser:
 
     def __init__(self):
         self.imageOperator = imageOperator()
 
+    # finds all card profiles in the sections, and returns the profile images
     def findCards(self, rowImages, rowImagesMasks):
         imageArray = []
         maskArray = []
@@ -21,8 +22,8 @@ class CardAnalyser:
             # getting current images and making counters on theese
             image = rowImages[i]
             mask = rowImagesMasks[i]
-            contour, succes, mask1 = self.findContour(image,mask)
-            maskArray.append(mask1)
+            contour, succes = self.findContour(image,mask)
+            maskArray.append(mask)
 
             if succes:
 
@@ -52,6 +53,8 @@ class CardAnalyser:
 
         return imageArray, maskArray, cards
 
+    # finds a "contour" for the board, using  the mask, and returns the best aproximation of a square.
+    # asuming the largest square is the best one.
     def findContour(self,image,mask):
 
         # reducing the noise in the image, the kernel is a square of area where each iteration
@@ -60,27 +63,5 @@ class CardAnalyser:
         mask = cv2.dilate(mask, kernel, iterations=1)
         mask = cv2.erode(mask, kernel, iterations=1)
 
-        #finding contours
-        contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-        if len(contours) == 0:
-            return [], False, None
+        return self.imageOperator.getBestSquareContour(mask)
 
-        succes = False
-        cardContour = []
-        for contour in contours:
-
-            # this is math that just works, dont question it, dont change it,
-            # it is a nightmare to adjust to find the correct values.
-            epsilon = cv2.arcLength(contour, True)
-            approx = cv2.approxPolyDP(contour, 0.04 * epsilon, True)  # now we have a simplified polygon.
-
-            # Simplify into Polygon.
-            if len(approx) == 4:  # if the aproximation is a square
-                if contour.size > 200:  # and size is considerable.
-                    cardContour.append(approx)
-                    succes = True
-
-        if succes:
-            return cardContour[0],succes, mask
-        else:
-            return 0, False , mask
