@@ -31,25 +31,23 @@ class imageOperator:
             sortedList[2] = sortedList[3]
             sortedList[3] = temp
 
-        return sortedList[3], sortedList[2], sortedList[0], sortedList[1]
+        return [sortedList[3], sortedList[2], sortedList[0], sortedList[1]]
 
-    def perspectiveTransform(self, image,points):
-
-        p1,p2,p3,p4 = self.SortPoints(points)
-
-        width = image.shape[1]
-        height = image.shape[0]
-        # making the points translation values
-        nPts = np.float32([
-            [0, 0],
-            [width - 1, 0],
-            [width - 1, height - 1],
-            [0, height - 1]
-        ], dtype="float32")
-        points = np.float32([p2, p1, p4, p3])
-
-        # making the Perspektive Transform.
-        matrix = cv2.getPerspectiveTransform(points, nPts)
+    def perspectiveTransform(self, width,height,image, matrix):
         result = cv2.warpPerspective(image, matrix, (width, height))
-
         return result
+
+    def getTransformMatrix(self,width, height, points):
+
+            nPts = np.float32([
+                [0, 0],
+                [width - 1, 0],
+                [width - 1, height - 1],
+                [0, height - 1]
+            ], dtype="float32")
+
+            points = np.float32([points[0],points[1],points[2],points[3]])
+            matrix = cv2.getPerspectiveTransform(points, nPts)
+            return matrix
+
+

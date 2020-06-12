@@ -26,14 +26,24 @@ class CardAnalyser:
             mrr.append(mask1)
             if succes:
 
+                # points needs to be retrieved from the various position they are placed in.
                 p1 = (contour[0][0][0], contour[0][0][1])
                 p2 = (contour[1][0][0], contour[1][0][1])
                 p3 = (contour[2][0][0], contour[2][0][1])
                 p4 = (contour[3][0][0], contour[3][0][1])
-                points = [p1, p2, p3, p4]
+                points = self.imageOperator.SortPoints([p1, p2, p3, p4])
 
-                profileImg = self.imageOperator.perspectiveTransform(image, points)
-                cards.append( Card( profileImg , True ) )
+                # need these variables for a couple things.
+                width = image.shape[1]
+                height = image.shape[0]
+
+                # this is a matrix you can think of as, where thing are to where things are going
+                matrix = self.imageOperator.getTransformMatrix(width, height, points)
+
+                # making the perspektive transforms
+                profileImg = self.imageOperator.perspectiveTransform(width, height, image, matrix)
+
+                cards.append( Card( profileImg,True ) )
                 arr.append( profileImg )
             else:
                 cards.append( Card( None , False ))
@@ -41,7 +51,6 @@ class CardAnalyser:
                 pass
 
         return arr, mrr, cards
-
 
     def findContour(self,image,mask):
 
