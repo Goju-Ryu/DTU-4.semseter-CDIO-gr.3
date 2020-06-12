@@ -11,8 +11,6 @@ import time as TIME
 
 from Isolator.CardAnalyser import CardAnalyser
 cardAnal = CardAnalyser()
-
-
 cardVal = CardValidator()
 
 
