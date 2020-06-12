@@ -98,7 +98,7 @@ class KabaleRecogniser:
             card1RankStats = sorted(stat[4:], key=itemgetter(1), reverse=True)
 
             # if the answer is no card detected.
-            if card1RankStats[0][1] == 0 and card1SuitStats[0][1] == 0:
+            if card1RankStats[0][1] == 0 or card1SuitStats[0][1] == 0:
                 # no card contents definded
                 cards[k].suit = "[No suit found]"
                 cards[k].rank = "[No rank found]"

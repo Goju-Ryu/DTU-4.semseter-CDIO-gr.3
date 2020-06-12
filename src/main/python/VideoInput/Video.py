@@ -4,7 +4,6 @@ import cv2
 import threading
 #Author : Hans
 class Video:
-
     # Author : Hans
     def __init__(self):
 
@@ -14,6 +13,7 @@ class Video:
 
         # Video Stats
         self.rec = cv2.VideoCapture(self.VidName,cv2.CAP_DSHOW)
+        # self.rec = cv2.VideoCapture("video_01.mp4")
         self.rec.set(3, 1920)
         self.rec.set(4, 1080)
 
