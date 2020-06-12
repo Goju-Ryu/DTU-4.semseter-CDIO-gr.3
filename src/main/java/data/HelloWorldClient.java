@@ -1,5 +1,8 @@
-package examples;
+package data;
 
+import examples.GreeterGrpc;
+import examples.HelloReply;
+import examples.HelloRequest;
 import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -9,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HelloWorldClient {
+    //TODO: move thsi to data layer and refactor its name
     private static final Logger logger = Logger.getLogger(HelloWorldClient.class.getName());
 
     private final GreeterGrpc.GreeterBlockingStub blockingStub;

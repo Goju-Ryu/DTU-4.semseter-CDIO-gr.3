@@ -4,8 +4,15 @@ class Card():
     def __init__(self, profile, exists):
         self.exists = exists
         self.profile = profile
-        self.number= None
-        self.color= None
+        self.number = None
+        self.color = None
+        self.compCenter = None
+        self.compPoints = None
+        self.compContour = None
+        self.counter = 1
+
+        self.suit = ""
+        self.rank = "0"
 
     # Author : Hans
     def initiateCard(self, contour, points):
@@ -16,6 +23,7 @@ class Card():
     # Author : Hans
     def setProfile(self, image):
         self.profile = image
+
 
 """class Card():
 
