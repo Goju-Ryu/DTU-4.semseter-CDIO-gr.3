@@ -25,7 +25,7 @@ public final class Board implements I_BoardModel {
 
     private I_SolitaireStacks[] piles;
 
-    public Board() {
+    public Board() { //TODO board should take imgData to initialize self
         change = new PropertyChangeSupport(this);
         piles = new I_SolitaireStacks[values().length];
 
@@ -89,6 +89,16 @@ public final class Board implements I_BoardModel {
 
     private I_SolitaireStacks get(E_PileID pile){
         return piles[pile.ordinal()];
+    }
+
+
+    /**
+     * checks if state is equal to physical board
+     * @param imgData state to validate against
+     * @throws IllegalStateException if state is out of sync
+     */
+    private void validateState(Map<String, I_CardModel> imgData) {
+
     }
 
     /**
