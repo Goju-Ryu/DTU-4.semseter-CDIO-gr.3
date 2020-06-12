@@ -7,4 +7,9 @@ public class GameHistory implements I_GameHistory {
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
 
     }
+
+    @Override
+    public boolean isRepeatState() {
+        return false;
+    }
 }
