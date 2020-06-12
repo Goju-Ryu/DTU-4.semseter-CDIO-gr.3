@@ -33,8 +33,8 @@ class Isolator:
         # isolates the board on the image, using the Settings object.
         image, mask, succes = self.board.isolate(image, Settings)
         # the mask needs invering to find the cards, otherwise it finds everything else than the cards.
-        
         mask = cv2.bitwise_not(mask)
+
         if succes:
             if self.showBoard:
                 cv2.imshow("board",image)

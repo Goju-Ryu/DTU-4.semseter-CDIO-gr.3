@@ -31,10 +31,6 @@ class BoardRuler:
         #a kernel is used in erode and dilate, as the area is operation fills.
         kernel = np.ones((5,5),np.uint8)
 
-        """        #removing  noise.
-        mask1 = cv2.erode(mask, kernel, iterations=1)
-        mask1 = cv2.dilate(mask1, kernel, iterations=2)
-        mask1 = cv2.erode(mask1, kernel, iterations=1)"""
         pts, succes = self.imageOperator.getBestSquareContour(mask)
 
         if succes:

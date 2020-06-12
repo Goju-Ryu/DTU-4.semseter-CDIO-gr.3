@@ -33,10 +33,13 @@ class imageOperator:
 
         return [sortedList[3], sortedList[2], sortedList[0], sortedList[1]]
 
+    # makes a perspektive transformation using the inputs
     def perspectiveTransform(self, width,height,image, matrix):
         result = cv2.warpPerspective(image, matrix, (width, height))
         return result
 
+    # the transformation matrix is a math matrix, with inforation about where things were, and were they are
+    # going to be, after the transformation
     def getTransformMatrix(self,width, height, points):
 
             nPts = np.float32([
