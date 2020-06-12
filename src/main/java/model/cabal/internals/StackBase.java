@@ -24,7 +24,13 @@ public abstract class StackBase implements I_SolitaireStacks {
 
     @Override
     public boolean addAll(@Nonnull Collection<? extends I_CardModel> c) throws IllegalMoveException {
-        return stack.addAll(c);
+        try {
+            return stack.addAll(c);
+        } catch (UnsupportedOperationException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     @Override
