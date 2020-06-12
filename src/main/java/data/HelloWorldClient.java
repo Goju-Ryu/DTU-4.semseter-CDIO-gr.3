@@ -1,5 +1,8 @@
-package examples;
+package data;
 
+import examples.GreeterGrpc;
+import examples.HelloReply;
+import examples.HelloRequest;
 import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;

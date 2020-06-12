@@ -145,8 +145,8 @@ class CardValidator:
     def loadCompareSymbols(self):
         compareSymbols = []
 
-        for symbol in ["Hearts", "Spades", "Clubs", "Diamonds", "Ace", "Two", "Three", "Four", "Five", "Six", "Seven",
-                       "Eight", "Nine", "Ten", "Jack", "Queen", "King"]:
+        for symbol in ["Hearts", "Spades", "Clubs", "Diamonds", "1", "2", "3", "4", "5", "6", "7",
+                       "8", "9", "10", "11", "12", "13"]:
             compareSymbol = self.Symbol()
             filename = symbol + ".png"
             compareSymbol.name = symbol
