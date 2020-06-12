@@ -19,9 +19,18 @@ public class SuitStack extends StackBase { //TODO implement this class
         stack = new ArrayList<>();
     }
 
+    public Collection<I_CardModel> popSubset() throws IllegalMoveException {
+        return popSubset(stack.size() - 2);
+    }
+
+
     @Override
     public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
-        return null;
+
+        List<I_CardModel> subList = stack.subList(range,stack.size() - 1);
+
+        return (SuitStack) subList;
+
     }
 
     @Override
