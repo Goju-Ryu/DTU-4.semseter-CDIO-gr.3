@@ -13,7 +13,6 @@ coming soon.
 NB: No guarantee this works on IOS
 
 ### java back-end side:
->>>>>>> development
 you need to make sure you are using       
 [project SDK: 12]     
 [Project language level: 11 - local variabel for lambda parameteres]
