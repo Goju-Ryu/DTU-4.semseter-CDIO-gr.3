@@ -96,52 +96,44 @@ class KabaleRecogniser:
             card1RankStats = sorted(stat[4:], key=itemgetter(1), reverse=True)
 
             # if the answer is no card detected.
-            # if card1RankStats[0][1] == 0 or card1SuitStats[0][1] == 0:
-            #     # no card contents definded
-            #     cards[k].suit = "[No suit found]"
-            #     cards[k].rank = "[No rank found]"
-            # else:
-            #     cards[k].rank = card1RankStats[0][0]
-            #     cards[k].suit = card1SuitStats[0][0]
+            if card1RankStats[0][1] == 0 or card1SuitStats[0][1] == 0:
+                # no card contents definded
+                cards[k].suit = "[No suit found]"
+                cards[k].rank = "[No rank found]"
+            else:
+                cards[k].rank = card1RankStats[0][0]
+                cards[k].suit = card1SuitStats[0][0]
 
-            cards[k].rank = card1RankStats[0][0]
-            cards[k].suit = card1SuitStats[0][0]
+            # cards[k].rank = card1RankStats[0][0]
+            # cards[k].suit = card1SuitStats[0][0]
 
             print("card " + str(k) + "  : " + cards[k].rank + " " + cards[k].suit)
             k += 1
 
         stackBottom = cards[0:7]
         stackTop = cards[7:]
-        # jSonLiteral = "{"
-        # jSonLiteral.append("\"drawpile\": \"" + stackTop[0].suit + stackTop[0].rank + "\", ")       # drawpile open card
-        # jSonLiteral.append("\"suitStack1\": \"" + stackTop[3].suit + stackTop[3].rank) + "\", "     # suitStack 1
-        # jSonLiteral.append("\"suitStack2\": \"" + stackTop[4].suit + stackTop[4].rank) + "\", "     # suitStack 2
-        # jSonLiteral.append("\"suitStack3\": \"" + stackTop[5].suit + stackTop[5].rank) + "\", "     # suitStack 3
-        # jSonLiteral.append("\"suitStack4\": \"" + stackTop[6].suit + stackTop[6].rank) + "\", "     # suitStack 4
-        # jSonLiteral.append("\"coulumn1\": \"" + stackBottom[0].suit + stackBottom[0].rank) + "\", "    # column 1
-        # jSonLiteral.append("\"coulumn2\": \"" + stackBottom[1].suit + stackBottom[1].rank) + "\", "    # column 2
-        # jSonLiteral.append("\"coulumn3\": \"" + stackBottom[2].suit + stackBottom[2].rank) + "\", "    # column 3
-        # jSonLiteral.append("\"coulumn4\": \"" + stackBottom[3].suit + stackBottom[3].rank) + "\", "    # column 4
-        # jSonLiteral.append("\"coulumn5\": \"" + stackBottom[4].suit + stackBottom[4].rank) + "\", "    # column 5
-        # jSonLiteral.append("\"coulumn6\": \"" + stackBottom[5].suit + stackBottom[5].rank) + "\", "    # column 6
-        # jSonLiteral.append("\"coulumn7\": \"" + stackBottom[6].suit + stackBottom[6].rank) + "\", "    # column 7
-        # jSonLiteral.append("}")
+        # The decided positions for the card placement on the board. This is the placement the java program expects to get.
+        # The corresponding elements in the cards list for this class starts with 0th element at the buttom right cornor of a game board, you imagine in from of you
         inpu = json.dumps({
-            "drawPile" : {"suit" : stackTop[0].suit, "rank" : stackTop[0].rank},
-            "SuitStackHearts" : {"suit" : stackTop[3].suit, "rank" : stackTop[3].rank},
-            "SuitStackClubs" : {"suit" : stackTop[4].suit, "rank" : stackTop[4].rank},
-            "SuitStackDiamonds" : {"suit" : stackTop[5].suit, "rank" : stackTop[5].rank},
-            "SuitStackSpades" : {"suit" : stackTop[6].suit, "rank" : stackTop[6].rank},
-            "Column1" : {"suit" : stackBottom[0].suit, "rank" : stackBottom[0].rank},
-            "Column2" : {"suit" : stackBottom[1].suit, "rank" : stackBottom[1].rank},
-            "Column3" : {"suit" : stackBottom[2].suit, "rank" : stackBottom[2].rank},
+            "drawPile" : {"suit" : stackTop[5].suit, "rank" : stackTop[5].rank},
+            "SuitStackHearts" : {"suit" : stackTop[0].suit, "rank" : stackTop[0].rank},
+            "SuitStackClubs" : {"suit" : stackTop[1].suit, "rank" : stackTop[1].rank},
+            "SuitStackDiamonds" : {"suit" : stackTop[2].suit, "rank" : stackTop[2].rank},
+            "SuitStackSpades" : {"suit" : stackTop[3].suit, "rank" : stackTop[3].rank},
+            "Column1" : {"suit" : stackBottom[6].suit, "rank" : stackBottom[6].rank},
+            "Column2" : {"suit" : stackBottom[5].suit, "rank" : stackBottom[5].rank},
+            "Column3" : {"suit" : stackBottom[4].suit, "rank" : stackBottom[4].rank},
             "Column4" : {"suit" : stackBottom[3].suit, "rank" : stackBottom[3].rank},
-            "Column5" : {"suit" : stackBottom[4].suit, "rank" : stackBottom[4].rank},
-            "Column6" : {"suit" : stackBottom[5].suit, "rank" : stackBottom[5].rank},
-            "Column7" : {"suit" : stackBottom[6].suit, "rank" : stackBottom[6].rank},
+            "Column5" : {"suit" : stackBottom[2].suit, "rank" : stackBottom[2].rank},
+            "Column6" : {"suit" : stackBottom[1].suit, "rank" : stackBottom[1].rank},
+            "Column7" : {"suit" : stackBottom[0].suit, "rank" : stackBottom[0].rank},
         })
-            
-        return inpu
+        # cardsStrings = []
+        # for card in cards:
+        #     cardsStrings.append(card.suit + card.rank)
+        # return str(cardsStrings)
 
+
+        return inpu
 
 
