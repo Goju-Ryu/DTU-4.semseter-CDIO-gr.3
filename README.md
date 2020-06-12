@@ -20,7 +20,7 @@ you need to make sure you are using
 
 ### python front-end and openCV:
 You need to have Python 3.8
-
+and having an external USB camera plugged in
 ### java python communication:
 Once the above is done comes the tricky part, setting grpc up allowing the java side to talk to the server side.
 
