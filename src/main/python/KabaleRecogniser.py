@@ -132,18 +132,17 @@ class KabaleRecogniser:
         # jSonLiteral.append("}")
         inpu = json.dumps({
             "drawPile" : {"suit" : stackTop[0].suit, "rank" : stackTop[0].rank},
-            "SuitStackHearts" : {"suit" : "hearts", "rank" : 1},
-            "SuitStackClubs" : {"" : "", "" : 0},
-            "SuitStackDimons" : {"" : "", "" : 0},
-            "SuitStackSpades" : {"" : "", "" : 0},
-            "Column1" : {"suit" : "hearts", "rank" : 1},
-            "Column2" : {"suit" : "hearts", "rank" : 1},
-            "Column3" : {"suit" : "hearts", "rank" : 1},
-            "Column4" : {"suit" : "hearts", "rank" : 1},
-            "Column5" : {"suit" : "hearts", "rank" : 1},
-            "Column6" : {"suit" : "hearts", "rank" : 1},
-            "Column7" : {"suit" : "hearts", "rank" : 1}
-
+            "SuitStackHearts" : {"suit" : stackTop[3].suit, "rank" : stackTop[3].rank},
+            "SuitStackClubs" : {"suit" : stackTop[4].suit, "rank" : stackTop[4].rank},
+            "SuitStackDiamonds" : {"suit" : stackTop[5].suit, "rank" : stackTop[5].rank},
+            "SuitStackSpades" : {"suit" : stackTop[6].suit, "rank" : stackTop[6].rank},
+            "Column1" : {"suit" : stackBottom[0].suit, "rank" : stackBottom[0].rank},
+            "Column2" : {"suit" : stackBottom[1].suit, "rank" : stackBottom[1].rank},
+            "Column3" : {"suit" : stackBottom[2].suit, "rank" : stackBottom[2].rank},
+            "Column4" : {"suit" : stackBottom[3].suit, "rank" : stackBottom[3].rank},
+            "Column5" : {"suit" : stackBottom[4].suit, "rank" : stackBottom[4].rank},
+            "Column6" : {"suit" : stackBottom[5].suit, "rank" : stackBottom[5].rank},
+            "Column7" : {"suit" : stackBottom[6].suit, "rank" : stackBottom[6].rank},
         })
             
         return inpu
