@@ -85,10 +85,10 @@ public class InputAccesPoint {
         }
     }
 
-    /**
-     * Greet server. If provided, the first element of {@code args} is the name to use in the
-     * greeting. The second argument is the target server.
-     */
+//    /**
+//     * Greet server. If provided, the first element of {@code args} is the name to use in the
+//     * greeting. The second argument is the target server.
+//     */
     /*
     public static void main(String[] args) throws Exception {
         String user = "Java world";

@@ -1,4 +1,4 @@
-package control;
+package control.history;
 
 import java.beans.PropertyChangeListener;
 
