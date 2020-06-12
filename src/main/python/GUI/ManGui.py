@@ -88,7 +88,21 @@ class ManGUI(AbstractUI):
         #this is a button made for testing purposes
         # should be comented out when not developing
         def myMove():
-            inp ="| ,su1; ,su2; ,su3;,su4;| h3,co1; h4,co2; d10,co3; d11,co4; d12,co5; d9,co6; d10,co7;| "
+            inp ="{\n\"h10\":\"pi\",\n" \
+                 "\"\":\"su1\",\n" \
+                 "\"\":\"su2\",\n" \
+                 "\"\":\"su3\",\n" \
+                 "\"\":\"su4\",\n" \
+                 "\"h9\":\"co1\",\n" \
+                 "\"h2\":\"co2\",\n" \
+                 "\"h3\":\"co3\",\n" \
+                 "\"h4\":\"co4\",\n" \
+                 "\"h5\":\"co5\",\n" \
+                 "\"h6\":\"co5\",\n" \
+                 "\"h7\":\"co6\",\n" \
+                 "\"h8\":\"co7\",\n" \
+                 "}"
+
             self.updateInp(inp)
             root.destroy()
         myButton = Button(root, text="testmove",command = myMove)
