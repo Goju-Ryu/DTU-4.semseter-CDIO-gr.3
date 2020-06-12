@@ -23,8 +23,17 @@ class CardValidator:
     def setCardRankAndSuit(self, card):
         if card.exists:
             # Isolated cornor profile
-            cardCornorProfile = card.profile[0:140, 0:50]
-            # cv2.imshow("cardCornorProfile", cardCornorProfile)
+            profileDim = card.profile.shape
+            print(profileDim)
+            profileHeight = profileDim[0]
+            profileWidth = profileDim[1]
+            print("h: " + str(profileHeight))
+            print("w: " + str(profileWidth))
+
+
+            # cardCornorProfile = card.profile[0:140, 0:50]
+            cardCornorProfile = card.profile[0:(int(profileHeight/3)), 0:int((profileWidth/4))]
+            cv2.imshow("cardCornorProfile", cardCornorProfile)
 
             # making the Threshold so we can use it to find the contours
             img = cv2.resize(cardCornorProfile , (100, 280))

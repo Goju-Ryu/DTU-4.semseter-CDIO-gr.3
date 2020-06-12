@@ -66,7 +66,7 @@ class KabaleRecogniser:
                 i += 1
             timeNow = TIME.time()
             timeDiff = timeNow - timeStart
-            if ( timeDiff ) > 300:
+            if ( timeDiff ) > 3000:
                 break
         cv2.destroyAllWindows()
         k = 0
@@ -78,11 +78,13 @@ class KabaleRecogniser:
             card1RankStats = sorted(stat[4:], key=itemgetter(1), reverse=True)
             # print("sorted ranks: " + str(card1RankStats))
 
-            if card1RankStats[0][1] == 0 and card1SuitStats[0][1] == 0:
-                cards[k].suit = "[No suit found]"
+            if card1RankStats[0][1] == 0:
                 cards[k].rank = "[No rank found]"
             else:
                 cards[k].rank = card1RankStats[0][0]
+            if card1SuitStats[0][1] == 0:
+                cards[k].suit = "[No suit found]"
+            else:
                 cards[k].suit = card1SuitStats[0][0]
 
             print("card " + str(k) + "  : " + cards[k].rank + " " + cards[k].suit)
