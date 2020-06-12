@@ -26,6 +26,7 @@ public class InputAccesPoint {
         blockingStub = GreeterGrpc.newBlockingStub(channel);
     }
 
+
     /** Say hello to server. */
     public void greet(String name) {
         logger.info("Will try to greet as " + name + " ...");
@@ -40,7 +41,21 @@ public class InputAccesPoint {
         logger.info("Greeting: " + response.getMessage());
     }
 
-    public void getInput(String UIChoice)throws Exception{
+    public String feedback(String name) {
+        logger.info("We send " + name + " ...");
+        HelloRequest request = HelloRequest.newBuilder().setName(name).build();
+        HelloReply response;
+        try {
+            response = blockingStub.sayHello(request);
+        } catch (StatusRuntimeException e) {
+            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+            return "RPC failed: {0}";
+        }
+        logger.info("Greeting: " + response.getMessage());
+        return response.getMessage();
+    }
+
+    public String getInput(String UIChoice)throws Exception{
         String user ="";
         String target = "localhost:50051";
 
@@ -60,19 +75,21 @@ public class InputAccesPoint {
                 .build();
         try {
             InputAccesPoint client = new InputAccesPoint(channel);
-            client.greet(user);
+            String inp = client.feedback(user);
+            return inp;
         } finally {
             // ManagedChannels use resources like threads and TCP connections. To prevent leaking these
             // resources the channel should be shut down when it will no longer be used. If it may be used
             // again leave it running.
             channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
-        }
+        }//TODO: try to call get input from board and print it out
     }
 
     /**
      * Greet server. If provided, the first element of {@code args} is the name to use in the
      * greeting. The second argument is the target server.
      */
+    /*
     public static void main(String[] args) throws Exception {
         String user = "Java world";
         // Access a service running on the local machine on port 50051
@@ -109,5 +126,5 @@ public class InputAccesPoint {
             // again leave it running.
             channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
         }
-    }
+    }*/
 }

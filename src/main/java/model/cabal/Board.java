@@ -1,6 +1,10 @@
 package model.cabal;
 
 import static model.cabal.E_PileID.*;
+
+import data.InputAccesPoint;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import model.cabal.internals.BuildStack;
 import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
@@ -29,7 +33,8 @@ public final class Board implements I_BoardModel {
         change = new PropertyChangeSupport(this);
         piles = new I_SolitaireStacks[values().length];
 
-
+        String usrInput = getUsrInput();
+        System.out.println(usrInput);
         for (E_PileID id : E_PileID.values()) {
             if (id == TURNPILE) { //initializes with 24 cards face down
                 var stack = new DrawStack();
@@ -67,6 +72,22 @@ public final class Board implements I_BoardModel {
 
 
 //---------  Genneral methods  -------------------------------------------------------------------------------------
+    public String getUsrInput(){
+        String usrInput ="";
+        String target = "localhost:50051";
+        ManagedChannel channel = ManagedChannelBuilder.forTarget(target)
+                // Channels are secure by default (via SSL/TLS). For the example we disable TLS to avoid
+                // needing certificates.
+                .usePlaintext()
+                .build();
+        InputAccesPoint accessInput = new InputAccesPoint(channel);
+        try{
+            usrInput = accessInput.getInput("ManGUI");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return usrInput;
+    }
 
     @Override
     public boolean isStackComplete(E_PileID pileID) {
