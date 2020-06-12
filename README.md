@@ -10,30 +10,40 @@ coming soon.
 
 
 # Developer guide
+NB: No guarantee this works on IOS
 ## java back-end side:
 you need to make sure you are using       
-[project SDK: 11]     
+[project SDK: 12]     
 [Project language level: 11 - local variabel for lambda parameteres]
+
+## python front-end and openCV:
+You need to have Python 3.8
 
 ## java python communication:
 Once the above is done comes the tricky part, setting grpc up allowing the java side to talk to the server side.
-
-**Prereqs:**
+prereqs:
 - having python 3.4(or higher installed)
-- make sure your pip is up to date
-Then you need to install grpc, you can do that with the command
+- Having pip installed and up to date
+Then you need to install grpc, you can do that by
 ```
-pip install grpcio
 pip install grpcio-tools
 ```
-finally you can run a
+finally(if you are in linux) you can run a
 ```
 mvn clean
 mvn compile
 ```
-to make sure every you target is clean and generate the files you need. 
-Alternatively you can use the maven plugin for Intellij to run the commands of the same name.
+to make sure every you target is clean and generate the files you neeed 
 
-To start the connection you have to start *src/main/python/server.py* 
-then run *src/main/java/examples/HelloWoldClient*
-This should send a message between the java and python program.
+otherwise you can use intellij or a simmilar ui
+
+should that not work you can manually try to run
+```
+proto_py.bat(for windows) or grpc.proto(for linux)
+```
+to set up grpc and then clean and compile
+
+if this is not working and you are on a windows computer you can try
+- installing bash in your terminal
+- installed maven in you bash terminal
+
