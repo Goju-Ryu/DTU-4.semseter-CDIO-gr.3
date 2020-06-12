@@ -11,14 +11,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class HelloWorldClient {
+public class InputAccesPoint {
     //TODO: move thsi to data layer and refactor its name
-    private static final Logger logger = Logger.getLogger(HelloWorldClient.class.getName());
+    private static final Logger logger = Logger.getLogger(InputAccesPoint.class.getName());
 
     private final GreeterGrpc.GreeterBlockingStub blockingStub;
 
     /** Construct client for accessing HelloWorld server using the existing channel. */
-    public HelloWorldClient(Channel channel) {
+    public InputAccesPoint(Channel channel) {
         // 'channel' here is a Channel, not a ManagedChannel, so it is not this code's responsibility to
         // shut it down.
 
@@ -38,6 +38,35 @@ public class HelloWorldClient {
             return;
         }
         logger.info("Greeting: " + response.getMessage());
+    }
+
+    public void getInput(String UIChoice)throws Exception{
+        String user ="";
+        String target = "localhost:50051";
+
+        if(UIChoice == "ManGUI"){
+            user = "Java world";
+        }else if(UIChoice == "OpenCV"){
+            user = "OpenCV";
+        }
+
+        // Create a communication channel to the server, known as a Channel. Channels are thread-safe
+        // and reusable. It is common to create channels at the beginning of your application and reuse
+        // them until the application shuts down.
+        ManagedChannel channel = ManagedChannelBuilder.forTarget(target)
+                // Channels are secure by default (via SSL/TLS). For the example we disable TLS to avoid
+                // needing certificates.
+                .usePlaintext()
+                .build();
+        try {
+            InputAccesPoint client = new InputAccesPoint(channel);
+            client.greet(user);
+        } finally {
+            // ManagedChannels use resources like threads and TCP connections. To prevent leaking these
+            // resources the channel should be shut down when it will no longer be used. If it may be used
+            // again leave it running.
+            channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
+        }
     }
 
     /**
@@ -72,7 +101,7 @@ public class HelloWorldClient {
                 .usePlaintext()
                 .build();
         try {
-            HelloWorldClient client = new HelloWorldClient(channel);
+            InputAccesPoint client = new InputAccesPoint(channel);
             client.greet(user);
         } finally {
             // ManagedChannels use resources like threads and TCP connections. To prevent leaking these
