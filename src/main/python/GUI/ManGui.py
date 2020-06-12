@@ -6,7 +6,7 @@ from tkinter import *
 # This file containing a GUI is
 # intented to work as to test sercer communication
 # as well as a back-up should open CV not work
-#====================================
+#====================================.
 
 
 class ManGUI(AbstractUI):
