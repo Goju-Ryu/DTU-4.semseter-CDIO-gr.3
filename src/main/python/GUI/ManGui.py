@@ -88,7 +88,7 @@ class ManGUI(AbstractUI):
                     "column4": ecol4.get(),
                     "column5": ecol5.get(),
                     "column6": ecol6.get(),
-                    "column7": ecol7.get(),
+                    "column7": ecol7.get()
                 }
             )
             self.updateInp(inp)
