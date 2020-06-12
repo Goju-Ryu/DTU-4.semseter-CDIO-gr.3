@@ -2,9 +2,11 @@ import time
 
 import cv2
 import threading
-#Author : Hans
+
+# this class is the video recording, with information about capturing images, and where
+# to do it from. this one records from the next camera than the webcam
 class Video:
-    # Author : Hans
+
     def __init__(self):
 
         # finals
@@ -21,21 +23,22 @@ class Video:
         self.empt, self.frame = self.rec.read()  # setting the veryFirst Frame just to avoid null pointers.
         self.empt, self.frame = self.rec.read()
 
-    # Author : Hans
+
     def getFrame(self):
         self.empt, self.frame = self.rec.read()
         img = self.frame
         return self.frame
 
-    # Author : Hans
+
     def stop(self):
         self.rec.release()
 
 
-#Author : Hans
+# this class is the video recording, with information about capturing images, and where
+# to do it from. this one does not record, but imulates it by reading a video();
 class SVideo:
 
-    # Author : Hans
+
     def __init__(self):
         # finals
         self.VidName ="VideoInput/video_01.mp4"
@@ -51,14 +54,12 @@ class SVideo:
         self.empt, self.frame = self.rec.read()  # setting the veryFirst Frame just to avoid null pointers.
         self.empt, self.frame = self.rec.read()
 
-    # Author : Hans
     def getFrame(self):
         self.empt, self.frame = self.rec.read()
         img = self.frame
         #return cv2.resize(img, (800,500))
         return self.frame
 
-    # Author : Hans
     def stop(self):
         self.rec.release()
 
