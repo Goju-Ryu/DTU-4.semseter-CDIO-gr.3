@@ -150,7 +150,8 @@ class CardValidator:
             compareSymbol = self.Symbol()
             filename = symbol + ".png"
             compareSymbol.name = symbol
-            filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs/"
+            # filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs/"
+            filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs_mod/"
             compareSymbol.img = cv2.imread(filepath + filename, cv2.IMREAD_GRAYSCALE)  # pic is 125*70 (before it was 100*70)
 
             compareSymbols.append(compareSymbol)

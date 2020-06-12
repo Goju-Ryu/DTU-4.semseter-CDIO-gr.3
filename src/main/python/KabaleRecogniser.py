@@ -93,10 +93,9 @@ class KabaleRecogniser:
             # print("stat " + str(k) + "  " + str(stat))
             k += 1
 
-        # j = 0
-        # for card in matchedCards:
-        #     print("element " + str(j) + " " + card.rank + " " + card.suit)
-        #     j += 1
+
+
+
 
 
 
