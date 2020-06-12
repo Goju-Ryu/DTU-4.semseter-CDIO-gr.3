@@ -5,16 +5,15 @@ import model.cabal.internals.BuildStack;
 import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.SuitStack;
+import model.cabal.internals.card.Card;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.rmi.UnexpectedException;
+import java.util.*;
 
 
 /**
@@ -70,18 +69,59 @@ public final class Board implements I_BoardModel {
         return piles[pile.ordinal()];
     }
 
+    /**
+     * Query the map for the relevant data and return it.
+     * @param imgData The map of data to check extract the data from
+     * @param key The pile to which the data should correspond
+     * @return The data the map contains about the given pile
+     */
+    private I_CardModel extractImgData(Map<String, I_CardModel> imgData, E_PileID key) {
+        if(imgData.containsKey(key.name()))
+            return imgData.get(key.name()); //This assumes a strict naming scheme and will return null if not found
+        else throw new NoSuchElementException("key \"" + key.name() + "\" not found in map: " + imgData);
+    }
+
+    /**
+     * Method for generating an IllegalStateException with an appropriate error message
+     * @param pos The pile where state is out of sync
+     * @param physCard The value of the physical card
+     * @param virtCard The card represented in the virtual representation of the board (this class)
+     * @param info Extra information that might be helpful
+     * @return An exception with a nicely formatted message
+     */
+    private IllegalStateException
+    makeStateException(E_PileID pos, I_CardModel physCard, I_CardModel virtCard, String info) {
+        return new IllegalStateException(
+                "The virtual board and the physical board is out of sync\n" +
+                "\tPosition:\t" + pos + "\n" +
+                "\tVirtual:\t" + virtCard + "\n" +
+                "\tPhysical:\t" + physCard + "\n" +
+                "\tMethod:\t" +  Thread.currentThread().getStackTrace()[2] + "\n" +
+                "\tInfo:\t" + info
+        );
+    }
+
 
 //---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
 
     @Override
-    public I_CardModel turnCard(Map<String, I_CardModel> imgData) { //TODO make this handle unknown cards
+    public I_CardModel turnCard(Map<String, I_CardModel> imgData) {
         var turnPile = (DrawStack) get(TURNPILE);
 
         if (turnPile.isEmpty())
                 throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
 
-        //TODO test that this acts like drawing cards physically would
-        return turnPile.turnCard();
+        var returnable = turnPile.turnCard();
+
+        var imgCard = extractImgData(imgData, TURNPILE);
+        if ( !returnable.isFacedUp() ) {
+            returnable.reveal(imgCard.getSuit(), imgCard.getRank());
+        } else {
+            if ( !returnable.equals(imgCard) )
+                throw makeStateException(TURNPILE, imgCard, returnable, "no info");
+        }
+
+        return returnable;
     }
 
     @Override
@@ -116,10 +156,16 @@ public final class Board implements I_BoardModel {
 
         //change state
         to.addAll(from.popSubset(originPos));
-        var exposedCard = from.getCard(from.size() - 1);
-        if ( !exposedCard.isFacedUp() )
-            System.out.println("reveal card"); //Todo take card from map
 
+        //check that state is consistent with the physical board
+        var exposedCard = from.getCard(from.size() - 1);
+        var imgCard = extractImgData(imgData, origin);
+        if ( !exposedCard.isFacedUp() ) {
+            exposedCard.reveal(imgCard.getSuit(), imgCard.getRank());
+        } else {
+            if ( !exposedCard.equals(imgCard) )
+                throw makeStateException(origin, imgCard, exposedCard, "no info");
+        }
 
         //notify listeners om state before and after state change
         change.firePropertyChange( makePropertyChangeEvent(origin, oldOrigin) );
