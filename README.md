@@ -21,6 +21,7 @@ You need to have Python 3.8
 
 ## java python communication:
 Once the above is done comes the tricky part, setting grpc up allowing the java side to talk to the server side.
+
 **prereqs:**
 - having python 3.4(or higher installed)
 - Having pip installed and up to date
