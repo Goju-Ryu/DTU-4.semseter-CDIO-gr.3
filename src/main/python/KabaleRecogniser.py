@@ -5,7 +5,7 @@ import cv2
 
 from Card import Card
 from Isolator.Isolator import Isolator
-from VideoInput.Video import SVideo, Video
+from VideoInput.Video import SVideo, Video, videoGen
 from Validator.CardValidator import CardValidator
 import time as TIME
 
@@ -26,7 +26,8 @@ class KabaleRecogniser:
         timeStart = TIME.time()
 
         # this is a method to initialise the video capture.
-        rec = Video()
+        vidG = videoGen()
+        rec = vidG.getVideo()
 
         # statistics is a 2d arrray. where the integeres in these spaces are the "counters" where we count votes.
         # it needs to persist across the loop, so is instantiated outside it.

@@ -5,6 +5,14 @@ import threading
 
 # this class is the video recording, with information about capturing images, and where
 # to do it from. this one records from the next camera than the webcam
+class videoGen:
+    def __init__(self):
+        pass
+
+    def getVideo(self):
+        vid = Video()
+        return vid
+
 class Video:
 
     def __init__(self):
