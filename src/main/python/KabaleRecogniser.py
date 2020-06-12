@@ -1,6 +1,6 @@
 import os
 from operator import itemgetter
-
+import json as json
 import cv2
 
 from Card import Card
@@ -114,8 +114,8 @@ class KabaleRecogniser:
             print("card " + str(k) + "  : " + cards[k].rank + " " + cards[k].suit)
             k += 1
 
-        # stackBottom = cards[0:7]
-        # stackTop = cards[7:]
+        stackBottom = cards[0:7]
+        stackTop = cards[7:]
         # jSonLiteral = "{"
         # jSonLiteral.append("\"drawpile\": \"" + stackTop[0].suit + stackTop[0].rank + "\", ")       # drawpile open card
         # jSonLiteral.append("\"suitStack1\": \"" + stackTop[3].suit + stackTop[3].rank) + "\", "     # suitStack 1
@@ -130,9 +130,23 @@ class KabaleRecogniser:
         # jSonLiteral.append("\"coulumn6\": \"" + stackBottom[5].suit + stackBottom[5].rank) + "\", "    # column 6
         # jSonLiteral.append("\"coulumn7\": \"" + stackBottom[6].suit + stackBottom[6].rank) + "\", "    # column 7
         # jSonLiteral.append("}")
+        inpu = json.dumps({
+            "drawPile" : {"suit" : stackTop[0].suit, "rank" : stackTop[0].rank},
+            "SuitStackHearts" : {"suit" : "hearts", "rank" : 1},
+            "SuitStackClubs" : {"" : "", "" : 0},
+            "SuitStackDimons" : {"" : "", "" : 0},
+            "SuitStackSpades" : {"" : "", "" : 0},
+            "Column1" : {"suit" : "hearts", "rank" : 1},
+            "Column2" : {"suit" : "hearts", "rank" : 1},
+            "Column3" : {"suit" : "hearts", "rank" : 1},
+            "Column4" : {"suit" : "hearts", "rank" : 1},
+            "Column5" : {"suit" : "hearts", "rank" : 1},
+            "Column6" : {"suit" : "hearts", "rank" : 1},
+            "Column7" : {"suit" : "hearts", "rank" : 1}
 
+        })
             
-        return str(statistics)
+        return inpu
 
 
 
