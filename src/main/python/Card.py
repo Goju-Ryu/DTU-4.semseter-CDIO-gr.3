@@ -11,8 +11,8 @@ class Card():
         self.compContour = None
         self.counter = 1
 
-        self.suit = "[no suit set]"
-        self.rank = "[no rank set]"
+        self.suit = ""
+        self.rank = 0
 
     # Author : Hans
     def initiateCard(self, contour, points):

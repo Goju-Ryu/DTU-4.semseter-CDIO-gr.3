@@ -29,20 +29,13 @@ class KabaleRecogniser:
         rec = Video()
 
         # statistics is a 2d arrray. where the integeres in these spaces are the "counters" where we count votes.
-        # it needs to persist acros the loop, so is instantiated outside it.
-        sNameCnts = [["Hearts", 0], ["Spades", 0], ["Clubs", 0], ["Diamonds", 0], ["Ace", 0], ["Two", 0],
-                  ["Three", 0], [ "Four", 0], ["Five", 0], ["Six", 0], ["Seven", 0],
-                  ["Eight", 0], [ "Nine", 0], [ "Ten", 0], ["Jack", 0], [ "Queen", 0], [ "King", 0]]
-
-        sNameCnts2 = [["Hearts", 0], ["Spades", 0], ["Clubs", 0], ["Diamonds", 0], ["Ace", 0], ["Two", 0],
-                     ["Three", 0], [ "Four", 0], ["Five", 0], ["Six", 0], ["Seven", 0],
-                     ["Eight", 0], [ "Nine", 0], [ "Ten", 0], ["Jack", 0], [ "Queen", 0], [ "King", 0]]
+        # it needs to persist across the loop, so is instantiated outside it.
 
         statistics = []
         for q in range(14):
-            statistics.append([["Hearts", 0], ["Spades", 0], ["Clubs", 0], ["Diamonds", 0], ["Ace", 0], ["Two", 0],
-                      ["Three", 0], [ "Four", 0], ["Five", 0], ["Six", 0], ["Seven", 0],
-                      ["Eight", 0], [ "Nine", 0], [ "Ten", 0], ["Jack", 0], [ "Queen", 0], [ "King", 0]])
+            statistics.append([["Hearts", 0], ["Spades", 0], ["Clubs", 0], ["Diamonds", 0], ["1", 0], ["2", 0],
+                      ["3", 0], [ "4", 0], ["5", 0], ["6", 0], ["7", 0],
+                      ["8", 0], [ "9", 0], [ "10", 0], ["11", 0], [ "12", 0], [ "13", 0]])
 
 
         # filming Loop.
@@ -103,13 +96,16 @@ class KabaleRecogniser:
             card1RankStats = sorted(stat[4:], key=itemgetter(1), reverse=True)
 
             # if the answer is no card detected.
-            if card1RankStats[0][1] == 0 or card1SuitStats[0][1] == 0:
-                # no card contents definded
-                cards[k].suit = "[No suit found]"
-                cards[k].rank = "[No rank found]"
-            else:
-                cards[k].rank = card1RankStats[0][0]
-                cards[k].suit = card1SuitStats[0][0]
+            # if card1RankStats[0][1] == 0 or card1SuitStats[0][1] == 0:
+            #     # no card contents definded
+            #     cards[k].suit = "[No suit found]"
+            #     cards[k].rank = "[No rank found]"
+            # else:
+            #     cards[k].rank = card1RankStats[0][0]
+            #     cards[k].suit = card1SuitStats[0][0]
+
+            cards[k].rank = card1RankStats[0][0]
+            cards[k].suit = card1SuitStats[0][0]
 
             print("card " + str(k) + "  : " + cards[k].rank + " " + cards[k].suit)
             k += 1
