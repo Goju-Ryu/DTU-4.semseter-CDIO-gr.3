@@ -1,5 +1,6 @@
 from AbstractUi import AbstractUI
 from tkinter import *
+import json as json
 #====================================
 # ManGUI or Manual GUI - requres you to manully enter the input data
 #------------------------------------
@@ -73,10 +74,23 @@ class ManGUI(AbstractUI):
             clickCount = "You did click me: "
             butLabel = Label(root, text =clickCount)
             butLabel.grid(row =3, column=7)
-            inPile = ePile.get()
-            inSuits = eSuit1.get()+",su1; "+eSuit2.get()+",su2; "+eSuit3.get()+",su3;"+eSuit4.get()+",su4;"
-            inCols = ecol1.get()+",co1; "+ecol2.get()+",co2; "+ecol3.get()+",co3; "+ecol4.get()+",co4; "+ecol5.get()+",co5; "+ecol6.get()+",co6; "+ecol7.get()+",co7;"
-            inp = inPile + " | "+ inSuits + "| "+inCols +"| "
+
+            inp = json.dumps(
+                {
+                    "drawPile": ePile.get(),
+                    "suitStack1": eSuit1.get(),
+                    "suitStack2": eSuit2.get(),
+                    "suitStack3": eSuit3.get(),
+                    "suitStack4": eSuit4.get(),
+                    "column1": ecol1.get(),
+                    "column2": ecol2.get(),
+                    "column3": ecol3.get(),
+                    "column4": ecol4.get(),
+                    "column5": ecol5.get(),
+                    "column6": ecol6.get(),
+                    "column7": ecol7.get()
+                }
+            )
             self.updateInp(inp)
             print(inp)
             root.destroy()
@@ -88,19 +102,18 @@ class ManGUI(AbstractUI):
         #this is a button made for testing purposes
         # should be comented out when not developing
         def myMove():
-            inp ="{\n\"h10\":\"pi\",\n" \
-                 "\"\":\"su1\",\n" \
-                 "\"\":\"su2\",\n" \
-                 "\"\":\"su3\",\n" \
-                 "\"\":\"su4\",\n" \
-                 "\"h9\":\"co1\",\n" \
-                 "\"h2\":\"co2\",\n" \
-                 "\"h3\":\"co3\",\n" \
-                 "\"h4\":\"co4\",\n" \
-                 "\"h5\":\"co5\",\n" \
-                 "\"h6\":\"co5\",\n" \
-                 "\"h7\":\"co6\",\n" \
-                 "\"h8\":\"co7\",\n" \
+            inp ="{\n\"drawPile\":\"h10\",\n" \
+                 "\"suitStack1\":\"h1\",\n" \
+                 "\"suitStack2\":\"\",\n" \
+                 "\"suitStack3\":\"\",\n" \
+                 "\"suitStack4\":\"\",\n" \
+                 "\"column1\":\"h3\",\n" \
+                 "\"column2\":\"h4\",\n" \
+                 "\"column3\":\"h5\",\n" \
+                 "\"column4\":\"h6\",\n" \
+                 "\"column5\":\"h7\",\n" \
+                 "\"column6\":\"h8\",\n" \
+                 "\"column7\":\"h9\",\n" \
                  "}"
 
             self.updateInp(inp)

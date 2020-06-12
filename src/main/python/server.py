@@ -32,8 +32,8 @@ class Greeter(grpc_pb2_grpc.GreeterServicer):
         else:
             pass #TODO: call openCV here
         b = x.run()
-        returnMSG ='Hello, %s! I\'m Python world! here is a msg for you:' % request.name
-        returnMSG += b
+        #returnMSG ='Hello, %s! I\'m Python world! here is a msg for you:' % request.name
+        returnMSG = b
         return grpc_pb2.HelloReply(message=returnMSG)#request.name
 
 
