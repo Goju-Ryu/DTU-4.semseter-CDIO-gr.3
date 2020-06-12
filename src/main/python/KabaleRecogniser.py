@@ -114,6 +114,22 @@ class KabaleRecogniser:
             print("card " + str(k) + "  : " + cards[k].rank + " " + cards[k].suit)
             k += 1
 
+        # stackBottom = cards[0:7]
+        # stackTop = cards[7:]
+        # jSonLiteral = "{"
+        # jSonLiteral.append("\"drawpile\": \"" + stackTop[0].suit + stackTop[0].rank + "\", ")       # drawpile open card
+        # jSonLiteral.append("\"suitStack1\": \"" + stackTop[3].suit + stackTop[3].rank) + "\", "     # suitStack 1
+        # jSonLiteral.append("\"suitStack2\": \"" + stackTop[4].suit + stackTop[4].rank) + "\", "     # suitStack 2
+        # jSonLiteral.append("\"suitStack3\": \"" + stackTop[5].suit + stackTop[5].rank) + "\", "     # suitStack 3
+        # jSonLiteral.append("\"suitStack4\": \"" + stackTop[6].suit + stackTop[6].rank) + "\", "     # suitStack 4
+        # jSonLiteral.append("\"coulumn1\": \"" + stackBottom[0].suit + stackBottom[0].rank) + "\", "    # column 1
+        # jSonLiteral.append("\"coulumn2\": \"" + stackBottom[1].suit + stackBottom[1].rank) + "\", "    # column 2
+        # jSonLiteral.append("\"coulumn3\": \"" + stackBottom[2].suit + stackBottom[2].rank) + "\", "    # column 3
+        # jSonLiteral.append("\"coulumn4\": \"" + stackBottom[3].suit + stackBottom[3].rank) + "\", "    # column 4
+        # jSonLiteral.append("\"coulumn5\": \"" + stackBottom[4].suit + stackBottom[4].rank) + "\", "    # column 5
+        # jSonLiteral.append("\"coulumn6\": \"" + stackBottom[5].suit + stackBottom[5].rank) + "\", "    # column 6
+        # jSonLiteral.append("\"coulumn7\": \"" + stackBottom[6].suit + stackBottom[6].rank) + "\", "    # column 7
+        # jSonLiteral.append("}")
 
             
         return str(statistics)
