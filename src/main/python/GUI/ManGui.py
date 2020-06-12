@@ -103,10 +103,10 @@ class ManGUI(AbstractUI):
         # should be comented out when not developing
         def myMove():
             inp ="{\n\"drawPile\":\"h10\",\n" \
-                 "\"hearthStack\":\"h1\",\n" \
-                 "\"diamondStack\":\"\",\n" \
-                 "\"spadeStack\":\"\",\n" \
-                 "\"clubStack\":\"\",\n" \
+                 "\"suitStack1\":\"h1\",\n" \
+                 "\"suitStack2\":\"\",\n" \
+                 "\"suitStack3\":\"\",\n" \
+                 "\"suitStack4\":\"\",\n" \
                  "\"column1\":\"h3\",\n" \
                  "\"column2\":\"h4\",\n" \
                  "\"column3\":\"h5\",\n" \
