@@ -20,13 +20,13 @@ class imageOperator:
     ## sorting an array of 4 points, must be 2d points, from top left -> top Right -> bottom Right -> bottom Left;
     def SortPoints(self, points):
 
-        sortedList = sorted(points, key=lambda x: x[1], reverse=False)
-        if sortedList[0][0] > sortedList[1][0]:
+        sortedList = sorted(points, key=lambda x: x[1], reverse=True)
+        if sortedList[0][0] < sortedList[1][0]:
             temp = sortedList[0]
             sortedList[0] = sortedList[1]
             sortedList[1] = temp
 
-        if sortedList[2][0] > sortedList[3][0]:
+        if sortedList[2][0] < sortedList[3][0]:
             temp = sortedList[2]
             sortedList[2] = sortedList[3]
             sortedList[3] = temp
