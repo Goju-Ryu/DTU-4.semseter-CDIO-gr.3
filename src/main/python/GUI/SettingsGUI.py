@@ -16,7 +16,7 @@ class SettingsGUI():
 
 
     def run(self):
-        vid = Video()
+        vid = SVideo()
         img = vid.getFrame()
         size=(900,100)
 
