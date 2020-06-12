@@ -53,4 +53,3 @@ found under 'src/python/proto',
 if this is not working and you are on a windows computer you can try
 - installing bash in your terminal
 - installed maven in you bash terminal
-
