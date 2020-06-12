@@ -82,7 +82,7 @@ public class InputAccesPoint {
             // resources the channel should be shut down when it will no longer be used. If it may be used
             // again leave it running.
             channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
-        }//TODO: try to call get input from board and print it out
+        }
     }
 
     /**
