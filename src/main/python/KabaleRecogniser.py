@@ -66,9 +66,9 @@ class KabaleRecogniser:
                 i += 1
             timeNow = TIME.time()
             timeDiff = timeNow - timeStart
-            if ( timeDiff ) > 3:
+            if ( timeDiff ) > 300:
                 break
-
+        cv2.destroyAllWindows()
         k = 0
         for stat in statistics:
 
