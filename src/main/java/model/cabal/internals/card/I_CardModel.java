@@ -23,13 +23,12 @@ public interface I_CardModel {
     E_CardSuit getSuit();
 
     /**
-     * Get the rank of the Card
-     * @return
+     * @return The rank of the Card
      */
     Integer getRank();
 
     /**
-     *
+     * Check if the card is face up
      */
     boolean isFacedUp();
 
@@ -37,4 +36,5 @@ public interface I_CardModel {
      * A normal toString method that returns the
      */
     String toString();
+
 }

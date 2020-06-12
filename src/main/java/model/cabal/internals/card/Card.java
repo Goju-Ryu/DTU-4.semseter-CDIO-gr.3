@@ -1,9 +1,11 @@
 package model.cabal.internals.card;
 
+import java.util.Collection;
+
 /**
  * This is a model of a playing card.
  */
-public class Card implements I_CardModel {
+public class Card implements I_CardModel  {
 
     private E_CardSuit suit;
     private Integer rank;
@@ -77,6 +79,22 @@ public class Card implements I_CardModel {
             return string;
     }
 
+    public boolean equals(I_CardModel card) {
+        System.out.println("Card.equals has been called");
+        return this.rank.equals(card.getRank()) && this.suit.equals(card.getSuit()) && this.isFacedUp() == card.isFacedUp();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (this.getClass() != obj.getClass())
+            return false;
+
+        return equals( (I_CardModel) obj );
+
+    }
+
     // If the card is face up it will return the cards rank and suit
     // otherwise it will return an empty string
     @Deprecated
@@ -105,5 +123,4 @@ public class Card implements I_CardModel {
                 return rank.toString();
         }
     }
-
 }

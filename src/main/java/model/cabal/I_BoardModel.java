@@ -3,36 +3,50 @@ package model.cabal;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
-import java.beans.PropertyEditor;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
-public interface I_BoardModel extends PropertyEditor {
+public interface I_BoardModel {
 
-    //Methods for the cardPile and the turnPile
+//---------  Genneral methods  -------------------------------------------------------------------------------------
+
+    /**
+     * Returns a certain pile
+     *
+     * @param pile The pile id
+     * @return a list of the cards in the given pile
+     */
+    List<I_CardModel> getPile(E_PileID pile);
+
+    /**
+     * Check if you can add more cards to the pile.
+     *
+     *   -  If a build stack has an ace on the top then you cant push anything to it
+     *   -  If a suitPile has a King on top then it is complete
+     *   -  If the draw stack is empty
+     *
+     * @param pileID the pile that is to be checked
+     */
+    boolean isStackComplete(E_PileID pileID);
+
+
+
+//---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
 
     /**
      *
-     * @return
+     * @return Turn a new card from the draWStack and return it.
      */
     I_CardModel turnCard();
 
     /**
      *
-     * @return
+     * @return Get the top card in the pile of turned cards.
      */
     I_CardModel getTurnedCard();
 
-    //Methods for the suitPile
 
-    /**
-     * Check if you can add more cards to the Stack.
-     *
-     *   -  If a build stack has an ace on the top then you cant push anything to it
-     *   -  If a suitPile has a King on top then it is complete
-     */
-    boolean isStackComplete();
-
-    //Move card methods
+//----------  Move card methods  -----------------------------------------------------------------------------
 
     /**
      * This function will move a stack of cards from one destination to another
@@ -40,7 +54,7 @@ public interface I_BoardModel extends PropertyEditor {
      * @param origin Where the pile is moved from
      * @param originPos The index of how high in the pile we move from. the top position is 0.
      * @param destination Where the pile is moved to
-     * @throws IllegalMoveException
+     * @throws IllegalMoveException If one of the piles cannot do the operation due to rules constraints.
      */
     void move(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException;
 
@@ -52,7 +66,7 @@ public interface I_BoardModel extends PropertyEditor {
      *
      * @param origin Where the pile is moved from
      * @param destination Where the pile is moved to
-     * @throws IllegalMoveException
+     * @throws IllegalMoveException If one of the piles cannot do the operation due to rules constraints.
      */
     default void move(E_PileID origin, E_PileID destination) throws IllegalMoveException {
         move(origin, 0, destination);
@@ -64,10 +78,9 @@ public interface I_BoardModel extends PropertyEditor {
      * @param origin Where the pile is moved from
      * @param originPos The index of how high in the pile we move from. the top position is 0.
      * @param destination Where the pile is moved to
-     * @throws IllegalMoveException
      * @return true if legal or false if illegal
      */
-    boolean canMove(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException;
+    boolean canMove(E_PileID origin, int originPos, E_PileID destination);
 
     /**
      * This function will do the same as the one above, but you dont have to define the position where you
@@ -79,19 +92,25 @@ public interface I_BoardModel extends PropertyEditor {
      *
      * @param origin Where the pile is moved from
      * @param destination Where the pile is moved to
-     * @throws IllegalMoveException
      * @return true if legal or false if illegal
      */
-    default boolean canMove(E_PileID origin, E_PileID destination) throws IllegalMoveException{
+    default boolean canMove(E_PileID origin, E_PileID destination) {
         return canMove(origin,0,destination);
     }
 
+
+//-----------  PropertyListener Support   ----------------------------------------
+
     /**
-     * Returns a certain pile
-     *
-     * @param pile The pile
-     * @return The pile
+     * Add a listener to the board. This subscribes it to all piles on the board.
+     * @param listener the listener to be attached.
      */
-    List<I_CardModel> getPile(E_PileID pile);
+    void addPropertyChangeListener(PropertyChangeListener listener);
+
+    /**
+     * Remove a listener from the board. This detaches it from all piles on the board.
+     * @param listener the listener to be detached.
+     */
+    void removePropertyChangeListener(PropertyChangeListener listener);
 
 }
