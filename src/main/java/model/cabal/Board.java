@@ -29,16 +29,38 @@ public final class Board implements I_BoardModel {
         change = new PropertyChangeSupport(this);
         piles = new I_SolitaireStacks[values().length];
 
+
         for (E_PileID id : E_PileID.values()) {
-            if (id == TURNPILE)
-                piles[id.ordinal()] = new DrawStack();
-            else if (id.isBuildStack())
-                piles[id.ordinal()] = new BuildStack();
-            else if (id == HEARTSACEPILE || id == DIAMONDACEPILE || id == CLUBSACEPILE || id == SPADESACEPILE)
+            if (id == TURNPILE) { //initializes with 24 cards face down
+                var stack = new DrawStack();
+                for (int j = 0; j < 24; j++) {
+                    stack.add(new Card());
+                }
+                piles[id.ordinal()] = stack;
+            }
+            else if (id.isBuildStack()) {
+                var stack = new BuildStack();
+
+                switch (id){ // notice no break. a card enters and ads 1 card for every case beneath it
+                    case BUILDSTACK7: stack.add(new Card());
+                    case BUILDSTACK6: stack.add(new Card());
+                    case BUILDSTACK5: stack.add(new Card());
+                    case BUILDSTACK4: stack.add(new Card());
+                    case BUILDSTACK3: stack.add(new Card());
+                    case BUILDSTACK2: stack.add(new Card());
+                    case BUILDSTACK1: stack.add(new Card()); break;
+                    default:
+                        throw new RuntimeException("An unknown E_Pile_ID with isBuildStack=true was encountered: " + id);
+                }
+
+                piles[id.ordinal()] = stack;
+            }
+            else if (id == HEARTSACEPILE || id == DIAMONDACEPILE || id == CLUBSACEPILE || id == SPADESACEPILE) {
                 piles[id.ordinal()] = new SuitStack();
+            }
             else {
                 throw new RuntimeException("An unknown E_Pile_ID was encountered: " + id);
-            } // TODO initialize cards as face down
+            }
         }
     }
 
