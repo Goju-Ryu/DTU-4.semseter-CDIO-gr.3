@@ -26,7 +26,7 @@ class KabaleRecogniser:
         timeStart = TIME.time()
 
         # this is a method to initialise the video capture.
-        rec = Video()
+        rec = SVideo()
 
         # statistics is a 2d arrray. where the integeres in these spaces are the "counters" where we count votes.
         # it needs to persist acros the loop, so is instantiated outside it.

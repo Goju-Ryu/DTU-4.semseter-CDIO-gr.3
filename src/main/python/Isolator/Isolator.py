@@ -2,18 +2,26 @@ from cv2 import cv2
 
 from Isolator.BoardRuler import BoardRuler
 from Isolator.CardAnalyser import CardAnalyser
+
 import numpy as np
 
-#Author : Hans
+# isolator class responsibility is to isolate the card contours on the playing board.
+# it does this by isolating the board - transforming the board into a topdown image
+# then taking that top downimage and cutting it into images of the fields where we exspect cards to exists
+# then for each of these scanning for squares and taking ones that are large enough to be cards.
+from imageOperator.imageOperator import imageOperator
+
+
 class Isolator:
-    # Author : Hans
+
     def __init__(self, showBoard, showBoardMask, showCards, showCardsMask ):
         self.showBoard = showBoard
         self.showBoardMask = showBoardMask
         self.showCards = showCards
         self.showCardsMask = showCardsMask
+        self.imageOperator = imageOperator();
 
-    # Author : Hans
+
     def isolateCards(self, image, Settings):
 
         cardAnal = CardAnalyser()
@@ -32,36 +40,25 @@ class Isolator:
             botCardArray, botMaskArray, botCards = cardAnal.findCards(bottomRow, bottomRowMask)
 
             if(self.showCards):
-                stack1= self.stackImages(botCardArray[0], botCardArray)
-                stack = self.stackImages(topCardArray[0], topCardArray)
+
+                stack1 = self.imageOperator.stackImages(botCardArray[0],botCardArray)
+                stack = self.imageOperator.stackImages(topCardArray[0],topCardArray)
+
                 cv2.imshow("stack Bottom", stack1)
                 cv2.imshow("stack Top", stack)
 
             if(self.showCardsMask):
-                stack1= self.stackImages(botMaskArray[0], botMaskArray)
-                stack = self.stackImages(topMaskArray[0], topMaskArray)
+
+                stack1 = self.imageOperator.stackImages(botMaskArray[0],botMaskArray)
+                stack = self.imageOperator.stackImages(topMaskArray[0],topMaskArray)
+
                 cv2.imshow("stack Bottom Mask", stack1)
                 cv2.imshow("stack Top Mask", stack)
 
-            #HER EMIL
             for card in botCards:
                 topCards.append(card)
             return topCards, succes
         return [], False
 
-    # Author : Hans
-    def stackImages(self,image,imageArr, i = 1):
 
 
-        """if image.shape[0] > imageArr[i].shape[0]:
-            imageArr[i] = cv2.resize( imageArr[i], ( imageArr[i].shape[0], image.shape[0] ))
-        else:
-            image = cv2.resize(image, (image.shape[0],imageArr[i].shape[0] ))"""
-
-        img = np.concatenate((image, imageArr[i]), axis=1)
-
-        if i == (len(imageArr) - 1):
-            return img
-        else:
-            i +=1
-            return self.stackImages(img, imageArr , i)
