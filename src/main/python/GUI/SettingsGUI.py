@@ -4,8 +4,6 @@ from cv2 import cv2
 from GUI.SettingsObject import SettingsObject
 from VideoInput.Video import SVideo, Video
 
-
-
 def empty(x):
     pass
 
