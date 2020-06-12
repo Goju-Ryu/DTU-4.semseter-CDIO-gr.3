@@ -5,6 +5,7 @@ import model.error.IllegalMoveException;
 
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Map;
 
 public interface I_BoardModel {
 
@@ -37,7 +38,7 @@ public interface I_BoardModel {
      *
      * @return Turn a new card from the draWStack and return it.
      */
-    I_CardModel turnCard();
+    I_CardModel turnCard(Map<String, I_CardModel> imgData);
 
     /**
      *
@@ -56,7 +57,7 @@ public interface I_BoardModel {
      * @param destination Where the pile is moved to
      * @throws IllegalMoveException If one of the piles cannot do the operation due to rules constraints.
      */
-    void move(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException;
+    void move(E_PileID origin, int originPos, E_PileID destination, Map<String, I_CardModel> imgData) throws IllegalMoveException;
 
     /**
      * This function will move a stack of cards from one destination to another.
@@ -68,8 +69,8 @@ public interface I_BoardModel {
      * @param destination Where the pile is moved to
      * @throws IllegalMoveException If one of the piles cannot do the operation due to rules constraints.
      */
-    default void move(E_PileID origin, E_PileID destination) throws IllegalMoveException {
-        move(origin, 0, destination);
+    default void move(E_PileID origin, E_PileID destination, Map<String, I_CardModel> imgData) throws IllegalMoveException {
+        move(origin, 0, destination, imgData);
     }
 
     /**

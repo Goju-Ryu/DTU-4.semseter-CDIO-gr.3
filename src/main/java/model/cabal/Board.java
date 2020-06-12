@@ -14,6 +14,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -38,7 +39,7 @@ public final class Board implements I_BoardModel {
                 piles[id.ordinal()] = new SuitStack();
             else {
                 throw new RuntimeException("An unknown E_Pile_ID was encountered: " + id);
-            }
+            } // TODO initialize cards as face down
         }
     }
 
@@ -73,13 +74,13 @@ public final class Board implements I_BoardModel {
 //---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
 
     @Override
-    public I_CardModel turnCard() { //TODO make this handle unknown cards
+    public I_CardModel turnCard(Map<String, I_CardModel> imgData) { //TODO make this handle unknown cards
         var turnPile = (DrawStack) get(TURNPILE);
 
         if (turnPile.isEmpty())
                 throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
 
-        //TODO validate that this acts like drawing cards physically would
+        //TODO test that this acts like drawing cards physically would
         return turnPile.turnCard();
     }
 
@@ -93,7 +94,9 @@ public final class Board implements I_BoardModel {
 //----------  Move card methods  -----------------------------------------------------------------------------
 
     @Override
-    public void move(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException { //TODO make this handle unknown cards
+    public void move(E_PileID origin, int originPos, E_PileID destination, Map<String, I_CardModel> imgData)
+            throws IllegalMoveException {
+
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
@@ -113,6 +116,10 @@ public final class Board implements I_BoardModel {
 
         //change state
         to.addAll(from.popSubset(originPos));
+        var exposedCard = from.getCard(from.size() - 1);
+        if ( !exposedCard.isFacedUp() )
+            System.out.println("reveal card"); //Todo take card from map
+
 
         //notify listeners om state before and after state change
         change.firePropertyChange( makePropertyChangeEvent(origin, oldOrigin) );
@@ -160,7 +167,7 @@ public final class Board implements I_BoardModel {
         int pileIndex = pile.ordinal();
         return new PropertyChangeEvent(
                 piles[pileIndex],
-                pile.getPileIDText(),
+                pile.getDescription(),
                 oldVal,
                 Collections.unmodifiableCollection(piles[pileIndex])
         );
