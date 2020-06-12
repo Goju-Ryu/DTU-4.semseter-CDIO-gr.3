@@ -2,68 +2,64 @@ import time
 
 import cv2
 import threading
-#Author : Hans
+
+# this class is the video recording, with information about capturing images, and where
+# to do it from. this one records from the next camera than the webcam
 class Video:
-    # Author : Hans
+
     def __init__(self):
 
         # finals
-        self.FRAME_NAME = " video recording Frame "
-
-        # regularly needed Variables
-        self.cancelled = False
-
-        # Video Stats
-        self.rec = cv2.VideoCapture("video_01.mp4")
-
-        # starting the Thread
-        self.empt, self.frame = self.rec.read() # setting the veryFirst Frame just to avoid null pointers.
-        self.thread = threading.Thread(target=self.run, args=()).start()
-
-    # Author : Hans
-    def run(self):
-        while True:
-            self.empt, self.frame = self.rec.read()
-            if self.cancelled:
-                self.rec.release()
-                return
-
-    # Author : Hans
-    def start(self):
-        self.thread.start()
-
-    # Author : Hans
-    def getFrame(self):
-        return cv2.resize(self.frame,(1200,800))
-
-    # Author : Hans
-    def stop(self):
-        self.cancelled = True
-
-#Author : Hans
-class SVideo:
-
-    # Author : Hans
-    def __init__(self):
-        # finals
-        self.VidName ="VideoInput/video_01.mp4"
+        self.VidName = 1
         self.FRAME_NAME = " video recording Frame "
 
         # Video Stats
-        self.rec = cv2.VideoCapture(self.VidName)
+        self.rec = cv2.VideoCapture(self.VidName,cv2.CAP_DSHOW)
+        # self.rec = cv2.VideoCapture("video_01.mp4")
+        self.rec.set(3, 1920)
+        self.rec.set(4, 1080)
 
         # starting the Thread
         self.empt, self.frame = self.rec.read()  # setting the veryFirst Frame just to avoid null pointers.
         self.empt, self.frame = self.rec.read()
 
-    # Author : Hans
+
     def getFrame(self):
         self.empt, self.frame = self.rec.read()
         img = self.frame
-        return cv2.resize(img, (800,500))
-        #return self.frame
+        return self.frame
 
-    # Author : Hans
+
+    def stop(self):
+        self.rec.release()
+
+
+# this class is the video recording, with information about capturing images, and where
+# to do it from. this one does not record, but imulates it by reading a video();
+class SVideo:
+
+
+    def __init__(self):
+        # finals
+        self.VidName ="VideoInput/video_01.mp4"
+        self.FRAME_NAME = " video recording Frame "
+
+
+        # Video Stats
+        self.rec = cv2.VideoCapture(self.VidName)
+        self.rec.set(3,1920)
+        self.rec.set(4,1080)
+
+        # starting the Thread
+        self.empt, self.frame = self.rec.read()  # setting the veryFirst Frame just to avoid null pointers.
+        self.empt, self.frame = self.rec.read()
+
+    def getFrame(self):
+        self.empt, self.frame = self.rec.read()
+        img = self.frame
+        #return cv2.resize(img, (800,500))
+        return self.frame
+
     def stop(self):
         self.rec.release()
 
