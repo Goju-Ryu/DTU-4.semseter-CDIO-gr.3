@@ -1,4 +1,13 @@
 package control;
+
+import data.InputDTO;
+import model.cabal.Board;
+import model.cabal.I_BoardModel;
+import model.cabal.internals.card.Card;
+import model.cabal.internals.card.E_CardSuit;
+
+import java.util.ArrayList;
+
 /**
  * This class is for the individual controlls of each Board,
  * so all the things you can do to an individual Board.
@@ -8,5 +17,22 @@ package control;
  * This controller is one Game controller uses everytime it needs to make
  * a move
  */
-public class BoardController {
+public class BoardController implements I_BoardController {
+    private InputDTO accessInput = new InputDTO();
+
+    public I_BoardModel MakeNewBoard(){
+        ArrayList<Card> usrInput = accessInput.getUsrInput();
+
+        I_BoardModel board = new Board(new Card(), new Card(), new Card(),
+                new Card(E_CardSuit.HEARTS,2),new Card(), new Card(), new Card(),
+                new Card());
+        return board;
+    }
+    public void possibleMoves(Card[] fromCV){
+
+    };
+
+    public void pickMove(Board[] moves){
+
+    };
 }

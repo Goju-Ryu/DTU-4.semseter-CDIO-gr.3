@@ -5,7 +5,7 @@ import model.cabal.I_BoardModel;
 import model.cabal.internals.card.Card;
 
 public interface I_BoardController {
-    I_BoardModel startGame();
+    I_BoardModel MakeNewBoard();
 
     //TODO: Correct the return value and parameters, and the methods
     void possibleMoves(Card[] fromCV);
