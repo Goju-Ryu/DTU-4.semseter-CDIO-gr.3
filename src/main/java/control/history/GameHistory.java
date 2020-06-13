@@ -9,6 +9,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+///////////////////////////////////////////////////////////////////////////
+//                                                                       //
+//  TODO: Please don't touch this class if you aren't Mads/GojuRyu       //
+//  lot's of plans are being prepared for with the methods that are      //
+//  empty. Any implementations that get even minor details wrong might   //
+//  be useless for their intended purpose. If you want to help with this //
+//  class please ask for a method to implement and you will get a very   //
+//  specific description of it's purpose and requirements.               //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
+
+/**
+ *{@inheritDoc}
+ */
 public class GameHistory implements I_GameHistory {
 
     /**
