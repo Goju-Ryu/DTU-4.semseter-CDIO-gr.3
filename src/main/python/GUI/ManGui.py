@@ -96,18 +96,18 @@ class ManGUI(AbstractUI):
 
             inp = json.dumps(
                 {
-                    "drawPile": stringToJson(ePile.get()),
-                    "suitStack1": stringToJson(eSuit1.get()),
-                    "suitStack2": stringToJson(eSuit2.get()),
-                    "suitStack3": stringToJson(eSuit3.get()),
-                    "suitStack4": stringToJson(eSuit4.get()),
-                    "column1": stringToJson(ecol1.get()),
-                    "column2": stringToJson(ecol2.get()),
-                    "column3": stringToJson(ecol3.get()),
-                    "column4": stringToJson(ecol4.get()),
-                    "column5": stringToJson(ecol5.get()),
-                    "column6": stringToJson(ecol6.get()),
-                    "column7": stringToJson(ecol7.get())
+                    "drawPile": [stringToJson(ePile.get())],
+                    "suitStack1": [stringToJson(eSuit1.get())],
+                    "suitStack2": [stringToJson(eSuit2.get())],
+                    "suitStack3": [stringToJson(eSuit3.get())],
+                    "suitStack4": [stringToJson(eSuit4.get())],
+                    "column1": [stringToJson(ecol1.get())],
+                    "column2": [stringToJson(ecol2.get())],
+                    "column3": [stringToJson(ecol3.get())],
+                    "column4": [stringToJson(ecol4.get())],
+                    "column5": [stringToJson(ecol5.get())],
+                    "column6": [stringToJson(ecol6.get())],
+                    "column7": [stringToJson(ecol7.get())]
                 }
             )
             self.updateInp(inp)
@@ -121,7 +121,7 @@ class ManGUI(AbstractUI):
         #this is a button made for testing purposes
         # should be comented out when not developing
         def myMove():
-            inp ="{\n\"drawPile\":\"h10\",\n" \
+            inp ="{\n\"drawPile\":\"[\"suits\":\"hearts\"]\",\n" \
                  "\"suitStack1\":\"h1\",\n" \
                  "\"suitStack2\":\"\",\n" \
                  "\"suitStack3\":\"\",\n" \

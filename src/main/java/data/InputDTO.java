@@ -1,6 +1,6 @@
 package data;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import model.cabal.internals.card.Card;
@@ -29,7 +29,10 @@ public class InputDTO {
             System.out.println(e.getMessage());
         }
         System.out.println("From getUsrInput: "+usrInput);
-        usrInput = stringToJson(usrInput);
+
+        JsonObject cardsJson = stringToJson(usrInput);
+        cards = jsonToCard(cardsJson);
+
         return cards;
     }
 
@@ -37,19 +40,28 @@ public class InputDTO {
      * We are using the gson libary to transform our string into a json object
      *///TODO: Transform the string into a JSON object that you use when you initilize the cards
 
-    public String stringToJson(String toJson){
-        String str = g.toJson(toJson);
-        return str;
+    public JsonObject stringToJson(String toJson){
+        //toJson = toJson.replaceAll("\"{","{");
+        //toJson = toJson.replaceAll("}\"","}");
+        System.out.println("from String to Json: "+toJson);
+        JsonObject jsonObject = new JsonParser().parse(toJson).getAsJsonObject();
+        //System.out.println("from String to Json: "+jsonObject);
+        //String jsonObject = g.toJson(toJson);
+        return jsonObject;
     }
     /**
      * When initiating a board we have made the cards so that they are given in
      * the order corrisponding to our JSON object;
      * Drawstack, then the suit stacks(Hearts, Clubs, Dimonds, Spades),
      * and finally the buildstacs ordered from 1-7
-     * @return
-     */// TODO: implement this class
-    public ArrayList<Card> jsonToCard(){
+     * @return a list of card to initate the board.
+     */// TODO: This class parses a json object to a string back to another json objects, there must be some way to do that smarter
+    public ArrayList<Card> jsonToCard(JsonObject jsonObject){
         ArrayList<Card> cards = new ArrayList<>();
+        String tmp = jsonObject.getAsJsonArray("drawPile").get(0).getAsString();
+        JsonObject givenStack = new JsonParser().parse(tmp).getAsJsonObject();
+        System.out.println("givenStack:"+givenStack);
+        System.out.println("from json to card"+givenStack.getAsJsonPrimitive("suit"));
         return cards;
     }
 
