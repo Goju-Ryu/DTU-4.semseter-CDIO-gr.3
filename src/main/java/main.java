@@ -6,7 +6,7 @@ public class main {
 //        nu.pattern.OpenCV.loadLibrary();
 //        System.out.println("hej");
 //        VideoCapture vid = new VideoCapture(0);
-        I_BoardModel c = new Board();
+
         System.out.println("Hello Main World!");
         //change
     }

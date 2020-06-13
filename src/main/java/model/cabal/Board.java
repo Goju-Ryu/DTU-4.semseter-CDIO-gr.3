@@ -30,14 +30,12 @@ public final class Board implements I_BoardModel {
 
     private I_SolitaireStacks[] piles;
 
-    private InputDTO accessInput = new InputDTO();
-
-    public Board() { //TODO board should take imgData to initialize self
+    public Board(Card drawStack, Card buildstack1, Card buildstack2,
+                 Card buildstack3, Card buildstack4, Card buildstack5,
+                 Card buildstack6, Card buildstack7) { //TODO board should take imgData to initialize self
         change = new PropertyChangeSupport(this);
         piles = new I_SolitaireStacks[values().length];
 
-        String usrInput = accessInput.getUsrInput();
-        System.out.println(usrInput);
         for (E_PileID id : E_PileID.values()) {
             if (id == TURNPILE) { //initializes with 24 cards face down
                 var stack = new DrawStack();

@@ -1,8 +1,34 @@
 package control;
 
+import data.InputDTO;
+import model.cabal.Board;
+import model.cabal.I_BoardModel;
+import model.cabal.internals.card.Card;
+import model.cabal.internals.card.E_CardSuit;
+
+import java.util.ArrayList;
+/**
+ * This class is for controlling an entire game,
+ *
+ * the diffrence on this and Game controller, is that this only acts in relation
+ * to one given state of the game where as GameController can play trough an entire game.
+ * This controller is one Game controller uses everytime it needs to make
+ * a move
+ */
+
 public class GameController {
+    private InputDTO accessInput = new InputDTO();
 
 
+    public I_BoardModel setGame(){
+        ArrayList<Card> usrInput = accessInput.getUsrInput();
+
+
+        I_BoardModel board = new Board(new Card(), new Card(), new Card(),
+                                       new Card(E_CardSuit.HEARTS,2),new Card(), new Card(), new Card(),
+                                        new Card());
+        return board;
+    }
 
 
     //TODO Remove this
