@@ -35,7 +35,8 @@ public class InputDTO {
 
     /**
      * We are using the gson libary to transform our string into a json object
-     */
+     *///TODO: Transform the string into a JSON object that you use when you initilize the cards
+
     public String stringToJson(String toJson){
         String str = g.toJson(toJson);
         return str;
@@ -46,12 +47,11 @@ public class InputDTO {
      * Drawstack, then the suit stacks(Hearts, Clubs, Dimonds, Spades),
      * and finally the buildstacs ordered from 1-7
      * @return
-     */
+     */// TODO: implement this class
     public ArrayList<Card> jsonToCard(){
         ArrayList<Card> cards = new ArrayList<>();
         return cards;
     }
 
 
-    //TODO: Transform the string into a JSON object that you use when you initilize the cards
 }
