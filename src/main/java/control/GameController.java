@@ -18,10 +18,14 @@ import java.util.ArrayList;
 
 public class GameController implements I_GameController{
 
-    //Todo implement this so that is uses UiChoice and returns I_BoardController
+    //Todo implement this so that it returns I_BoardModel here
     public void startGame(String UiChoice){
         I_BoardController boardCtrl = new BoardController();
-        I_BoardModel boardMod = boardCtrl.MakeNewBoard();
+        if(UiChoice =="simulation"){
+            //TODO: implement that it can iniate a simulated board here
+        }else{
+            I_BoardModel boardMod = boardCtrl.MakeNewBoard(UiChoice);
+        }
     }
 
 }

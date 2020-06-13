@@ -20,8 +20,8 @@ import java.util.ArrayList;
 public class BoardController implements I_BoardController {
     private InputDTO accessInput = new InputDTO();
 
-    public I_BoardModel MakeNewBoard(){
-        ArrayList<Card> usrInput = accessInput.getUsrInput();
+    public I_BoardModel MakeNewBoard(String UiChoice){
+        ArrayList<Card> usrInput = accessInput.getUsrInput(UiChoice);
 
         I_BoardModel board = new Board(new Card(), new Card(), new Card(),
                 new Card(E_CardSuit.HEARTS,2),new Card(), new Card(), new Card(),

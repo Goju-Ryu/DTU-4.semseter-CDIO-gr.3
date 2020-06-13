@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class InputDTO {
     private Gson g = new Gson();
 
-    public ArrayList<Card> getUsrInput(){
+    public ArrayList<Card> getUsrInput(String UIChoice){
         ArrayList<Card> cards = new ArrayList<>();
         String usrInput ="";
         String target = "localhost:50051";
@@ -24,7 +24,7 @@ public class InputDTO {
                 .build();
         InputAccesPoint accessInput = new InputAccesPoint(channel);
         try{
-            usrInput = accessInput.getInput("ManGUI");
+            usrInput = accessInput.getInput(UIChoice);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

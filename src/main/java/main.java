@@ -6,7 +6,7 @@ import model.cabal.I_BoardModel;
 public class main {
     public static void main(String[] args) {
         I_GameController Klondike = new GameController();
-        Klondike.startGame("none");
+        Klondike.startGame("ManGUI");
 
         System.out.println("Hello Main World!");
         //change
