@@ -52,15 +52,16 @@ class CardValidator:
             i = 0
             results = []
             for contour in contours:
+                print("contour size: " + str(contour.size))
                 if contour.size > 40:
                     # bounding rect is the smallest square that fits the contour.
                     x, y, w, h = cv2.boundingRect(contour)
 
                     # fix for when the King and Queen contours mix with the cards middle-image-border, and gets out of proportion
-                    if h > 230:
-                        print("this contour height is ____________________________________ " + str(h))
-                        h = 95
-                        w -= 10
+                    # if h > 230:
+                    #     print("this contour height is ____________________________________ " + str(h))
+                    #     h = 95
+                    #     w -= 10
 
                     p1 = (x, y)
                     p2 = (x + w, y)
@@ -73,11 +74,11 @@ class CardValidator:
                         # finding the perspective transformed image, then rotated.
 
                         imageTrans, mask, succes = self.fourPointTransform([[p1], [p2], [p3], [p4]], thresh)
-                        imageTrans = cv2.rotate(imageTrans, cv2.ROTATE_180)
+                        # imageTrans = cv2.rotate(imageTrans, cv2.ROTATE_180)
                         imageTrans = cv2.flip(imageTrans, 1)
                         imageTrans = cv2.resize(imageTrans, (70, 125))
 
-                        cv2.imshow("nice" + str(i), imageTrans)
+                        # cv2.imshow("nice" + str(i), imageTrans)
                         i += 1
 
                         # now give the image to see if it matches a prefinded standard for a symbol

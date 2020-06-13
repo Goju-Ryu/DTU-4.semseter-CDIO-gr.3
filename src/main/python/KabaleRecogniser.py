@@ -5,7 +5,7 @@ import cv2
 
 from Card import Card
 from Isolator.Isolator import Isolator
-from VideoInput.Video import SVideo, Video
+from VideoInput.Video import SVideo, Video, videoGen
 from Validator.CardValidator import CardValidator
 import time as TIME
 
@@ -26,7 +26,8 @@ class KabaleRecogniser:
         timeStart = TIME.time()
 
         # this is a method to initialise the video capture.
-        rec = Video()
+        vidG = videoGen()
+        rec = vidG.getVideo()
 
         # statistics is a 2d arrray. where the integeres in these spaces are the "counters" where we count votes.
         # it needs to persist across the loop, so is instantiated outside it.
@@ -52,7 +53,7 @@ class KabaleRecogniser:
             # isolater, isolates the board, and all potential cards on this board, it
             # uses the HSV settings passed in the settings object for its thresholding.
             # the boolean paramters are : showBoard, ShowBoardMask, ShowCards, showCardsMask;
-            isolator = Isolator(False,False,True,False)
+            isolator = Isolator(True,False,True,False)
             cards, succes = isolator.isolateCards(img, Settings)
 
             # looping throuch all cards found in the isolater.
@@ -115,7 +116,7 @@ class KabaleRecogniser:
         # The decided positions for the card placement on the board. This is the placement the java program expects to get.
         # The corresponding elements in the cards list for this class starts with 0th element at the buttom right cornor of a game board, you imagine in from of you
         inpu = json.dumps({
-            "drawPile" : {"suit" : stackTop[5].suit, "rank" : stackTop[5].rank},
+            "drawPile": {"suit" : stackTop[5].suit, "rank" : stackTop[5].rank},
             "SuitStackHearts" : {"suit" : stackTop[0].suit, "rank" : stackTop[0].rank},
             "SuitStackClubs" : {"suit" : stackTop[1].suit, "rank" : stackTop[1].rank},
             "SuitStackDiamonds" : {"suit" : stackTop[2].suit, "rank" : stackTop[2].rank},

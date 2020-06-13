@@ -2,7 +2,8 @@ import numpy as np
 from cv2 import cv2
 
 from GUI.SettingsObject import SettingsObject
-from VideoInput.Video import SVideo, Video
+from VideoInput.Video import SVideo, Video, videoGen
+
 
 def empty(x):
     pass
@@ -16,7 +17,8 @@ class SettingsGUI():
 
 
     def run(self):
-        vid = Video()
+        gen = videoGen()
+        vid = gen.getVideo()
         img = vid.getFrame()
         size=(900,100)
 
