@@ -42,13 +42,16 @@ class CardValidator:
             img = cardCornorProfile
 
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            #gray = cv2.bilateralFilter(gray, 9, 20, 20)
+            gray = cv2.bilateralFilter(gray, 9,10, 10)
             #thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 1)
             thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 13, 1  )
 
+
             thresh = cv2.bitwise_not(thresh)
             kernel = np.ones((2, 2), np.uint8)
-            thresh = cv2.erode(thresh, kernel, iterations=1)
-            self.MASK = thresh
+            thresh = cv2.erode(thresh, kernel, iterations=2)
+
             # finding the contours, RETR_EXTERNAL = external figure contours. and CHAIN_APPROX_NONE means showing alll points
             contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
@@ -88,40 +91,12 @@ class CardValidator:
                         mSymbol = self.matchCard2(imageTrans)
 
 
-                        if mSymbol.symbolName == "Clubs":
-                            cv2.imshow("Clubs", imageTrans)
-                        if mSymbol.symbolName == "Diamonds":
-                            cv2.imshow("Diamonds", imageTrans)
-                        if mSymbol.symbolName == "Hearts":
-                            cv2.imshow("Hearts", imageTrans)
-                        if mSymbol.symbolName == "Spades":
-                            cv2.imshow("Spades", imageTrans)
-                        if mSymbol.symbolName == "1":
-                            cv2.imshow("Ace", imageTrans)
-                        if mSymbol.symbolName == "2":
-                            cv2.imshow("2", imageTrans)
-                        if mSymbol.symbolName == "3":
-                            cv2.imshow("3", imageTrans)
-                        if mSymbol.symbolName == "4":
-                            cv2.imshow("4", imageTrans)
-                        if mSymbol.symbolName == "5":
-                            cv2.imshow("5", imageTrans)
-                        if mSymbol.symbolName == "6":
-                            cv2.imshow("6", imageTrans)
-                        if mSymbol.symbolName == "7":
-                            cv2.imshow("7", imageTrans)
-                        if mSymbol.symbolName == "8":
-                            cv2.imshow("8", imageTrans)
-                        if mSymbol.symbolName == "9":
-                            cv2.imshow("9", imageTrans)
-                        if mSymbol.symbolName == "10":
-                            cv2.imshow("10", imageTrans)
-                        if mSymbol.symbolName == "11":
-                            cv2.imshow("11", imageTrans)
-                        if mSymbol.symbolName == "12":
-                            cv2.imshow("12", imageTrans)
-                        if mSymbol.symbolName == "13":
-                            cv2.imshow("13", imageTrans)
+                        out = thresh.copy()
+                        out = cv2.cvtColor(out,cv2.COLOR_GRAY2BGR)
+                        cv2.imshow(mSymbol.symbolName, imageTrans)
+                        font = cv2.FONT_HERSHEY_SIMPLEX
+                        cv2.putText(out, mSymbol.symbolName, (0, 20), font, 0.5, (0, 255, 0), 2, cv2.LINE_AA)
+                        self.MASK = out
 
 
                         results.append(mSymbol)
