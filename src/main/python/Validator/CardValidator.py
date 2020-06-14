@@ -26,18 +26,11 @@ class CardValidator:
         if card.exists:
             # Isolated cornor profile
             profileDim = card.profile.shape
-            print(profileDim)
             profileHeight = profileDim[0]
             profileWidth = profileDim[1]
-            print("h: " + str(profileHeight))
-            print("w: " + str(profileWidth))
 
-
-            # cardCornorProfile = card.profile[0:140, 0:50]
-            # cardCornorProfile = card.profile[0:(int(profileHeight/3)), 0:int((profileWidth/4))]
             cardCornorProfile = card.profile[0:(int(profileHeight/3.5)), 0:int((profileWidth/6))]
             cv2.imshow("cardCornorProfile", cardCornorProfile)
-
 
             cornorProfileDim = cardCornorProfile.shape
             cornorProfileHeight = cornorProfileDim[0]
@@ -53,12 +46,25 @@ class CardValidator:
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 1)
 
+            # Source :https://github.com/EdjeElectronics/OpenCV-Playing-Card-Detector/blob/1f8365779f88f7f46634114bf2e35427bc1c00d0/Cards.py#L129
+            # ________________________________
+            img_w, img_h = np.shape(gray)[:2]
+            bkg_level = gray[int(img_h-1)][int(img_w / 2)]
+            thresh_level = bkg_level -30
+
+            retval, thresh = cv2.threshold(gray, thresh_level, 255, cv2.THRESH_BINARY)
+            # ____________________________________________
+
+            print(thresh_level)
+
 
             thresh = cv2.bitwise_not(thresh)
+
             kernel = np.ones((2, 2), np.uint8)
             thresh = cv2.erode(thresh, kernel, iterations=1)
             # thresh = cv2.dilate(thresh, kernel, iterations=1)
             #cv2.imshow("erode",erosion)
+            cv2.imshow("thresh", thresh)
 
             # finding the contours, RETR_EXTERNAL = external figure contours. and CHAIN_APPROX_NONE means showing alll points
             contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
@@ -66,18 +72,11 @@ class CardValidator:
             i = 0
             results = []
             for contour in contours:
-                print("contour size: " + str(contour.size))
-                # if contour.size > 40:
+
                 if contour.size > cornorProfileHeight/7:
 
                     # bounding rect is the smallest square that fits the contour.
                     x, y, w, h = cv2.boundingRect(contour)
-
-                    # fix for when the King and Queen contours mix with the cards middle-image-border, and gets out of proportion
-                    # if h > 230:
-                    #     print("this contour height is ____________________________________ " + str(h))
-                    #     h = 95
-                    #     w -= 10
 
                     p1 = (x, y)
                     p2 = (x + w, y)
@@ -135,14 +134,6 @@ class CardValidator:
                         if mSymbol.symbolName == "13":
                             cv2.imshow("13", imageTrans)
 
-                        # cv2.imshow("chaos here" + str(h), imageTrans)
-                        # if mSymbol.symbolName == "10":
-                        #     print("10" + str(h))
-                        #     cv2.imshow("10", imageTrans)
-                        #
-                        # if mSymbol.symbolName == "11":
-                        #     print("11" + str(h))
-                        #     cv2.imshow("11", imageTrans)
 
                         results.append(mSymbol)
                         cv2.drawContours(img, contour, -1, (0, 255, 0), 1)
@@ -158,10 +149,6 @@ class CardValidator:
                 bestTwoMatches = sortedList[0:2]
             else:
                 bestTwoMatches = sortedList
-
-            # for matches in bestTwoMatches:
-            #     print(matches.symbolName + "  : " + str(matches.bestMatchDiff), end = "\n")
-            # print("\n\n")
 
             matchNames = []
             for match in bestTwoMatches:
