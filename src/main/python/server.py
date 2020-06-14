@@ -25,6 +25,9 @@ import proto.grpc_pb2_grpc as grpc_pb2_grpc
 
 class Greeter(grpc_pb2_grpc.GreeterServicer):
 
+    def __init__(self):
+        self.firstRun = True
+
     def SayHello(self, request, context):
         print('I got a message from \"%s\"!' % request.name)
         #TODO: make this inside an if statment depending on weather the user wants GUI og OpenCV
@@ -37,7 +40,13 @@ class Greeter(grpc_pb2_grpc.GreeterServicer):
         else:
             from GUI.OpenCv2 import ManGUI
             x = ManGUI()
+
+            if self.firstRun :
+                x.SettingsRun()
+                self.first = False
+
             #print(x.run())
+
 
         b = x.run()
         #returnMSG ='Hello, %s! I\'m Python world! here is a msg for you:' % request.name
