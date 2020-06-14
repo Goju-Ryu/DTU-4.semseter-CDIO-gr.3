@@ -17,6 +17,7 @@ class ManGUI(AbstractUI):
     def __init__(self):
         self.SatSet = False
 
+
     def settingsSet(self):
         s = SettingsGUI()
         Settings = s.run()

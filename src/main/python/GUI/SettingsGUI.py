@@ -18,9 +18,7 @@ class SettingsGUI():
 
     def run(self):
         gen = videoGen()
-        vid = gen.VideoInput
-        img = vid.getFrame()
-        size=(900,100)
+        vid = gen.getVideo()
 
         self.windowName = "window"
         cv2.namedWindow(self.windowName)
@@ -37,7 +35,7 @@ class SettingsGUI():
 
         while True:
             img = vid.getFrame()
-            img = cv2.resize(img,size)
+            img = cv2.resize(img,(900,100))
 
             # everyFrame we update the HSV values.
             Hmin = cv2.getTrackbarPos("H_min",self.windowName)
