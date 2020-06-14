@@ -10,6 +10,8 @@ from Validator.CardValidator import CardValidator
 import time as TIME
 
 from Isolator.CardAnalyser import CardAnalyser
+from imageOperator.imageOperator import imageOperator
+
 cardAnal = CardAnalyser()
 cardVal = CardValidator()
 
@@ -21,6 +23,8 @@ class KabaleRecogniser:
     # a method to take a video, and then for each image get a result,  and then make statisk analasys
     # ( for each card, whats the best result for that card ( by counting most votes) ). to then give a result.
     def run(self, Settings):
+
+        sletmigOperator = imageOperator()
 
         # start a Timer, as a way to end the loop.
         timeStart = TIME.time()
@@ -40,6 +44,7 @@ class KabaleRecogniser:
 
 
         # filming Loop.
+
         while True:
 
             # this is openCV code, get the image, and then it gives an error if the keypressed isent there.
@@ -58,6 +63,7 @@ class KabaleRecogniser:
 
             # looping throuch all cards found in the isolater.
             i = 0
+            SLETMIG = []
             for c in cards:
                 stat = statistics[i]
                 if c.exists:
@@ -66,7 +72,10 @@ class KabaleRecogniser:
                     #so they are name1 and name2, are the names of these, and
                     #there isent a way of knowing wich is wich, so we do a check on this
 
-                    name1, name2 = cardVal.setCardRankAndSuit(c)
+                    name1, name2, sletmigImg = cardVal.setCardRankAndSuit(c)
+
+                    SLETMIG.append(sletmigImg)
+
                     # for counting occurences of card symbols
                     for name in stat:
                         if name1 == name[0]:
@@ -82,6 +91,9 @@ class KabaleRecogniser:
             timeDiff = timeNow - timeStart
             if ( timeDiff ) > 300:
                 break
+
+            SLETMIGDONE = sletmigOperator.stackImages(SLETMIG[0],SLETMIG)
+            cv2.imshow("SLETMIG", SLETMIGDONE)
 
         # when the loop is done it is necesary to close all windows if any are open, otherwise the programs becomes
         # unresponsive, this is not necesary in the final version, but when testing it becomes an issue.

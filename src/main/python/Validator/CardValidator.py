@@ -42,33 +42,17 @@ class CardValidator:
             # img = cv2.resize(cardCornorProfile, (100, 280))
             img = cardCornorProfile
 
-            cv2.imshow("cardCornorResized", img)
+            kernel = np.ones((2, 2), np.uint8)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-
-            hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-            lower_blue = np.array([0, 0, 40])
-            upper_blue = np.array([180, 255, 255])
-            mask = cv2.inRange(hsv, lower_blue, upper_blue)
-            cv2.imshow("hsv", mask)
-            #thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 1)
-
-            # Source :https://github.com/EdjeElectronics/OpenCV-Playing-Card-Detector/blob/1f8365779f88f7f46634114bf2e35427bc1c00d0/Cards.py#L129
-            # ________________________________
-
-            img_w, img_h = np.shape(gray)[:2]
-            bkg_level = gray[int(img_h-1)][int(img_w / 2)]
-            thresh_level = bkg_level -50
-
-            retval, thresh = cv2.threshold(gray, thresh_level, 255, cv2.THRESH_BINARY)
-            # ____________________________________________
-
-            print(thresh_level)
-
+            gray = cv2.equalizeHist(gray)
+            _,gray = cv2.threshold(gray, 50,255,cv2.THRESH_BINARY)
+            gray = cv2.erode(gray, kernel, iterations=1)
+            self.MASK = gray
+            cv2.imshow("NEWGRAY", gray)
+            thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 1)
 
             thresh = cv2.bitwise_not(thresh)
 
-            kernel = np.ones((2, 2), np.uint8)
             thresh = cv2.erode(thresh, kernel, iterations=1)
             # thresh = cv2.dilate(thresh, kernel, iterations=1)
             #cv2.imshow("erode",erosion)
@@ -93,6 +77,12 @@ class CardValidator:
 
                     # condition for ignoring irrelevant contours, to minimize noise
                     if w > cornorProfileWidth/5 and h > cornorProfileHeight/14:
+
+                        mask = thresh
+                        black = np.zeros(thresh.shape, np.uint8)
+                        thisThresh = cv2.bitwise_and(mask,gray)
+
+                        cv2.imshow("THISTHRESH" + str(i),thisThresh )
 
                         # finding the perspective transformed image
                         sortedPts = self.operator.SortPoints([p1, p2, p3, p4])
@@ -163,14 +153,14 @@ class CardValidator:
                 matchNames.append(match.symbolName)
 
             if len(bestTwoMatches) == 2:
-                return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName
+                return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName , self.MASK
             if len(bestTwoMatches) == 1:
-                return bestTwoMatches[0].symbolName, "no match"
+                return bestTwoMatches[0].symbolName, "no match", self.MASK
             if len(bestTwoMatches) == 0:
-                return "no match", "no match"
+                return "no match", "no match", self.MASK
         # Takes threshholded image over contour in card cornor
         else:
-            return "empty", "empty"
+            return "empty", "empty", self.MASK
     def matchCard2(self, image):
         symbols = self.compareSymbols
 

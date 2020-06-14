@@ -10,7 +10,16 @@ class imageOperator:
     ## stacks images to be a single long image.
     def stackImages(self,image,imageArr, i = 1):
 
+        width   = image.shape[1]
+        height  = image.shape[0]
+        widthArr    = imageArr[i].shape[1]
+        heightArr   = imageArr[i].shape[0]
+
+        if height != heightArr:
+            image = cv2.resize(image, (width, heightArr))
+
         img = np.concatenate((image, imageArr[i]), axis=1)
+
         if i == (len(imageArr) - 1):
             return img
         else:

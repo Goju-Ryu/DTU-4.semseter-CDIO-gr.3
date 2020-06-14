@@ -6,3 +6,4 @@ s = SettingsGUI()
 k = KabaleRecogniser()
 Settings = s.run()
 print(k.run(Settings))
+
