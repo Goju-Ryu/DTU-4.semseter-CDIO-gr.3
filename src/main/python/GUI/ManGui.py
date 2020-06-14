@@ -121,19 +121,10 @@ class ManGUI(AbstractUI):
         #this is a button made for testing purposes
         # should be comented out when not developing
         def myMove():
-            inp ="{\n\"drawPile\":\"[\"suits\":\"hearts\"]\",\n" \
-                 "\"suitStack1\":\"h1\",\n" \
-                 "\"suitStack2\":\"\",\n" \
-                 "\"suitStack3\":\"\",\n" \
-                 "\"suitStack4\":\"\",\n" \
-                 "\"column1\":\"h3\",\n" \
-                 "\"column2\":\"h4\",\n" \
-                 "\"column3\":\"h5\",\n" \
-                 "\"column4\":\"h6\",\n" \
-                 "\"column5\":\"h7\",\n" \
-                 "\"column6\":\"h8\",\n" \
-                 "\"column7\":\"h9\",\n" \
-                 "}"
+            inp = json.dumps(
+                {"drawPile": ["{\"suit\": \"Clubs\", \"rank\": \"2\"}"], "suitStack1": ["{\"suit\": \"\", \"rank\": \"\"}"], "suitStack2": ["{\"suit\": \"\", \"rank\": \"\"}"], "suitStack3": ["{\"suit\": \"\", \"rank\": \"\"}"], "suitStack4": ["{\"suit\": \"\", \"rank\": \"\"}"], "column1": ["{\"suit\": \"Hearts\", \"rank\": \"3\"}"], "column2": ["{\"suit\": \"Hearts\", \"rank\": \"4\"}"], "column3": ["{\"suit\": \"Hearts\", \"rank\": \"5\"}"], "column4": ["{\"suit\": \"Hearts\", \"rank\": \"6\"}"], "column5": ["{\"suit\": \"Hearts\", \"rank\": \"7\"}"], "column6": ["{\"suit\": \"Hearts\", \"rank\": \"9\"}"], "column7": ["{\"suit\": \"Hearts\", \"rank\": \"10\"}"]}
+            )
+
 
             self.updateInp(inp)
             root.destroy()

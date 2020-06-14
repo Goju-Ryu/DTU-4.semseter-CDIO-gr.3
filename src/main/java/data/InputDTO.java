@@ -6,6 +6,7 @@ import io.grpc.ManagedChannelBuilder;
 import model.cabal.internals.card.Card;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * This class is intented to translate the input string we get to a json object.
@@ -58,10 +59,29 @@ public class InputDTO {
      */// TODO: This class parses a json object to a string back to another json objects, there must be some way to do that smarter
     public ArrayList<Card> jsonToCard(JsonObject jsonObject){
         ArrayList<Card> cards = new ArrayList<>();
-        String tmp = jsonObject.getAsJsonArray("drawPile").get(0).getAsString();
-        JsonObject givenStack = new JsonParser().parse(tmp).getAsJsonObject();
-        System.out.println("givenStack:"+givenStack);
-        System.out.println("from json to card"+givenStack.getAsJsonPrimitive("suit"));
+        // All the stacks that we iterate trough and makes cards from
+        ArrayList<String> stacks = new ArrayList<>(
+                Arrays.asList("drawPile",
+                        "suitStack1",
+                        "suitStack2",
+                        "suitStack3",
+                        "suitStack4",
+                        "column1",
+                        "column2",
+                        "column3",
+                        "column4",
+                        "column5",
+                        "column6",
+                        "column7")
+        );
+        for(int i = 0; i< stacks.size();i++){
+            //takeout the json object belonging to a vien key as a string
+            String tmp = jsonObject.getAsJsonArray(stacks.get(i)).get(0).getAsString();
+            //turn it back into a json object.
+            JsonObject givenStack = new JsonParser().parse(tmp).getAsJsonObject();
+            System.out.println("givenStack:"+givenStack);
+            System.out.println("from json to card "+givenStack.getAsJsonPrimitive("suit"));
+        }
         return cards;
     }
 
