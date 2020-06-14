@@ -18,7 +18,7 @@ class SettingsGUI():
 
     def run(self):
         gen = videoGen()
-        vid = gen.getVideo()
+        vid = gen.VideoInput
         img = vid.getFrame()
         size=(900,100)
 
@@ -30,10 +30,10 @@ class SettingsGUI():
         cv2.createTrackbar("H_max", self.windowName, 90, 180, empty)
 
         cv2.createTrackbar("S_min", self.windowName, 60, 255, empty)
-        cv2.createTrackbar("S_max", self.windowName, 230, 255, empty)
+        cv2.createTrackbar("S_max", self.windowName, 255, 255, empty)
 
         cv2.createTrackbar("V_min", self.windowName, 60, 255, empty)
-        cv2.createTrackbar("V_max", self.windowName, 230, 255, empty)
+        cv2.createTrackbar("V_max", self.windowName, 255, 255, empty)
 
         while True:
             img = vid.getFrame()

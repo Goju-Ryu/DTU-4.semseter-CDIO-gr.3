@@ -1,6 +1,7 @@
 from AbstractUi import AbstractUI
 from tkinter import *
 from GUI.SettingsGUI import SettingsGUI
+from GUI.SettingsObject import SettingsObject
 from KabaleRecogniser import KabaleRecogniser
 #====================================
 # ManGUI or Manual GUI - requres you to manully enter the input data
@@ -13,27 +14,19 @@ from KabaleRecogniser import KabaleRecogniser
 
 class ManGUI(AbstractUI):
 
-    def run(self):
+    def __init__(self):
+        self.SatSet = False
+
+    def settingsSet(self):
         s = SettingsGUI()
-        k = KabaleRecogniser()
         Settings = s.run()
-        x = k.run(Settings)
+        self.Settings = Settings
 
-        # print(x)
-        inp ="{\n\"h80\":\"pi\",\n" \
-             "\"\":\"su1\",\n" \
-             "\"\":\"su2\",\n" \
-             "\"\":\"su3\",\n" \
-             "\"\":\"su4\",\n" \
-             "\"h9\":\"co1\",\n" \
-             "\"h2\":\"co2\",\n" \
-             "\"h3\":\"co3\",\n" \
-             "\"h4\":\"co4\",\n" \
-             "\"h5\":\"co5\",\n" \
-             "\"h6\":\"co5\",\n" \
-             "\"h7\":\"co6\",\n" \
-             "\"h8\":\"co7\",\n" \
-             "}"
-
-
+    def run(self):
+        k = KabaleRecogniser()
+        if(self.SatSet):
+            x = k.run(self.Settings)
+        else:
+            Settings = SettingsObject()
+            x = k.run(Settings)
         return x

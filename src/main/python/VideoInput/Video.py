@@ -10,7 +10,7 @@ class videoGen:
         pass
 
     def getVideo(self):
-        vid = SVideo()
+        vid = Video()
         return vid
 
 class Video:

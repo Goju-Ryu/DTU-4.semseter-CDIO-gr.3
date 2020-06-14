@@ -2,12 +2,12 @@
 class SettingsObject():
     # Author : Hans
     def __init__(self):
-        self.Hmin = 0
-        self.Hmax = 0
-        self.Smin = 0
-        self.Smax = 0
-        self.Vmin = 0
-        self.Vmax = 0
+        self.Hmin = 50
+        self.Hmax = 90
+        self.Smin = 60
+        self.Smax = 255
+        self.Vmin = 60
+        self.Vmax = 255
 
     # Author : Hans
     def setHue(self, Hmin, Hmax):
