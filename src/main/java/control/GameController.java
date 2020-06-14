@@ -1,9 +1,8 @@
 package control;
 
-import control.history.GameHistory;
-import control.history.I_GameHistory;
+import history.GameHistory;
+import history.I_GameHistory;
 import data.InputAccesPoint;
-import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import model.cabal.Board;
 import model.cabal.I_BoardModel;
