@@ -49,6 +49,21 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
     Collection<I_GameState> getRepeatStates(final List<BiPredicate<I_GameState, I_GameState>> predicates);
 
 
+    BiPredicate<I_GameState, I_GameState> IDENTITY_EQUAL = I_GameHistory::identityEqual;
+    BiPredicate<I_GameState, I_GameState> PILE_SIZE_EQUAL = I_GameHistory::sizeEqual;
+    BiPredicate<I_GameState, I_GameState> PILE_CONTENT_EQUAL = I_GameHistory::contentEqual;
+
+
+    private static boolean identityEqual(final I_GameState state1, final I_GameState state2) {
+        return state1 == state2;
+    }
+
+    private static boolean sizeEqual(final I_GameState state1, final I_GameState state2) {
+        return false;
+    }
+    private static boolean contentEqual(final I_GameState state1, final I_GameState state2) {
+        return false;
+    }
 
     //todo might be a good idea to implement a method that checks for the moves that has been tried when in a given state
 }
