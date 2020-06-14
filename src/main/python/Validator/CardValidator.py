@@ -44,14 +44,15 @@ class CardValidator:
             cornorProfileWidth = cornorProfileDim[1]
 
             # making the Threshold so we can use it to find the contours
-            # img = cv2.resize(cardCornorProfile, (cornorProfileWidth/2, cornorProfileHeight/2))
+            # img = cv2.resize(cardCornorProfile, (int(cornorProfileWidth/2), int(cornorProfileHeight/2)))
             # img = cv2.resize(cardCornorProfile, (cornorProfileWidth*2, cornorProfileHeight*2))
             # img = cv2.resize(cardCornorProfile, (100, 280))
-            img =  cardCornorProfile
+            img = cardCornorProfile
 
             cv2.imshow("cardCornorResized", img)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 1)
+
 
             thresh = cv2.bitwise_not(thresh)
             kernel = np.ones((2, 2), np.uint8)
@@ -98,6 +99,15 @@ class CardValidator:
                         # now give the image to see if it matches a prefinded standard for a symbol
                         mSymbol = self.matchCard2(imageTrans)
 
+
+                        if mSymbol.symbolName == "Clubs":
+                            cv2.imshow("Clubs", imageTrans)
+                        if mSymbol.symbolName == "Diamonds":
+                            cv2.imshow("Diamonds", imageTrans)
+                        if mSymbol.symbolName == "Hearts":
+                            cv2.imshow("Hearts", imageTrans)
+                        if mSymbol.symbolName == "Spades":
+                            cv2.imshow("Spades", imageTrans)
                         if mSymbol.symbolName == "1":
                             cv2.imshow("Ace", imageTrans)
                         if mSymbol.symbolName == "2":
