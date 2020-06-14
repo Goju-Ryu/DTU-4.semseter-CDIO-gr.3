@@ -58,7 +58,7 @@ class KabaleRecogniser:
             # isolater, isolates the board, and all potential cards on this board, it
             # uses the HSV settings passed in the settings object for its thresholding.
             # the boolean paramters are : showBoard, ShowBoardMask, ShowCards, showCardsMask;
-            isolator = Isolator(True,False,True,False)
+            isolator = Isolator(False,False,False,False)
             cards, succes = isolator.isolateCards(img, Settings)
 
             # looping throuch all cards found in the isolater.

@@ -24,13 +24,17 @@ class CardValidator:
 
     def setCardRankAndSuit(self, card):
         if card.exists:
+
+
+
             # Isolated cornor profile
             profileDim = card.profile.shape
             profileHeight = profileDim[0]
             profileWidth = profileDim[1]
 
             cardCornorProfile = card.profile[0:(int(profileHeight/3.5)), 0:int((profileWidth/6))]
-            cv2.imshow("cardCornorProfile", cardCornorProfile)
+            self.MASK = cardCornorProfile.copy()
+            #cv2.imshow("cardCornorProfile", cardCornorProfile)
 
             cornorProfileDim = cardCornorProfile.shape
             cornorProfileHeight = cornorProfileDim[0]
@@ -42,12 +46,14 @@ class CardValidator:
             # img = cv2.resize(cardCornorProfile, (100, 280))
             img = cardCornorProfile
 
+
             kernel = np.ones((2, 2), np.uint8)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             gray = cv2.equalizeHist(gray)
+
             _,gray = cv2.threshold(gray, 50,255,cv2.THRESH_BINARY)
             gray = cv2.erode(gray, kernel, iterations=1)
-            self.MASK = gray
+
             cv2.imshow("NEWGRAY", gray)
             thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 1)
 
