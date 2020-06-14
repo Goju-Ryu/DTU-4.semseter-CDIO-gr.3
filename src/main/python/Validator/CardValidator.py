@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import os
 from operator import attrgetter
+from imageOperator.imageOperator import imageOperator
 
 
 class CardValidator:
@@ -18,6 +19,7 @@ class CardValidator:
 
     def __init__(self):
         self.compareSymbols = self.loadCompareSymbols()
+        self.operator = imageOperator()
         pass
 
     def setCardRankAndSuit(self, card):
@@ -36,7 +38,7 @@ class CardValidator:
             cv2.imshow("cardCornorProfile", cardCornorProfile)
 
             # making the Threshold so we can use it to find the contours
-            img = cv2.resize(cardCornorProfile , (100, 280))
+            img = cv2.resize(cardCornorProfile, (100, 280))
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 1)
 
@@ -71,11 +73,10 @@ class CardValidator:
                     # condition for ignoring irrelevant contours, to minimize noise
                     if w > 20 and h > 20:
 
-                        # finding the perspective transformed image, then rotated.
-
-                        imageTrans, mask, succes = self.fourPointTransform([[p1], [p2], [p3], [p4]], thresh)
-                        # imageTrans = cv2.rotate(imageTrans, cv2.ROTATE_180)
-                        imageTrans = cv2.flip(imageTrans, 1)
+                        # finding the perspective transformed image
+                        sortedPts = self.operator.SortPoints([p1, p2, p3, p4])
+                        matrix = self.operator.getTransformMatrix(w, h, sortedPts)
+                        imageTrans = self.operator.perspectiveTransform(w, h, thresh, matrix)
                         imageTrans = cv2.resize(imageTrans, (70, 125))
 
                         # cv2.imshow("nice" + str(i), imageTrans)
@@ -160,49 +161,3 @@ class CardValidator:
         return compareSymbols
 
 
-
-    # __________________________ METHODS BELOW WILL BE IN I HELPER CLASS __________________________
-
-    def SortPoints(self, p1, p2, p3, p4, image):
-
-        points = [p4, p3, p2, p1]
-        sortedList = sorted(points, key=lambda x: x[1], reverse=False)
-        if sortedList[0][0] > sortedList[1][0]:
-            temp = sortedList[0]
-            sortedList[0] = sortedList[1]
-            sortedList[1] = temp
-
-        if sortedList[2][0] > sortedList[3][0]:
-            temp = sortedList[2]
-            sortedList[2] = sortedList[3]
-            sortedList[3] = temp
-
-        return sortedList[3], sortedList[2], sortedList[0], sortedList[1]
-
-    def fourPointTransform(self, pts, image):
-        # Perspektive Transformation
-        p1 = (pts[0][0][0], pts[0][0][1])
-        p2 = (pts[1][0][0], pts[1][0][1])
-        p3 = (pts[2][0][0], pts[2][0][1])
-        p4 = (pts[3][0][0], pts[3][0][1])
-
-        # sorting so theyre orderd clockwise.
-        p1, p2, p3, p4 = self.SortPoints(p1, p2, p3, p4, image)
-
-        width = image.shape[1]
-        height = image.shape[0]
-        # making the points translation values
-        nPts = np.float32([
-            [0, 0],
-            [width - 1, 0],
-            [width - 1, height - 1],
-            [0, height - 1]
-        ], dtype="float32")
-        pts = np.float32([p2, p1, p4, p3])
-
-        # making the Perspektive Transform.
-        matrix = cv2.getPerspectiveTransform(pts, nPts)
-        result = cv2.warpPerspective(image, matrix, (width, height))
-
-        mask = None
-        return result, mask, True
