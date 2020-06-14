@@ -98,7 +98,33 @@ class CardValidator:
                         # now give the image to see if it matches a prefinded standard for a symbol
                         mSymbol = self.matchCard2(imageTrans)
 
-                        # if
+                        if mSymbol.symbolName == "1":
+                            cv2.imshow("Ace", imageTrans)
+                        if mSymbol.symbolName == "2":
+                            cv2.imshow("2", imageTrans)
+                        if mSymbol.symbolName == "3":
+                            cv2.imshow("3", imageTrans)
+                        if mSymbol.symbolName == "4":
+                            cv2.imshow("4", imageTrans)
+                        if mSymbol.symbolName == "5":
+                            cv2.imshow("5", imageTrans)
+                        if mSymbol.symbolName == "6":
+                            cv2.imshow("6", imageTrans)
+                        if mSymbol.symbolName == "7":
+                            cv2.imshow("7", imageTrans)
+                        if mSymbol.symbolName == "8":
+                            cv2.imshow("8", imageTrans)
+                        if mSymbol.symbolName == "9":
+                            cv2.imshow("9", imageTrans)
+                        if mSymbol.symbolName == "10":
+                            cv2.imshow("10", imageTrans)
+                        if mSymbol.symbolName == "11":
+                            cv2.imshow("11", imageTrans)
+                        if mSymbol.symbolName == "12":
+                            cv2.imshow("12", imageTrans)
+                        if mSymbol.symbolName == "13":
+                            cv2.imshow("13", imageTrans)
+
                         # cv2.imshow("chaos here" + str(h), imageTrans)
                         # if mSymbol.symbolName == "10":
                         #     print("10" + str(h))
