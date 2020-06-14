@@ -44,13 +44,21 @@ class CardValidator:
 
             cv2.imshow("cardCornorResized", img)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 1)
+
+
+            hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+            lower_blue = np.array([0, 0, 40])
+            upper_blue = np.array([180, 255, 255])
+            mask = cv2.inRange(hsv, lower_blue, upper_blue)
+            cv2.imshow("hsv", mask)
+            #thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 1)
 
             # Source :https://github.com/EdjeElectronics/OpenCV-Playing-Card-Detector/blob/1f8365779f88f7f46634114bf2e35427bc1c00d0/Cards.py#L129
             # ________________________________
+
             img_w, img_h = np.shape(gray)[:2]
             bkg_level = gray[int(img_h-1)][int(img_w / 2)]
-            thresh_level = bkg_level -30
+            thresh_level = bkg_level -50
 
             retval, thresh = cv2.threshold(gray, thresh_level, 255, cv2.THRESH_BINARY)
             # ____________________________________________
