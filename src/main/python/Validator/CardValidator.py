@@ -33,37 +33,22 @@ class CardValidator:
             profileWidth = profileDim[1]
 
             cardCornorProfile = card.profile[0:(int(profileHeight/3.5)), 0:int((profileWidth/6))]
-            self.MASK = cardCornorProfile.copy()
+
             #cv2.imshow("cardCornorProfile", cardCornorProfile)
 
             cornorProfileDim = cardCornorProfile.shape
             cornorProfileHeight = cornorProfileDim[0]
             cornorProfileWidth = cornorProfileDim[1]
-
-            # making the Threshold so we can use it to find the contours
-            # img = cv2.resize(cardCornorProfile, (int(cornorProfileWidth/2), int(cornorProfileHeight/2)))
-            # img = cv2.resize(cardCornorProfile, (cornorProfileWidth*2, cornorProfileHeight*2))
-            # img = cv2.resize(cardCornorProfile, (100, 280))
             img = cardCornorProfile
 
-
-            kernel = np.ones((2, 2), np.uint8)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            gray = cv2.equalizeHist(gray)
-
-            _,gray = cv2.threshold(gray, 50,255,cv2.THRESH_BINARY)
-            gray = cv2.erode(gray, kernel, iterations=1)
-
-            cv2.imshow("NEWGRAY", gray)
-            thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 1)
+            #thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 1)
+            thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 1)
 
             thresh = cv2.bitwise_not(thresh)
-
+            kernel = np.ones((2, 2), np.uint8)
             thresh = cv2.erode(thresh, kernel, iterations=1)
-            # thresh = cv2.dilate(thresh, kernel, iterations=1)
-            #cv2.imshow("erode",erosion)
-            cv2.imshow("thresh", thresh)
-
+            self.MASK = thresh
             # finding the contours, RETR_EXTERNAL = external figure contours. and CHAIN_APPROX_NONE means showing alll points
             contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
@@ -203,5 +188,13 @@ class CardValidator:
             compareSymbols.append(compareSymbol)
 
         return compareSymbols
+
+    def equalize(self, image, stat=30):
+
+        img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        img = cv2.equalizeHist(img)
+        #_, img = cv2.threshold(img, stat, 255, cv2.THRESH_TOZERO_INV)
+
+        return img
 
 

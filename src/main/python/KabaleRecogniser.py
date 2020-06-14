@@ -58,7 +58,7 @@ class KabaleRecogniser:
             # isolater, isolates the board, and all potential cards on this board, it
             # uses the HSV settings passed in the settings object for its thresholding.
             # the boolean paramters are : showBoard, ShowBoardMask, ShowCards, showCardsMask;
-            isolator = Isolator(False,False,False,False)
+            isolator = Isolator(False,False,True,False)
             cards, succes = isolator.isolateCards(img, Settings)
 
             # looping throuch all cards found in the isolater.
@@ -92,8 +92,10 @@ class KabaleRecogniser:
             if ( timeDiff ) > 300:
                 break
 
+
             SLETMIGDONE = sletmigOperator.stackImages(SLETMIG[0],SLETMIG)
             cv2.imshow("SLETMIG", SLETMIGDONE)
+            cv2.imshow("SLETMIG_ single", SLETMIG[0])
 
         # when the loop is done it is necesary to close all windows if any are open, otherwise the programs becomes
         # unresponsive, this is not necesary in the final version, but when testing it becomes an issue.
@@ -148,5 +150,7 @@ class KabaleRecogniser:
 
 
         return inpu
+
+
 
 
