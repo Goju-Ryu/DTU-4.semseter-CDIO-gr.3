@@ -1,12 +1,14 @@
 package model.cabal.internals;
 
-import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 public abstract class StackBase implements I_SolitaireStacks {
 
@@ -22,7 +24,13 @@ public abstract class StackBase implements I_SolitaireStacks {
 
     @Override
     public boolean addAll(@Nonnull Collection<? extends I_CardModel> c) throws IllegalMoveException {
-        return stack.addAll(c);
+        try {
+            return stack.addAll(c);
+        } catch (UnsupportedOperationException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     @Override
@@ -37,7 +45,7 @@ public abstract class StackBase implements I_SolitaireStacks {
 
     @Override
     public boolean removeAll(@Nonnull Collection c) {
-        throw new IllegalCallerException("This method should not be called"); //should not be implemented
+        return stack.removeAll(c);
     }
 
     @Override
