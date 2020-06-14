@@ -10,10 +10,29 @@ import json as json
 #====================================.
 
 
+def stringToJson(inputStr):
+    returnStr = ""
+    suit = ""
+    su = inputStr[0:1]
+    nr = inputStr[1:2]
+    if(su == "h"):
+        suit = "Hearts"
+    elif(su == "c"):
+        suit = "Clubs"
+    elif(su == "d"):
+        suit = "Dimonds"
+    elif(su == "s"):
+        suit = "Spades"
+    returnStr = json.dumps(
+        {"suit" : suit, "rank" : nr}
+    )
+    return returnStr
+
 class ManGUI(AbstractUI):
     input =""
     def updateInp(self,newString):
         self.input = newString
+
 
     def run(self):
         root = Tk()
@@ -77,18 +96,18 @@ class ManGUI(AbstractUI):
 
             inp = json.dumps(
                 {
-                    "drawPile": ePile.get(),
-                    "suitStack1": eSuit1.get(),
-                    "suitStack2": eSuit2.get(),
-                    "suitStack3": eSuit3.get(),
-                    "suitStack4": eSuit4.get(),
-                    "column1": ecol1.get(),
-                    "column2": ecol2.get(),
-                    "column3": ecol3.get(),
-                    "column4": ecol4.get(),
-                    "column5": ecol5.get(),
-                    "column6": ecol6.get(),
-                    "column7": ecol7.get()
+                    "drawPile": stringToJson(ePile.get()),
+                    "suitStack1": stringToJson(eSuit1.get()),
+                    "suitStack2": stringToJson(eSuit2.get()),
+                    "suitStack3": stringToJson(eSuit3.get()),
+                    "suitStack4": stringToJson(eSuit4.get()),
+                    "column1": stringToJson(ecol1.get()),
+                    "column2": stringToJson(ecol2.get()),
+                    "column3": stringToJson(ecol3.get()),
+                    "column4": stringToJson(ecol4.get()),
+                    "column5": stringToJson(ecol5.get()),
+                    "column6": stringToJson(ecol6.get()),
+                    "column7": stringToJson(ecol7.get())
                 }
             )
             self.updateInp(inp)
