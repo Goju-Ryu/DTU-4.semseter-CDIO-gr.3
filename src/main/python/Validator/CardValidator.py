@@ -34,18 +34,29 @@ class CardValidator:
 
 
             # cardCornorProfile = card.profile[0:140, 0:50]
-            cardCornorProfile = card.profile[0:(int(profileHeight/3)), 0:int((profileWidth/4))]
+            # cardCornorProfile = card.profile[0:(int(profileHeight/3)), 0:int((profileWidth/4))]
+            cardCornorProfile = card.profile[0:(int(profileHeight/3.5)), 0:int((profileWidth/6))]
             cv2.imshow("cardCornorProfile", cardCornorProfile)
 
+
+            cornorProfileDim = cardCornorProfile.shape
+            cornorProfileHeight = cornorProfileDim[0]
+            cornorProfileWidth = cornorProfileDim[1]
+
             # making the Threshold so we can use it to find the contours
-            img = cv2.resize(cardCornorProfile, (100, 280))
+            # img = cv2.resize(cardCornorProfile, (cornorProfileWidth/2, cornorProfileHeight/2))
+            # img = cv2.resize(cardCornorProfile, (cornorProfileWidth*2, cornorProfileHeight*2))
+            # img = cv2.resize(cardCornorProfile, (100, 280))
+            img =  cardCornorProfile
+
+            cv2.imshow("cardCornorResized", img)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 1)
 
             thresh = cv2.bitwise_not(thresh)
-            kernel = np.ones((3, 3), np.uint8)
+            kernel = np.ones((2, 2), np.uint8)
             thresh = cv2.erode(thresh, kernel, iterations=1)
-            thresh = cv2.dilate(thresh, kernel, iterations=2)
+            # thresh = cv2.dilate(thresh, kernel, iterations=1)
             #cv2.imshow("erode",erosion)
 
             # finding the contours, RETR_EXTERNAL = external figure contours. and CHAIN_APPROX_NONE means showing alll points
@@ -55,7 +66,9 @@ class CardValidator:
             results = []
             for contour in contours:
                 print("contour size: " + str(contour.size))
-                if contour.size > 40:
+                # if contour.size > 40:
+                if contour.size > cornorProfileHeight/7:
+
                     # bounding rect is the smallest square that fits the contour.
                     x, y, w, h = cv2.boundingRect(contour)
 
@@ -71,7 +84,7 @@ class CardValidator:
                     p4 = (x, y + h)
 
                     # condition for ignoring irrelevant contours, to minimize noise
-                    if w > 20 and h > 20:
+                    if w > cornorProfileWidth/5 and h > cornorProfileHeight/14:
 
                         # finding the perspective transformed image
                         sortedPts = self.operator.SortPoints([p1, p2, p3, p4])
@@ -85,11 +98,15 @@ class CardValidator:
                         # now give the image to see if it matches a prefinded standard for a symbol
                         mSymbol = self.matchCard2(imageTrans)
 
-                        # if mSymbol.symbolName is "Queen":
-                        #     print("Queen" + str(h))
+                        # if
+                        # cv2.imshow("chaos here" + str(h), imageTrans)
+                        # if mSymbol.symbolName == "10":
+                        #     print("10" + str(h))
+                        #     cv2.imshow("10", imageTrans)
                         #
-                        # if mSymbol.symbolName is "Jack":
-                        #     print("Jack" + str(h))
+                        # if mSymbol.symbolName == "11":
+                        #     print("11" + str(h))
+                        #     cv2.imshow("11", imageTrans)
 
                         results.append(mSymbol)
                         cv2.drawContours(img, contour, -1, (0, 255, 0), 1)
@@ -152,8 +169,8 @@ class CardValidator:
             compareSymbol = self.Symbol()
             filename = symbol + ".png"
             compareSymbol.name = symbol
-            # filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs/"
-            filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs_mod/"
+            filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs/"
+            # filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs_mod/"
             compareSymbol.img = cv2.imread(filepath + filename, cv2.IMREAD_GRAYSCALE)  # pic is 125*70 (before it was 100*70)
 
             compareSymbols.append(compareSymbol)
