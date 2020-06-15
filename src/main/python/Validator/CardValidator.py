@@ -20,6 +20,7 @@ class CardValidator:
     def __init__(self):
         self.compareSymbols = self.loadCompareSymbols()
         self.operator = imageOperator()
+        # self.MASK = None
         pass
 
     def setCardRankAndSuit(self, card):
@@ -101,13 +102,8 @@ class CardValidator:
                 return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName, self.MASK
             if len(bestTwoMatches) == 1:
                 return bestTwoMatches[0].symbolName, "no match", self.MASK
-            if len(bestTwoMatches) == 0:
-                return "no match", "no match", self.MASK
-        # Takes threshholded image over contour in card cornor
-        #     return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName, self.MASK
+            return "no match", "no match", self.MASK
 
-        else:
-            return "empty", "empty", self.MASK
 
     def matchCard2(self, image):
         symbols = self.compareSymbols
