@@ -1,5 +1,6 @@
 package model.cabal;
 
+import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
@@ -46,6 +47,7 @@ public interface I_BoardModel {
      */
     I_CardModel getTurnedCard();
 
+    I_SolitaireStacks[] getPiles();
 
 //----------  Move card methods  -----------------------------------------------------------------------------
 

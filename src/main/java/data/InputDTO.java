@@ -30,7 +30,7 @@ public class InputDTO {
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-        System.out.println("From getUsrInput: "+usrInput);
+        //System.out.println("From getUsrInput: "+usrInput);
 
         JsonObject cardsJson = stringToJson(usrInput);
         cards = jsonToCard(cardsJson);
@@ -43,7 +43,7 @@ public class InputDTO {
      *///TODO: Transform the string into a JSON object that you use when you initilize the cards
 
     public JsonObject stringToJson(String toJson){
-        System.out.println("from String to Json: "+toJson);
+        //System.out.println("from String to Json: "+toJson);
         JsonObject jsonObject = new JsonParser().parse(toJson).getAsJsonObject();
         return jsonObject;
     }
@@ -73,7 +73,7 @@ public class InputDTO {
         );
         for(int i = 0; i< stacks.size();i++){
             //||takeout the json object belonging to a vien key as a string
-            System.out.println("stack: "+stacks.get(i));
+            //System.out.println("stack: "+stacks.get(i));
             String tmp = jsonObject.getAsJsonArray(stacks.get(i)).get(0).getAsString();
             //||turn it back into a json object.
             JsonObject givenStack = new JsonParser().parse(tmp).getAsJsonObject();
@@ -88,7 +88,7 @@ public class InputDTO {
                 fRank = Integer.parseInt(rank);
             }
             String suit = givenStack.getAsJsonPrimitive("suit").getAsString();
-            System.out.println("suit of top card "+suit);
+            //System.out.println("suit of top card "+suit);
             //System.out.println("tank of top card "+rank);
 
             //Translate the Suit value to our model of a car Suit
@@ -108,7 +108,7 @@ public class InputDTO {
             Card card = new Card(su,fRank);
             cards.add(card);
         }
-        System.out.println("length of card array: "+cards.size());
+        //System.out.println("length of card array: "+cards.size());
         return cards;
     }
 

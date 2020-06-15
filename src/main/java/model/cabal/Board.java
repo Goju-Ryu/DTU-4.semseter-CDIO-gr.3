@@ -39,22 +39,23 @@ public final class Board implements I_BoardModel {
         for (E_PileID id : E_PileID.values()) {
             if (id == TURNPILE) { //initializes with 24 cards face down
                 var stack = new DrawStack();
-                for (int j = 0; j < 24; j++) {
+                for (int j = 0; j < 23; j++) {
                     stack.add(new Card());
                 }
+                stack.add(drawStack);
                 piles[id.ordinal()] = stack;
             }
             else if (id.isBuildStack()) {
                 var stack = new BuildStack();
 
                 switch (id){ // notice no break. a card enters and ads 1 card for every case beneath it
-                    case BUILDSTACK7: stack.add(new Card());
-                    case BUILDSTACK6: stack.add(new Card());
-                    case BUILDSTACK5: stack.add(new Card());
-                    case BUILDSTACK4: stack.add(new Card());
-                    case BUILDSTACK3: stack.add(new Card());
-                    case BUILDSTACK2: stack.add(new Card());
-                    case BUILDSTACK1: stack.add(new Card()); break;
+                    case BUILDSTACK7: stack.add(buildstack1);
+                    case BUILDSTACK6: stack.add(buildstack2);
+                    case BUILDSTACK5: stack.add(buildstack3);
+                    case BUILDSTACK4: stack.add(buildstack4);
+                    case BUILDSTACK3: stack.add(buildstack5);
+                    case BUILDSTACK2: stack.add(buildstack6);
+                    case BUILDSTACK1: stack.add(buildstack7); break;
                     default:
                         throw new RuntimeException("An unknown E_Pile_ID with isBuildStack=true was encountered: " + id);
                 }
@@ -97,6 +98,9 @@ public final class Board implements I_BoardModel {
         return piles[pile.ordinal()];
     }
 
+    public I_SolitaireStacks[] getPiles(){
+        return piles;
+    };
 
     /**
      * checks if state is equal to physical board

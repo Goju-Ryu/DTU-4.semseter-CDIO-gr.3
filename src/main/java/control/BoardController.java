@@ -3,6 +3,7 @@ package control;
 import data.InputDTO;
 import model.cabal.Board;
 import model.cabal.I_BoardModel;
+import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 
@@ -28,8 +29,12 @@ public class BoardController implements I_BoardController {
                 usrInput.get(11));
         return board;
     }
-    public void possibleMoves(Card[] fromCV){
-
+    public void possibleMoves(I_BoardModel boardModel){
+        //TODO: atm this only check the top card in each stack.
+       I_SolitaireStacks[] piles = boardModel.getPiles();
+       for(int i=0; i<piles.length;i++){
+           piles.getClass();
+       }
     };
 
     public void pickMove(Board[] moves){
