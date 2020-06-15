@@ -24,9 +24,6 @@ class CardValidator:
 
     def setCardRankAndSuit(self, card):
         if card.exists:
-
-
-
             # Isolated cornor profile
             profileDim = card.profile.shape
             profileHeight = profileDim[0]
@@ -34,17 +31,13 @@ class CardValidator:
 
             cardCornorProfile = card.profile[0:(int(profileHeight/3.5)), 0:int((profileWidth/6))]
 
-            #cv2.imshow("cardCornorProfile", cardCornorProfile)
-
             cornorProfileDim = cardCornorProfile.shape
             cornorProfileHeight = cornorProfileDim[0]
             cornorProfileWidth = cornorProfileDim[1]
             img = cardCornorProfile
 
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            #gray = cv2.bilateralFilter(gray, 9, 20, 20)
             gray = cv2.bilateralFilter(gray, 9,10, 10)
-            #thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 1)
             thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 13, 1  )
 
 
@@ -90,14 +83,14 @@ class CardValidator:
                         # now give the image to see if it matches a prefinded standard for a symbol
                         mSymbol = self.matchCard2(imageTrans)
 
-
                         out = thresh.copy()
                         out = cv2.cvtColor(out,cv2.COLOR_GRAY2BGR)
+
                         cv2.imshow(mSymbol.symbolName, imageTrans)
+
                         font = cv2.FONT_HERSHEY_SIMPLEX
                         cv2.putText(out, mSymbol.symbolName, (0, 20), font, 0.5, (0, 255, 0), 2, cv2.LINE_AA)
                         self.MASK = out
-
 
                         results.append(mSymbol)
                         cv2.drawContours(img, contour, -1, (0, 255, 0), 1)
@@ -127,6 +120,7 @@ class CardValidator:
         # Takes threshholded image over contour in card cornor
         else:
             return "empty", "empty", self.MASK
+
     def matchCard2(self, image):
         symbols = self.compareSymbols
 
@@ -164,12 +158,5 @@ class CardValidator:
 
         return compareSymbols
 
-    def equalize(self, image, stat=30):
-
-        img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        img = cv2.equalizeHist(img)
-        #_, img = cv2.threshold(img, stat, 255, cv2.THRESH_TOZERO_INV)
-
-        return img
 
 

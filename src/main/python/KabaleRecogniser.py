@@ -24,7 +24,7 @@ class KabaleRecogniser:
     # ( for each card, whats the best result for that card ( by counting most votes) ). to then give a result.
     def run(self, Settings):
 
-        sletmigOperator = imageOperator()
+        Operator = imageOperator()
 
         # start a Timer, as a way to end the loop.
         timeStart = TIME.time()
@@ -44,7 +44,6 @@ class KabaleRecogniser:
 
 
         # filming Loop.
-
         while True:
 
             # this is openCV code, get the image, and then it gives an error if the keypressed isent there.
@@ -63,18 +62,16 @@ class KabaleRecogniser:
 
             # looping throuch all cards found in the isolater.
             i = 0
-            SLETMIG = []
+            cardImagesStack = []
             for c in cards:
                 stat = statistics[i]
                 if c.exists:
-
                     #this returns the evaluated names of the two best contours.
                     #so they are name1 and name2, are the names of these, and
                     #there isent a way of knowing wich is wich, so we do a check on this
 
-                    name1, name2, sletmigImg = cardVal.setCardRankAndSuit(c)
-
-                    SLETMIG.append(sletmigImg)
+                    name1, name2, cardImage = cardVal.setCardRankAndSuit(c)
+                    cardImagesStack.append(cardImage)
 
                     # for counting occurences of card symbols
                     for name in stat:
@@ -92,10 +89,9 @@ class KabaleRecogniser:
             if ( timeDiff ) > 300:
                 break
 
-
-            SLETMIGDONE = sletmigOperator.stackImages(SLETMIG[0],SLETMIG)
-            cv2.imshow("SLETMIG", SLETMIGDONE)
-            cv2.imshow("SLETMIG_ single", SLETMIG[0])
+            cardImageStacked = Operator.stackImages(cardImagesStack[0], cardImagesStack)
+            cv2.imshow("cardStacked", cardImageStacked)
+            cv2.imshow("SLETMIG_ single", cardImagesStack[0])
 
         # when the loop is done it is necesary to close all windows if any are open, otherwise the programs becomes
         # unresponsive, this is not necesary in the final version, but when testing it becomes an issue.
@@ -125,32 +121,28 @@ class KabaleRecogniser:
             print("card " + str(k) + "  : " + cards[k].rank + " " + cards[k].suit)
             k += 1
 
+        return self.interpreteResults()
+
+    def interpreteResults():
         stackBottom = cards[0:7]
         stackTop = cards[7:]
         # The decided positions for the card placement on the board. This is the placement the java program expects to get.
         # The corresponding elements in the cards list for this class starts with 0th element at the buttom right cornor of a game board, you imagine in from of you
-        inpu = json.dumps({
-            "drawPile": {"suit" : stackTop[5].suit, "rank" : stackTop[5].rank},
-            "SuitStackHearts" : {"suit" : stackTop[0].suit, "rank" : stackTop[0].rank},
-            "SuitStackClubs" : {"suit" : stackTop[1].suit, "rank" : stackTop[1].rank},
-            "SuitStackDiamonds" : {"suit" : stackTop[2].suit, "rank" : stackTop[2].rank},
-            "SuitStackSpades" : {"suit" : stackTop[3].suit, "rank" : stackTop[3].rank},
-            "Column1" : {"suit" : stackBottom[6].suit, "rank" : stackBottom[6].rank},
-            "Column2" : {"suit" : stackBottom[5].suit, "rank" : stackBottom[5].rank},
-            "Column3" : {"suit" : stackBottom[4].suit, "rank" : stackBottom[4].rank},
-            "Column4" : {"suit" : stackBottom[3].suit, "rank" : stackBottom[3].rank},
-            "Column5" : {"suit" : stackBottom[2].suit, "rank" : stackBottom[2].rank},
-            "Column6" : {"suit" : stackBottom[1].suit, "rank" : stackBottom[1].rank},
-            "Column7" : {"suit" : stackBottom[0].suit, "rank" : stackBottom[0].rank},
+        results = json.dumps({
+            "drawPile": {"suit": stackTop[5].suit, "rank": stackTop[5].rank},
+            "SuitStackHearts": {"suit": stackTop[0].suit, "rank": stackTop[0].rank},
+            "SuitStackClubs": {"suit": stackTop[1].suit, "rank": stackTop[1].rank},
+            "SuitStackDiamonds": {"suit": stackTop[2].suit, "rank": stackTop[2].rank},
+            "SuitStackSpades": {"suit": stackTop[3].suit, "rank": stackTop[3].rank},
+            "Column1": {"suit": stackBottom[6].suit, "rank": stackBottom[6].rank},
+            "Column2": {"suit": stackBottom[5].suit, "rank": stackBottom[5].rank},
+            "Column3": {"suit": stackBottom[4].suit, "rank": stackBottom[4].rank},
+            "Column4": {"suit": stackBottom[3].suit, "rank": stackBottom[3].rank},
+            "Column5": {"suit": stackBottom[2].suit, "rank": stackBottom[2].rank},
+            "Column6": {"suit": stackBottom[1].suit, "rank": stackBottom[1].rank},
+            "Column7": {"suit": stackBottom[0].suit, "rank": stackBottom[0].rank},
         })
-        # cardsStrings = []
-        # for card in cards:
-        #     cardsStrings.append(card.suit + card.rank)
-        # return str(cardsStrings)
-
-
-        return inpu
-
+        return results
 
 
 
