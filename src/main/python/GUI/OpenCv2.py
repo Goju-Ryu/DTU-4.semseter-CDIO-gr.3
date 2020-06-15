@@ -15,19 +15,19 @@ from KabaleRecogniser import KabaleRecogniser
 class ManGUI(AbstractUI):
 
     def __init__(self):
-        self.SatSet = False
+        self.Settings = None
+        self.firstRun = True
 
-
-    def settingsSet(self):
+    def setSettings(self):
         s = SettingsGUI()
-        Settings = s.run()
-        self.Settings = Settings
+        self.Settings = s.run()
 
     def run(self):
+
+        if(self.firstRun):
+            self.setSettings()
+
         k = KabaleRecogniser()
-        if(self.SatSet):
-            x = k.run(self.Settings)
-        else:
-            Settings = SettingsObject()
-            x = k.run(Settings)
+        x = k.run(self.Settings)
+
         return x
