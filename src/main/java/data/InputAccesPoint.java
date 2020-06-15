@@ -11,20 +11,21 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class HelloWorldClient {
-    //TODO: move thsi to data layer and refactor its name
-    private static final Logger logger = Logger.getLogger(HelloWorldClient.class.getName());
+public class InputAccesPoint {
+    //TODO: move this to data layer and refactor its name
+    private static final Logger logger = Logger.getLogger(InputAccesPoint.class.getName());
 
     private final GreeterGrpc.GreeterBlockingStub blockingStub;
 
     /** Construct client for accessing HelloWorld server using the existing channel. */
-    public HelloWorldClient(Channel channel) {
+    public InputAccesPoint(Channel channel) {
         // 'channel' here is a Channel, not a ManagedChannel, so it is not this code's responsibility to
         // shut it down.
 
         // Passing Channels to code makes code easier to test and makes it easier to reuse Channels.
         blockingStub = GreeterGrpc.newBlockingStub(channel);
     }
+
 
     /** Say hello to server. */
     public void greet(String name) {
@@ -40,10 +41,55 @@ public class HelloWorldClient {
         logger.info("Greeting: " + response.getMessage());
     }
 
+    public String feedback(String name) {
+        logger.info("We send " + name + " ...");
+        HelloRequest request = HelloRequest.newBuilder().setName(name).build();
+        HelloReply response;
+        try {
+            response = blockingStub.sayHello(request);
+        } catch (StatusRuntimeException e) {
+            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+            return "RPC failed: {0}";
+        }
+        logger.info("Greeting: " + response.getMessage());
+        return response.getMessage();
+    }
+
+    public String getInput(String UIChoice)throws Exception{
+        String user ="";
+        String target = "localhost:50051";
+
+        if(UIChoice == "ManGUI"){
+            user = "Java world";
+        }else if(UIChoice == "OpenCV"){
+            user = "OpenCV";
+        }
+
+        // Create a communication channel to the server, known as a Channel. Channels are thread-safe
+        // and reusable. It is common to create channels at the beginning of your application and reuse
+        // them until the application shuts down.
+        ManagedChannel channel = ManagedChannelBuilder.forTarget(target)
+                // Channels are secure by default (via SSL/TLS). For the example we disable TLS to avoid
+                // needing certificates.
+                .usePlaintext()
+                .build();
+        try {
+            InputAccesPoint client = new InputAccesPoint(channel);
+            String inp = client.feedback(user);
+            return inp;
+        } finally {
+            // ManagedChannels use resources like threads and TCP connections. To prevent leaking these
+            // resources the channel should be shut down when it will no longer be used. If it may be used
+            // again leave it running.
+            channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
+        }
+    }
+
     /**
      * Greet server. If provided, the first element of {@code args} is the name to use in the
      * greeting. The second argument is the target server.
      */
+    /*
     public static void main(String[] args) throws Exception {
         String user = "Java world";
         // Access a service running on the local machine on port 50051
@@ -72,7 +118,7 @@ public class HelloWorldClient {
                 .usePlaintext()
                 .build();
         try {
-            HelloWorldClient client = new HelloWorldClient(channel);
+            InputAccesPoint client = new InputAccesPoint(channel);
             client.greet(user);
         } finally {
             // ManagedChannels use resources like threads and TCP connections. To prevent leaking these
@@ -80,5 +126,5 @@ public class HelloWorldClient {
             // again leave it running.
             channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
         }
-    }
+    }*/
 }

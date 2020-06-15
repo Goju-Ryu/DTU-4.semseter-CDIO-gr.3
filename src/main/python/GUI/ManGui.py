@@ -96,18 +96,18 @@ class ManGUI(AbstractUI):
 
             inp = json.dumps(
                 {
-                    "drawPile": stringToJson(ePile.get()),
-                    "suitStack1": stringToJson(eSuit1.get()),
-                    "suitStack2": stringToJson(eSuit2.get()),
-                    "suitStack3": stringToJson(eSuit3.get()),
-                    "suitStack4": stringToJson(eSuit4.get()),
-                    "column1": stringToJson(ecol1.get()),
-                    "column2": stringToJson(ecol2.get()),
-                    "column3": stringToJson(ecol3.get()),
-                    "column4": stringToJson(ecol4.get()),
-                    "column5": stringToJson(ecol5.get()),
-                    "column6": stringToJson(ecol6.get()),
-                    "column7": stringToJson(ecol7.get())
+                    "drawPile": [stringToJson(ePile.get())],
+                    "suitStack1": [stringToJson(eSuit1.get())],
+                    "suitStack2": [stringToJson(eSuit2.get())],
+                    "suitStack3": [stringToJson(eSuit3.get())],
+                    "suitStack4": [stringToJson(eSuit4.get())],
+                    "column1": [stringToJson(ecol1.get())],
+                    "column2": [stringToJson(ecol2.get())],
+                    "column3": [stringToJson(ecol3.get())],
+                    "column4": [stringToJson(ecol4.get())],
+                    "column5": [stringToJson(ecol5.get())],
+                    "column6": [stringToJson(ecol6.get())],
+                    "column7": [stringToJson(ecol7.get())]
                 }
             )
             self.updateInp(inp)
@@ -121,19 +121,10 @@ class ManGUI(AbstractUI):
         #this is a button made for testing purposes
         # should be comented out when not developing
         def myMove():
-            inp ="{\n\"drawPile\":\"h10\",\n" \
-                 "\"suitStack1\":\"h1\",\n" \
-                 "\"suitStack2\":\"\",\n" \
-                 "\"suitStack3\":\"\",\n" \
-                 "\"suitStack4\":\"\",\n" \
-                 "\"column1\":\"h3\",\n" \
-                 "\"column2\":\"h4\",\n" \
-                 "\"column3\":\"h5\",\n" \
-                 "\"column4\":\"h6\",\n" \
-                 "\"column5\":\"h7\",\n" \
-                 "\"column6\":\"h8\",\n" \
-                 "\"column7\":\"h9\",\n" \
-                 "}"
+            inp = json.dumps(
+                {"drawPile": ["{\"suit\": \"Clubs\", \"rank\": \"2\"}"], "suitStack1": ["{\"suit\": \"\", \"rank\": \"\"}"], "suitStack2": ["{\"suit\": \"\", \"rank\": \"\"}"], "suitStack3": ["{\"suit\": \"\", \"rank\": \"\"}"], "suitStack4": ["{\"suit\": \"\", \"rank\": \"\"}"], "column1": ["{\"suit\": \"Hearts\", \"rank\": \"3\"}"], "column2": ["{\"suit\": \"Hearts\", \"rank\": \"4\"}"], "column3": ["{\"suit\": \"Hearts\", \"rank\": \"5\"}"], "column4": ["{\"suit\": \"Hearts\", \"rank\": \"6\"}"], "column5": ["{\"suit\": \"Hearts\", \"rank\": \"7\"}"], "column6": ["{\"suit\": \"Hearts\", \"rank\": \"9\"}"], "column7": ["{\"suit\": \"Hearts\", \"rank\": \"10\"}"]}
+            )
+
 
             self.updateInp(inp)
             root.destroy()
