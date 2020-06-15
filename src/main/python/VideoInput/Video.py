@@ -11,7 +11,7 @@ class videoGen:
         pass
 
     def getVideo(self):
-        vid = SVideo()
+        vid = Video()
         # vid = Video()
         return vid
 
@@ -20,7 +20,7 @@ class Video:
 
     def __init__(self):
         # finals
-        self.VidName = 1
+        self.VidName = 0
         self.FRAME_NAME = " video recording Frame "
 
         # Video Stats
