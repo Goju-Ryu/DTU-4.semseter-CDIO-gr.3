@@ -2,12 +2,16 @@
 A program that allows you to play soliatre, you give it a pictute or number representation of the board and it gives you a move
 
 # User guide 
-### for the Manual GUI
-coming soon.
+- Plug in a USB camera into your PC
+- setup your solitare card game on a green background.
+- Download or clone the code from git
+- (if your IDE requres, set it up as a maven project.)
+- Run the server.py file(the python side of the server)
+- at the moment what UI you want to use is decided by writing code in main,
+so write the UI you want to use in main
+- run main.java (the java side of the server)
 
-### for the OpenCV GUI
-coming soon.
-
+now you should be good to go
 
 # Developer guide
 NB: No guarantee this works on IOS
