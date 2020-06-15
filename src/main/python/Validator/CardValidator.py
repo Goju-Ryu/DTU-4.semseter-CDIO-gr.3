@@ -98,13 +98,13 @@ class CardValidator:
                 matchNames.append(match.symbolName)
 
             if len(bestTwoMatches) == 2:
-                return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName, self.MASK
+                return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName, self.MASK , True
             if len(bestTwoMatches) == 1:
-                return bestTwoMatches[0].symbolName, "no match", self.MASK
-            return "no match", "no match", self.MASK
+                return bestTwoMatches[0].symbolName, "no match", self.MASK , True
+            return "no match", "no match", self.MASK, False
 
         else:
-            return "empty", "empty", self.MASK
+            return "empty", "empty", None , False
 
     def matchCard2(self, image):
         symbols = self.compareSymbols
