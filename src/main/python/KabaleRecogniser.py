@@ -19,6 +19,7 @@ class KabaleRecogniser:
 
     def __init__(self):
         self.cards = []
+        self.font = cv2.FONT_HERSHEY_SIMPLEX
 
     # a method to take a video, and then for each image get a result,  and then make statisk analasys
     # ( for each card, whats the best result for that card ( by counting most votes) ). to then give a result.
@@ -111,7 +112,11 @@ class KabaleRecogniser:
                 # there isent a way of knowing wich is wich, so we do a check on this
 
                 name1, name2, cardImage = cardVal.setCardRankAndSuit(c)
-                self.cardImagesStack.append(cardImage)
-                self.statestics.statisticInput(name1,name2,i)
 
+                self.statestics.statisticInput(name1,name2,i)
+                rank, suit = self.statestics.statGetCardValue(i)
+
+                cv2.putText(cardImage,str( rank ) , (0, 70), self.font, 0.5, (0, 0, 255), 2, cv2.LINE_AA)
+                cv2.putText(cardImage, str(suit[0]), (25, 70), self.font, 0.5, (0, 0, 255), 2, cv2.LINE_AA)
+                self.cardImagesStack.append(cardImage)
             i += 1
