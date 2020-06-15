@@ -2,7 +2,9 @@ package control;
 
 import data.InputDTO;
 import model.cabal.Board;
+import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
+import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.Card;
 
@@ -31,6 +33,8 @@ public class BoardController implements I_BoardController {
     public ArrayList<String> possibleMoves(I_BoardModel boardModel){
 
         ArrayList<String> moves = new ArrayList<>();
+
+        DrawStack drawStack = (DrawStack) boardModel.getPile(E_PileID.TURNPILE);
 
         //TODO: atm this only check the top card in each stack.
        I_SolitaireStacks[] piles = boardModel.getPiles();
