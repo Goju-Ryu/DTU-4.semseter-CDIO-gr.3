@@ -59,8 +59,7 @@ class CardValidator:
                     p4 = (x, y + h)
 
                     # condition for ignoring irrelevant contours, to minimize noise
-                    if w > cornerWidth/5 and h > cornerHeight/14:
-                        i += 1
+                    if w > cornerWidth/5 and h > cornerHeight/14 and h < int(cornerHeight/1.5):
 
                         # finding the perspective transformed image
                         sortedPts = self.operator.SortPoints([p1, p2, p3, p4])
@@ -73,7 +72,7 @@ class CardValidator:
                         out = thresh.copy()
                         out = cv2.cvtColor(out,cv2.COLOR_GRAY2BGR)
 
-                        #cv2.imshow(mSymbol.symbolName, imageTrans)
+                        cv2.imshow(mSymbol.symbolName, imageTrans)
 
                         cv2.putText(out, mSymbol.symbolName, (0, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2, cv2.LINE_AA)
                         self.MASK = out
@@ -82,6 +81,7 @@ class CardValidator:
                         cv2.drawContours(image, contour, -1, (0, 255, 0), 1)
                         cv2.rectangle(image, p1, p3, (255, 0, 0), 2)
 
+            cv2.imshow("cornor profile contours and boundingRects", image)
             # sorts the list of symbol results from smallest differense value to greatest
             #cv2.imshow("cornor profile contours and boundingRects", image)
             sortedList = sorted(results, key=attrgetter('bestMatchDiff'))
@@ -97,7 +97,15 @@ class CardValidator:
             for match in bestTwoMatches:
                 matchNames.append(match.symbolName)
 
-            return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName, self.MASK
+            if len(bestTwoMatches) == 2:
+                return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName, self.MASK
+            if len(bestTwoMatches) == 1:
+                return bestTwoMatches[0].symbolName, "no match", self.MASK
+            if len(bestTwoMatches) == 0:
+                return "no match", "no match", self.MASK
+        # Takes threshholded image over contour in card cornor
+        #     return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName, self.MASK
+
         else:
             return "empty", "empty", self.MASK
 
@@ -112,7 +120,7 @@ class CardValidator:
         for symbol in symbols:
             diff = int(np.sum(cv2.absdiff(image, symbol.img)) / 255)
 
-            if diff < bestMatchDiff:
+            if diff < bestMatchDiff and diff < 2700:
                 bestMatchDiff = diff
                 symbolName = symbol.name
 
@@ -130,9 +138,9 @@ class CardValidator:
             compareSymbol = self.Symbol()
             filename = symbol + ".png"
             compareSymbol.name = symbol
-            filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs/"
+            # filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs/"
             # filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs_mod/"
-            # filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs_mod2/"
+            filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs_mod2/"
             compareSymbol.img = cv2.imread(filepath + filename, cv2.IMREAD_GRAYSCALE)  # pic is 125*70 (before it was 100*70)
 
             compareSymbols.append(compareSymbol)
