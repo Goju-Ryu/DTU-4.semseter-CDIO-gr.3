@@ -49,12 +49,6 @@ public class GameHistory implements I_GameHistory {
      */
     protected Iterator<Map<E_PileID, List<I_CardModel>>> iterator;
 
-    /**
-     * A list of {@link PropertyChangeEvent}s waiting to accepted as an operation.
-     * When accepted the list is emptied and a new snapshot is added to {@link history} before new events arrive.
-     */
-    protected List<PropertyChangeEvent> eventBatch;
-
     private Logger log ;
     private int numNonDrawEvents;
 
@@ -74,7 +68,6 @@ public class GameHistory implements I_GameHistory {
     public GameHistory(Map<E_PileID, List<I_CardModel>> boardAsMap) {
         history = new LinkedList<>();
         iterator = history.iterator();
-        eventBatch = new ArrayList<>();
         log = Logger.getLogger(getClass().getName());
         currentState = new State(boardAsMap);
         numNonDrawEvents = 0;
@@ -88,7 +81,7 @@ public class GameHistory implements I_GameHistory {
      */
     @Override
     public boolean isRepeatState(List<BiPredicate<I_GameState, I_GameState>> predicates) {
-        return false;
+        return getRepeatStates(predicates).size() > 0;
     }
 
 
@@ -99,7 +92,12 @@ public class GameHistory implements I_GameHistory {
      */
     @Override
     public Collection<I_GameState> getRepeatStates(List<BiPredicate<I_GameState, I_GameState>> predicates) {
-        return null;
+        var higherOrderPredicate = predicates.stream().reduce(BiPredicate::and);
+
+        var repeatStates = history.stream()
+                .filter(state -> higherOrderPredicate.orElseThrow().test(currentState, (I_GameState) state))
+                .collect(Collectors.toList());
+        return Collections.EMPTY_LIST; //todo figure out the cast of this
     }
 
     /**
@@ -108,13 +106,29 @@ public class GameHistory implements I_GameHistory {
      */
     @Override
     public void propertyChange(PropertyChangeEvent event) {
+        log.info("Received event :\n\t" + event);
 
-        if (!matchesPreviousEvents(event))
-            processBatch();
+        E_PileID pileID;
+        try {
+            pileID = getEventSourcePile(event, true);
+        } catch (Exception e) {
+            log.warning(
+                    "Unknown source. \""
+                    + event.getPropertyName() +
+                    "\" does not correspond to any known source from E_PileID."
+            );
+            return;
+        }
 
-        log.info("Added event to eventBatch:\n\t" + event);
-        eventBatch.add(event);
+        if ( !isNewValueTypeCorrect(event) ) return;
 
+
+        if (!matchesPreviousEvents(event)) {
+            addGameState();
+        }
+
+
+        currentState.put(pileID, (((List<I_CardModel>) event.getNewValue())));
     }
 
 
@@ -140,31 +154,6 @@ public class GameHistory implements I_GameHistory {
 
 
     //------------------  private helper functions  ------------------------------------------
-
-    /**
-     * Checks if the event that is coming in is the a continuation of previous events
-     *
-     * @param event the incoming event
-     * @return true if the two events are part of the same move operation, false otherwise.
-     */
-    private boolean matchesPreviousEvents(PropertyChangeEvent event) {
-        E_PileID pileID = getEventSourcePile(event);
-        if (pileID.equals(TURNPILE)) return true;
-
-        numNonDrawEvents++;
-        return numNonDrawEvents < 2;
-    }
-
-    private void processBatch() {
-        log.info(
-                "Began processing batch of " +
-                eventBatch.size() + " events of which " +
-                numNonDrawEvents + " are not from " + TURNPILE
-        );
-        //TODO imlement
-
-        numNonDrawEvents = 0;
-    }
 
     /**
      * Makes a copy of the current state of the game and adds it to the history list
@@ -196,14 +185,53 @@ public class GameHistory implements I_GameHistory {
             return E_PileID.valueOf(event.getPropertyName());
         } catch (IllegalArgumentException e) {
             if (throwOnError) {
-                log.warning(
-                        "Unknown source. \""
-                        + event.getPropertyName() +
-                        "\" does not correspond to any known source from E_PileID."
-                );
                 return null;
             } else
                 throw e;
         }
     }
+
+
+    //------------------  private propertyChange helper functions  ------------------------------------------
+
+    /**
+     * Checks if the event that is coming in is the a continuation of previous events
+     *
+     * @param event the incoming event
+     * @return true if the two events are part of the same move operation, false otherwise.
+     */
+    private boolean matchesPreviousEvents(PropertyChangeEvent event) {
+        E_PileID pileID = getEventSourcePile(event);
+        if (pileID.equals(TURNPILE)) return true;
+
+        numNonDrawEvents++;
+        return numNonDrawEvents < 2;
+    }
+
+    /**
+     * Check if the new event contained in an event is of a compatible type and log errors.
+     * @param event the event which brings a new value
+     * @return true if no error is found
+     */
+    private boolean isNewValueTypeCorrect(PropertyChangeEvent event) {
+        if ( !(event.getNewValue() instanceof Collection) ) {
+            log.warning(
+                    "New value does not conform to constraints. New value is not an instance of Collection."
+            );
+            return false;
+        }
+        List<?>  newValue = List.of(event.getNewValue());
+
+        if ( newValue.size() > 0 && !(newValue.get(0) instanceof I_CardModel) ) {
+            log.warning(
+                    "New value does not conform to constraints. " +
+                    "New value is a Collection not containing I_CardModel."
+            );
+            return false;
+        }
+
+        return true;
+
+    }
+
 }
