@@ -13,7 +13,6 @@ coming soon.
 NB: No guarantee this works on IOS
 
 ### java back-end side:
->>>>>>> development
 you need to make sure you are using       
 [project SDK: 12]     
 [Project language level: 11 - local variabel for lambda parameteres]
@@ -21,7 +20,7 @@ you need to make sure you are using
 
 ### python front-end and openCV:
 You need to have Python 3.8
-
+and having an external USB camera plugged in
 ### java python communication:
 Once the above is done comes the tricky part, setting grpc up allowing the java side to talk to the server side.
 
@@ -53,4 +52,3 @@ found under 'src/python/proto',
 if this is not working and you are on a windows computer you can try
 - installing bash in your terminal
 - installed maven in you bash terminal
-
