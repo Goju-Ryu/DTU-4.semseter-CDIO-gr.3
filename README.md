@@ -19,7 +19,7 @@ NB: No guarantee this works on IOS
 
 ### java back-end side:
 you need to make sure you are using       
-[project SDK: 12]     
+[project SDK: 11] or higher     
 [Project language level: 11 - local variabel for lambda parameteres]
 
 
