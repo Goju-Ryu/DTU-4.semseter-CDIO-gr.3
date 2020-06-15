@@ -25,24 +25,21 @@ class CardValidator:
     def setCardRankAndSuit(self, card):
         if card.exists:
             # Isolated cornor profile
-            profileDim = card.profile.shape
-            profileHeight = profileDim[0]
-            profileWidth = profileDim[1]
+            # these are used to calculate the percentage values of the Corner Images.
+            height = card.profile.shape[0]
+            width  = card.profile.shape[1]
 
-            cardCornorProfile = card.profile[0:(int(profileHeight/3.5)), 0:int((profileWidth/6))]
+            # the image her is the corner image, where we are going to look for contours in.
+            image = card.profile[0:(int(height/3.5)), 0:int((width/6))]
+            cornerHeight = image.shape[0]
+            cornerWidth  = image.shape[1]
 
-            cornorProfileDim = cardCornorProfile.shape
-            cornorProfileHeight = cornorProfileDim[0]
-            cornorProfileWidth = cornorProfileDim[1]
-            img = cardCornorProfile
-
-            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             gray = cv2.bilateralFilter(gray, 9,10, 10)
             thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 13, 1  )
 
-
-            thresh = cv2.bitwise_not(thresh)
             kernel = np.ones((2, 2), np.uint8)
+            thresh = cv2.bitwise_not(thresh)
             thresh = cv2.erode(thresh, kernel, iterations=2)
 
             # finding the contours, RETR_EXTERNAL = external figure contours. and CHAIN_APPROX_NONE means showing alll points
@@ -52,24 +49,18 @@ class CardValidator:
             results = []
             for contour in contours:
 
-                if contour.size > cornorProfileHeight/7:
+                if contour.size > cornerHeight/7:
 
                     # bounding rect is the smallest square that fits the contour.
                     x, y, w, h = cv2.boundingRect(contour)
-
                     p1 = (x, y)
                     p2 = (x + w, y)
                     p3 = (x + w, y + h)
                     p4 = (x, y + h)
 
                     # condition for ignoring irrelevant contours, to minimize noise
-                    if w > cornorProfileWidth/5 and h > cornorProfileHeight/14:
-
-                        mask = thresh
-                        black = np.zeros(thresh.shape, np.uint8)
-                        thisThresh = cv2.bitwise_and(mask,gray)
-
-                        cv2.imshow("THISTHRESH" + str(i),thisThresh )
+                    if w > cornerWidth/5 and h > cornerHeight/14:
+                        i += 1
 
                         # finding the perspective transformed image
                         sortedPts = self.operator.SortPoints([p1, p2, p3, p4])
@@ -77,29 +68,23 @@ class CardValidator:
                         imageTrans = self.operator.perspectiveTransform(w, h, thresh, matrix)
                         imageTrans = cv2.resize(imageTrans, (70, 125))
 
-                        # cv2.imshow("nice" + str(i), imageTrans)
-                        i += 1
-
                         # now give the image to see if it matches a prefinded standard for a symbol
                         mSymbol = self.matchCard2(imageTrans)
-
                         out = thresh.copy()
                         out = cv2.cvtColor(out,cv2.COLOR_GRAY2BGR)
 
-                        cv2.imshow(mSymbol.symbolName, imageTrans)
+                        #cv2.imshow(mSymbol.symbolName, imageTrans)
 
-                        font = cv2.FONT_HERSHEY_SIMPLEX
-                        cv2.putText(out, mSymbol.symbolName, (0, 20), font, 0.5, (0, 255, 0), 2, cv2.LINE_AA)
+                        cv2.putText(out, mSymbol.symbolName, (0, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2, cv2.LINE_AA)
                         self.MASK = out
 
                         results.append(mSymbol)
-                        cv2.drawContours(img, contour, -1, (0, 255, 0), 1)
-                        cv2.rectangle(img, p1, p3, (255, 0, 0), 2)
+                        cv2.drawContours(image, contour, -1, (0, 255, 0), 1)
+                        cv2.rectangle(image, p1, p3, (255, 0, 0), 2)
 
-            cv2.imshow("cornor profile contours and boundingRects", img)
             # sorts the list of symbol results from smallest differense value to greatest
+            #cv2.imshow("cornor profile contours and boundingRects", image)
             sortedList = sorted(results, key=attrgetter('bestMatchDiff'))
-
 
             # takes the best two matches and saves them in a new list. These should be the rank and the suit for the card
             if len(sortedList) >= 2:
@@ -117,7 +102,6 @@ class CardValidator:
                 return bestTwoMatches[0].symbolName, "no match", self.MASK
             if len(bestTwoMatches) == 0:
                 return "no match", "no match", self.MASK
-        # Takes threshholded image over contour in card cornor
         else:
             return "empty", "empty", self.MASK
 
