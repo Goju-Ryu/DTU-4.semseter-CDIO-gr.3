@@ -6,7 +6,6 @@ import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class DrawStack extends StackBase {
@@ -39,6 +38,9 @@ public class DrawStack extends StackBase {
         var errors = canMoveFromMsg(range);
         if (!errors.isEmpty())
             throw new IllegalMoveException(errors);
+        if (range != 0){
+            throw new IllegalMoveException(errors);
+        }
 
         var returnable = List.of( stack.get(drawIndex) );
         stack.remove(drawIndex--); //remove the card and lower index to point to the new card that can be drawn

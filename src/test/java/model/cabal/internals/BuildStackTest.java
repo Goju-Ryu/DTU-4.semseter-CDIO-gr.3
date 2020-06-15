@@ -62,6 +62,8 @@ class BuildStackTest {
             for (int i = 0; i < 5; i++) {
                 assertEquals(subset.getCard(i), checkStack1.getCard(i));
             }
+        }else {
+            fail();
         }
     }
 
