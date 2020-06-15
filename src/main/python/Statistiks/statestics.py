@@ -53,3 +53,4 @@ class statistics:
 
             print("card " + str(k) + "  : " + cards[k].rank + " " + cards[k].suit)
             k += 1
+        return cards

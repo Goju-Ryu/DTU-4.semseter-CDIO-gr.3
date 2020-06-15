@@ -53,16 +53,17 @@ class KabaleRecogniser:
             isolator = Isolator(False,False,True,False)
             self.cards, succes = isolator.isolateCards(img, Settings)
 
-            # looping throuch all cards found in the isolater.
-            self.recogniseCards()
+            if succes :
+                # looping throuch all cards found in the isolater.
+                self.recogniseCards()
 
-            #this is a way of closing the loop.
-            # where timeDiff overcedes the time limit
-            # then end the loop.
-            timeNow = TIME.time()
-            timeDiff = timeNow - timeStart
-            if ( timeDiff ) > 300:
-                break
+                #this is a way of closing the loop.
+                # where timeDiff overcedes the time limit
+                # then end the loop.
+                timeNow = TIME.time()
+                timeDiff = timeNow - timeStart
+                if ( timeDiff ) > 300:
+                    break
 
             cardImageStacked = Operator.stackImages(self.cardImagesStack[0], self.cardImagesStack)
             cv2.imshow("cardStacked", cardImageStacked)
