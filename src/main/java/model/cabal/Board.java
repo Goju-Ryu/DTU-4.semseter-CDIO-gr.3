@@ -30,33 +30,44 @@ public final class Board implements I_BoardModel {
 
     private I_SolitaireStacks[] piles;
 
-    private InputDTO accessInput = new InputDTO();
+    public Board(Map<String, I_CardModel> topCards) {
+        this(
+                topCards.get(TURNPILE.name()),
+                topCards.get(BUILDSTACK1.name()), topCards.get(BUILDSTACK2.name()),
+                topCards.get(BUILDSTACK3.name()), topCards.get(BUILDSTACK4.name()),
+                topCards.get(BUILDSTACK5.name()), topCards.get(BUILDSTACK6.name()),
+                topCards.get(BUILDSTACK7.name())
+        );
+    }
 
-    public Board() { //TODO board should take imgData to initialize self
+
+    //can start here
+    public Board(I_CardModel drawStack, I_CardModel buildstack1, I_CardModel buildstack2,
+                 I_CardModel buildstack3, I_CardModel buildstack4, I_CardModel buildstack5,
+                 I_CardModel buildstack6, I_CardModel buildstack7) { //TODO board should take imgData to initialize self
         change = new PropertyChangeSupport(this);
         piles = new I_SolitaireStacks[values().length];
 
-        String usrInput = accessInput.getUsrInput();
-        System.out.println(usrInput);
         for (E_PileID id : E_PileID.values()) {
             if (id == TURNPILE) { //initializes with 24 cards face down
                 var stack = new DrawStack();
-                for (int j = 0; j < 24; j++) {
+                for (int j = 0; j < 23; j++) {
                     stack.add(new Card());
                 }
+                stack.add(drawStack);
                 piles[id.ordinal()] = stack;
             }
             else if (id.isBuildStack()) {
                 var stack = new BuildStack();
 
                 switch (id){ // notice no break. a card enters and ads 1 card for every case beneath it
-                    case BUILDSTACK7: stack.add(new Card());
-                    case BUILDSTACK6: stack.add(new Card());
-                    case BUILDSTACK5: stack.add(new Card());
-                    case BUILDSTACK4: stack.add(new Card());
-                    case BUILDSTACK3: stack.add(new Card());
-                    case BUILDSTACK2: stack.add(new Card());
-                    case BUILDSTACK1: stack.add(new Card()); break;
+                    case BUILDSTACK7: stack.add(buildstack1);
+                    case BUILDSTACK6: stack.add(buildstack2);
+                    case BUILDSTACK5: stack.add(buildstack3);
+                    case BUILDSTACK4: stack.add(buildstack4);
+                    case BUILDSTACK3: stack.add(buildstack5);
+                    case BUILDSTACK2: stack.add(buildstack6);
+                    case BUILDSTACK1: stack.add(buildstack7); break;
                     default:
                         throw new RuntimeException("An unknown E_Pile_ID with isBuildStack=true was encountered: " + id);
                 }
@@ -99,6 +110,9 @@ public final class Board implements I_BoardModel {
         return piles[pile.ordinal()];
     }
 
+    public I_SolitaireStacks[] getPiles(){
+        return piles;
+    };
 
     /**
      * checks if state is equal to physical board
@@ -147,6 +161,7 @@ public final class Board implements I_BoardModel {
     @Override
     public I_CardModel turnCard(Map<String, I_CardModel> imgData) {
         var turnPile = (DrawStack) get(TURNPILE);
+        var oldVal = List.copyOf(turnPile);
 
         if (turnPile.isEmpty())
                 throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
@@ -161,6 +176,8 @@ public final class Board implements I_BoardModel {
                 throw makeStateException(TURNPILE, imgCard, returnable, "no info");
         }
 
+        //notify Listeners of change
+        change.firePropertyChange(makePropertyChangeEvent(TURNPILE, oldVal));
         return returnable;
     }
 

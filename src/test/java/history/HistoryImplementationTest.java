@@ -28,7 +28,7 @@ public class HistoryImplementationTest {
      */
     @Test
     void propertyEventCommunication(){
-        I_BoardModel board = new Board();
+        I_BoardModel board = new Board(getImgData());
         GameHistory hist = new GameHistory();
 
         board.addPropertyChangeListener(hist);
@@ -46,7 +46,6 @@ public class HistoryImplementationTest {
      * @return a map representing imgData as in the actual system
      */
     private Map<String, I_CardModel> getImgData(I_BoardModel board) {
-
         return Stream.of(E_PileID.values())
             .map( // transforms elements of the stream to mapEntries
                     pile -> {
@@ -63,6 +62,16 @@ public class HistoryImplementationTest {
                     }
             )
             .collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)); // converts result to a map
+    }
+
+    /**
+     * Artificially makes an imageData that contains a random set of face up cards.
+     * @return a map representing imgData as in the actual system
+     */
+    private Map<String, I_CardModel> getImgData() {
+        return Stream.of(E_PileID.values())
+                .map(pile -> new SimpleEntry<>(pile.name(), (I_CardModel) new Card()))
+                .collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue));
     }
 
     /**
