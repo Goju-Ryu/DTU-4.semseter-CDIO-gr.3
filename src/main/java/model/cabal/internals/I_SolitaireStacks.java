@@ -57,7 +57,10 @@ public interface I_SolitaireStacks extends Collection<I_CardModel> {
 
 
     /**
-     * Check if the top card can be moved away from this stack
+     * Check if the card stack can be moved away from this stack
+     *
+     * - If you have a facedown card in the stack at the range because it is a build stack then we cant move the
+     *   card.
      *
      * @return true if the card can be moved and false if it can't.
      */

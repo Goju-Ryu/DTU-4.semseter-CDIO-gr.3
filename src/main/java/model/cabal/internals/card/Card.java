@@ -1,7 +1,5 @@
 package model.cabal.internals.card;
 
-import java.util.Collection;
-
 /**
  * This is a model of a playing card.
  */
@@ -80,7 +78,6 @@ public class Card implements I_CardModel  {
     }
 
     public boolean equals(I_CardModel card) {
-        System.out.println("Card.equals has been called");
         return this.rank.equals(card.getRank()) && this.suit.equals(card.getSuit()) && this.isFacedUp() == card.isFacedUp();
     }
 
