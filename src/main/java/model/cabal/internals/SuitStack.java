@@ -29,6 +29,8 @@ public class SuitStack extends StackBase {
 
     @Override
     public boolean canMoveFrom(int range) {
+
+        // If the DrawStack is not empty and the range is 1, then we can move a card from the drawstack.
         if (!this.stack.isEmpty() && range == 1){
             return true;
         }

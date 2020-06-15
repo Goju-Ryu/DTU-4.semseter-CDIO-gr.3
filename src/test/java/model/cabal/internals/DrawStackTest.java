@@ -20,6 +20,9 @@ class DrawStackTest {
 
     @Test
     void canMoveTo() {
+        DrawStack drawStack = new DrawStack();
+
+
     }
 
     @Test

@@ -25,29 +25,23 @@ public class BuildStack extends StackBase {
         int toIndex = stack.size();
         int frIndex = toIndex - range;
 
-//        int toIndex = stack.size();
-//        int frIndex = toIndex - range;
-
-        //List<I_CardModel> sublist = stack.subList(toIndex,frIndex);
         List<I_CardModel> sublist = stack.subList(frIndex, toIndex);
 
         this.stack = stack.subList(0,frIndex);
-//        this.stack = stack.subList(frIndex, toIndex);
         return new BuildStack(sublist);
     }
 
     @Override
     public boolean canMoveFrom(int range) {
-        int top = stack.size() -1;
-        if( top - (range-1) <0 ){
+        int top = stack.size() - 1;
+        if ( top - (range - 1) < 0 ){
             return false;
         }
-        return  stack.get(top - (range-1)).isFacedUp();
+        return  stack.get(top - (range - 1)).isFacedUp();
     }
 
     @Override
     public boolean canMoveTo(@Nonnull Collection<I_CardModel> cards) {
-        // TODO shouldn't this method check some of these for all cards it gets?
 
         I_CardModel card = null; // Getting the last card "the top card"
         for(I_CardModel element: cards){
@@ -55,11 +49,12 @@ public class BuildStack extends StackBase {
         }
 
         assert (card != null);
-        if(!(stack.get(0).isFacedUp() && card.isFacedUp())){
+        if(!(this.stack.get(0).isFacedUp() && card.isFacedUp())){
             return false;
         }
+
         //color matching
-        E_CardSuit mySuit = stack.get(0).getSuit();
+        E_CardSuit mySuit = this.stack.get(0).getSuit();
         E_CardSuit otSuit = card.getSuit();
 
         // a card cannot move to a card of the same color.
@@ -69,10 +64,10 @@ public class BuildStack extends StackBase {
         }
 
         //number matching
-        int myRank = stack.get(0).getRank();
+        int myRank = this.stack.get(0).getRank();
         int otRank = card.getRank();
 
-        // ot rank must be equals to one higher than my rank. otherwise it is illigal.
+        // ot rank must be equals to one higher than my rank. otherwise it is illegal.
         if(otRank - myRank != 1)
             return false;
 
