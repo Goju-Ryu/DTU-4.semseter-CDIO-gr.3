@@ -7,6 +7,7 @@ import model.cabal.internals.card.I_CardModel;
 import java.beans.PropertyChangeEvent;
 import java.util.*;
 import java.util.function.BiPredicate;
+import java.util.logging.Logger;
 
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
@@ -49,17 +50,21 @@ public class GameHistory implements I_GameHistory {
      */
     protected List<PropertyChangeEvent> eventBatch;
 
+    protected Logger log ;
+
     public GameHistory() {
         history = new LinkedList<>();
         iterator = history.iterator();
         currentState = new State();
         eventBatch = new ArrayList<>();
+        log = Logger.getLogger("History");
     }
 
     public GameHistory(I_BoardModel board) {
         history = new LinkedList<>();
         iterator = history.iterator();
         eventBatch = new ArrayList<>();
+        log = Logger.getLogger("History");
 
         Map<E_PileID, List<I_CardModel>> boardAsMap = new EnumMap<>(E_PileID.class);
         for (E_PileID pile : E_PileID.values()) {
@@ -99,10 +104,23 @@ public class GameHistory implements I_GameHistory {
      */
     @Override
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-        if (!matchesPreviousEvents(propertyChangeEvent))
-             proccessBatch();
+        try {
+            E_PileID.valueOf(propertyChangeEvent.getPropertyName());
+            if (!matchesPreviousEvents(propertyChangeEvent))
+                processBatch();
 
-        eventBatch.add(propertyChangeEvent);
+            eventBatch.add(propertyChangeEvent);
+        } catch (IllegalArgumentException e) {
+            log.warning(
+                    "Unknown source. \""
+                    + propertyChangeEvent.getPropertyName() +
+                    "\" does not correspond to any known source from E_PileID."
+            );
+        }
+
+
+
+
     }
 
 
@@ -139,7 +157,7 @@ public class GameHistory implements I_GameHistory {
         return true;//TODO Implement
     }
 
-    private void proccessBatch() {
+    private void processBatch() {
         //TODO imlement
     }
 
@@ -148,6 +166,7 @@ public class GameHistory implements I_GameHistory {
      */
     private void addGameState() {
         history.add(0, Map.copyOf(currentState));
+        log.info("State added to history:\n\t" + currentState);
     }
 
 }

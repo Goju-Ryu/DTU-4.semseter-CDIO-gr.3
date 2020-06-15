@@ -252,10 +252,10 @@ public final class Board implements I_BoardModel {
     private PropertyChangeEvent makePropertyChangeEvent(E_PileID pile, Collection<I_CardModel> oldVal) {
         int pileIndex = pile.ordinal();
         return new PropertyChangeEvent(
-                piles[pileIndex],
-                pile.name(),
-                oldVal,
-                Collections.unmodifiableCollection(piles[pileIndex])
+                piles[pileIndex],       // source
+                pile.name(),            // property name
+                oldVal,                 // old value
+                Collections.unmodifiableCollection(piles[pileIndex]) // new value
         );
 
     }
