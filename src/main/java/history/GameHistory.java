@@ -1,5 +1,7 @@
 package history;
 
+import static model.cabal.E_PileID.*;
+
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.card.I_CardModel;
@@ -8,6 +10,9 @@ import java.beans.PropertyChangeEvent;
 import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.AbstractMap.SimpleEntry;
 
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
@@ -50,30 +55,29 @@ public class GameHistory implements I_GameHistory {
      */
     protected List<PropertyChangeEvent> eventBatch;
 
-    protected Logger log ;
+    private Logger log ;
+    private int numNonDrawEvents;
 
     public GameHistory() {
-        history = new LinkedList<>();
-        iterator = history.iterator();
-        currentState = new State();
-        eventBatch = new ArrayList<>();
-        log = Logger.getLogger("History");
+        this(Map.of());
     }
 
     public GameHistory(I_BoardModel board) {
+        this(
+                Stream.of(E_PileID.values())
+                        .filter(pile -> board.getPile(pile) == null)
+                        .map(pile -> new SimpleEntry<>(pile, board.getPile(pile)))
+                        .collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue))
+        );
+    }
+
+    public GameHistory(Map<E_PileID, List<I_CardModel>> boardAsMap) {
         history = new LinkedList<>();
         iterator = history.iterator();
         eventBatch = new ArrayList<>();
-        log = Logger.getLogger("History");
-
-        Map<E_PileID, List<I_CardModel>> boardAsMap = new EnumMap<>(E_PileID.class);
-        for (E_PileID pile : E_PileID.values()) {
-            boardAsMap.put(pile, board.getPile(pile));
-        }
-
+        log = Logger.getLogger(getClass().getName());
         currentState = new State(boardAsMap);
-
-
+        numNonDrawEvents = 0;
     }
 
     //------------------  I_GameHistory Functions  ------------------------------------------
@@ -103,23 +107,13 @@ public class GameHistory implements I_GameHistory {
      * @return
      */
     @Override
-    public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-        try {
-            E_PileID.valueOf(propertyChangeEvent.getPropertyName());
-            if (!matchesPreviousEvents(propertyChangeEvent))
-                processBatch();
+    public void propertyChange(PropertyChangeEvent event) {
 
-            eventBatch.add(propertyChangeEvent);
-        } catch (IllegalArgumentException e) {
-            log.warning(
-                    "Unknown source. \""
-                    + propertyChangeEvent.getPropertyName() +
-                    "\" does not correspond to any known source from E_PileID."
-            );
-        }
+        if (!matchesPreviousEvents(event))
+            processBatch();
 
-
-
+        log.info("Added event to eventBatch:\n\t" + event);
+        eventBatch.add(event);
 
     }
 
@@ -154,11 +148,22 @@ public class GameHistory implements I_GameHistory {
      * @return true if the two events are part of the same move operation, false otherwise.
      */
     private boolean matchesPreviousEvents(PropertyChangeEvent event) {
-        return true;//TODO Implement
+        E_PileID pileID = getEventSourcePile(event);
+        if (pileID.equals(TURNPILE)) return true;
+
+        numNonDrawEvents++;
+        return numNonDrawEvents < 2;
     }
 
     private void processBatch() {
+        log.info(
+                "Began processing batch of " +
+                eventBatch.size() + " events of which " +
+                numNonDrawEvents + " are not from " + TURNPILE
+        );
         //TODO imlement
+
+        numNonDrawEvents = 0;
     }
 
     /**
@@ -169,4 +174,36 @@ public class GameHistory implements I_GameHistory {
         log.info("State added to history:\n\t" + currentState);
     }
 
+    /**
+     * A safe method for extracting the source pile from an event
+     * @param event an event to extract the source pile from.
+     * @return the pile the propertyChangeEvent reports a change in or null if not recognized
+     */
+    private E_PileID getEventSourcePile(PropertyChangeEvent event) {
+        return getEventSourcePile(event, false);
+    }
+
+    /**
+     * A safe method for extracting the source pile from an event
+     * @param event an event to extract the source pile from.
+     * @param throwOnError if false no {@link IllegalArgumentException} will ever be thrown
+     *                     even if the source name can't be converted to a pile.
+     * @return the pile the propertyChangeEvent reports a change in or null if no match
+     * is found and {@code throwOnError = false}.
+     */
+    private E_PileID getEventSourcePile(PropertyChangeEvent event, boolean throwOnError) {
+        try {
+            return E_PileID.valueOf(event.getPropertyName());
+        } catch (IllegalArgumentException e) {
+            if (throwOnError) {
+                log.warning(
+                        "Unknown source. \""
+                        + event.getPropertyName() +
+                        "\" does not correspond to any known source from E_PileID."
+                );
+                return null;
+            } else
+                throw e;
+        }
+    }
 }
