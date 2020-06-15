@@ -15,6 +15,13 @@ class statistics:
 
     def statGetCardValue(self, i ):
         stat = self.stat[i]
+        Ranks = stat[0:4]
+        Suits = stat[4:]
+        suit = max(Suits, key=lambda x: x[1])
+        rank = max(Ranks, key=lambda x: x[1])
+
+        return rank,suit
+
 
     def statisticInput(self, a, b,i):
         # for counting occurences of card symbols
