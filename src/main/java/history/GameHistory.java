@@ -1,6 +1,7 @@
 package history;
 
 import model.cabal.E_PileID;
+import model.cabal.I_BoardModel;
 import model.cabal.internals.card.I_CardModel;
 
 import java.beans.PropertyChangeEvent;
@@ -52,19 +53,25 @@ public class GameHistory implements I_GameHistory {
         history = new LinkedList<>();
         iterator = history.iterator();
         currentState = new State();
+        eventBatch = new ArrayList<>();
     }
 
+    public GameHistory(I_BoardModel board) {
+        history = new LinkedList<>();
+        iterator = history.iterator();
+        eventBatch = new ArrayList<>();
+
+        Map<E_PileID, List<I_CardModel>> boardAsMap = new EnumMap<>(E_PileID.class);
+        for (E_PileID pile : E_PileID.values()) {
+            boardAsMap.put(pile, board.getPile(pile));
+        }
+
+        currentState = new State(boardAsMap);
+
+
+    }
 
     //------------------  I_GameHistory Functions  ------------------------------------------
-
-    /**
-     * {@inheritDoc}
-     * @return
-     */
-    @Override
-    public boolean isRepeatState() {
-        return false;
-    }
 
     /**
      * {@inheritDoc}
@@ -75,14 +82,7 @@ public class GameHistory implements I_GameHistory {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     * @return
-     */
-    @Override
-    public Collection<I_GameState> getRepeatStates() {
-        return null;
-    }
+
 
     /**
      * {@inheritDoc}
@@ -99,6 +99,10 @@ public class GameHistory implements I_GameHistory {
      */
     @Override
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+        if (!matchesPreviousEvents(propertyChangeEvent))
+             proccessBatch();
+
+        eventBatch.add(propertyChangeEvent);
     }
 
 
@@ -132,7 +136,11 @@ public class GameHistory implements I_GameHistory {
      * @return true if the two events are part of the same move operation, false otherwise.
      */
     private boolean matchesPreviousEvents(PropertyChangeEvent event) {
-        return false;//TODO Implement
+        return true;//TODO Implement
+    }
+
+    private void proccessBatch() {
+        //TODO imlement
     }
 
     /**
@@ -141,6 +149,5 @@ public class GameHistory implements I_GameHistory {
     private void addGameState() {
         history.add(0, Map.copyOf(currentState));
     }
-
 
 }
