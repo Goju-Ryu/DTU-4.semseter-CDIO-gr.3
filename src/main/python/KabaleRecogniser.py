@@ -117,6 +117,7 @@ class KabaleRecogniser:
                 rank, suit = self.statestics.statGetCardValue(i)
 
                 cv2.putText(cardImage,str( rank ) , (0, 70), self.font, 0.5, (0, 0, 255), 2, cv2.LINE_AA)
-                cv2.putText(cardImage, str(suit[0]), (25, 70), self.font, 0.5, (0, 0, 255), 2, cv2.LINE_AA)
+                cv2.putText(cardImage, str(suit[0]), (25, 70), self.font, 0.5, (255, 0, 0), 2, cv2.LINE_AA)
                 self.cardImagesStack.append(cardImage)
+
             i += 1
