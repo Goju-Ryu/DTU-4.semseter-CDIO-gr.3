@@ -20,6 +20,7 @@ class CardValidator:
     def __init__(self):
         self.compareSymbols = self.loadCompareSymbols()
         self.operator = imageOperator()
+        self.MASK = None
         pass
 
     def setCardRankAndSuit(self, card):
@@ -96,6 +97,8 @@ class CardValidator:
             matchNames = []
             for match in bestTwoMatches:
                 matchNames.append(match.symbolName)
+                if match.symbolName == "10_2nd":
+                    match.symbolName = "10"
 
             if len(bestTwoMatches) == 2:
                 return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName, self.MASK , True
@@ -117,7 +120,9 @@ class CardValidator:
         for symbol in symbols:
             diff = int(np.sum(cv2.absdiff(image, symbol.img)) / 255)
 
+            # if diff < bestMatchDiff and diff < 2700:
             if diff < bestMatchDiff and diff < 2700:
+
                 bestMatchDiff = diff
                 symbolName = symbol.name
 
@@ -131,7 +136,7 @@ class CardValidator:
         compareSymbols = []
 
         for symbol in ["Hearts", "Spades", "Clubs", "Diamonds", "1", "2", "3", "4", "5", "6", "7",
-                       "8", "9", "10", "11", "12", "13"]:
+                       "8", "9", "10", "10_2nd", "11", "12", "13"]:
             compareSymbol = self.Symbol()
             filename = symbol + ".png"
             compareSymbol.name = symbol
