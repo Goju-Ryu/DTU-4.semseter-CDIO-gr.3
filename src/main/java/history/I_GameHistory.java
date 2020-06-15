@@ -22,7 +22,9 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
      * Checks if the current state has been encountered before
      * @return true if the current game state is equal to an earlier encountered state
      */
-    boolean isRepeatState();
+    default boolean isRepeatState() {
+        return isRepeatState(List.of(IDENTITY_EQUAL, PILE_SIZE_EQUAL, PILE_CONTENT_EQUAL));
+    }
 
     /**
      * Checks if the current state has been encountered before using a list of predicates to compare states with
@@ -37,7 +39,9 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
      * being returned as a collection.
      * @return true if the current game state is equal to an earlier encountered state
      */
-    Collection<I_GameState> getRepeatStates();
+    default Collection<I_GameState> getRepeatStates() {
+        return getRepeatStates(List.of(IDENTITY_EQUAL, PILE_SIZE_EQUAL, PILE_CONTENT_EQUAL));
+    }
 
     /**
      * Checks if the current state has been encountered before using a list of predicates to compare states with.
