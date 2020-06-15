@@ -98,13 +98,10 @@ class CardValidator:
                 matchNames.append(match.symbolName)
 
             if len(bestTwoMatches) == 2:
-                return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName, self.MASK, True
+                return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName, self.MASK
             if len(bestTwoMatches) == 1:
-                return bestTwoMatches[0].symbolName, "no match", self.MASK , True
-            if len(bestTwoMatches) == 0:
-                return "no match", "no match", self.MASK , False
-        # Takes threshholded image over contour in card cornor
-        #     return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName, self.MASK
+                return bestTwoMatches[0].symbolName, "no match", self.MASK
+            return "no match", "no match", self.MASK
 
         else:
             return "empty", "empty", self.MASK
