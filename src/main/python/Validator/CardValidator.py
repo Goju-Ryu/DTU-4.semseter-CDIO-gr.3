@@ -103,7 +103,7 @@ class CardValidator:
             if len(bestTwoMatches) == 2:
                 return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName, self.MASK , True
             if len(bestTwoMatches) == 1:
-                return bestTwoMatches[0].symbolName, "no match", self.MASK , True
+                return bestTwoMatches[0].symbolName, "no match", self.MASK, True
             return "no match", "no match", self.MASK, False
 
         else:
@@ -121,7 +121,7 @@ class CardValidator:
             diff = int(np.sum(cv2.absdiff(image, symbol.img)) / 255)
 
             # if diff < bestMatchDiff and diff < 2700:
-            if diff < bestMatchDiff and diff < 2700:
+            if diff < bestMatchDiff and diff < 2000:
 
                 bestMatchDiff = diff
                 symbolName = symbol.name

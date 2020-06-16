@@ -65,9 +65,9 @@ class KabaleRecogniser:
                 if ( timeDiff ) > 300:
                     break
 
-
-            cardImageStacked = Operator.stackImages(self.cardImagesStack[0], self.cardImagesStack)
-            cv2.imshow("cardStacked", cardImageStacked)
+            if len(self.cardImagesStack) > 1:
+                cardImageStacked = Operator.stackImages(self.cardImagesStack[0], self.cardImagesStack)
+                cv2.imshow("cardStacked", cardImageStacked)
 
         # when the loop is done it is necesary to close all windows if any are open, otherwise the programs becomes
         # unresponsive, this is not necesary in the final version, but when testing it becomes an issue.
