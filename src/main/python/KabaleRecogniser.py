@@ -50,7 +50,7 @@ class KabaleRecogniser:
             # isolater, isolates the board, and all potential cards on this board, it
             # uses the HSV settings passed in the settings object for its thresholding.
             # the boolean paramters are : showBoard, ShowBoardMask, ShowCards, showCardsMask;
-            isolator = Isolator(False,False,False,False)
+            isolator = Isolator(False,True,False,False)
             self.cards, succes = isolator.isolateCards(img, Settings)
 
             if succes :
@@ -64,6 +64,7 @@ class KabaleRecogniser:
                 timeDiff = timeNow - timeStart
                 if ( timeDiff ) > 300:
                     break
+
 
             cardImageStacked = Operator.stackImages(self.cardImagesStack[0], self.cardImagesStack)
             cv2.imshow("cardStacked", cardImageStacked)
