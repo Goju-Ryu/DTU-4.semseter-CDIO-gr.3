@@ -168,24 +168,47 @@ class BuildStackTest {
         }
 
         if (incomingStack.canMoveFrom(3)){
+            System.out.println("first passed");
             if (incomingStack1.canMoveFrom(3)){
+                System.out.println("second passed");
                 if (incomingStack2.canMoveFrom(3)){
+                    System.out.println("third passed");
                     if (incomingStack3.canMoveFrom(3)){
+                        System.out.println("fourth passed");
                         if (incomingStack4.canMoveFrom(3)){
-                            if (incomingStack5.canMoveFrom(0)){
-
-                                // incoming build stack to another build stack
+                            System.out.println("fifth passed");
+                            if (!incomingStack5.canMoveFrom()){
+                                System.out.println("sixth passed");
                                 assertTrue(receivingStack.canMoveTo(incomingStack));
+                                System.out.println("passed");
                                 assertFalse(receivingStack.canMoveTo(incomingStack1));
+                                System.out.println("passed");
                                 assertFalse(receivingStack.canMoveTo(incomingStack2));
+                                System.out.println("passed");
                                 assertFalse(receivingStack.canMoveTo(incomingStack3));
+                                System.out.println("passed");
                                 assertFalse(receivingStack.canMoveTo(incomingStack4));
+                                System.out.println("passed");
                                 assertFalse(receivingStack.canMoveTo(incomingStack5));
+                                System.out.println("passed");
+
+                            }else {
+                                fail();
                             }
+                        }else {
+                            fail();
                         }
+                    }else {
+                        fail();
                     }
+                }else {
+                    fail();
                 }
+            }else {
+                fail();
             }
+        }else {
+            fail();
         }
     }
 }

@@ -66,10 +66,16 @@ class DrawStackTest {
 
         // you cannot move a card from anywhere to the draw stack
         if (buildStack.canMoveFrom()){
+            System.out.println("In the first if statement");
             if (suitStack.canMoveFrom()){
+                System.out.println("In the if statements before Assertions");
+
+                //Neither build stacks nor suit stacks should be able to move to draw stack
                 assertFalse(drawStack.canMoveTo(buildStack));
                 assertFalse(drawStack.canMoveTo(suitStack));
             }
+        }else {
+            fail();
         }
     }
 
