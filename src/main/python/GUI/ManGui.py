@@ -2,10 +2,10 @@ from AbstractUi import AbstractUI
 from tkinter import *
 import json as json
 #====================================
-# ManGUI or Manual GUI - requres you to manully enter the input data
+# ManGUI or Manual GUI - requires you to manually enter the input data
 #------------------------------------
 # This file containing a GUI is
-# intented to work as to test sercer communication
+# intended to work as to test server communication
 # as well as a back-up should open CV not work
 #====================================.
 
@@ -20,16 +20,16 @@ def stringToJson(inputStr):
     elif(su == "c"):
         suit = "Clubs"
     elif(su == "d"):
-        suit = "Dimonds"
+        suit = "Diamonds"
     elif(su == "s"):
         suit = "Spades"
     returnStr = json.dumps(
-        {"suit" : suit, "rank" : nr}
+        {"suit": suit, "rank": nr}
     )
     return returnStr
 
 class ManGUI(AbstractUI):
-    input =""
+    input = ""
     def updateInp(self,newString):
         self.input = newString
 
@@ -72,7 +72,7 @@ class ManGUI(AbstractUI):
         myLabel4 = Label(root, text="CDIO DTU GR. 3")
         myLabel5 = Label(root, text="h1 = hearts 1")
         myLabel6 = Label(root, text="c2 = clubs 2")
-        myLabel7 = Label(root, text="d1 = dimonds 1")
+        myLabel7 = Label(root, text="d1 = diamonds 1")
         myLabel8 = Label(root, text="s5 = spades 5")
 
 
@@ -96,18 +96,18 @@ class ManGUI(AbstractUI):
 
             inp = json.dumps(
                 {
-                    "drawPile": [stringToJson(ePile.get())],
-                    "suitStack1": [stringToJson(eSuit1.get())],
-                    "suitStack2": [stringToJson(eSuit2.get())],
-                    "suitStack3": [stringToJson(eSuit3.get())],
-                    "suitStack4": [stringToJson(eSuit4.get())],
-                    "column1": [stringToJson(ecol1.get())],
-                    "column2": [stringToJson(ecol2.get())],
-                    "column3": [stringToJson(ecol3.get())],
-                    "column4": [stringToJson(ecol4.get())],
-                    "column5": [stringToJson(ecol5.get())],
-                    "column6": [stringToJson(ecol6.get())],
-                    "column7": [stringToJson(ecol7.get())]
+                    "drawPile": stringToJson(ePile.get()),
+                    "SuitStackHearts": stringToJson(eSuit1.get()),
+                    "SuitStackClubs": stringToJson(eSuit2.get()),
+                    "SuitStackDiamonds": stringToJson(eSuit3.get()),
+                    "SuitStackSpades": stringToJson(eSuit4.get()),
+                    "Column1": stringToJson(ecol1.get()),
+                    "Column2": stringToJson(ecol2.get()),
+                    "Column3": stringToJson(ecol3.get()),
+                    "Column4": stringToJson(ecol4.get()),
+                    "Column5": stringToJson(ecol5.get()),
+                    "Column6": stringToJson(ecol6.get()),
+                    "Column7": stringToJson(ecol7.get())
                 }
             )
             self.updateInp(inp)
@@ -122,7 +122,18 @@ class ManGUI(AbstractUI):
         # should be comented out when not developing
         def myMove():
             inp = json.dumps(
-                {"drawPile": ["{\"suit\": \"Clubs\", \"rank\": \"2\"}"], "suitStack1": ["{\"suit\": \"\", \"rank\": \"\"}"], "suitStack2": ["{\"suit\": \"\", \"rank\": \"\"}"], "suitStack3": ["{\"suit\": \"\", \"rank\": \"\"}"], "suitStack4": ["{\"suit\": \"\", \"rank\": \"\"}"], "column1": ["{\"suit\": \"Hearts\", \"rank\": \"3\"}"], "column2": ["{\"suit\": \"Hearts\", \"rank\": \"4\"}"], "column3": ["{\"suit\": \"Hearts\", \"rank\": \"5\"}"], "column4": ["{\"suit\": \"Hearts\", \"rank\": \"6\"}"], "column5": ["{\"suit\": \"Hearts\", \"rank\": \"7\"}"], "column6": ["{\"suit\": \"Hearts\", \"rank\": \"9\"}"], "column7": ["{\"suit\": \"Hearts\", \"rank\": \"10\"}"]}
+                {"drawPile": {"suit": "Clubs", "rank": "2"},
+                 "SuitStackHearts": {"suit": "", "rank": ""},
+                 "SuitStackClubs": {"suit": "", "rank": ""},
+                 "SuitStackDiamonds": {"suit": "", "rank": ""},
+                 "SuitStackSpades": {"suit": "", "rank": ""},
+                 "Column1": {"suit": "Hearts", "rank": "3"},
+                 "Column2": {"suit": "Hearts", "rank": "4"},
+                 "Column3": {"suit": "Hearts", "rank": "5"},
+                 "Column4": {"suit": "Hearts", "rank": "6"},
+                 "Column5": {"suit": "Hearts", "rank": "7"},
+                 "Column6": {"suit": "Hearts", "rank": "9"},
+                 "Column7": {"suit": "Hearts", "rank": "10"}}
             )
 
 

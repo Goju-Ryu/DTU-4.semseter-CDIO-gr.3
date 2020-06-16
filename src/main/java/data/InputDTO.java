@@ -96,7 +96,6 @@ public class InputDTO {
             //Translate the Suit value to our model of a car Suit
 //            E_CardSuit su = E_CardSuit.CLUBS;
             E_CardSuit su = null;
-            //Todo: right now i assigns clubs as the defult suit to assure it have a suit, make a suit that indicates an error have occured
             if(suit.equals("Hearts")){
                 su = E_CardSuit.HEARTS;
             }else if(suit.equals("Clubs")){
