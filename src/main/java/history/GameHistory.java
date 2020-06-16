@@ -81,7 +81,7 @@ public class GameHistory implements I_GameHistory {
      */
     @Override
     public boolean isRepeatState(List<BiPredicate<I_GameState, I_GameState>> predicates) {
-        return getRepeatStates(predicates).size() > 0;
+        return getRepeatStates(predicates).size() > 0; //TODO use the allMatch method instead
     }
 
 
@@ -94,10 +94,11 @@ public class GameHistory implements I_GameHistory {
     public Collection<I_GameState> getRepeatStates(List<BiPredicate<I_GameState, I_GameState>> predicates) {
         var higherOrderPredicate = predicates.stream().reduce(BiPredicate::and);
 
-        var repeatStates = history.stream()
-                .filter(state -> higherOrderPredicate.orElseThrow().test(currentState, (I_GameState) state))
+        return history.stream()
+                .map(State::new)
+                .filter( (I_GameState state) -> higherOrderPredicate.orElseThrow().test(currentState, state))
+                .map(state -> (I_GameState) state)
                 .collect(Collectors.toList());
-        return Collections.EMPTY_LIST; //todo figure out the cast of this
     }
 
     /**

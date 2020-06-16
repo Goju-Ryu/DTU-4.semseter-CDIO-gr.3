@@ -5,11 +5,12 @@ import model.cabal.E_PileID;
 import model.cabal.internals.card.I_CardModel;
 
 import java.beans.PropertyChangeListener;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.AbstractMap.SimpleImmutableEntry;
 
 /**
  * This interface promises to keeps track of changes to the board during the game.
@@ -63,11 +64,28 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
     }
 
     private static boolean sizeEqual(final I_GameState state1, final I_GameState state2) {
+
+        Stream.of(new SimpleImmutableEntry<I_GameState, I_GameState>(state1, state2))
+                .filter(pair -> (pair.getKey() != null && pair.getValue() != null))
+                .map(pair ->
+                        new SimpleImmutableEntry<>(
+                                pair.getKey().values(),
+                                pair.getValue().values()
+                        ))
+                .filter(pair -> pair.getKey().size() == pair.getValue().size())
+                // TODO implement the remaining conditions
+                .toArray();  // this is to avoid errors while working
+
         return false;
+
     }
+
     private static boolean contentEqual(final I_GameState state1, final I_GameState state2) {
         return false;
     }
 
+    default <t extends I_GameState> Predicate<t> partiallyApplyPredicate(BiPredicate<t, t> biPred, t arg) {
+        return test -> biPred.test(arg, test);
+    }
     //todo might be a good idea to implement a method that checks for the moves that has been tried when in a given state
 }
