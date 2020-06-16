@@ -1,12 +1,13 @@
+import control.GameController;
+import control.I_GameController;
 import model.cabal.Board;
 import model.cabal.I_BoardModel;
 
 public class main {
     public static void main(String[] args) {
-//        nu.pattern.OpenCV.loadLibrary();
-//        System.out.println("hej");
-//        VideoCapture vid = new VideoCapture(0);
-        I_BoardModel c = new Board();
+        I_GameController Klondike = new GameController();
+        Klondike.startGame("ManGUI");
+
         System.out.println("Hello Main World!");
         //change
     }

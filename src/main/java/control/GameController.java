@@ -1,48 +1,34 @@
 package control;
 
-public class GameController {
+import data.InputDTO;
+import model.cabal.Board;
+import model.cabal.I_BoardModel;
+import model.cabal.internals.card.Card;
+import model.cabal.internals.card.E_CardSuit;
 
+import java.util.ArrayList;
+/**
+ * This class is for controlling an entire game,
+ * trough multiple states of the game
+ *
+ * the diffrence on this and Board controller, is that this acts in relation
+ * to multiple states of the game where as BoardController only does one.
+ * However this will use BoardControler when i needs to make a move on the board
+ */
 
+public class GameController implements I_GameController{
 
+    //Todo implement this so that it returns I_BoardModel here
+    public void startGame(String UiChoice){
+        I_BoardController boardCtrl = new BoardController();
+        I_BoardModel boardMod = null;
+        if(UiChoice =="simulation"){
+            //TODO: implement that it can iniate a simulated board here
+        }else{
+            boardMod = boardCtrl.MakeNewBoard(UiChoice);
+        }
+        boardCtrl.possibleMoves(boardMod);
 
-    //TODO Remove this
+    }
 
-//    /**
-//     * Check if a card can be moved to another card
-//     * @param card1 The card that is moved
-//     * @param card2 The card that is NOT moved
-//     *
-//     * the rules which a card must follow is always determined by the cards which is moved to
-//     *
-//     * @return True or False, depending on if the move is legal or not
-//     */
-//    public boolean legalMoveDONT(Card card1, Card card2){
-//        //Move card (not king) from column to column
-//        if (card1.getRank() == card2.getRank() - 1 && card1.getRank() != 13 &&
-//                ((( card1.getSuit() == E_CardSuit.DIAMONDS || card1.getSuit() == E_CardSuit.HEARTS ) &&
-//                ( card2.getSuit() == E_CardSuit.CLUBS || card2.getSuit() == E_CardSuit.SPADES )) ||
-//                (( card1.getSuit() == E_CardSuit.CLUBS || card1.getSuit() == E_CardSuit.SPADES ) &&
-//                        ( card2.getSuit() == E_CardSuit.DIAMONDS || card2.getSuit() == E_CardSuit.HEARTS))) &&
-//                card2.getStacktype().equals("column") ){
-//            return true;
-//
-//        //Move king TODO: What if a king should be moved from the acePile? (NOT likely), or to an empty stack
-//        }else if (card1.getRank() == 13 && (card1.getStacktype().equals("turnedPile") || card1.getStacktype().equals("column")) &&
-//                (card2.getRank() <= 13 || card2.getRank() >= 1) &&
-//                (card2.getSuit() == E_CardSuit.CLUBS ||
-//                        card2.getSuit() == E_CardSuit.DIAMONDS ||
-//                        card2.getSuit() == E_CardSuit.SPADES ||
-//                        card2.getSuit() == E_CardSuit.HEARTS) &&
-//                card2.getStacktype().equals("emptyColumn")){//King to empty stack
-//            return true;
-//
-//        //Move card from column to acePile
-//        }else if (card1.getRank() == card2.getRank() + 1 &&
-//                card1.getSuit().equals(card2.getSuit()) &&
-//                card2.getStacktype().equals("acePile") ){//Card to Ace stack
-//            return true;
-//
-//        }
-//        return false;
-//    }
 }

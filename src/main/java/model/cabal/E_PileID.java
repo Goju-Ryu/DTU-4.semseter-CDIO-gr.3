@@ -26,12 +26,12 @@ public enum E_PileID {
     private final boolean isBuildStack;
 
     //A description of the pile
-    private final String pileIDText;
+    private final String description;
 
     //Constructor (Needs to be private)
-    private E_PileID(boolean isBuildStack, String pileIDText) {
+    private E_PileID(boolean isBuildStack, String description) {
         this.isBuildStack = isBuildStack;
-        this.pileIDText = pileIDText;
+        this.description = description;
     }
 
 //---------------------------------Getters------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ public enum E_PileID {
         return isBuildStack;
     }
 
-    public String getPileIDText() {
-        return pileIDText;
+    public String getDescription() {
+        return description;
     }
 }

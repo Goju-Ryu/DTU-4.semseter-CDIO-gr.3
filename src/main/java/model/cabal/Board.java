@@ -1,19 +1,24 @@
 package model.cabal;
 
 import static model.cabal.E_PileID.*;
+
+import data.InputAccesPoint;
+import data.InputDTO;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import model.cabal.internals.BuildStack;
 import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.SuitStack;
+import model.cabal.internals.card.Card;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.rmi.UnexpectedException;
+import java.util.*;
 
 
 /**
@@ -24,18 +29,42 @@ public final class Board implements I_BoardModel {
     private PropertyChangeSupport change;
 
     private I_SolitaireStacks[] piles;
-
-    public Board() {
+    //can start here
+    public Board(Card drawStack, Card buildstack1, Card buildstack2,
+                 Card buildstack3, Card buildstack4, Card buildstack5,
+                 Card buildstack6, Card buildstack7) { //TODO board should take imgData to initialize self
         change = new PropertyChangeSupport(this);
         piles = new I_SolitaireStacks[values().length];
 
         for (E_PileID id : E_PileID.values()) {
-            if (id == TURNPILE)
-                piles[id.ordinal()] = new DrawStack();
-            else if (id.isBuildStack())
-                piles[id.ordinal()] = new BuildStack();
-            else if (id == HEARTSACEPILE || id == DIAMONDACEPILE || id == CLUBSACEPILE || id == SPADESACEPILE)
+            if (id == TURNPILE) { //initializes with 24 cards face down
+                var stack = new DrawStack();
+                for (int j = 0; j < 23; j++) {
+                    stack.add(new Card());
+                }
+                stack.add(drawStack);
+                piles[id.ordinal()] = stack;
+            }
+            else if (id.isBuildStack()) {
+                var stack = new BuildStack();
+
+                switch (id){ // notice no break. a card enters and ads 1 card for every case beneath it
+                    case BUILDSTACK7: stack.add(buildstack1);
+                    case BUILDSTACK6: stack.add(buildstack2);
+                    case BUILDSTACK5: stack.add(buildstack3);
+                    case BUILDSTACK4: stack.add(buildstack4);
+                    case BUILDSTACK3: stack.add(buildstack5);
+                    case BUILDSTACK2: stack.add(buildstack6);
+                    case BUILDSTACK1: stack.add(buildstack7); break;
+                    default:
+                        throw new RuntimeException("An unknown E_Pile_ID with isBuildStack=true was encountered: " + id);
+                }
+
+                piles[id.ordinal()] = stack;
+            }
+            else if (id == HEARTSACEPILE || id == DIAMONDACEPILE || id == CLUBSACEPILE || id == SPADESACEPILE) {
                 piles[id.ordinal()] = new SuitStack();
+            }
             else {
                 throw new RuntimeException("An unknown E_Pile_ID was encountered: " + id);
             }
@@ -69,18 +98,72 @@ public final class Board implements I_BoardModel {
         return piles[pile.ordinal()];
     }
 
+    public I_SolitaireStacks[] getPiles(){
+        return piles;
+    };
+
+    /**
+     * checks if state is equal to physical board
+     * @param imgData state to validate against
+     * @throws IllegalStateException if state is out of sync
+     */
+    private void validateState(Map<String, I_CardModel> imgData) {
+
+    }
+
+    /**
+     * Query the map for the relevant data and return it.
+     * @param imgData The map of data to check extract the data from
+     * @param key The pile to which the data should correspond
+     * @return The data the map contains about the given pile
+     */
+    private I_CardModel extractImgData(Map<String, I_CardModel> imgData, E_PileID key) {
+        if(imgData.containsKey(key.name()))
+            return imgData.get(key.name()); //This assumes a strict naming scheme and will return null if not found
+        else throw new NoSuchElementException("key \"" + key.name() + "\" not found in map: " + imgData);
+    }
+
+    /**
+     * Method for generating an IllegalStateException with an appropriate error message
+     * @param pos The pile where state is out of sync
+     * @param physCard The value of the physical card
+     * @param virtCard The card represented in the virtual representation of the board (this class)
+     * @param info Extra information that might be helpful
+     * @return An exception with a nicely formatted message
+     */
+    private IllegalStateException
+    makeStateException(E_PileID pos, I_CardModel physCard, I_CardModel virtCard, String info) {
+        return new IllegalStateException(
+                "The virtual board and the physical board is out of sync\n" +
+                "\tPosition:\t" + pos + "\n" +
+                "\tVirtual:\t" + virtCard + "\n" +
+                "\tPhysical:\t" + physCard + "\n" +
+                "\tMethod:\t" +  Thread.currentThread().getStackTrace()[2] + "\n" +
+                "\tInfo:\t" + info
+        );
+    }
+
 
 //---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
 
     @Override
-    public I_CardModel turnCard() { //TODO make this handle unknown cards
+    public I_CardModel turnCard(Map<String, I_CardModel> imgData) {
         var turnPile = (DrawStack) get(TURNPILE);
 
         if (turnPile.isEmpty())
                 throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
 
-        //TODO validate that this acts like drawing cards physically would
-        return turnPile.turnCard();
+        var returnable = turnPile.turnCard();
+
+        var imgCard = extractImgData(imgData, TURNPILE);
+        if ( !returnable.isFacedUp() ) {
+            returnable.reveal(imgCard.getSuit(), imgCard.getRank());
+        } else {
+            if ( !returnable.equals(imgCard) )
+                throw makeStateException(TURNPILE, imgCard, returnable, "no info");
+        }
+
+        return returnable;
     }
 
     @Override
@@ -93,7 +176,9 @@ public final class Board implements I_BoardModel {
 //----------  Move card methods  -----------------------------------------------------------------------------
 
     @Override
-    public void move(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException { //TODO make this handle unknown cards
+    public void move(E_PileID origin, int originPos, E_PileID destination, Map<String, I_CardModel> imgData)
+            throws IllegalMoveException {
+
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
@@ -113,6 +198,16 @@ public final class Board implements I_BoardModel {
 
         //change state
         to.addAll(from.popSubset(originPos));
+
+        //check that state is consistent with the physical board
+        var exposedCard = from.getCard(from.size() - 1);
+        var imgCard = extractImgData(imgData, origin);
+        if ( !exposedCard.isFacedUp() ) {
+            exposedCard.reveal(imgCard.getSuit(), imgCard.getRank());
+        } else {
+            if ( !exposedCard.equals(imgCard) )
+                throw makeStateException(origin, imgCard, exposedCard, "no info");
+        }
 
         //notify listeners om state before and after state change
         change.firePropertyChange( makePropertyChangeEvent(origin, oldOrigin) );
@@ -160,7 +255,7 @@ public final class Board implements I_BoardModel {
         int pileIndex = pile.ordinal();
         return new PropertyChangeEvent(
                 piles[pileIndex],
-                pile.getPileIDText(),
+                pile.getDescription(),
                 oldVal,
                 Collections.unmodifiableCollection(piles[pileIndex])
         );
