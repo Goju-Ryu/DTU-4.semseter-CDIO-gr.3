@@ -33,15 +33,20 @@ public class BuildStack extends StackBase {
 
     @Override
     public boolean canMoveFrom(int range) {
+
         int top = stack.size() - 1;
         if ( top - (range - 1) < 0 ){
             return false;
         }
-        return  stack.get(top - (range - 1)).isFacedUp();
+        return stack.get(top - range).isFacedUp();
     }
 
     @Override
     public boolean canMoveTo(@Nonnull Collection<I_CardModel> cards) {
+
+        //TODO: We need to implement so we can put a suitstack in as the Collection, and it would still return true even if the color matched
+
+
 
         I_CardModel card = null; // Getting the last card "the top card"
         for(I_CardModel element: cards){
@@ -49,12 +54,12 @@ public class BuildStack extends StackBase {
         }
 
         assert (card != null);
-        if(!(this.stack.get(0).isFacedUp() && card.isFacedUp())){
+        if(!(stack.get(0).isFacedUp() && card.isFacedUp())){
             return false;
         }
 
         //color matching
-        E_CardSuit mySuit = this.stack.get(0).getSuit();
+        E_CardSuit mySuit = stack.get(0).getSuit();
         E_CardSuit otSuit = card.getSuit();
 
         // a card cannot move to a card of the same color.
@@ -64,11 +69,11 @@ public class BuildStack extends StackBase {
         }
 
         //number matching
-        int myRank = this.stack.get(0).getRank();
+        int myRank = stack.get(0).getRank();
         int otRank = card.getRank();
 
         // ot rank must be equals to one higher than my rank. otherwise it is illegal.
-        if(otRank - myRank != 1)
+        if(myRank - otRank != 1)
             return false;
 
         return true;

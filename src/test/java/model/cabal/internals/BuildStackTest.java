@@ -91,12 +91,12 @@ class BuildStackTest {
         }
 
         // Check if the cards that is face up can be moved
-        for (int i = 1; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             assertTrue(buildStack.canMoveFrom(i));
         }
 
         //Check if the cards that is face down can be moved
-        for (int i = 4; i < 7; i++) {
+        for (int i = 3; i < 6; i++) {
             assertFalse(buildStack.canMoveFrom(i));
         }
     }
@@ -106,8 +106,15 @@ class BuildStackTest {
 
         // The build stack that will receive a stack
         BuildStack receivingStack = new BuildStack();
-        receivingStack.add(new Card(E_CardSuit.HEARTS,6));
+        receivingStack.add(new Card(E_CardSuit.HEARTS,8));
         receivingStack.add(new Card(E_CardSuit.HEARTS,9));
+
+        // The Suit Stack that will receive a Card
+        SuitStack suitStack = new SuitStack();
+        suitStack.add(new Card(E_CardSuit.HEARTS,1));
+        suitStack.add(new Card(E_CardSuit.HEARTS,2));
+        suitStack.add(new Card(E_CardSuit.HEARTS,3));
+        suitStack.add(new Card(E_CardSuit.HEARTS,4));
 
         // receiveStack should be able receive this stack according to the rules
         BuildStack incomingStack = new BuildStack();
@@ -150,13 +157,35 @@ class BuildStackTest {
         BuildStack incomingStack5 = new BuildStack();
         incomingStack5.add(new Card(E_CardSuit.SPADES,8,false));
 
-        // incoming build stack tests
-        assertTrue(incomingStack.canMoveTo(receivingStack));
-        assertFalse(incomingStack1.canMoveTo(receivingStack));
-        assertFalse(incomingStack2.canMoveTo(receivingStack));
-        assertFalse(incomingStack3.canMoveTo(receivingStack));
-        assertFalse(incomingStack4.canMoveTo(receivingStack));
-        assertFalse(incomingStack5.canMoveTo(receivingStack));
+        BuildStack heartCard = new BuildStack();
+        heartCard.add(new Card(E_CardSuit.HEARTS,5));
 
+
+        if (heartCard.canMoveFrom()){
+            System.out.println("first check");
+            System.out.println(heartCard.getCard(0));
+            //assertTrue(heartCard.canMoveTo(suitStack)); // TODO this do not work because our stacks do not have an id
+        }
+
+        if (incomingStack.canMoveFrom(3)){
+            if (incomingStack1.canMoveFrom(3)){
+                if (incomingStack2.canMoveFrom(3)){
+                    if (incomingStack3.canMoveFrom(3)){
+                        if (incomingStack4.canMoveFrom(3)){
+                            if (incomingStack5.canMoveFrom(0)){
+
+                                // incoming build stack to another build stack
+                                assertTrue(receivingStack.canMoveTo(incomingStack));
+                                assertFalse(receivingStack.canMoveTo(incomingStack1));
+                                assertFalse(receivingStack.canMoveTo(incomingStack2));
+                                assertFalse(receivingStack.canMoveTo(incomingStack3));
+                                assertFalse(receivingStack.canMoveTo(incomingStack4));
+                                assertFalse(receivingStack.canMoveTo(incomingStack5));
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

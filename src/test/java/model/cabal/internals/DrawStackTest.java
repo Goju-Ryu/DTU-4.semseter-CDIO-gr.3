@@ -40,13 +40,37 @@ class DrawStackTest {
     @Test
     void canMoveFrom() {
 
+        //create the Draw stack and turn a card to make sure that you have something to pop
+        DrawStack drawStack = createDrawstack(10,E_CardSuit.HEARTS);
+        drawStack.turnCard();
+
+        //Check if a card can be removed from the top of the draw stack
+        assertTrue(drawStack.canMoveFrom(0));
+
+        //heck if all the other cards can be moved
+        for (int i = 0; i < 10; i++) {
+            assertFalse(drawStack.canMoveFrom(i+1));
+        }
     }
 
     @Test
     void canMoveTo() {
-        DrawStack drawStack = new DrawStack();
 
+        DrawStack drawStack = createDrawstack(4,E_CardSuit.DIAMONDS);
 
+        BuildStack buildStack = new BuildStack();
+        buildStack.add(new Card(E_CardSuit.HEARTS,5));
+
+        SuitStack suitStack = new SuitStack();
+        suitStack.add(new Card(E_CardSuit.DIAMONDS,8));
+
+        // you cannot move a card from anywhere to the draw stack
+        if (buildStack.canMoveFrom()){
+            if (suitStack.canMoveFrom()){
+                assertFalse(drawStack.canMoveTo(buildStack));
+                assertFalse(drawStack.canMoveTo(suitStack));
+            }
+        }
     }
 
     @Test
