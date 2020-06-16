@@ -12,6 +12,8 @@ cardAnal = CardAnalyser()
 cardVal = CardValidator()
 
 
+SUCCESCRITERIA = 30
+
 # kabale recogniser is a class that recognises our kabale syntax, and returns a string of what cards, the program
 # can see on the board.
 class KabaleRecogniser:
@@ -27,8 +29,8 @@ class KabaleRecogniser:
 
         Operator = imageOperator()
 
-        # start a Timer, as a way to end the loop.
-        timeStart = TIME.time()
+        # start a counter to know when to end the loop.
+        succesCounter = 0
 
         # this is a method to initialise the video capture.
         vidG = videoGen()
@@ -39,6 +41,9 @@ class KabaleRecogniser:
 
         # filming Loop.
         while True:
+
+            if succesCounter > SUCCESCRITERIA :
+                break
             # this is openCV code, get the image, and then it gives an error if the keypressed isent there.
             # or rather it refuses to return an image, so it is necesary for it to be here.
             img = rec.getFrame()
@@ -54,16 +59,11 @@ class KabaleRecogniser:
             self.cards, succes = isolator.isolateCards(img, Settings)
 
             if succes :
+                succesCounter += 1
+
                 # looping throuch all cards found in the isolater.
                 self.recogniseCards()
 
-                #this is a way of closing the loop.
-                # where timeDiff overcedes the time limit
-                # then end the loop.
-                timeNow = TIME.time()
-                timeDiff = timeNow - timeStart
-                if ( timeDiff ) > 300:
-                    break
 
             if len(self.cardImagesStack) > 1:
                 cardImageStacked = Operator.stackImages(self.cardImagesStack[0], self.cardImagesStack)
