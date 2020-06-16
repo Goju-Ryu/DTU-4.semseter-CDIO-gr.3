@@ -29,7 +29,8 @@ public class SuitStack extends StackBase {
 
     @Override
     public boolean canMoveFrom(int range) {
-        if (!this.stack.isEmpty() && range == 1){
+        // If the suit stack is not empty and the range is 0, then we can move a card from the suit stack.
+        if ((!stack.isEmpty()) && range == 0){
             return true;
         }
         return false;
@@ -39,8 +40,8 @@ public class SuitStack extends StackBase {
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
         if (cards.size() == 1){ // check size of collection
             I_CardModel card = cards.iterator().next();
-            if (this.stack.get(0).getSuit().equals(card.getSuit())){ // check if the suit is the same
-                return this.stack.get(0).getRank() + 1 == card.getRank(); // check if the cards collection is 1 rank higher
+            if (stack.get(0).getSuit().equals(card.getSuit())){ // check if the suit is the same
+                return stack.get(0).getRank() + 1 == card.getRank(); // check if the cards collection is 1 rank higher
             }
             return false;
         }

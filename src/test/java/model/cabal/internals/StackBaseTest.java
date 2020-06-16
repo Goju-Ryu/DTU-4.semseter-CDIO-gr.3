@@ -11,6 +11,15 @@ import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * In this class we test all the basic methods from the abstract class StackBase.
+ *
+ * We test the methods on the three different Stacks of the game, which extends from StackBase:
+ *
+ *   -  DrawStack
+ *   -  BuildStack
+ *   -  SuitStack
+ */
 class StackBaseTest {
 
     @Test
