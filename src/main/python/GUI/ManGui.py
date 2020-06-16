@@ -23,10 +23,10 @@ def stringToJson(inputStr):
         suit = "Diamonds"
     elif(su == "s"):
         suit = "Spades"
-    returnStr = json.dumps(
-        {"suit": suit, "rank": nr}
-    )
-    return returnStr
+
+    returnStrings = [suit, nr]
+
+    return returnStrings
 
 class ManGUI(AbstractUI):
     input = ""
@@ -95,21 +95,31 @@ class ManGUI(AbstractUI):
             butLabel.grid(row =3, column=7)
 
             inp = json.dumps(
-                {
-                    "drawPile": stringToJson(ePile.get()),
-                    "SuitStackHearts": stringToJson(eSuit1.get()),
-                    "SuitStackClubs": stringToJson(eSuit2.get()),
-                    "SuitStackDiamonds": stringToJson(eSuit3.get()),
-                    "SuitStackSpades": stringToJson(eSuit4.get()),
-                    "Column1": stringToJson(ecol1.get()),
-                    "Column2": stringToJson(ecol2.get()),
-                    "Column3": stringToJson(ecol3.get()),
-                    "Column4": stringToJson(ecol4.get()),
-                    "Column5": stringToJson(ecol5.get()),
-                    "Column6": stringToJson(ecol6.get()),
-                    "Column7": stringToJson(ecol7.get())
-                }
+                {"drawPile": {"suit": stringToJson(ePile.get())[0], "rank": stringToJson(ePile.get())[1]},
+                "SuitStackHearts": {"suit": stringToJson(eSuit1.get())[0], "rank": stringToJson(eSuit1.get())[1]},
+                "SuitStackClubs": {"suit": stringToJson(eSuit2.get())[0], "rank": stringToJson(eSuit2.get())[1]},
+                "SuitStackDiamonds": {"suit": stringToJson(eSuit3.get())[0], "rank": stringToJson(eSuit3.get())[1]},
+                "SuitStackSpades": {"suit": stringToJson(eSuit4.get())[0], "rank": stringToJson(eSuit4.get())[1]},
+                "Column1": {"suit": stringToJson(ecol1.get())[0], "rank": stringToJson(ecol1.get())[1]},
+                "Column2": {"suit": stringToJson(ecol2.get())[0], "rank": stringToJson(ecol2.get())[1]},
+                "Column3": {"suit": stringToJson(ecol3.get())[0], "rank": stringToJson(ecol3.get())[1]},
+                "Column4": {"suit": stringToJson(ecol4.get())[0], "rank": stringToJson(ecol4.get())[1]},
+                "Column5": {"suit": stringToJson(ecol5.get())[0], "rank": stringToJson(ecol5.get())[1]},
+                "Column6": {"suit": stringToJson(ecol6.get())[0], "rank": stringToJson(ecol6.get())[1]},
+                "Column7": {"suit": stringToJson(ecol7.get())[0], "rank": stringToJson(ecol7.get())[1]}}
             )
+            # {"drawPile": {"suit": "Clubs", "rank": "2"},
+            #  "SuitStackHearts": {"suit": "", "rank": ""},
+            #  "SuitStackClubs": {"suit": "", "rank": ""},
+            #  "SuitStackDiamonds": {"suit": "", "rank": ""},
+            #  "SuitStackSpades": {"suit": "", "rank": ""},
+            #  "Column1": {"suit": "Hearts", "rank": "3"},
+            #  "Column2": {"suit": "Hearts", "rank": "4"},
+            #  "Column3": {"suit": "Hearts", "rank": "5"},
+            #  "Column4": {"suit": "Hearts", "rank": "6"},
+            #  "Column5": {"suit": "Hearts", "rank": "7"},
+            #  "Column6": {"suit": "Hearts", "rank": "9"},
+            #  "Column7": {"suit": "Hearts", "rank": "10"}}
             self.updateInp(inp)
             print(inp)
             root.destroy()
