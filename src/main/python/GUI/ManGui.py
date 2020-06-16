@@ -94,6 +94,7 @@ class ManGUI(AbstractUI):
             butLabel = Label(root, text =clickCount)
             butLabel.grid(row =3, column=7)
 
+            # stringToJson(...) now returns a list containing two strings: "[suitInput]", "[rankInput]"
             inp = json.dumps(
                 {"drawPile": {"suit": stringToJson(ePile.get())[0], "rank": stringToJson(ePile.get())[1]},
                 "SuitStackHearts": {"suit": stringToJson(eSuit1.get())[0], "rank": stringToJson(eSuit1.get())[1]},
