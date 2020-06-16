@@ -25,6 +25,7 @@ class ManGUI(AbstractUI):
     def run(self):
         if(self.firstRun):
             self.setSettings()
+            self.firstRun = False
 
         k = KabaleRecogniser()
         x = k.run(self.Settings)

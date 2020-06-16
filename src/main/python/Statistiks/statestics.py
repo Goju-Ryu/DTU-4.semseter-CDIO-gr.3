@@ -44,8 +44,8 @@ class statistics:
             # if the answer is no card detected.
             if card1RankStats[0][1] == 0 or card1SuitStats[0][1] == 0:
                 # no card contents definded
-                cards[k].suit = "[No suit found]"
-                cards[k].rank = "[No rank found]"
+                cards[k].suit = ""
+                cards[k].rank = ""
 
             else:
                 cards[k].rank = card1RankStats[0][0]

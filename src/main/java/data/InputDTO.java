@@ -59,48 +59,51 @@ public class InputDTO {
         // All the stacks that we iterate trough and makes cards from
         ArrayList<String> stacks = new ArrayList<>(
                 Arrays.asList("drawPile",
-                        "suitStack1",
-                        "suitStack2",
-                        "suitStack3",
-                        "suitStack4",
-                        "column1",
-                        "column2",
-                        "column3",
-                        "column4",
-                        "column5",
-                        "column6",
-                        "column7")
+                        "SuitStackHearts",
+                        "SuitStackClubs",
+                        "SuitStackDiamonds",
+                        "SuitStackSpades",
+                        "Column1",
+                        "Column2",
+                        "Column3",
+                        "Column4",
+                        "Column5",
+                        "Column6",
+                        "Column7")
         );
         for(int i = 0; i< stacks.size();i++){
             //||takeout the json object belonging to a vien key as a string
             //System.out.println("stack: "+stacks.get(i));
-            String tmp = jsonObject.getAsJsonArray(stacks.get(i)).get(0).getAsString();
+            //String tmp = jsonObject.getAsJsonArray(stacks.get(i)).get(0).getAsString();
             //||turn it back into a json object.
-            JsonObject givenStack = new JsonParser().parse(tmp).getAsJsonObject();
+            //JsonObject givenStack = new JsonParser().parse(tmp).getAsJsonObject();
             //System.out.println("givenStack:"+givenStack);
-
+            JsonObject givenStack = jsonObject.getAsJsonObject(stacks.get(i));
+//            JsonElement smt = givenStack.get("suit");
+//            System.out.printf("givenstack: "+smt);
             //|| Get the rand and suit value of the card
-            String rank = givenStack.getAsJsonPrimitive("rank").getAsString();
+            String rank = givenStack.get("rank").getAsString();//givenStack.getAsJsonPrimitive("rank").getAsString();
             int fRank;
             if(rank.equals("")){
                 fRank = -1;//assigns -1 instead of 0 so that we a sure there is no card
             }else{
                 fRank = Integer.parseInt(rank);
             }
-            String suit = givenStack.getAsJsonPrimitive("suit").getAsString();
+            String suit = givenStack.get("suit").getAsString();//givenStack.getAsJsonPrimitive("suit").getAsString();
             //System.out.println("suit of top card "+suit);
             //System.out.println("tank of top card "+rank);
 
             //Translate the Suit value to our model of a car Suit
-            E_CardSuit su = E_CardSuit.CLUBS;
+//            E_CardSuit su = E_CardSuit.CLUBS;
+            E_CardSuit su = null;
             //Todo: right now i assigns clubs as the defult suit to assure it have a suit, make a suit that indicates an error have occured
-            if(suit =="Hearts"){
+            if(suit.equals("Hearts")){
                 su = E_CardSuit.HEARTS;
-            }else if(suit =="Clubs"){
+            }else if(suit.equals("Clubs")){
                 su = E_CardSuit.CLUBS;
-            }else if(suit =="Dimonds"){
+            }else if(suit.equals("Diamonds")){
                 su = E_CardSuit.DIAMONDS;
-            }else if(suit =="Spades"){
+            }else if(suit.equals("Spades")){
                 su = E_CardSuit.SPADES;
             }
 

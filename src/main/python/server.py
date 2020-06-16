@@ -41,10 +41,9 @@ class Greeter(grpc_pb2_grpc.GreeterServicer):
             self.GUIType = 1
         else:
             from GUI.OpenCv2 import ManGUI
-            self.GUIType = 2
             if self.GUIType == 0 or self.GUIType == 1 :
                 self.GUI = ManGUI()
-
+            self.GUIType = 2
             #print(x.run())
 
 
