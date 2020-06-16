@@ -47,7 +47,7 @@ public class SuitStack extends StackBase {
         }
 
         if (stack.isEmpty()){
-            return false;
+            throw new IllegalStateException("Stack must not be empty");
         }
         return true;
     }
