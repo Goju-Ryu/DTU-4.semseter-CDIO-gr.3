@@ -21,30 +21,58 @@ public class SuitStack extends StackBase {
 
     @Override
     public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
+
+        int toIndex = stack.size();
+        int fromIndex = toIndex - range;
+
         if (range > 1){
             throw new IllegalMoveException("You can only take the top card!");
+        }else {
+            List<I_CardModel> subList = stack.subList(fromIndex,toIndex);
+            this.stack = stack.subList(0,fromIndex);
+
+            return new SuitStack(subList);
         }
-        return stack.subList((stack.size()-1) - range,stack.size() - 1);
     }
 
     @Override
     public boolean canMoveFrom(int range) {
-        // If the suit stack is not empty and the range is 0, then we can move a card from the suit stack.
-        if ((!stack.isEmpty()) && range == 0){
-            return true;
+
+        if (range > 1) {
+            throw new IllegalArgumentException("Range cant be bigger than 0");
         }
-        return false;
+
+        if (!(stack.get(range).isFacedUp())){
+            return false;
+        }
+
+        if (stack.isEmpty()){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
-        if (cards.size() == 1){ // check size of collection
-            I_CardModel card = cards.iterator().next();
-            if (stack.get(0).getSuit().equals(card.getSuit())){ // check if the suit is the same
-                return stack.get(0).getRank() + 1 == card.getRank(); // check if the cards collection is 1 rank higher
-            }
+
+        I_CardModel card = cards.iterator().next();
+
+        System.out.println(card);
+
+        // check size of collection
+        if (cards.size() > 1 || cards.size() < 1){
             return false;
         }
-        return false;
+
+        // check if the suit is the same
+        if (!(stack.get(0).getSuit() == card.getSuit())){
+            return false;
+        }
+
+        // check if the card in cards collection is 1 rank higher
+        if (!(stack.get(0).getRank() - card.getRank() == 1)){
+            return false;
+        }
+        return true;
     }
 }
