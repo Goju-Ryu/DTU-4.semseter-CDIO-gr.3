@@ -37,7 +37,7 @@ class myInstaller:
         # CREATING ENVIRONMENT IN FOLDER
         path = str(os.path.dirname(os.path.realpath(__file__)))
 
-        # subprocess.run("python -m venv " + self.environmentName)
+        subprocess.run("python -m venv " + self.environmentName)
         print("\n environment : " + self.environmentName + ". Created as folder in directory")
         print(path)
 
