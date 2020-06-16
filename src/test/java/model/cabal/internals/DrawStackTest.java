@@ -81,10 +81,25 @@ class DrawStackTest {
 
     @Test
     void turnCard() {
-    }
 
-    @Test
-    void getTopCard() {
+        //Testing turnCard() and getTopCard()
+
+        DrawStack drawStack = createDrawstack(10,E_CardSuit.DIAMONDS);
+        I_CardModel card = new Card(E_CardSuit.DIAMONDS,1);
+
+        // When no card have been turned an Index out of bounds Exception will be thrown.
+        assertThrows(IndexOutOfBoundsException.class, () -> drawStack.getTopCard(),"No card have been turned yet");
+
+        drawStack.turnCard();
+
+        // No you can safely get the top card
+        I_CardModel card1 = drawStack.getTopCard();
+
+        System.out.println(card);
+        System.out.println(card1);
+
+        assertEquals(card,card1);
+
     }
 
     private DrawStack createDrawstack(int elements, E_CardSuit suit) {
