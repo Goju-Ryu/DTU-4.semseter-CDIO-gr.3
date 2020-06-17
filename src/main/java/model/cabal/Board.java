@@ -71,8 +71,6 @@ public final class Board implements I_BoardModel {
         }
     }
 
-
-
 //---------  Genneral methods  -------------------------------------------------------------------------------------
 
     @Override
@@ -143,7 +141,6 @@ public final class Board implements I_BoardModel {
         );
     }
 
-
 //---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
 
     @Override
@@ -171,7 +168,6 @@ public final class Board implements I_BoardModel {
         var turnPile = (DrawStack) get(TURNPILE);
         return turnPile.getTopCard();
     }
-
 
 //----------  Move card methods  -----------------------------------------------------------------------------
 
@@ -236,10 +232,7 @@ public final class Board implements I_BoardModel {
         return true;
     }
 
-
 //-----------------------------------PropertyEditor methods-------------------------------------------------------------
-
-
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
