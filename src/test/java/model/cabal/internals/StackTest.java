@@ -11,6 +11,8 @@ import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//TODO REMOVE this test class
+
 class StackTest {
 
     @Test

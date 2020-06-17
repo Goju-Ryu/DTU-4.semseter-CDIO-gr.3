@@ -25,57 +25,78 @@ public class BuildStack extends StackBase {
         int toIndex = stack.size();
         int frIndex = toIndex - range;
 
-//        int toIndex = stack.size();
-//        int frIndex = toIndex - range;
-
-        //List<I_CardModel> sublist = stack.subList(toIndex,frIndex);
         List<I_CardModel> sublist = stack.subList(frIndex, toIndex);
 
         this.stack = stack.subList(0,frIndex);
-//        this.stack = stack.subList(frIndex, toIndex);
         return new BuildStack(sublist);
     }
 
     @Override
     public boolean canMoveFrom(int range) {
-        int top = stack.size() -1;
-        if( top - (range-1) <0 ){
+
+        int top = stack.size() - 1;
+        if (top - (range - 1) < 0 ){
             return false;
         }
-        return  stack.get(top - (range-1)).isFacedUp();
+        return stack.get(top - range).isFacedUp();
     }
 
     @Override
     public boolean canMoveTo(@Nonnull Collection<I_CardModel> cards) {
-        // TODO shouldn't this method check some of these for all cards it gets?
+
+        //TODO: We need to implement so we can put a suitstack in as the Collection, and it would still return true even if the color matched
 
         I_CardModel card = null; // Getting the last card "the top card"
-        for(I_CardModel element: cards){
+
+        for (I_CardModel element : stack){
             card = element;
         }
 
         assert (card != null);
-        if(!(stack.get(0).isFacedUp() && card.isFacedUp())){
+        if (!(cards.iterator().next().isFacedUp() && card.isFacedUp())){
             return false;
         }
+
         //color matching
-        E_CardSuit mySuit = stack.get(0).getSuit();
-        E_CardSuit otSuit = card.getSuit();
+        E_CardSuit mySuit = card.getSuit();
+        E_CardSuit otSuit = cards.iterator().next().getSuit();
+        System.out.println("my suit: "+mySuit);
+        System.out.println("other suit: "+otSuit);
 
-        // a card cannot move to a card of the same color.
-        boolean sameColor = E_CardSuit.isSameColour(mySuit, otSuit);
-        if(sameColor){
+        if((cards.iterator().next().getSuit() == E_CardSuit.HEARTS) && (card.getSuit() == E_CardSuit.HEARTS)){
+            System.out.println("Both cards were HEARTS");
             return false;
+        }else if ((cards.iterator().next().getSuit() == E_CardSuit.HEARTS) && (card.getSuit() == E_CardSuit.DIAMONDS)){
+            System.out.println("Calling card were DIAMOND, and other card were HEART");
+            return false;
+        }else if ((cards.iterator().next().getSuit() == E_CardSuit.DIAMONDS) && (card.getSuit() == E_CardSuit.HEARTS)){
+            System.out.println("Calling card were HEART, and other card were DIAMOND");
+            return false;
+        }else if ((cards.iterator().next().getSuit() == E_CardSuit.DIAMONDS) && (card.getSuit() == E_CardSuit.DIAMONDS)){
+            System.out.println("Both cards were DIAMOND");
+            return false;
+        }else if ((cards.iterator().next().getSuit() == E_CardSuit.CLUBS) && (card.getSuit() == E_CardSuit.CLUBS)){
+            System.out.println("Both cards were CLUBS");
+            return false;
+        }else if ((cards.iterator().next().getSuit() == E_CardSuit.CLUBS) && (card.getSuit() == E_CardSuit.SPADES)){
+            System.out.println("Calling card were SPADES, and other card were CLUBS");
+            return false;
+        }else if ((cards.iterator().next().getSuit() == E_CardSuit.SPADES) && (card.getSuit() == E_CardSuit.CLUBS)){
+            System.out.println("Calling card were CLUBS, and other card were SPADES");
+            return false;
+        }else if ((cards.iterator().next().getSuit() == E_CardSuit.SPADES) && (card.getSuit() == E_CardSuit.SPADES)){
+            System.out.println("Both cards were SPADES");
+            return false;
+        }else {
+            //number matching
+            int myRank = card.getRank();
+            int otRank = cards.iterator().next().getRank();
+
+            System.out.println("my rank: "+myRank);
+            System.out.println("other rank: "+otRank);
+
+            // ot rank must be equals to one lower than my rank. otherwise it is illegal.
+            return myRank - otRank == 1;
         }
-
-        //number matching
-        int myRank = stack.get(0).getRank();
-        int otRank = card.getRank();
-
-        // ot rank must be equals to one higher than my rank. otherwise it is illigal.
-        if(otRank - myRank != 1)
-            return false;
-
-        return true;
     }
 }
