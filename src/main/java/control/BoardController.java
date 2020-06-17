@@ -7,6 +7,7 @@ import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.I_SolitaireStacks;
+import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.I_CardModel;
 
@@ -56,17 +57,32 @@ public class BoardController implements I_BoardController {
                 }
                 Collection<I_CardModel> cards = pile.getSubset(depth);
 
+                    // now before going any Further, we need to know :
+                    // would this move reveal a card underneath this card?
+                    boolean improveCardReveal = false;
+                    try { // we are aware that the pile might not be this big.
+                        improveCardReveal = !pile.getCard(depth + 1).isFacedUp();
+                    }catch (Exception ignored){}
+
                 // then i go through each top card in each stack,
                 // to se if the current card can move there to.
 
                 for (int to = 0; to < piles.length; to++) {
                     if (piles[to].canMoveTo( cards )){
 
+                        // todo better practice solution to this problem than checking the class
+                        // before making the move we want to know:
+                        // is this an Ace pile, if it is, then it is an improvement of the win condition.
+                        boolean improveAce = false;
+                        if(piles[to].getClass() == SuitStack.class){
+                            improveAce = true;
+                        }
+
                         // from  == what pile we are looking for our card in
                         // depth == the pile we are looking to move to
                         // to    == the depth of our moving range
 
-                        I_Move move = new Move(from, to, depth);
+                        I_Move move = new Move(to,from,depth,improveAce,improveCardReveal);
                         moves.add(move);
                     }
                 }

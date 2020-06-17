@@ -8,10 +8,25 @@ public class Move implements I_Move {
     int to = 0;
     int from = 0;
     int depth = 0;
-    public Move(int to, int from, int depth) {
+    boolean improveAce = false;
+    boolean improveShow= false;
+
+    public Move(int to, int from, int depth, boolean improveAce, boolean improveShow) {
         this.to = to;
         this.from = from;
         this.depth = depth;
+        this.improveAce = improveAce;
+        this.improveShow = improveShow;
+    }
+
+    @Override
+    public boolean improvesByTurningCard() {
+        return improveShow;
+    }
+
+    @Override
+    public boolean improvesAceCondition() {
+        return improveAce;
     }
 
     @Override
