@@ -60,7 +60,6 @@ public class BoardController implements I_BoardController {
                 // to se if the current card can move there to.
 
                 for (int to = 0; to < piles.length; to++) {
-                    I_CardModel topCard = piles[to].getCard(0);
                     if (piles[to].canMoveTo( cards )){
 
                         // from  == what pile we are looking for our card in
