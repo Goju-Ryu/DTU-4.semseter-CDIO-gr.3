@@ -6,7 +6,7 @@ The project is build so that it could be run over a network, if the computer you
 - Plug in a USB camera into your PC
 - setup your solitare card game on a green background.
 - Download or clone the code from git
-- (if your IDE requres, set it up as a maven project.)
+- (if your IDE requires, set it up as a maven project.)
 - Run the server.py file(the python side of the server)
 - at the moment what UI you want to use is decided by writing code in main,
 so write the UI you want to use in main
@@ -22,6 +22,9 @@ you need to make sure you are using
 [project SDK: 11] or higher     
 [Project language level: 11 - local variabel for lambda parameteres]
 
+- There might be a need to import a jar-file for com.google.gson in the InputDTO.java class.
+This can simply be done using alt+enter whit a gson element selected.
+Then import jar from web, and choose one of the newer versions.
 
 ### python front-end and openCV:
 You need to have Python 3.8
