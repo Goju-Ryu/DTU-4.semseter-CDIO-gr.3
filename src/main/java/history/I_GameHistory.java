@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.AbstractMap.SimpleImmutableEntry;
 
@@ -54,8 +55,21 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
     Collection<I_GameState> getRepeatStates(final List<BiPredicate<I_GameState, I_GameState>> predicates);
 
 
+    /**
+     * This predicate returns true only if the two states are actually both referencing the same object.
+     */
     BiPredicate<I_GameState, I_GameState> IDENTITY_EQUAL = I_GameHistory::identityEqual;
+
+    /**
+     * This predicate returns true if the sizes of the lists in the first state are all
+     * equal to the length of the corresponding list in the second state.
+     */
     BiPredicate<I_GameState, I_GameState> PILE_SIZE_EQUAL = I_GameHistory::sizeEqual;
+
+    /**
+     * This predicate returns true only if the content of each list in one state matches exactly the content
+     * of the corresponding lists in the other state. Objects.equals() is used to check equality of the contents.
+     */
     BiPredicate<I_GameState, I_GameState> PILE_CONTENT_EQUAL = I_GameHistory::contentEqual;
 
 
@@ -80,11 +94,49 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
     }
 
     private static boolean contentEqual(final I_GameState state1, final I_GameState state2) {
-        return false;
+        //if a state is null there surely must be a mistake somewhere
+        if (state1 == null || state2 == null) throw new NullPointerException("A state cannot be null when comparing");
+        //if ( !sizeEqual(state1, state2) ) return false;
+
+        return Stream.of(new SimpleImmutableEntry<>(state1, state2))
+                .flatMap(
+                        statePair -> Arrays.stream(E_PileID.values())
+                                .map(pileID -> new SimpleImmutableEntry<>(
+                                                statePair.getKey().get(pileID),
+                                                statePair.getValue().get(pileID)
+                                        )
+                                )
+                )
+                .flatMap(
+                        listPair -> IntStream //make sure to always traverse the longer list
+                                .range(0, Math.max(listPair.getKey().size(), listPair.getValue().size()))
+                                .mapToObj(i -> new SimpleImmutableEntry<>(
+                                        getIfExists(listPair.getKey(), i),
+                                        getIfExists(listPair.getValue(), i))
+                                )
+                        )
+                .map(cardPair -> Objects.equals(cardPair.getKey(), cardPair.getValue()))
+                .reduce(true, (e1, e2) -> e1 && e2);
     }
 
     default <t extends I_GameState> Predicate<t> partiallyApplyPredicate(BiPredicate<t, t> biPred, t arg) {
         return test -> biPred.test(arg, test);
     }
+
+
+    /**
+     * A convenient to get an optional card from a list that might throw index out of bounds
+     * @param list the list to take an element from
+     * @param index the index of the element
+     * @return empty if element is null or dosen't exist, otherwise the element at index wrapped in {@link Optional}
+     */
+    private static Optional<I_CardModel> getIfExists(List<I_CardModel> list, int index) {
+        try {
+            return Optional.ofNullable(list.get(index));
+        } catch (IndexOutOfBoundsException e) {
+            return Optional.empty();
+        }
+    }
+
     //todo might be a good idea to implement a method that checks for the moves that has been tried when in a given state
 }
