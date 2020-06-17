@@ -56,21 +56,33 @@ public class SuitStack extends StackBase {
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
 
         I_CardModel card = cards.iterator().next();
+        I_CardModel card2 = null;
+
+        for (I_CardModel element : stack){
+            card2 = element;
+        }
 
         System.out.println(card);
+        System.out.println(card2);
 
         // check size of collection
-        if (cards.size() > 1 || cards.size() < 1){
+        if (cards.size() != 1){
             return false;
         }
 
         // check if the suit is the same
-        if (!(stack.get(0).getSuit() == card.getSuit())){
+        assert card2 != null;
+        if (!(card2.getSuit() == card.getSuit())){
             return false;
         }
 
         // check if the card in cards collection is 1 rank higher
-        if (!(stack.get(0).getRank() - card.getRank() == 1)){
+        if (!(card.getRank() - card2.getRank() == 1)){
+            return false;
+        }
+
+        // check if the card is face up
+        if (!cards.iterator().next().isFacedUp()){
             return false;
         }
         return true;
