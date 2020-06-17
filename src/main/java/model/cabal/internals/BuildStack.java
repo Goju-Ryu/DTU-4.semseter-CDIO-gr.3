@@ -63,6 +63,7 @@ public class BuildStack extends StackBase {
         System.out.println("my suit: "+mySuit);
         System.out.println("other suit: "+otSuit);
 
+        // todo consider this as a switch? makes it easyer to collapse, and easyer to change ( maybe havent read it through )
         if((cards.iterator().next().getSuit() == E_CardSuit.HEARTS) && (card.getSuit() == E_CardSuit.HEARTS)){
             System.out.println("Both cards were HEARTS");
             return false;
