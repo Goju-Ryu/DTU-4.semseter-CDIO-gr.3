@@ -64,20 +64,19 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
     }
 
     private static boolean sizeEqual(final I_GameState state1, final I_GameState state2) {
+        //if a state is null there surely must be a mistake somewhere
+        if (state1 == null || state2 == null) throw new NullPointerException("A state cannot be null when comparing");
 
-        Stream.of(new SimpleImmutableEntry<I_GameState, I_GameState>(state1, state2))
-                .filter(pair -> (pair.getKey() != null && pair.getValue() != null))
-                .map(pair ->
-                        new SimpleImmutableEntry<>(
-                                pair.getKey().values(),
-                                pair.getValue().values()
-                        ))
-                .filter(pair -> pair.getKey().size() == pair.getValue().size())
-                // TODO implement the remaining conditions
-                .toArray();  // this is to avoid errors while working
-
-        return false;
-
+        return Stream.of(new SimpleImmutableEntry<>(state1, state2))
+                .flatMap(
+                        pair -> Arrays.stream(E_PileID.values())
+                                .map(pileID -> new SimpleImmutableEntry<>(
+                                                pair.getKey().get(pileID),
+                                                pair.getValue().get(pileID)
+                                        )
+                                )
+                )
+                .allMatch(pair -> pair.getKey().size() == pair.getValue().size());
     }
 
     private static boolean contentEqual(final I_GameState state1, final I_GameState state2) {
