@@ -1,39 +1,32 @@
 package data;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 /**
  * This class is intented to translate the input string we get to a json object.
  */
 public class InputSimDTO {
 
-    private ArrayList<Card> lista = setupData();
-    private ArrayList<Card> listb = new ArrayList<>(14);
+    private ArrayList<Card> listTop = new ArrayList<>();
+    private ArrayList<Card> listAll = setupData();
     private boolean first = true;
 
     public ArrayList<Card> getUsrInput(String UIChoice){
         if(first){
-          return listb;
+          return listTop;
         }else{
 
-            int ranB = getRandom( listb.size() );
-            int ranA = getRandom( lista.size() );
+            // todo, remove this and make a method that is called when one decides a move.
+            int ranAll = getRandom( listAll.size() );
+            int ranTop = getRandom( listTop.size() );
 
-            Card newCard = lista.get(ranA);
-            listb.set(ranB, newCard);
+            Card newCard = listAll.get(ranAll);
+            listTop.set(ranTop, newCard);
 
-            return listb;
+            return listTop;
         }
     }
 
@@ -47,9 +40,10 @@ public class InputSimDTO {
         }
 
         for (int i = 0; i < 14 ; i++) {
-            int ran = getRandom( lista.size() );
-            listb.add(lista.get( ran ));
-            lista.remove(ran);
+            int ran = getRandom( list.size() );
+            //Card elem = list.get( ran );
+            listTop.add( list.get( ran ) );
+            list.remove(ran);
         }
 
         return list;
