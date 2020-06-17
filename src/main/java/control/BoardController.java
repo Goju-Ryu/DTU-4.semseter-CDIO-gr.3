@@ -22,7 +22,7 @@ public class BoardController implements I_BoardController {
     private InputDTO accessInput = new InputDTO();
 
     public I_BoardModel MakeNewBoard(String UiChoice){
-        ArrayList<Card> usrInput = accessInput.getUsrInput(UiChoice);
+        ArrayList<Card> usrInput = getUserInput(UiChoice);
 
         I_BoardModel board = new Board(usrInput.get(0), usrInput.get(5), usrInput.get(6),
                 usrInput.get(7),usrInput.get(8), usrInput.get(9), usrInput.get(10),
@@ -40,4 +40,8 @@ public class BoardController implements I_BoardController {
     public void pickMove(Board[] moves){
 
     };
+
+    public ArrayList<Card> getUserInput(String UiChoice){
+        return accessInput.getUsrInput(UiChoice);
+    }
 }
