@@ -1,6 +1,7 @@
 package control;
 
 import data.InputDTO;
+import data.InputSimDTO;
 import model.cabal.Board;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.I_SolitaireStacks;
@@ -17,26 +18,12 @@ import java.util.ArrayList;
  * This controller is one Game controller uses everytime it needs to make
  * a move
  */
-public class BoardControllerSimulated implements I_BoardController {
-    private InputDTO accessInput = new InputDTO();
+public class BoardControllerSimulated extends BoardController {
 
-    public I_BoardModel MakeNewBoard(String UiChoice){
-        ArrayList<Card> usrInput = accessInput.getUsrInput(UiChoice);
+    private InputSimDTO accessInput = new InputSimDTO();
 
-        I_BoardModel board = new Board(usrInput.get(0), usrInput.get(5), usrInput.get(6),
-                usrInput.get(7),usrInput.get(8), usrInput.get(9), usrInput.get(10),
-                usrInput.get(11));
-        return board;
+    @Override
+    public ArrayList<Card> getUserInput(String UiChoice) {
+        return accessInput.getUsrInput(UiChoice);
     }
-    public void possibleMoves(I_BoardModel boardModel){
-        //TODO: atm this only check the top card in each stack.
-       I_SolitaireStacks[] piles = boardModel.getPiles();
-       for(int i=0; i<piles.length;i++){
-           piles.getClass();
-       }
-    };
-
-    public void pickMove(Board[] moves){
-
-    };
 }
