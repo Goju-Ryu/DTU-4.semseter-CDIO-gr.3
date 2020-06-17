@@ -42,34 +42,32 @@ public class BoardController implements I_BoardController {
         // go through each card in each pile
         // so i save the current pile as pile
         // and i do a for each card in this pile.
-        for(int i=0; i<piles.length;i++){
-            I_SolitaireStacks pile = piles[i];
-            //E_PileID fromPileID = pile.
-            for (int j = 0; j < pile.size() ; j++) {
+
+        for(int from =0; from<piles.length;from++){
+            I_SolitaireStacks pile = piles[from];
+            for (int depth = 0; depth < pile.size() ; depth++) {
 
                 // now we need to check if the move is even possible at this index.
                 // this is in the case of a type of pile where you cannot move more
                 // than one card at a time. like an Ace pile.
-                if( !pile.canMoveFrom(j) ){
+
+                if( !pile.canMoveFrom(depth) ){
                     break;
                 }
+                Collection<I_CardModel> cards = pile.getSubset(depth);
 
-                Collection<I_CardModel> cards = pile.getSubset(j);
                 // then i go through each top card in each stack,
                 // to se if the current card can move there to.
-                for (int k = 0; k < piles.length; k++) {
-                    I_CardModel topCard = piles[k].getCard(0);
-                    if (piles[k].canMoveTo( cards )){
 
-                        // i == what pile we are looking for our card in
-                        // k == the pile we are looking to move to
-                        // j == the depth of our moving range
-                        I_Move move = new Move(i, k, j){
-                            @Override
-                            public Board move(Board board) {
-                                return null;
-                            }
-                        };
+                for (int to = 0; to < piles.length; to++) {
+                    I_CardModel topCard = piles[to].getCard(0);
+                    if (piles[to].canMoveTo( cards )){
+
+                        // from  == what pile we are looking for our card in
+                        // depth == the pile we are looking to move to
+                        // to    == the depth of our moving range
+
+                        I_Move move = new Move(from, to, depth);
                         moves.add(move);
                     }
                 }
