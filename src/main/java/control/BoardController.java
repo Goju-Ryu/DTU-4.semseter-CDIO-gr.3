@@ -6,6 +6,7 @@ import model.Move;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
+import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
@@ -25,7 +26,6 @@ import java.util.LinkedList;
  * a move
  */
 public class BoardController implements I_BoardController {
-
     private InputDTO accessInput = new InputDTO();
 
     public I_BoardModel MakeNewBoard(String UiChoice){
