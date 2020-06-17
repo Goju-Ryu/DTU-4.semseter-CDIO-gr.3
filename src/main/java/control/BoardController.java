@@ -4,9 +4,7 @@ import data.InputDTO;
 import model.I_Move;
 import model.Move;
 import model.cabal.Board;
-import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
-import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
@@ -36,7 +34,7 @@ public class BoardController implements I_BoardController {
                 usrInput.get(11));
         return board;
     }
-    public void possibleMoves(I_BoardModel boardModel){
+    public LinkedList<I_Move> possibleMoves(I_BoardModel boardModel){
         LinkedList<I_Move> moves = new LinkedList<>();
         I_SolitaireStacks[] piles = boardModel.getPiles();
 
@@ -46,7 +44,7 @@ public class BoardController implements I_BoardController {
 
         for(int from =0; from<piles.length;from++){
             I_SolitaireStacks pile = piles[from];
-            for (int depth = 0; depth < pile.size() ; depth++) {
+            for (int depth = 1; depth <= pile.size() ; depth++) {
 
                 // now we need to check if the move is even possible at this index.
                 // this is in the case of a type of pile where you cannot move more
@@ -68,7 +66,7 @@ public class BoardController implements I_BoardController {
                 // to se if the current card can move there to.
 
                 for (int to = 0; to < piles.length; to++) {
-                    if (piles[to].canMoveTo( cards )){
+                    if ( piles[to].canMoveTo( cards ) ){
 
                         // todo better practice solution to this problem than checking the class
                         // before making the move we want to know:
@@ -82,12 +80,13 @@ public class BoardController implements I_BoardController {
                         // depth == the pile we are looking to move to
                         // to    == the depth of our moving range
 
-                        I_Move move = new Move(to,from,depth,improveAce,improveCardReveal);
+                        I_Move move = new Move(to,from,depth,improveAce,improveCardReveal, "Move Desc");
                         moves.add(move);
                     }
                 }
             }
         }
+        return null;
     };
 
     public void pickMove(Board[] moves){

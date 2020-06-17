@@ -1,13 +1,13 @@
 package control;
 
-import data.InputDTO;
 import data.InputSimDTO;
+import model.I_Move;
 import model.cabal.Board;
 import model.cabal.I_BoardModel;
-import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.Card;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * This class is for the individual controlls of each Board,
@@ -33,8 +33,9 @@ public class BoardControllerSimulated extends BoardController {
     }
 
     @Override
-    public void possibleMoves(I_BoardModel boardModel) {
+    public LinkedList<I_Move> possibleMoves(I_BoardModel boardModel) {
         super.possibleMoves(boardModel);
+        return null;
     }
 
     @Override

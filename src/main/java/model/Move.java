@@ -10,13 +10,15 @@ public class Move implements I_Move {
     int depth = 0;
     boolean improveAce = false;
     boolean improveShow= false;
+    String toStr = "";
 
-    public Move(int to, int from, int depth, boolean improveAce, boolean improveShow) {
+    public Move(int to, int from, int depth, boolean improveAce, boolean improveShow, String toStr) {
         this.to = to;
         this.from = from;
         this.depth = depth;
         this.improveAce = improveAce;
         this.improveShow = improveShow;
+        this.toStr = toStr;
     }
 
     @Override
@@ -48,5 +50,10 @@ public class Move implements I_Move {
     public Board move(Board board){
        // board.move(from, depth, to);
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return toStr;
     }
 }
