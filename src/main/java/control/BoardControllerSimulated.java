@@ -23,6 +23,22 @@ public class BoardControllerSimulated extends BoardController {
     private InputSimDTO accessInput = new InputSimDTO();
 
     @Override
+    public I_BoardModel MakeNewBoard(String UiChoice) {
+        return super.MakeNewBoard(UiChoice);
+    }
+
+    @Override
+    public void possibleMoves(I_BoardModel boardModel) {
+        super.possibleMoves(boardModel);
+    }
+
+    @Override
+    public void pickMove(Board[] moves) {
+        super.pickMove(moves);
+
+    }
+
+    @Override
     public ArrayList<Card> getUserInput(String UiChoice) {
         return accessInput.getUsrInput(UiChoice);
     }
