@@ -1,17 +1,15 @@
 package history;
 
-import javafx.util.Pair;
 import model.cabal.E_PileID;
 import model.cabal.internals.card.I_CardModel;
 
 import java.beans.PropertyChangeListener;
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import java.util.AbstractMap.SimpleImmutableEntry;
 
 /**
  * This interface promises to keeps track of changes to the board during the game.
@@ -73,10 +71,25 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
     BiPredicate<I_GameState, I_GameState> PILE_CONTENT_EQUAL = I_GameHistory::contentEqual;
 
 
+    /**
+     * Returns true only if the two states are actually both referencing the same object.
+     *
+     * @param state1 a state to compare
+     * @param state2 the state to compare it to
+     * @return true if the contents of one state all equals the contents of the other state
+     */
     private static boolean identityEqual(final I_GameState state1, final I_GameState state2) {
         return state1 == state2;
     }
 
+    /**
+     * Returns true if the sizes of the lists in the first state are all
+     * equal to the length of the corresponding list in the second state.
+     *
+     * @param state1 a state to compare
+     * @param state2 the state to compare it to
+     * @return true if the contents of one state all equals the contents of the other state
+     */
     private static boolean sizeEqual(final I_GameState state1, final I_GameState state2) {
         //if a state is null there surely must be a mistake somewhere
         if (state1 == null || state2 == null) throw new NullPointerException("A state cannot be null when comparing");
@@ -93,6 +106,14 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
                 .allMatch(pair -> pair.getKey().size() == pair.getValue().size());
     }
 
+    /**
+     * Returns true only if the content of each list in one state matches exactly the content
+     * of the corresponding lists in the other state. Objects.equals() is used to check equality of the contents.
+     *
+     * @param state1 a state to compare
+     * @param state2 the state to compare it to
+     * @return true if the contents of one state all equals the contents of the other state
+     */
     private static boolean contentEqual(final I_GameState state1, final I_GameState state2) {
         //if a state is null there surely must be a mistake somewhere
         if (state1 == null || state2 == null) throw new NullPointerException("A state cannot be null when comparing");
