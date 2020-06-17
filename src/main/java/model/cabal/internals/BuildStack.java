@@ -35,10 +35,11 @@ public class BuildStack extends StackBase {
     public boolean canMoveFrom(int range) {
 
         int top = stack.size() - 1;
-        if (top - (range - 1) < 0 ){
+        int newid = top - (range);
+        if (newid < 0 ){
             return false;
         }
-        return stack.get(top - range).isFacedUp();
+        return stack.get(newid).isFacedUp();
     }
 
     @Override
