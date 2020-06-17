@@ -80,65 +80,49 @@ class SuitStackTest {
         SuitStack receivingStack = createSuitStack(8,E_CardSuit.SPADES,true);
 
         //The  build stack that should be able to be merged into receivingStack
-        BuildStack incomingBuildStack = new BuildStack();
-        incomingBuildStack.add(new Card(E_CardSuit.SPADES,9,true));
+        BuildStack buildStack = new BuildStack();
+        buildStack.add(new Card(E_CardSuit.SPADES,9,true));
 
         //The build stack that is empty and cant be merged
-        BuildStack incomingBuildStack1 = new BuildStack();
+        BuildStack buildStack1 = new BuildStack();
 
         //The build stack that should not be able to go in the suit stack because of suit
-        BuildStack incomingBuildStack2 = new BuildStack();
-        incomingBuildStack2.add(new Card(E_CardSuit.HEARTS,9,true));
+        BuildStack buildStack2 = new BuildStack();
+        buildStack2.add(new Card(E_CardSuit.HEARTS,9,true));
 
         //The build stack that is not able to be merged into the suitstack because the size is greater than 1
-        BuildStack incomingBuildStack3 = new BuildStack();
-        incomingBuildStack3.add(new Card(E_CardSuit.SPADES,9,true));
-        incomingBuildStack3.add(new Card(E_CardSuit.SPADES,10,true));
+        BuildStack buildStack3 = new BuildStack();
+        buildStack3.add(new Card(E_CardSuit.SPADES,9,true));
+        buildStack3.add(new Card(E_CardSuit.SPADES,10,true));
 
         //The build stack where the rank is not 1 less
-        BuildStack incomingBuildStack4 = new BuildStack();
-        incomingBuildStack4.add(new Card(E_CardSuit.SPADES,10,true));
+        BuildStack buildStack4 = new BuildStack();
+        buildStack4.add(new Card(E_CardSuit.SPADES,10,true));
 
         //The build stack where the card is not face up
-        BuildStack incomingBuildStack5 = new BuildStack();
-        incomingBuildStack5.add(new Card(E_CardSuit.SPADES,9,false));
+        BuildStack buildStack5 = new BuildStack();
+        buildStack5.add(new Card(E_CardSuit.SPADES,9,false));
 
-        //the draw stack that should be able to be added to receive stack
-
-
-        //the draw stack that is empty
-
-
-        //the draw stack that is not the same suit
-
-
-        // the draw stack where there are to many cards in it
-
-
-        //
-
-        if (incomingBuildStack.canMoveFrom(0)){
+        if (buildStack.canMoveFrom(0)){
             System.out.println("1st pass");
-            if (!incomingBuildStack1.canMoveFrom(1)){
+            if (!buildStack1.canMoveFrom(1)){
                 System.out.println("2nd pass");
-                if (incomingBuildStack2.canMoveFrom(0)){
+                if (buildStack2.canMoveFrom(0)){
                     System.out.println("3th pass");
-                    if (incomingBuildStack3.canMoveFrom(0)){
+                    if (buildStack3.canMoveFrom(0)){
                         System.out.println("4th pass");
-                        if (incomingBuildStack4.canMoveFrom(0)){
+                        if (buildStack4.canMoveFrom(0)){
                             System.out.println("5th pass");
-                            if (!incomingBuildStack5.canMoveFrom(0)){
+                            if (!buildStack5.canMoveFrom(0)){
                                 System.out.println("6th pass");
 
-                                assertTrue(receivingStack.canMoveTo(incomingBuildStack));
-                                assertThrows(NoSuchElementException.class,() -> receivingStack.canMoveTo(incomingBuildStack1),
+                                assertTrue(receivingStack.canMoveTo(buildStack));
+                                assertThrows(NoSuchElementException.class,() -> receivingStack.canMoveTo(buildStack1),
                                         "There are no elements in the stack, so an exception will be thrown");
-
-
-                                assertFalse(receivingStack.canMoveTo(incomingBuildStack2));
-                                assertFalse(receivingStack.canMoveTo(incomingBuildStack3));
-                                assertFalse(receivingStack.canMoveTo(incomingBuildStack4));
-                                assertFalse(receivingStack.canMoveTo(incomingBuildStack5));
+                                assertFalse(receivingStack.canMoveTo(buildStack2));
+                                assertFalse(receivingStack.canMoveTo(buildStack3));
+                                assertFalse(receivingStack.canMoveTo(buildStack4));
+                                assertFalse(receivingStack.canMoveTo(buildStack5));
 
                             }
                         }else {
@@ -152,6 +136,58 @@ class SuitStackTest {
                 }
             }else {
                 fail();
+            }
+        }else {
+            fail();
+        }
+
+        //the draw stack that should be able to be added to receive stack
+        DrawStack drawStack = new DrawStack();
+        drawStack.add(new Card(E_CardSuit.SPADES,9,true));
+        drawStack.turnCard();
+
+        //the draw stack that is empty
+        DrawStack drawStack1 = new DrawStack();
+
+        //the draw stack that is not the same suit
+        DrawStack drawStack2 = new DrawStack();
+        drawStack2.add(new Card(E_CardSuit.HEARTS,9,true));
+        drawStack2.turnCard();
+
+        // the draw stack where there are to many cards in it
+        DrawStack drawStack3 = new DrawStack();
+        drawStack3.add(new Card(E_CardSuit.SPADES,9,true));
+        drawStack3.add(new Card(E_CardSuit.SPADES,10,true));
+        drawStack3.turnCard();
+
+        // the draw stack where the rank of the card is not 1 less
+        DrawStack drawStack4 = new DrawStack();
+        drawStack4.add(new Card(E_CardSuit.SPADES,10,true));
+        drawStack4.turnCard();
+
+        // the draw stack where the card is face down
+        DrawStack drawStack5 = new DrawStack();
+        drawStack5.add(new Card(E_CardSuit.SPADES,9,false));
+        drawStack5.turnCard();
+
+        if (drawStack.canMoveFrom(0)){
+            if (drawStack2.canMoveFrom(0)){
+                if (drawStack3.canMoveFrom(0)){
+                    if (drawStack4.canMoveFrom(0)){
+                        if (drawStack5.canMoveFrom(0)){
+                            System.out.println("all canMoveFrom tests passed");
+
+                            assertTrue(receivingStack.canMoveTo(drawStack));
+                            assertThrows(IndexOutOfBoundsException.class, drawStack1::turnCard,
+                                    "The drawstack is empty, so you cant turn a card");
+                            assertFalse(receivingStack.canMoveTo(drawStack2));
+                            assertFalse(receivingStack.canMoveTo(drawStack3));
+                            assertFalse(receivingStack.canMoveTo(drawStack4));
+                            assertFalse(receivingStack.canMoveTo(drawStack5));
+
+                        }
+                    }
+                }
             }
         }else {
             fail();
