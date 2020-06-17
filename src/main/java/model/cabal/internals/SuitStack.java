@@ -6,6 +6,7 @@ import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 public class SuitStack extends StackBase {
@@ -38,9 +39,27 @@ public class SuitStack extends StackBase {
 
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
+
+        if (stack.size() == 0 ){
+            // getting the last element
+            Iterator<I_CardModel> it = cards.iterator();
+            I_CardModel bottomcard = null;
+            while(it.hasNext()){
+                bottomcard = it.next();
+            }
+            if(bottomcard.getRank() == 1){
+                return true;
+            }else{
+                return false;
+            }
+
+        }
+
         if (cards.size() == 1){ // check size of collection
             I_CardModel card = cards.iterator().next();
-            if (stack.get(0).getSuit().equals(card.getSuit())){ // check if the suit is the same
+            I_CardModel a = stack.get(0);
+
+            if (a.getSuit().equals(card.getSuit())){ // check if the suit is the same
                 return stack.get(0).getRank() + 1 == card.getRank(); // check if the cards collection is 1 rank higher
             }
             return false;
