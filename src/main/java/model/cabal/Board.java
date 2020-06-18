@@ -1,11 +1,5 @@
 package model.cabal;
 
-import static model.cabal.E_PileID.*;
-
-import data.InputAccesPoint;
-import data.InputDTO;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import model.cabal.internals.BuildStack;
 import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
@@ -17,8 +11,9 @@ import model.error.IllegalMoveException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.rmi.UnexpectedException;
 import java.util.*;
+
+import static model.cabal.E_PileID.*;
 
 
 /**
@@ -225,11 +220,14 @@ public final class Board implements I_BoardModel {
     }
 
     private boolean isValidMove(I_SolitaireStacks from, I_SolitaireStacks to) {
+
+        // if you try to move to the same stack
         if(from == to)
             return false;
 
         var turnPile = get(TURNPILE);
 
+        // If you try to move to the turn pile
         if (to.equals(turnPile))
             return false;
 
