@@ -6,7 +6,6 @@ import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 public class SuitStack extends StackBase {
@@ -22,51 +21,75 @@ public class SuitStack extends StackBase {
 
     @Override
     public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
+
+        int toIndex = stack.size();
+        int fromIndex = toIndex - range;
+
         if (range > 1){
             throw new IllegalMoveException("You can only take the top card!");
+        }else {
+            List<I_CardModel> subList = stack.subList(fromIndex,toIndex);
+            this.stack = stack.subList(0,fromIndex);
+
+            return new SuitStack(subList);
         }
         return stack.subList((stack.size()-1) - range,stack.size() - 1);
     }
 
     @Override
     public boolean canMoveFrom(int range) {
-        // If the suit stack is not empty and the range is 0, then we can move a card from the suit stack.
-        if ((!stack.isEmpty()) && range == 0){
-            return true;
+
+        if (range > 1) {
+            throw new IllegalArgumentException("Range cant be bigger than 0");
         }
-        return false;
+
+        if (!(stack.get(range).isFacedUp())){
+            return false;
+        }
+
+        if (stack.isEmpty()){
+            throw new IllegalStateException("Stack must not be empty");
+        }
+        return true;
     }
 
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
 
-        // if the stack size is 0, then we must make sure the bottom element of the collection
-        // that we receive is an Ace. all other times it checks if the new card is one bigger
-        // than the original card, but not if the stack is empty.
+        I_CardModel card = cards.iterator().next();
+        I_CardModel card2 = null;
 
-        if (stack.size() == 0 ){
-            Iterator<I_CardModel> it = cards.iterator();
-            I_CardModel bottomcard = null;
-            while(it.hasNext()){
-                bottomcard = it.next();
-            }
-
-            if(bottomcard.getRank() == 1){
-                return true;
-            }else{
-                return false;
-            }
+        for (I_CardModel element : stack){
+            card2 = element;
         }
 
-        if (cards.size() == 1){ // check size of collection
-            I_CardModel card = cards.iterator().next();
-            I_CardModel a = stack.get(0);
+        System.out.println(card);
+        System.out.println(card2);
 
-            if (a.getSuit().equals(card.getSuit())){ // check if the suit is the same
-                return stack.get(0).getRank() + 1 == card.getRank(); // check if the cards collection is 1 rank higher
-            }
+        // check size of collection
+        if (cards.size() != 1){
             return false;
         }
-        return false;
+
+        // check if the suit is the same
+        assert card2 != null;
+        if (!(card2.getSuit() == card.getSuit())){
+            return false;
+        }
+
+        // check if the card in cards collection is 1 rank higher
+        if (!(card.getRank() - card2.getRank() == 1)){
+            return false;
+        }
+
+        // check if the card is face up
+        if (!cards.iterator().next().isFacedUp()){
+            return false;
+        }
+
+        if (stack.isEmpty() && card.getRank() == 1){
+            return true;
+        }
+        return true;
     }
 }
