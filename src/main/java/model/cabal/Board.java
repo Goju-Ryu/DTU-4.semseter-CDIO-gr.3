@@ -1,11 +1,5 @@
 package model.cabal;
 
-import static model.cabal.E_PileID.*;
-
-import data.InputAccesPoint;
-import data.InputDTO;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import model.cabal.internals.BuildStack;
 import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
@@ -17,8 +11,9 @@ import model.error.IllegalMoveException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.rmi.UnexpectedException;
 import java.util.*;
+
+import static model.cabal.E_PileID.*;
 
 
 /**
@@ -49,13 +44,13 @@ public final class Board implements I_BoardModel {
                 var stack = new BuildStack();
 
                 switch (id){ // notice no break. a card enters and ads 1 card for every case beneath it
-                    case BUILDSTACK7: stack.add(buildstack1);
-                    case BUILDSTACK6: stack.add(buildstack2);
-                    case BUILDSTACK5: stack.add(buildstack3);
+                    case BUILDSTACK7: stack.add(buildstack7);
+                    case BUILDSTACK6: stack.add(buildstack6);
+                    case BUILDSTACK5: stack.add(buildstack5);
                     case BUILDSTACK4: stack.add(buildstack4);
-                    case BUILDSTACK3: stack.add(buildstack5);
-                    case BUILDSTACK2: stack.add(buildstack6);
-                    case BUILDSTACK1: stack.add(buildstack7); break;
+                    case BUILDSTACK3: stack.add(buildstack3);
+                    case BUILDSTACK2: stack.add(buildstack2);
+                    case BUILDSTACK1: stack.add(buildstack1); break;
                     default:
                         throw new RuntimeException("An unknown E_Pile_ID with isBuildStack=true was encountered: " + id);
                 }
@@ -74,6 +69,7 @@ public final class Board implements I_BoardModel {
 
 
 //---------  Genneral methods  -------------------------------------------------------------------------------------
+
 
     @Override
     public boolean isStackComplete(E_PileID pileID) {
@@ -225,11 +221,14 @@ public final class Board implements I_BoardModel {
     }
 
     private boolean isValidMove(I_SolitaireStacks from, I_SolitaireStacks to) {
+
+        // if you try to move to the same stack
         if(from == to)
             return false;
 
         var turnPile = get(TURNPILE);
 
+        // If you try to move to the turn pile
         if (to.equals(turnPile))
             return false;
 
