@@ -43,6 +43,10 @@ public final class Board implements I_BoardModel {
                     piles[BUILDSTACK1.ordinal() + i].add(new Card());
             }
         }
+
+        for (E_PileID pileID : E_PileID.values()) {
+            piles[pileID.ordinal()].add(extractImgData(imgData, pileID));
+        }
         
     }
 
