@@ -12,5 +12,5 @@ public interface I_BoardController {
     //TODO: Correct the return value and parameters, and the methods
     LinkedList<Move> possibleMoves(I_BoardModel boardModel);
 
-    void pickMove(List<Move> moves);
+    Move pickMove(List<Move> moves);
 }

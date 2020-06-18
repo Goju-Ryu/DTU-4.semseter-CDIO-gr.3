@@ -37,13 +37,13 @@ public class BoardController implements I_BoardController {
     }
 
     public LinkedList<Move> possibleMoves(I_BoardModel boardModel){
+
         LinkedList<Move> moves = new LinkedList<>();
         I_SolitaireStacks[] piles = boardModel.getPiles();
 
         // go through each card in each pile
         // so i save the current pile as pile
         // and i do a for each card in this pile.
-
         for(int from = 0; from < piles.length;from++){
             I_SolitaireStacks pile = piles[from];
             for (int depth = 1; depth <= pile.size() ; depth++) {
@@ -88,99 +88,64 @@ public class BoardController implements I_BoardController {
                 }
             }
         }
+
         return moves;
     }
 
-    public void pickMove(List<Move> moves){
+    public Move pickMove(List<Move> moves){
 
+        // so we want to sort the moves by two values
+        // 1st priority : does it move something into the ace pile
+        // 2nd priority : does it reveal an unknown card
+        // then the list would have the elements that does both first,
+        // then the element that does 1st priority
+        // then the elements that does the 2nd priority
+        // then then the elements that does none of these things.
 
+        Comparator<Move> comp = new Comparator<>() {
 
+            // i am making a custom comparator to compare elements of the list via this priority
+            // the assignment here is to return 1, if move 1 improves ace, and move 2 does not
+            // return 0, if they both improve , or are neutral in this regard.
+            // return -1 if move 1 does not improve the ace pile, and move 2 does.
 
+            @Override
+            public int compare(Move o1, Move o2) {
+
+                // we set up a scenario on checking the first Priority condition,
+                // this means we se if the ace condition is improved.
+                if( o1.improvesAceCondition() == o2.improvesAceCondition()) {
+                    return secondPrio(o1,o2);
+                }else{
+                    // o1 and o2 values are oposate each other, so we can check one of them then asume the reversed
+                    if(o1.improvesAceCondition())
+                        return 1;
+                    return -1;
+                }
+            }
+
+            // this methods job is to return 1 if move o1 is better than o2
+            // better being revealing an unknown card.
+            private int secondPrio(Move o1, Move o2){
+                if (o1.improvesByTurningCard() == o2.improvesByTurningCard()){
+                    return 0;
+                }else{
+                    // o1 and o2 values are oposate each other, so we can check one of them then asume the reversed
+                    if(o1.improvesByTurningCard())
+                        return 1;
+                    return -1;
+                }
+            }
+
+        };
+
+        // now that the list is sorted. we return the best element, the first one.
+        moves.sort(comp);
+        return moves.get(0);
     };
-
 
     public ArrayList<Card> getUserInput(String UiChoice){
         return accessInput.getUsrInput(UiChoice);
     }
 
-    private List<Move> pickMoveInternalSorting(List<Move> moves){
-
-        // first i want to sort for Ace move priorities.
-        // this is the first priority to move cards onto the ace piles.
-        // so i sort the array, based on an internal variable that defines if this move, moves a card to the ace pile
-
-        Comparator<Move> comp = new Comparator<>() {
-
-            // i am making a custom comparator to compare elements of the list via this priority
-            // the assignment here is to return 1, if move 1 improves ace, and move 2 does not
-            // return 0, if they both improve , or are neutral in this regard.
-            // return -1 if move 1 does not improve the ace pile, and move 2 does.
-
-            @Override
-            public int compare(Move o1, Move o2) {
-                // if they are equals
-                if( o1.improvesAceCondition() == o2.improvesAceCondition()){
-                    return 0;
-                }
-
-                // now we know they arent equals. so if o1 is true, then o2 is false
-                // and if 02 is true, o1 is false. ergo we need only check one of them
-
-                if(o1.improvesAceCondition()){
-                    return 1;
-                }else{
-                    return -1;
-                }
-
-            }
-        };
-
-        // so now we actually sort this List using the comparator.
-        // if then the first element doesnt have an improves ace condition. then
-        // that must mean we cant use this as a priority for picking a move.
-
-        moves.sort(comp);
-        if(!moves.get(0).improvesAceCondition()){
-            return moves;
-        }
-
-        // so now we need to make a new comparator that can compare the second priority
-        // can sort the list according to this priority.
-
-        Comparator<Move> comp = new Comparator<>() {
-
-            // i am making a custom comparator to compare elements of the list via this priority
-            // the assignment here is to return 1, if move 1 improves ace, and move 2 does not
-            // return 0, if they both improve , or are neutral in this regard.
-            // return -1 if move 1 does not improve the ace pile, and move 2 does.
-
-            @Override
-            public int compare(Move o1, Move o2) {
-                // if they are equals
-                if( o1.improvesAceCondition() == o2.improvesAceCondition()){
-                    return 0;
-                }
-
-                // now we know they arent equals. so if o1 is true, then o2 is false
-                // and if 02 is true, o1 is false. ergo we need only check one of them
-
-                if(o1.improvesAceCondition()){
-                    return 1;
-                }else{
-                    return -1;
-                }
-
-            }
-        };
-
-        // so now we actually sort this List using the comparator.
-        // if then the first element doesnt have an improves ace condition. then
-        // that must mean we cant use this as a priority for picking a move.
-
-        moves.sort(comp);
-        if(!moves.get(0).improvesAceCondition()){
-            return moves;
-        }
-
-    }
 }
