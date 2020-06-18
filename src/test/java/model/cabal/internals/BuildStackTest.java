@@ -178,7 +178,7 @@ class BuildStackTest {
         if (heartCard.canMoveFrom()){
             System.out.println("first check");
             System.out.println(heartCard.getCard(0));
-            //assertTrue(heartCard.canMoveTo(suitStack)); // TODO this do not work because our stacks do not have an id
+            assertTrue(suitStack.canMoveTo(heartCard)); // TODO this do not work because our stacks do not have an id
         }
 
         if (incomingStack.canMoveFrom(3)){
