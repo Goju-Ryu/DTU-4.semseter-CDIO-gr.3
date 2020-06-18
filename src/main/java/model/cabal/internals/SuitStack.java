@@ -55,7 +55,15 @@ public class SuitStack extends StackBase {
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
 
-        I_CardModel card = (I_CardModel) cards.iterator().next();
+        I_CardModel card = cards.iterator().next();
+
+        if (stack.isEmpty()){
+            if (card.getRank() == 1){
+                return true;
+            }else {
+                return false;
+            }
+        }
 
         I_CardModel card2 = null;
 
@@ -63,8 +71,8 @@ public class SuitStack extends StackBase {
             card2 = element;
         }
 
-        System.out.println(card);
-        System.out.println(card2);
+        System.out.println("incomming card: "+card);
+        System.out.println("suit stack card: "+card2);
 
         // check size of collection
         if (cards.size() != 1){
@@ -85,11 +93,6 @@ public class SuitStack extends StackBase {
         // check if the card is face up
         if (!cards.iterator().next().isFacedUp()){
             return false;
-        }
-
-        if (stack.isEmpty() && card.getRank() == 1){
-            return true;
-
         }
         return true;
     }
