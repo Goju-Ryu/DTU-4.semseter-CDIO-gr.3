@@ -38,22 +38,25 @@ public class SuitStack extends StackBase {
     @Override
     public boolean canMoveFrom(int range) {
 
-        if (range > 1) {
-            throw new IllegalArgumentException("Range cant be bigger than 0");
-        }
-
-        if (!(stack.get(range).isFacedUp())){
+        if (range != 1) {
             return false;
         }
 
         if (stack.isEmpty()){
-            throw new IllegalStateException("Stack must not be empty");
+            return false;
         }
+
+        if (!(stack.get(stack.size() - range).isFacedUp())){
+            return false;
+        }
+
         return true;
     }
 
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
+
+        if (cards.isEmpty()) return false;
 
         I_CardModel card = null;
         for (I_CardModel inCard : cards) {

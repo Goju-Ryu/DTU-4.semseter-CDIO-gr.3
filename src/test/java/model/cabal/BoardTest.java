@@ -39,8 +39,7 @@ class BoardTest {
     @Test
     void isStackComplete() {
         Map<String, I_CardModel> map = new HashMap<>();
-        map.put("TURNPILE", new Card(E_CardSuit.SPADES,2));
-        for (int i = 2; i < 7; i++) {
+        for (int i = 2; i <= 7; i++) {
             map.put("BUILDSTACK" + i, new Card(E_CardSuit.SPADES, i+1));
         }
         map.put("BUILDSTACK1", new Card(E_CardSuit.SPADES, 1));
@@ -52,10 +51,12 @@ class BoardTest {
         board.turnCard(imgData);
 
 
-        if (board.canMove(E_PileID.BUILDSTACK1,0,E_PileID.SPADESACEPILE)) {
+        if (board.canMove(E_PileID.BUILDSTACK1, E_PileID.SPADESACEPILE)) {
             System.out.println("The move is legal");
         }
-        board.move(E_PileID.BUILDSTACK1,E_PileID.SPADESACEPILE, getImgData(board));
+
+        var testData = getImgData(board);
+        board.move(E_PileID.BUILDSTACK1, E_PileID.SPADESACEPILE, testData);
 
 
 
@@ -120,17 +121,15 @@ class BoardTest {
      */
     private Map<String, I_CardModel> getImgData(I_BoardModel board) {
         return Stream.of(E_PileID.values())
+                .filter(pile -> board.getPile(pile).size() > 1)
                 .map( // transforms elements of the stream to mapEntries
                         pile -> {
                             var pileList = board.getPile(pile);
-                            if ( !pileList.isEmpty())
-                                return new AbstractMap.SimpleEntry<>(pile.name(), pileList.get(pileList.size() - 1));
-                            else
-                                return new AbstractMap.SimpleEntry<>(pile.name(), (I_CardModel) new Card());
+                            return new AbstractMap.SimpleEntry<>(pile.name(), pileList.get(pileList.size() - 1));
                         }
                 )
                 .peek(entry -> { // replaces face down cards with a randomly generated card
-                            if ( !entry.getValue().isFacedUp() )
+                            if ( entry.getValue() != null && !entry.getValue().isFacedUp() )
                                 entry.setValue(getRandCard());
                         }
                 )

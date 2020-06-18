@@ -72,7 +72,7 @@ public interface I_BoardModel {
      * @throws IllegalMoveException If one of the piles cannot do the operation due to rules constraints.
      */
     default void move(E_PileID origin, E_PileID destination, Map<String, I_CardModel> imgData) throws IllegalMoveException {
-        move(origin, 0, destination, imgData);
+        move(origin, 1, destination, imgData);
     }
 
     /**
@@ -98,7 +98,7 @@ public interface I_BoardModel {
      * @return true if legal or false if illegal
      */
     default boolean canMove(E_PileID origin, E_PileID destination) {
-        return canMove(origin,0,destination);
+        return canMove(origin,1, destination);
     }
 
 

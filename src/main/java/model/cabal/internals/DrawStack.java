@@ -60,13 +60,13 @@ public class DrawStack extends StackBase {
 
     private String canMoveFromMsg(int range){
         StringBuilder builder = new StringBuilder();
-        int cases = 0;
-        if (range > 0) {
+        int caseNum = 0;
+        if (range > 1) {
             builder.append("Range cannot be greater than 0.");
-            cases++;
+            caseNum++;
         }
         if (drawIndex < 0) {
-            if (cases++ > 0)
+            if (caseNum++ > 0)
                 builder.append("\n");
             builder.append("Index too low, no cards have been drawn yet.");
         }

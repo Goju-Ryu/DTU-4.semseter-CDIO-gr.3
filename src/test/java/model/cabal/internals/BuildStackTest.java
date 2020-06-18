@@ -91,12 +91,12 @@ class BuildStackTest {
         }
 
         // Check if the cards that is face up can be moved
-        for (int i = 0; i < 3; i++) {
+        for (int i = 1; i < 4; i++) {
             assertTrue(buildStack.canMoveFrom(i));
         }
 
         //Check if the cards that is face down can be moved
-        for (int i = 3; i < 6; i++) {
+        for (int i = 4; i < 6; i++) {
             assertFalse(buildStack.canMoveFrom(i));
         }
     }

@@ -185,15 +185,20 @@ public final class Board implements I_BoardModel {
         to.addAll(from.popSubset(originPos));
 
         //check that state is consistent with the physical board
-        var exposedCard = from.getCard(from.size() - 1);
+        I_CardModel exposedCard = null;
         var imgCard = extractImgData(imgData, origin);
-        if ( !exposedCard.isFacedUp() ) {
-            exposedCard.reveal(imgCard.getSuit(), imgCard.getRank());
+        if ( !from.isEmpty() ) {
+            exposedCard = from.getCard(from.size() - 1);
+            if (!exposedCard.isFacedUp()) {
+                exposedCard.reveal(imgCard.getSuit(), imgCard.getRank());
+            } else {
+                if (!exposedCard.equals(imgCard))
+                    throw makeStateException(origin, imgCard, exposedCard, "no info");
+            }
         } else {
-            if ( !exposedCard.equals(imgCard) )
-                throw makeStateException(origin, imgCard, exposedCard, "no info");
+            if (null != imgCard)
+                throw makeStateException(origin, imgCard, null, "A virtual stack is empty but the physical stack is not");
         }
-
         //notify listeners om state before and after state change
         change.firePropertyChange( makePropertyChangeEvent(origin, oldOrigin) );
         change.firePropertyChange( makePropertyChangeEvent(destination, oldDest) );
