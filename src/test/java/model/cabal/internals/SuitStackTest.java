@@ -7,7 +7,6 @@ import model.error.IllegalMoveException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -78,10 +77,15 @@ class SuitStackTest {
     void canMoveTo() {
 
         SuitStack receivingStack = createSuitStack(8,E_CardSuit.SPADES,true);
+        SuitStack receivingStackEmpty = new SuitStack();
 
         //The  build stack that should be able to be merged into receivingStack
         BuildStack buildStack = new BuildStack();
         buildStack.add(new Card(E_CardSuit.SPADES,9,true));
+
+        //A build stack with an ace
+        BuildStack aceStack = new BuildStack();
+        aceStack.add(new Card(E_CardSuit.SPADES,1));
 
         //The build stack that is empty and cant be merged
         BuildStack buildStack1 = new BuildStack();
@@ -116,9 +120,8 @@ class SuitStackTest {
                             if (!buildStack5.canMoveFrom(0)){
                                 System.out.println("6th pass");
 
+                                assertTrue(receivingStackEmpty.canMoveTo(aceStack));
                                 assertTrue(receivingStack.canMoveTo(buildStack));
-                                assertThrows(NoSuchElementException.class,() -> receivingStack.canMoveTo(buildStack1),
-                                        "There are no elements in the stack, so an exception will be thrown");
                                 assertFalse(receivingStack.canMoveTo(buildStack2));
                                 assertFalse(receivingStack.canMoveTo(buildStack3));
                                 assertFalse(receivingStack.canMoveTo(buildStack4));

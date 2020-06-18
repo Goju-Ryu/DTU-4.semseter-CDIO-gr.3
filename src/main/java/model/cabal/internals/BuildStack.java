@@ -47,6 +47,14 @@ public class BuildStack extends StackBase {
 
         //TODO: We need to implement so we can put a suitstack in as the Collection, and it would still return true even if the color matched
 
+        if (stack.isEmpty()){
+            if (cards.iterator().next().getRank() == 13){
+                return true;
+            }else {
+                return false;
+            }
+        }
+
         I_CardModel card = null; // Getting the last card "the top card"
 
         for (I_CardModel element : stack){
@@ -101,4 +109,7 @@ public class BuildStack extends StackBase {
             return myRank - otRank == 1;
         }
     }
+
+
+
 }

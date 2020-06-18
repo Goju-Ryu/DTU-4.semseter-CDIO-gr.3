@@ -1,60 +1,65 @@
 package model.cabal.internals.card;
 
-import model.cabal.internals.card.Card;
-import model.cabal.internals.card.E_CardSuit;
-import model.cabal.internals.card.I_CardModel;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CardTest {
-    I_CardModel faceUp;
-    I_CardModel faceDown;
 
-    @BeforeEach
-    void beforeEach(){
-        faceUp = new Card(E_CardSuit.DIAMONDS, 5);
-        faceDown = new Card();
+//JUnit test for Card class methods
+class CardTest {
+
+    @Test
+    void reveal() {
+        I_CardModel cardModel = new Card();
+        cardModel.reveal(E_CardSuit.CLUBS,2);
+        I_CardModel cardModel2 = new  Card(E_CardSuit.CLUBS,2,true);
+        assertEquals(cardModel2, cardModel);
+        assertThrows(IllegalStateException.class,()-> cardModel2.reveal(E_CardSuit.HEARTS, 1));
     }
 
-    //TODO: implement tests and agree on expected behavior
     @Test
     void getSuit() {
-    }
-
-    @Test
-    void getSuitText() {
+        I_CardModel cardModel = new Card(E_CardSuit.HEARTS, 1,true);
+        assertEquals(E_CardSuit.HEARTS, cardModel.getSuit());
     }
 
     @Test
     void getRank() {
-    }
+        I_CardModel cardModel = new Card(E_CardSuit.HEARTS, 1, true);
+        assertEquals(1, cardModel.getRank());
+        }
 
-    @Test
-    void getRankValue() {
-    }
 
     @Test
     void isFacedUp() {
+        I_CardModel cardModel = new Card(E_CardSuit.HEARTS, 1, true);
+        assertTrue(cardModel.isFacedUp());
     }
 
     @Test
     void setFacedUp() {
-    }
-
-    @Test
-    void toStringValue() {
+        I_CardModel cardModel = new Card();
+        ((Card) cardModel).setFacedUp(true);
+        assertTrue(cardModel.isFacedUp());
     }
 
     @Test
     void equals() {
-        var c1 = new Card(E_CardSuit.HEARTS, 1);
-        var c2 = new Card(E_CardSuit.HEARTS, 1);
+        I_CardModel cardModel = new Card(E_CardSuit.DIAMONDS, 2, true);
+        I_CardModel cardModel2 = new Card(E_CardSuit.DIAMONDS, 2, true);
+        assertTrue(((Card) cardModel).equals(cardModel2));
+    }
 
-        assertTrue(c1.equals(c2));
-        assertEquals(c1, c2);
+    @Test
+    void toStringValue() {
+        I_CardModel cardModel = new Card(E_CardSuit.DIAMONDS,1, true);
+        assertEquals("Ace of Diamonds", ((Card) cardModel).toStringValue());
+
+    }
+
+    @Test
+    void rankToString() {
+        I_CardModel cardModel = new Card(E_CardSuit.HEARTS, 1, true);
+        assertEquals("Ace", ((Card) cardModel).rankToString());
     }
 }

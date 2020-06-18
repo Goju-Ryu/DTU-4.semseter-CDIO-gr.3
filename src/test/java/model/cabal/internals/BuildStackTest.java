@@ -109,6 +109,20 @@ class BuildStackTest {
         receivingStack.add(new Card(E_CardSuit.HEARTS,8));
         receivingStack.add(new Card(E_CardSuit.HEARTS,9));
 
+        //Empty Buildstack
+        BuildStack receivingStackEmpty = new BuildStack();
+
+        //Build stack with king
+        BuildStack kingStack = new BuildStack();
+        kingStack.add(new Card(E_CardSuit.HEARTS,13));
+
+        //Build stack with king + more
+        BuildStack kingStack2 = new BuildStack();
+        kingStack2.add(new Card(E_CardSuit.DIAMONDS,13));
+        kingStack2.add(new Card(E_CardSuit.CLUBS,12));
+        kingStack2.add(new Card(E_CardSuit.DIAMONDS,11));
+        kingStack2.add(new Card(E_CardSuit.SPADES,10));
+
         // The Suit Stack that will receive a Card
         SuitStack suitStack = new SuitStack();
         suitStack.add(new Card(E_CardSuit.HEARTS,1));
@@ -191,6 +205,10 @@ class BuildStackTest {
                                 System.out.println("passed");
                                 assertFalse(receivingStack.canMoveTo(incomingStack5));
                                 System.out.println("passed");
+
+                                assertTrue(receivingStackEmpty.canMoveTo(kingStack));
+                                assertTrue(receivingStackEmpty.canMoveTo(kingStack2));
+                                System.out.println("passed last");
 
                             }else {
                                 fail();
