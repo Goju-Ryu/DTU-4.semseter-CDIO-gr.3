@@ -27,7 +27,7 @@ public class InputSimDTO {
         // 7 is the build stacks
         // 1 is the drawStack
         // 0 is for the suit stacks
-        for (int i = 0; i < ( 7 + 1 + 0)  ; i++) {
+        for (int i = 0; i < ( 7 + 1 + 0 + 4)  ; i++) {
             listTop.add(popRanCard());
         }
     }

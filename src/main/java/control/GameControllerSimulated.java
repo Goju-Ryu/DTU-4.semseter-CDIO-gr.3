@@ -20,14 +20,13 @@ public class GameControllerSimulated implements I_GameController{
     public void startGame(String UiChoice){
         I_BoardController boardCtrl = new BoardControllerSimulated();
         I_BoardModel boardMod = null;
-        if(UiChoice =="simulation"){
+        if( UiChoice == "simulation" ){
             //TODO: implement that it can iniate a simulated board here
         }else{
             boardMod = boardCtrl.MakeNewBoard(UiChoice);
         }
         List<Move> moves = boardCtrl.possibleMoves(boardMod);
-        boardCtrl.pickMove(moves);
+        //boardCtrl.pickMove(moves);
 
     }
-
 }
