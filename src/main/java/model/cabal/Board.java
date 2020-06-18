@@ -35,6 +35,10 @@ public final class Board implements I_BoardModel {
         piles[CLUBSACEPILE.ordinal()] = new SuitStack();
         piles[SPADESACEPILE.ordinal()] = new SuitStack();
 
+        for (int i = 0; i < 24; i++) {
+            piles[TURNPILE.ordinal()].add(new Card());
+        }
+
         for (int i = 0; i < 7; i++) { // for each build pile
             for (int j = 0; j <= i; j++) {  // how many cards in this pile
                 if (piles[BUILDSTACK1.ordinal() + i] == null)
@@ -45,7 +49,10 @@ public final class Board implements I_BoardModel {
         }
 
         for (E_PileID pileID : E_PileID.values()) {
-            piles[pileID.ordinal()].add(extractImgData(imgData, pileID));
+            var data = extractImgData(imgData, pileID);
+
+            if (data != null)
+                piles[pileID.ordinal()].add(data);
         }
         
     }
@@ -98,9 +105,7 @@ public final class Board implements I_BoardModel {
      * @return The data the map contains about the given pile
      */
     private I_CardModel extractImgData(Map<String, I_CardModel> imgData, E_PileID key) {
-        if(imgData.containsKey(key.name()))
-            return imgData.get(key.name()); //This assumes a strict naming scheme and will return null if not found
-        else throw new NoSuchElementException("key \"" + key.name() + "\" not found in map: " + imgData);
+        return imgData.getOrDefault(key.name(), null); //This assumes a strict naming scheme and will return null if not found
     }
 
     /**
