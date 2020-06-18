@@ -1,4 +1,5 @@
 import control.GameController;
+import control.GameControllerSimulated;
 import control.I_GameController;
 import model.cabal.Board;
 import model.cabal.I_BoardModel;

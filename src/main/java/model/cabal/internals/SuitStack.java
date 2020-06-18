@@ -33,7 +33,6 @@ public class SuitStack extends StackBase {
 
             return new SuitStack(subList);
         }
-        return stack.subList((stack.size()-1) - range,stack.size() - 1);
     }
 
     @Override
