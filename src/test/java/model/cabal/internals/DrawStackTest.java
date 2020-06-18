@@ -45,10 +45,10 @@ class DrawStackTest {
         drawStack.turnCard();
 
         //Check if a card can be removed from the top of the draw stack
-        assertTrue(drawStack.canMoveFrom(0));
+        assertTrue(drawStack.canMoveFrom());
 
         //heck if all the other cards can be moved
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i < 10; i++) {
             assertFalse(drawStack.canMoveFrom(i+1));
         }
     }
