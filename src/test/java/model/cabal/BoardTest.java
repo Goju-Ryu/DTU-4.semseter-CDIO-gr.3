@@ -25,11 +25,11 @@ class BoardTest {
 
         //board.turnCard()
 
-//        if(board.canMove(E_PileID.BUILDSTACK1,0,E_PileID.SPADESACEPILE)){
-//            System.out.println("The move is legal");
-//
-//            //board.move(E_PileID.BUILDSTACK1,E_PileID.SPADESACEPILE);
-//        }
+        if(board.canMove(E_PileID.BUILDSTACK1,0,E_PileID.SPADESACEPILE)){
+            System.out.println("The move is legal");
+
+            //board.move(E_PileID.BUILDSTACK1,E_PileID.SPADESACEPILE);
+        }
 
 
 

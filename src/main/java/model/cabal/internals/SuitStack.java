@@ -56,8 +56,12 @@ public class SuitStack extends StackBase {
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
 
 
-        System.out.println("hasNext: "+cards.iterator().hasNext());
-        I_CardModel card = cards.iterator().next();
+//        System.out.println("hasNext: "+cards.iterator().hasNext());
+
+        //System.out.println("cards.iterator: "+cards.iterator());
+//        String cardxyz = (String) cards.iterator().toString();
+//        System.out.println("card: "+cardxyz);
+        I_CardModel card = (I_CardModel) cards.iterator();
 
 
         I_CardModel card2 = null;
