@@ -44,13 +44,13 @@ public final class Board implements I_BoardModel {
                 var stack = new BuildStack();
 
                 switch (id){ // notice no break. a card enters and ads 1 card for every case beneath it
-                    case BUILDSTACK7: stack.add(buildstack1);
-                    case BUILDSTACK6: stack.add(buildstack2);
-                    case BUILDSTACK5: stack.add(buildstack3);
+                    case BUILDSTACK7: stack.add(buildstack7);
+                    case BUILDSTACK6: stack.add(buildstack6);
+                    case BUILDSTACK5: stack.add(buildstack5);
                     case BUILDSTACK4: stack.add(buildstack4);
-                    case BUILDSTACK3: stack.add(buildstack5);
-                    case BUILDSTACK2: stack.add(buildstack6);
-                    case BUILDSTACK1: stack.add(buildstack7); break;
+                    case BUILDSTACK3: stack.add(buildstack3);
+                    case BUILDSTACK2: stack.add(buildstack2);
+                    case BUILDSTACK1: stack.add(buildstack1); break;
                     default:
                         throw new RuntimeException("An unknown E_Pile_ID with isBuildStack=true was encountered: " + id);
                 }

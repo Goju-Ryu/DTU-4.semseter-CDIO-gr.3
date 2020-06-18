@@ -55,7 +55,11 @@ public class SuitStack extends StackBase {
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
 
+
+        System.out.println("hasNext: "+cards.iterator().hasNext());
         I_CardModel card = cards.iterator().next();
+
+
         I_CardModel card2 = null;
 
         for (I_CardModel element : stack){

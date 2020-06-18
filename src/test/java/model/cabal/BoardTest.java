@@ -21,16 +21,19 @@ class BoardTest {
         Card card8 = new Card(E_CardSuit.SPADES,8);
 
         I_BoardModel board = new Board(card1,card2,card3,card4,card5,card6,card7,card8);
+        //I_BoardModel boardModel = new Board()
 
         //board.turnCard()
 
-        if(board.canMove(E_PileID.BUILDSTACK1,E_PileID.SPADESACEPILE)){
-            System.out.println("The move is legal");
-        }
+//        if(board.canMove(E_PileID.BUILDSTACK1,0,E_PileID.SPADESACEPILE)){
+//            System.out.println("The move is legal");
+//
+//            //board.move(E_PileID.BUILDSTACK1,E_PileID.SPADESACEPILE);
+//        }
 
-        //board.move(E_PileID.BUILDSTACK1,E_PileID.SPADESACEPILE);
 
-        System.out.println(board.getPile(E_PileID.SPADESACEPILE));
+
+        System.out.println(board.getPile(E_PileID.BUILDSTACK1));
 
 
 
