@@ -85,6 +85,10 @@ public class SuitStack extends StackBase {
         if (!cards.iterator().next().isFacedUp()){
             return false;
         }
+
+        if (stack.isEmpty() && card.getRank() == 1){
+            return true;
+        }
         return true;
     }
 }
