@@ -78,10 +78,15 @@ class SuitStackTest {
     void canMoveTo() {
 
         SuitStack receivingStack = createSuitStack(8,E_CardSuit.SPADES,true);
+        SuitStack receivingStackEmpty = new SuitStack();
 
         //The  build stack that should be able to be merged into receivingStack
         BuildStack buildStack = new BuildStack();
         buildStack.add(new Card(E_CardSuit.SPADES,9,true));
+
+        //A build stack with an ace
+        BuildStack aceStack = new BuildStack();
+        aceStack.add(new Card(E_CardSuit.SPADES,1));
 
         //The build stack that is empty and cant be merged
         BuildStack buildStack1 = new BuildStack();
@@ -115,6 +120,8 @@ class SuitStackTest {
                             System.out.println("5th pass");
                             if (!buildStack5.canMoveFrom(0)){
                                 System.out.println("6th pass");
+
+                                assertTrue(receivingStackEmpty.canMoveTo(aceStack));
 
                                 assertTrue(receivingStack.canMoveTo(buildStack));
                                 assertThrows(NoSuchElementException.class,() -> receivingStack.canMoveTo(buildStack1),

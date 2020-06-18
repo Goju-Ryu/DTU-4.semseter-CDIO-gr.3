@@ -70,6 +70,7 @@ public final class Board implements I_BoardModel {
 
 //---------  Genneral methods  -------------------------------------------------------------------------------------
 
+
     @Override
     public boolean isStackComplete(E_PileID pileID) {
         var pile = get(pileID);

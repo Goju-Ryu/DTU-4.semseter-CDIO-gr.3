@@ -61,7 +61,7 @@ public class SuitStack extends StackBase {
         //System.out.println("cards.iterator: "+cards.iterator());
 //        String cardxyz = (String) cards.iterator().toString();
 //        System.out.println("card: "+cardxyz);
-        I_CardModel card = (I_CardModel) cards.iterator();
+        I_CardModel card = (I_CardModel) cards.iterator().next();
 
 
         I_CardModel card2 = null;
@@ -79,7 +79,6 @@ public class SuitStack extends StackBase {
         }
 
         // check if the suit is the same
-        assert card2 != null;
         if (!(card2.getSuit() == card.getSuit())){
             return false;
         }
@@ -93,6 +92,7 @@ public class SuitStack extends StackBase {
         if (!cards.iterator().next().isFacedUp()){
             return false;
         }
+
         return true;
     }
 }
