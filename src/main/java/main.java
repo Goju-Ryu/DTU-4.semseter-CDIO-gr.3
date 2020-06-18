@@ -7,6 +7,7 @@ public class main {
     public static void main(String[] args) {
         I_GameController Klondike = new GameController();
         Klondike.startGame("ManGUI");
+//        Klondike.startGame("sdsldfndslfnds");
 
         System.out.println("Hello Main World!");
         //change
