@@ -55,7 +55,10 @@ public class SuitStack extends StackBase {
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
 
-        I_CardModel card = cards.iterator().next();
+        I_CardModel card = null;
+        for (I_CardModel inCard : cards) {
+            card = inCard;
+        }
 
         if (stack.isEmpty()){
             if (card.getRank() == 1){
@@ -98,6 +101,7 @@ public class SuitStack extends StackBase {
         if (stack.isEmpty() && card.getRank() == 1){
             return true;
         }
+
         return true;
     }
 }

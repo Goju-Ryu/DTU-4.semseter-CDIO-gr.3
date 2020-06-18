@@ -7,7 +7,6 @@ import model.error.IllegalMoveException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -122,10 +121,7 @@ class SuitStackTest {
                                 System.out.println("6th pass");
 
                                 assertTrue(receivingStackEmpty.canMoveTo(aceStack));
-
                                 assertTrue(receivingStack.canMoveTo(buildStack));
-                                assertThrows(NoSuchElementException.class,() -> receivingStack.canMoveTo(buildStack1),
-                                        "There are no elements in the stack, so an exception will be thrown");
                                 assertFalse(receivingStack.canMoveTo(buildStack2));
                                 assertFalse(receivingStack.canMoveTo(buildStack3));
                                 assertFalse(receivingStack.canMoveTo(buildStack4));
