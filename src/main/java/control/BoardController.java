@@ -29,7 +29,7 @@ public class BoardController implements I_BoardController {
     private InputDTO accessInput = new InputDTO();
 
     public I_BoardModel MakeNewBoard(String UiChoice){
-        ArrayList<Card> usrInput = getUserInput(UiChoice);
+        List<Card> usrInput = getUserInput(UiChoice);
 
         I_BoardModel board = new Board(usrInput.get(0), usrInput.get(5), usrInput.get(6),
                 usrInput.get(7),usrInput.get(8), usrInput.get(9), usrInput.get(10),
@@ -37,7 +37,7 @@ public class BoardController implements I_BoardController {
         return board;
     }
 
-    public LinkedList<Move> possibleMoves(I_BoardModel boardModel){
+    public List<Move> possibleMoves(I_BoardModel boardModel){
 
         LinkedList<Move> moves = new LinkedList<>();
         I_SolitaireStacks[] piles = boardModel.getPiles();
@@ -45,6 +45,7 @@ public class BoardController implements I_BoardController {
         // go through each card in each pile
         // so i save the current pile as pile
         // and i do a for each card in this pile.
+
         for(int from = 0; from < piles.length;from++){
             I_SolitaireStacks pile = piles[from];
             for (int depth = 1; depth <= pile.size() ; depth++) {
@@ -89,7 +90,6 @@ public class BoardController implements I_BoardController {
                 }
             }
         }
-
         return moves;
     }
 
@@ -145,7 +145,7 @@ public class BoardController implements I_BoardController {
         return moves.get(0);
     };
 
-    public ArrayList<Card> getUserInput(String UiChoice){
+    public List<Card> getUserInput(String UiChoice){
         return accessInput.getUsrInput(UiChoice);
     }
 

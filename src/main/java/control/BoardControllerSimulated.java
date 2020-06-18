@@ -6,7 +6,6 @@ import model.cabal.Board;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.card.Card;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,18 +23,17 @@ public class BoardControllerSimulated extends BoardController {
     private InputSimDTO accessInput = new InputSimDTO();
 
     @Override
-    public I_BoardModel MakeNewBoard(String UiChoice) {
-        ArrayList<Card> usrInput = getUserInput(UiChoice);
-        I_BoardModel board = new Board(usrInput.get(0), usrInput.get(5), usrInput.get(6),
+    public Board MakeNewBoard(String UiChoice) {
+        List<Card> usrInput = getUserInput(UiChoice);
+        Board board = new Board(usrInput.get(0), usrInput.get(5), usrInput.get(6),
                 usrInput.get(7),usrInput.get(8), usrInput.get(9), usrInput.get(10),
                 usrInput.get(11));
         return board;
     }
 
     @Override
-    public LinkedList<Move> possibleMoves(I_BoardModel boardModel) {
-        super.possibleMoves(boardModel);
-        return null;
+    public List<Move> possibleMoves(I_BoardModel boardModel) {
+        return super.possibleMoves(boardModel);
     }
 
     @Override
@@ -44,7 +42,7 @@ public class BoardControllerSimulated extends BoardController {
     }
 
     @Override
-    public ArrayList<Card> getUserInput(String UiChoice) {
+    public List<Card> getUserInput(String UiChoice) {
         return accessInput.getUsrInput(UiChoice);
     }
 }

@@ -10,7 +10,7 @@ public interface I_BoardController {
     I_BoardModel MakeNewBoard(String UiChoice);
 
     //TODO: Correct the return value and parameters, and the methods
-    LinkedList<Move> possibleMoves(I_BoardModel boardModel);
+    List<Move> possibleMoves(I_BoardModel boardModel);
 
     Move pickMove(List<Move> moves);
 }
