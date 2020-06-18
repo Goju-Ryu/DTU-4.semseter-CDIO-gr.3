@@ -8,6 +8,7 @@ import model.cabal.internals.card.Card;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class is for the individual controlls of each Board,
@@ -25,7 +26,6 @@ public class BoardControllerSimulated extends BoardController {
     @Override
     public I_BoardModel MakeNewBoard(String UiChoice) {
         ArrayList<Card> usrInput = getUserInput(UiChoice);
-
         I_BoardModel board = new Board(usrInput.get(0), usrInput.get(5), usrInput.get(6),
                 usrInput.get(7),usrInput.get(8), usrInput.get(9), usrInput.get(10),
                 usrInput.get(11));
@@ -39,9 +39,8 @@ public class BoardControllerSimulated extends BoardController {
     }
 
     @Override
-    public void pickMove(Board[] moves) {
-        super.pickMove(moves);
-
+    public Move pickMove(List<Move> moves) {
+        return super.pickMove(moves);
     }
 
     @Override

@@ -40,19 +40,22 @@ public class SuitStack extends StackBase {
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
 
+        // if the stack size is 0, then we must make sure the bottom element of the collection
+        // that we receive is an Ace. all other times it checks if the new card is one bigger
+        // than the original card, but not if the stack is empty.
+
         if (stack.size() == 0 ){
-            // getting the last element
             Iterator<I_CardModel> it = cards.iterator();
             I_CardModel bottomcard = null;
             while(it.hasNext()){
                 bottomcard = it.next();
             }
+
             if(bottomcard.getRank() == 1){
                 return true;
             }else{
                 return false;
             }
-
         }
 
         if (cards.size() == 1){ // check size of collection

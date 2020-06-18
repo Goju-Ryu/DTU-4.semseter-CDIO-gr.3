@@ -30,6 +30,7 @@ public class BoardController implements I_BoardController {
 
     public I_BoardModel MakeNewBoard(String UiChoice){
         ArrayList<Card> usrInput = getUserInput(UiChoice);
+
         I_BoardModel board = new Board(usrInput.get(0), usrInput.get(5), usrInput.get(6),
                 usrInput.get(7),usrInput.get(8), usrInput.get(9), usrInput.get(10),
                 usrInput.get(11));

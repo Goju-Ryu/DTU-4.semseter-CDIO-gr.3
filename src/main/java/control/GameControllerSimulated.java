@@ -1,6 +1,9 @@
 package control;
 
+import model.Move;
 import model.cabal.I_BoardModel;
+
+import java.util.LinkedList;
 
 /**
  * This class is for controlling an entire game,
@@ -22,7 +25,8 @@ public class GameControllerSimulated implements I_GameController{
         }else{
             boardMod = boardCtrl.MakeNewBoard(UiChoice);
         }
-        boardCtrl.possibleMoves(boardMod);
+        LinkedList<Move> moves = boardCtrl.possibleMoves(boardMod);
+        boardCtrl.pickMove(moves);
 
     }
 
