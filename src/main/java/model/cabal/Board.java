@@ -25,45 +25,25 @@ public final class Board implements I_BoardModel {
 
     private I_SolitaireStacks[] piles;
     //can start here
-    public Board(Card drawStack, Card buildstack1, Card buildstack2,
-                 Card buildstack3, Card buildstack4, Card buildstack5,
-                 Card buildstack6, Card buildstack7) { //TODO board should take imgData to initialize self
+    public Board(Map<String, I_CardModel> imgData) { //TODO board should take imgData to initialize self
         change = new PropertyChangeSupport(this);
         piles = new I_SolitaireStacks[values().length];
 
-        for (E_PileID id : E_PileID.values()) {
-            if (id == TURNPILE) { //initializes with 24 cards face down
-                var stack = new DrawStack();
-                for (int j = 0; j < 23; j++) {
-                    stack.add(new Card());
-                }
-                stack.add(drawStack);
-                piles[id.ordinal()] = stack;
-            }
-            else if (id.isBuildStack()) {
-                var stack = new BuildStack();
+        piles[TURNPILE.ordinal()] = new DrawStack();
+        piles[HEARTSACEPILE.ordinal()] = new SuitStack();
+        piles[DIAMONDACEPILE.ordinal()] = new SuitStack();
+        piles[CLUBSACEPILE.ordinal()] = new SuitStack();
+        piles[SPADESACEPILE.ordinal()] = new SuitStack();
 
-                switch (id){ // notice no break. a card enters and ads 1 card for every case beneath it
-                    case BUILDSTACK7: stack.add(buildstack7);
-                    case BUILDSTACK6: stack.add(buildstack6);
-                    case BUILDSTACK5: stack.add(buildstack5);
-                    case BUILDSTACK4: stack.add(buildstack4);
-                    case BUILDSTACK3: stack.add(buildstack3);
-                    case BUILDSTACK2: stack.add(buildstack2);
-                    case BUILDSTACK1: stack.add(buildstack1); break;
-                    default:
-                        throw new RuntimeException("An unknown E_Pile_ID with isBuildStack=true was encountered: " + id);
-                }
-
-                piles[id.ordinal()] = stack;
-            }
-            else if (id == HEARTSACEPILE || id == DIAMONDACEPILE || id == CLUBSACEPILE || id == SPADESACEPILE) {
-                piles[id.ordinal()] = new SuitStack();
-            }
-            else {
-                throw new RuntimeException("An unknown E_Pile_ID was encountered: " + id);
+        for (int i = 0; i < 7; i++) { // for each build pile
+            for (int j = 0; j <= i; j++) {  // how many cards in this pile
+                if (piles[BUILDSTACK1.ordinal() + i] == null)
+                    piles[BUILDSTACK1.ordinal() + i] = new BuildStack();
+                else
+                    piles[BUILDSTACK1.ordinal() + i].add(new Card());
             }
         }
+        
     }
 
 
