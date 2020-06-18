@@ -69,7 +69,9 @@ public class BoardController implements I_BoardController {
                 // to se if the current card can move there to.
 
                 for (int to = 0; to < piles.length; to++) {
-                    if ( piles[to].canMoveTo( cards ) ){
+                    if(from == to){
+                        // do nothing. shouldent move to and from the same
+                    }else if ( piles[to].canMoveTo( cards ) ){
 
                         // todo better practice solution to this problem than checking the class
                         // before making the move we want to know:
@@ -94,6 +96,9 @@ public class BoardController implements I_BoardController {
 
     public Move pickMove(List<Move> moves){
 
+        if( moves.size() == 0){
+            return null;
+        }
         // so we want to sort the moves by two values
         // 1st priority : does it move something into the ace pile
         // 2nd priority : does it reveal an unknown card

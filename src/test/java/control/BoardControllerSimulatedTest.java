@@ -14,6 +14,7 @@ import java.util.List;
 class BoardControllerSimulatedTest {
 
     private class testBoardCont extends BoardControllerSimulated{
+
         List<Card> cards = new ArrayList<>(8);
         public testBoardCont( Card ncards[] ){
             int q = 0;
@@ -30,6 +31,7 @@ class BoardControllerSimulatedTest {
         public List<Card> getUserInput(String UiChoice) {
             return cards;
         }
+
     }
 
     @Test
@@ -38,13 +40,13 @@ class BoardControllerSimulatedTest {
         // first Test. is for an ImpossibleGame. this game has no moves.
         List<Move> res = getPosMoves(
                 // the Cards Ordering are fixed  in the contstructor of the testBoard
-                new Card( E_CardSuit.HEARTS , 2 ),     // the drawStack
+                new Card( E_CardSuit.SPADES , 2 ),     // the drawStack
                 new Card( E_CardSuit.SPADES , 3  ),     // buildStack 1
-                new Card( E_CardSuit.HEARTS , 4  ),     // buildStack 2
+                new Card( E_CardSuit.SPADES , 4  ),     // buildStack 2
                 new Card( E_CardSuit.SPADES , 5  ),     // buildStack 3
-                new Card( E_CardSuit.HEARTS , 6  ),     // buildStack 4
+                new Card( E_CardSuit.SPADES , 6  ),     // buildStack 4
                 new Card( E_CardSuit.SPADES , 7  ),   // buildStack 5
-                new Card( E_CardSuit.HEARTS , 8  ),      // buildStack 6
+                new Card( E_CardSuit.SPADES , 8  ),      // buildStack 6
                 new Card( E_CardSuit.SPADES , 9  )      // buildStack 7
         );
 
@@ -65,6 +67,7 @@ class BoardControllerSimulatedTest {
         testBoardCont boardCnt = new testBoardCont(cards);
         Board board = boardCnt.MakeNewBoard("hej");
         List<Move> result = boardCnt.possibleMoves(board);
+        System.out.println(result);
         return result;
     }
 }
