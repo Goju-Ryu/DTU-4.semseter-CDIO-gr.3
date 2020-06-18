@@ -1,7 +1,6 @@
 package control;
 
 import data.InputDTO;
-import model.I_Move;
 import model.Move;
 import model.cabal.Board;
 import model.cabal.I_BoardModel;
@@ -12,7 +11,9 @@ import model.cabal.internals.card.I_CardModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class is for the individual controlls of each Board,
@@ -24,25 +25,26 @@ import java.util.LinkedList;
  * a move
  */
 public class BoardController implements I_BoardController {
+
     private InputDTO accessInput = new InputDTO();
 
     public I_BoardModel MakeNewBoard(String UiChoice){
         ArrayList<Card> usrInput = getUserInput(UiChoice);
-
         I_BoardModel board = new Board(usrInput.get(0), usrInput.get(5), usrInput.get(6),
                 usrInput.get(7),usrInput.get(8), usrInput.get(9), usrInput.get(10),
                 usrInput.get(11));
         return board;
     }
-    public LinkedList<I_Move> possibleMoves(I_BoardModel boardModel){
-        LinkedList<I_Move> moves = new LinkedList<>();
+
+    public LinkedList<Move> possibleMoves(I_BoardModel boardModel){
+        LinkedList<Move> moves = new LinkedList<>();
         I_SolitaireStacks[] piles = boardModel.getPiles();
 
         // go through each card in each pile
         // so i save the current pile as pile
         // and i do a for each card in this pile.
 
-        for(int from =0; from<piles.length;from++){
+        for(int from = 0; from < piles.length;from++){
             I_SolitaireStacks pile = piles[from];
             for (int depth = 1; depth <= pile.size() ; depth++) {
 
@@ -80,21 +82,105 @@ public class BoardController implements I_BoardController {
                         // depth == the pile we are looking to move to
                         // to    == the depth of our moving range
 
-                        I_Move move = new Move(to,from,depth,improveAce,improveCardReveal, "Move Desc");
+                        Move move = new Move(to,from,depth,improveAce,improveCardReveal, "Move Desc");
                         moves.add(move);
                     }
                 }
             }
         }
-        return null;
+        return moves;
+    }
+
+    public void pickMove(List<Move> moves){
+
+
+
+
     };
 
-    public void pickMove(Board[] moves){
-
-    };
 
     public ArrayList<Card> getUserInput(String UiChoice){
         return accessInput.getUsrInput(UiChoice);
     }
 
+    private List<Move> pickMoveInternalSorting(List<Move> moves){
+
+        // first i want to sort for Ace move priorities.
+        // this is the first priority to move cards onto the ace piles.
+        // so i sort the array, based on an internal variable that defines if this move, moves a card to the ace pile
+
+        Comparator<Move> comp = new Comparator<>() {
+
+            // i am making a custom comparator to compare elements of the list via this priority
+            // the assignment here is to return 1, if move 1 improves ace, and move 2 does not
+            // return 0, if they both improve , or are neutral in this regard.
+            // return -1 if move 1 does not improve the ace pile, and move 2 does.
+
+            @Override
+            public int compare(Move o1, Move o2) {
+                // if they are equals
+                if( o1.improvesAceCondition() == o2.improvesAceCondition()){
+                    return 0;
+                }
+
+                // now we know they arent equals. so if o1 is true, then o2 is false
+                // and if 02 is true, o1 is false. ergo we need only check one of them
+
+                if(o1.improvesAceCondition()){
+                    return 1;
+                }else{
+                    return -1;
+                }
+
+            }
+        };
+
+        // so now we actually sort this List using the comparator.
+        // if then the first element doesnt have an improves ace condition. then
+        // that must mean we cant use this as a priority for picking a move.
+
+        moves.sort(comp);
+        if(!moves.get(0).improvesAceCondition()){
+            return moves;
+        }
+
+        // so now we need to make a new comparator that can compare the second priority
+        // can sort the list according to this priority.
+
+        Comparator<Move> comp = new Comparator<>() {
+
+            // i am making a custom comparator to compare elements of the list via this priority
+            // the assignment here is to return 1, if move 1 improves ace, and move 2 does not
+            // return 0, if they both improve , or are neutral in this regard.
+            // return -1 if move 1 does not improve the ace pile, and move 2 does.
+
+            @Override
+            public int compare(Move o1, Move o2) {
+                // if they are equals
+                if( o1.improvesAceCondition() == o2.improvesAceCondition()){
+                    return 0;
+                }
+
+                // now we know they arent equals. so if o1 is true, then o2 is false
+                // and if 02 is true, o1 is false. ergo we need only check one of them
+
+                if(o1.improvesAceCondition()){
+                    return 1;
+                }else{
+                    return -1;
+                }
+
+            }
+        };
+
+        // so now we actually sort this List using the comparator.
+        // if then the first element doesnt have an improves ace condition. then
+        // that must mean we cant use this as a priority for picking a move.
+
+        moves.sort(comp);
+        if(!moves.get(0).improvesAceCondition()){
+            return moves;
+        }
+
+    }
 }

@@ -1,7 +1,7 @@
 package control;
 
 import data.InputSimDTO;
-import model.I_Move;
+import model.Move;
 import model.cabal.Board;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.card.Card;
@@ -33,7 +33,7 @@ public class BoardControllerSimulated extends BoardController {
     }
 
     @Override
-    public LinkedList<I_Move> possibleMoves(I_BoardModel boardModel) {
+    public LinkedList<Move> possibleMoves(I_BoardModel boardModel) {
         super.possibleMoves(boardModel);
         return null;
     }

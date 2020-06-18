@@ -1,12 +1,10 @@
 package control;
 
-import data.InputDTO;
-import model.cabal.Board;
+import model.Move;
 import model.cabal.I_BoardModel;
-import model.cabal.internals.card.Card;
-import model.cabal.internals.card.E_CardSuit;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+
 /**
  * This class is for controlling an entire game,
  * trough multiple states of the game
@@ -27,7 +25,9 @@ public class GameController implements I_GameController{
         }else{
             boardMod = boardCtrl.MakeNewBoard(UiChoice);
         }
-        boardCtrl.possibleMoves(boardMod);
+
+        LinkedList<Move> moves = boardCtrl.possibleMoves(boardMod);
+        boardCtrl.pickMove(moves);
 
     }
 

@@ -29,6 +29,7 @@ public final class Board implements I_BoardModel {
     private PropertyChangeSupport change;
 
     private I_SolitaireStacks[] piles;
+
     //can start here
     public Board(Card drawStack, Card buildstack1, Card buildstack2,
                  Card buildstack3, Card buildstack4, Card buildstack5,
