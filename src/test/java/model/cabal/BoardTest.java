@@ -6,21 +6,40 @@ import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static model.cabal.E_PileID.*;
+
 class BoardTest {
 
     @Test
+    void constructor() {
+        Map<String, I_CardModel> map = new HashMap<>();
+        for (int i = 2; i <= 7; i++) {
+            map.put("BUILDSTACK" + i, new Card(E_CardSuit.SPADES, i+1));
+        }
+        map.put("BUILDSTACK1", new Card(E_CardSuit.SPADES, 1));
+
+        I_BoardModel board = new Board(map);
+
+        assertEquals(7, board.getPile(E_PileID.BUILDSTACK7).size());
+        assertEquals(1, board.getPile(E_PileID.BUILDSTACK1).size());
+        assertEquals(24, board.getPile(E_PileID.TURNPILE).size());
+        assertEquals(0, board.getPile(E_PileID.HEARTSACEPILE).size());
+    }
+
+    @Test
     void isStackComplete() {
+        Map<String, I_CardModel> map = new HashMap<>();
+        map.put("TURNPILE", new Card(E_CardSuit.SPADES,2));
+        for (int i = 2; i < 7; i++) {
+            map.put("BUILDSTACK" + i, new Card(E_CardSuit.SPADES, i+1));
+        }
+        map.put("BUILDSTACK1", new Card(E_CardSuit.SPADES, 1));
 
-        Card card1 = new Card(E_CardSuit.SPADES,2);
-        Card card2 = new Card(E_CardSuit.SPADES,1);
-        Card card3 = new Card(E_CardSuit.SPADES,3);
-        Card card4 = new Card(E_CardSuit.SPADES,4);
-        Card card5 = new Card(E_CardSuit.SPADES,5);
-        Card card6 = new Card(E_CardSuit.SPADES,6);
-        Card card7 = new Card(E_CardSuit.SPADES,7);
-        Card card8 = new Card(E_CardSuit.SPADES,8);
-
-        I_BoardModel board = new Board(card1,card2,card3,card4,card5,card6,card7,card8);
+        I_BoardModel board = new Board(map);
         //I_BoardModel boardModel = new Board()
 
         //board.turnCard()
