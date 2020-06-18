@@ -2,7 +2,8 @@ import numpy as np
 from cv2 import cv2
 
 from GUI.SettingsObject import SettingsObject
-from VideoInput.Video import SVideo, Video
+from VideoInput.Video import SVideo, Video, videoGen
+
 
 def empty(x):
     pass
@@ -16,9 +17,8 @@ class SettingsGUI():
 
 
     def run(self):
-        vid = Video()
-        img = vid.getFrame()
-        size=(900,100)
+        gen = videoGen()
+        vid = gen.getVideo()
 
         self.windowName = "window"
         cv2.namedWindow(self.windowName)
@@ -27,15 +27,15 @@ class SettingsGUI():
         cv2.createTrackbar("H_min", self.windowName, 50, 180, empty)
         cv2.createTrackbar("H_max", self.windowName, 90, 180, empty)
 
-        cv2.createTrackbar("S_min", self.windowName, 60, 255, empty)
-        cv2.createTrackbar("S_max", self.windowName, 230, 255, empty)
+        cv2.createTrackbar("S_min", self.windowName, 0, 255, empty)
+        cv2.createTrackbar("S_max", self.windowName, 255, 255, empty)
 
-        cv2.createTrackbar("V_min", self.windowName, 60, 255, empty)
-        cv2.createTrackbar("V_max", self.windowName, 230, 255, empty)
+        cv2.createTrackbar("V_min", self.windowName, 0, 255, empty)
+        cv2.createTrackbar("V_max", self.windowName, 255, 255, empty)
 
         while True:
             img = vid.getFrame()
-            img = cv2.resize(img,size)
+            img = cv2.resize(img,(900,100))
 
             # everyFrame we update the HSV values.
             Hmin = cv2.getTrackbarPos("H_min",self.windowName)

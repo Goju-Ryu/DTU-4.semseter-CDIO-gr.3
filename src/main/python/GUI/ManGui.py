@@ -2,10 +2,10 @@ from AbstractUi import AbstractUI
 from tkinter import *
 import json as json
 #====================================
-# ManGUI or Manual GUI - requres you to manully enter the input data
+# ManGUI or Manual GUI - requires you to manually enter the input data
 #------------------------------------
 # This file containing a GUI is
-# intented to work as to test sercer communication
+# intended to work as to test server communication
 # as well as a back-up should open CV not work
 #====================================.
 
@@ -20,16 +20,16 @@ def stringToJson(inputStr):
     elif(su == "c"):
         suit = "Clubs"
     elif(su == "d"):
-        suit = "Dimonds"
+        suit = "Diamonds"
     elif(su == "s"):
         suit = "Spades"
-    returnStr = json.dumps(
-        {"suit" : suit, "rank" : nr}
-    )
-    return returnStr
+
+    returnStrings = [suit, nr]
+
+    return returnStrings
 
 class ManGUI(AbstractUI):
-    input =""
+    input = ""
     def updateInp(self,newString):
         self.input = newString
 
@@ -72,7 +72,7 @@ class ManGUI(AbstractUI):
         myLabel4 = Label(root, text="CDIO DTU GR. 3")
         myLabel5 = Label(root, text="h1 = hearts 1")
         myLabel6 = Label(root, text="c2 = clubs 2")
-        myLabel7 = Label(root, text="d1 = dimonds 1")
+        myLabel7 = Label(root, text="d1 = diamonds 1")
         myLabel8 = Label(root, text="s5 = spades 5")
 
 
@@ -94,22 +94,33 @@ class ManGUI(AbstractUI):
             butLabel = Label(root, text =clickCount)
             butLabel.grid(row =3, column=7)
 
+            # stringToJson(...) now returns a list containing two strings: "[suitInput]", "[rankInput]"
             inp = json.dumps(
-                {
-                    "drawPile": [stringToJson(ePile.get())],
-                    "suitStack1": [stringToJson(eSuit1.get())],
-                    "suitStack2": [stringToJson(eSuit2.get())],
-                    "suitStack3": [stringToJson(eSuit3.get())],
-                    "suitStack4": [stringToJson(eSuit4.get())],
-                    "column1": [stringToJson(ecol1.get())],
-                    "column2": [stringToJson(ecol2.get())],
-                    "column3": [stringToJson(ecol3.get())],
-                    "column4": [stringToJson(ecol4.get())],
-                    "column5": [stringToJson(ecol5.get())],
-                    "column6": [stringToJson(ecol6.get())],
-                    "column7": [stringToJson(ecol7.get())]
-                }
+                {"drawPile": {"suit": stringToJson(ePile.get())[0], "rank": stringToJson(ePile.get())[1]},
+                "SuitStackHearts": {"suit": stringToJson(eSuit1.get())[0], "rank": stringToJson(eSuit1.get())[1]},
+                "SuitStackClubs": {"suit": stringToJson(eSuit2.get())[0], "rank": stringToJson(eSuit2.get())[1]},
+                "SuitStackDiamonds": {"suit": stringToJson(eSuit3.get())[0], "rank": stringToJson(eSuit3.get())[1]},
+                "SuitStackSpades": {"suit": stringToJson(eSuit4.get())[0], "rank": stringToJson(eSuit4.get())[1]},
+                "Column1": {"suit": stringToJson(ecol1.get())[0], "rank": stringToJson(ecol1.get())[1]},
+                "Column2": {"suit": stringToJson(ecol2.get())[0], "rank": stringToJson(ecol2.get())[1]},
+                "Column3": {"suit": stringToJson(ecol3.get())[0], "rank": stringToJson(ecol3.get())[1]},
+                "Column4": {"suit": stringToJson(ecol4.get())[0], "rank": stringToJson(ecol4.get())[1]},
+                "Column5": {"suit": stringToJson(ecol5.get())[0], "rank": stringToJson(ecol5.get())[1]},
+                "Column6": {"suit": stringToJson(ecol6.get())[0], "rank": stringToJson(ecol6.get())[1]},
+                "Column7": {"suit": stringToJson(ecol7.get())[0], "rank": stringToJson(ecol7.get())[1]}}
             )
+            # {"drawPile": {"suit": "Clubs", "rank": "2"},
+            #  "SuitStackHearts": {"suit": "", "rank": ""},
+            #  "SuitStackClubs": {"suit": "", "rank": ""},
+            #  "SuitStackDiamonds": {"suit": "", "rank": ""},
+            #  "SuitStackSpades": {"suit": "", "rank": ""},
+            #  "Column1": {"suit": "Hearts", "rank": "3"},
+            #  "Column2": {"suit": "Hearts", "rank": "4"},
+            #  "Column3": {"suit": "Hearts", "rank": "5"},
+            #  "Column4": {"suit": "Hearts", "rank": "6"},
+            #  "Column5": {"suit": "Hearts", "rank": "7"},
+            #  "Column6": {"suit": "Hearts", "rank": "9"},
+            #  "Column7": {"suit": "Hearts", "rank": "10"}}
             self.updateInp(inp)
             print(inp)
             root.destroy()
@@ -122,7 +133,18 @@ class ManGUI(AbstractUI):
         # should be comented out when not developing
         def myMove():
             inp = json.dumps(
-                {"drawPile": ["{\"suit\": \"Clubs\", \"rank\": \"2\"}"], "suitStack1": ["{\"suit\": \"\", \"rank\": \"\"}"], "suitStack2": ["{\"suit\": \"\", \"rank\": \"\"}"], "suitStack3": ["{\"suit\": \"\", \"rank\": \"\"}"], "suitStack4": ["{\"suit\": \"\", \"rank\": \"\"}"], "column1": ["{\"suit\": \"Hearts\", \"rank\": \"3\"}"], "column2": ["{\"suit\": \"Hearts\", \"rank\": \"4\"}"], "column3": ["{\"suit\": \"Hearts\", \"rank\": \"5\"}"], "column4": ["{\"suit\": \"Hearts\", \"rank\": \"6\"}"], "column5": ["{\"suit\": \"Hearts\", \"rank\": \"7\"}"], "column6": ["{\"suit\": \"Hearts\", \"rank\": \"9\"}"], "column7": ["{\"suit\": \"Hearts\", \"rank\": \"10\"}"]}
+                {"drawPile": {"suit": "Clubs", "rank": "2"},
+                 "SuitStackHearts": {"suit": "", "rank": ""},
+                 "SuitStackClubs": {"suit": "", "rank": ""},
+                 "SuitStackDiamonds": {"suit": "", "rank": ""},
+                 "SuitStackSpades": {"suit": "", "rank": ""},
+                 "Column1": {"suit": "Hearts", "rank": "3"},
+                 "Column2": {"suit": "Hearts", "rank": "4"},
+                 "Column3": {"suit": "Hearts", "rank": "5"},
+                 "Column4": {"suit": "Hearts", "rank": "6"},
+                 "Column5": {"suit": "Hearts", "rank": "7"},
+                 "Column6": {"suit": "Hearts", "rank": "9"},
+                 "Column7": {"suit": "Hearts", "rank": "10"}}
             )
 
 
