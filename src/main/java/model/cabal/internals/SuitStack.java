@@ -61,6 +61,7 @@ public class SuitStack extends StackBase {
         }
 
         if (stack.isEmpty()){
+            assert card != null;
             if (card.getRank() == 1){
                 return true;
             }else {

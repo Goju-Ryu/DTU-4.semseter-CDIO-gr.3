@@ -29,7 +29,7 @@ class BoardTest {
         if (board.canMove(E_PileID.BUILDSTACK1,0,E_PileID.SPADESACEPILE)) {
             System.out.println("The move is legal");
         }
-         //board.move(E_PileID.BUILDSTACK1,E_PileID.SPADESACEPILE);
+         //board.move(E_PileID.BUILDSTACK1,E_PileID.SPADESACEPILE, );
 
 
 
