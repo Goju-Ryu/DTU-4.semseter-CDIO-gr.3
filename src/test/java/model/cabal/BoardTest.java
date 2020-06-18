@@ -1,5 +1,6 @@
 package model.cabal;
 
+import model.GameCardDeck;
 import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
@@ -47,8 +48,7 @@ class BoardTest {
         I_BoardModel board = new Board(map);
         //I_BoardModel boardModel = new Board()
 
-        var imgData = Map.of(E_PileID.TURNPILE.name(), (I_CardModel) new Card(E_CardSuit.SPADES, 1));
-        board.turnCard(imgData);
+        board.turnCard(getImgData(board));
 
 
         if (board.canMove(E_PileID.BUILDSTACK1, E_PileID.SPADESACEPILE)) {
@@ -150,10 +150,15 @@ class BoardTest {
      * @return a random face up card within the confines of legal suit and rank values
      */
     private I_CardModel getRandCard() {
+        var deck = GameCardDeck.getInstance();
+        var deckIterator = deck.iterator();
         var rand = new Random();
-        var randSuit = rand.nextInt(E_CardSuit.values().length);
-        var randRank = rand.nextInt(13);
+        var randIndex = rand.nextInt(deck.size());
+        I_CardModel card = deckIterator.next();
+        for (int i = 0; i < randIndex; i++) {
+            card = deckIterator.next();
+        }
 
-        return new Card(E_CardSuit.values()[randSuit], randRank);
+        return card;
     }
 }
