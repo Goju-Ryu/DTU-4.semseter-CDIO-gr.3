@@ -23,12 +23,8 @@ public class BoardControllerSimulated extends BoardController {
     private InputSimDTO accessInput = new InputSimDTO();
 
     @Override
-    public Board MakeNewBoard(String UiChoice) {
-        List<Card> usrInput = getUserInput(UiChoice);
-        Board board = new Board(usrInput.get(0), usrInput.get(5), usrInput.get(6),
-                usrInput.get(7),usrInput.get(8), usrInput.get(9), usrInput.get(10),
-                usrInput.get(11));
-        return board;
+    public I_BoardModel MakeNewBoard(String UiChoice) {
+        return super.MakeNewBoard(UiChoice);
     }
 
     @Override

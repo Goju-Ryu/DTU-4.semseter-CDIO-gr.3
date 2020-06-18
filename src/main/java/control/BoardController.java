@@ -37,7 +37,7 @@ public class BoardController implements I_BoardController {
     private InputDTO accessInput = new InputDTO();
 
     public I_BoardModel MakeNewBoard(String UiChoice){
-        ArrayList<Card> usrInput = accessInput.getUsrInput(UiChoice);
+        List<Card> usrInput = getUserInput(UiChoice);
 
         Map<String, I_CardModel> usrInputMap = new HashMap<>();
         usrInputMap.put(TURNPILE.name(), usrInputMap.get(0));
@@ -89,6 +89,7 @@ public class BoardController implements I_BoardController {
                 // to se if the current card can move there to.
 
                 for (int to = 0; to < piles.length; to++) {
+
                     if(from == to){
                         // do nothing. shouldent move to and from the same
                     }else if ( piles[to].canMoveTo( cards ) ){
@@ -108,6 +109,7 @@ public class BoardController implements I_BoardController {
                         Move move = new Move(to,from,depth,improveAce,improveCardReveal, "Move Desc");
                         moves.add(move);
                     }
+
                 }
             }
         }
