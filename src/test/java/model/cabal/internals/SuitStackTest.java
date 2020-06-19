@@ -26,21 +26,23 @@ class SuitStackTest {
         if (suitStack.canMoveFrom(1)){
             System.out.println("passed canMoveFrom test");
 
-            Collection<I_CardModel> suitStack1 = suitStack.popSubset(1);
+            Collection<I_CardModel> newSuitStack = suitStack.popSubset(1);
+
+            assertNotNull(newSuitStack);
 
             // The new suit stack with the one card in it
-            for (I_CardModel card1 : suitStack){
+            for (I_CardModel card1 : newSuitStack){
                 System.out.println("The new suit stack: "+card1);
             }
 
-            System.out.println("Card in that is popped from the drawstack: "+suitStack1.iterator().next());
-            System.out.println("Card to compare with: "+card);
+            System.out.println("Card in that is popped from the drawstack: "+newSuitStack.iterator().next());
+            System.out.println("Card to compare with: " + card);
 
             // The method will throw an exception if you try to pop more than range 1
             assertThrows(IllegalMoveException.class,() -> suitStack.popSubset(2));
 
             // check if the popped card is the card we want
-            assertEquals(card,suitStack1.iterator().next());
+            assertEquals(card,newSuitStack.iterator().next());
 
         }else {
             fail();
