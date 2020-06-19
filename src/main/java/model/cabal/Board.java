@@ -52,8 +52,14 @@ public class Board implements I_BoardModel {
         for (E_PileID pileID : E_PileID.values()) {
             var data = extractImgData(imgData, pileID);
 
-            if (data != null)
-                piles[pileID.ordinal()].add(data);
+            if (data != null) {
+                if (GameCardDeck.getInstance().remove(data)) { //if the card was in deck and now removed
+                    piles[pileID.ordinal()].add(data);
+                } else {
+                    throw new IllegalStateException("Trying to add the same card twice during construction.\ncard: " + data);
+                }
+            }
+
         }
     }
 
