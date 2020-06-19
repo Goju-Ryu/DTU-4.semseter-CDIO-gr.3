@@ -12,7 +12,7 @@ import java.util.List;
 
 public class HeartStack extends SuitStack {
 
-    private final E_PileID pileID = E_PileID.HEARTSACEPILE;
+    private final E_PileID pileID = E_PileID.SUITSTACKHEARTS;
     private final E_CardSuit stackSuit = E_CardSuit.HEARTS;
 
     public HeartStack(List<I_CardModel> list) {

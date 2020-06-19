@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ClubsStack extends SuitStack {
 
-    private final E_PileID pileID = E_PileID.CLUBSACEPILE;
+    private final E_PileID pileID = E_PileID.SUITSTACKCLUBS;
     private final E_CardSuit stackSuit = E_CardSuit.CLUBS;
 
     public ClubsStack(List<I_CardModel> list) {

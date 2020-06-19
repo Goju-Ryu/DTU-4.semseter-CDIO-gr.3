@@ -12,7 +12,7 @@ import java.util.List;
 
 public class DiamondsStack extends SuitStack {
 
-    private final E_PileID pileID = E_PileID.DIAMONDACEPILE;
+    private final E_PileID pileID = E_PileID.SUITSTACKDIAMONDS;
     private final E_CardSuit stackSuit = E_CardSuit.DIAMONDS;
 
     public DiamondsStack(List<I_CardModel> list) {

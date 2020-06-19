@@ -12,7 +12,7 @@ import java.util.List;
 
 public class SpadesStack extends SuitStack{
 
-    private final E_PileID pileID = E_PileID.SPADESACEPILE;
+    private final E_PileID pileID = E_PileID.SUITSTACKSPADES;
     private final E_CardSuit stackSuit = E_CardSuit.SPADES;
 
     public SpadesStack(List<I_CardModel> list) {
