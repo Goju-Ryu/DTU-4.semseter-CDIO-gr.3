@@ -1,3 +1,5 @@
+**NB:** Do to a restructuring, git commits and stats are not representive of who did what.
+
 # DTU-4.semseter-CDIO-gr.3
 A program that allows you to play soliatre, you give it a pictute or number representation of the board and it gives you a move. 
 The project is build so that it could be run over a network, if the computer you pocess is not strong enough to compute the images.
