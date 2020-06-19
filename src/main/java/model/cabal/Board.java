@@ -14,6 +14,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 import static model.cabal.E_PileID.*;
+import static model.cabal.internals.card.E_CardSuit.*;
 
 
 /**
@@ -201,22 +202,41 @@ public final class Board implements I_BoardModel {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
-        return isValidMove(from, to)
+        return isValidMove(origin, originPos, destination)
                && from.canMoveFrom(originPos)
                && to.canMoveTo(from.getSubset(originPos));
     }
 
-    private boolean isValidMove(I_SolitaireStacks from, I_SolitaireStacks to) {
+    private boolean isValidMove(E_PileID from, int originPos, E_PileID to) {
 
         // if you try to move to the same stack
         if(from == to)
             return false;
 
-        var turnPile = get(TURNPILE);
-
         // If you try to move to the turn pile
-        if (to.equals(turnPile))
+        if (to.equals(TURNPILE))
             return false;
+
+        var toPile = get(from);
+        var cardSuits = toPile.getSubset(originPos).stream()
+                .map(I_CardModel::getSuit);
+        switch (to) {
+            case HEARTSACEPILE:
+                if (cardSuits.anyMatch( suit -> !suit.equals(HEARTS)))
+                break;
+            case DIAMONDACEPILE:
+                if (cardSuits.anyMatch( suit -> !suit.equals(DIAMONDS)))
+                    return false;
+                break;
+            case SPADESACEPILE:
+                if (cardSuits.anyMatch( suit -> !suit.equals(SPADES)))
+                    return false;
+                break;
+            case CLUBSACEPILE:
+                if (cardSuits.anyMatch( suit -> !suit.equals(CLUBS)))
+                    return false;
+                break;
+        }
 
         return true;
     }
