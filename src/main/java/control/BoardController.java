@@ -6,17 +6,12 @@ import model.Move;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
-import model.cabal.internals.I_SolitaireStacks;
-import model.cabal.internals.SuitStack;
-import model.cabal.internals.card.Card;
-import model.cabal.internals.card.I_CardModel;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 import static model.cabal.E_PileID.*;
 
@@ -31,20 +26,23 @@ import static model.cabal.E_PileID.*;
 */
 public class BoardController implements I_BoardController {
 
-    protected I_InputDTO accessInput;
+    protected I_BoardModel boardModel;
+    protected I_InputDTO inputDTO;
     protected String uiChoice;
+
+    public BoardController() {
+
+    }
 
     public BoardController(String uiChoice) {
         this.uiChoice = uiChoice;
-        accessInput = new InputDTO(uiChoice);
+        inputDTO = new InputDTO(uiChoice);
+        this.boardModel = new Board(inputDTO.getUsrInput());
     }
 
-    public I_BoardModel MakeNewBoard(String uiChoice){
-        return new Board(getUserInput());
-    }
 
     @Override
-    public List<Move> possibleMoves(I_BoardModel boardModel){
+    public List<Move> possibleMoves(){
 
         LinkedList<Move> moves = new LinkedList<>();
 
@@ -83,61 +81,49 @@ public class BoardController implements I_BoardController {
         return moves;
     }
 
-    public Move pickMove(List<Move> moves){
+    public Move pickMove(List<Move> moves) {
 
-        if( moves.size() == 0){
+        if(moves.size() == 0){
             return null;
         }
-
-        // so we want to sort the moves by two values
-        // 1st priority : does it move something into the ace pile
-        // 2nd priority : does it reveal an unknown card
-        // then the list would have the elements that does both first,
-        // then the element that does 1st priority
-        // then the elements that does the 2nd priority
-        // then then the elements that does none of these things.
-
-        Comparator<Move> comp = new Comparator<>() {
-
-            // i am making a custom comparator to compare elements of the list via this priority
-            // the assignment here is to return 1, if move 1 improves ace, and move 2 does not
-            // return 0, if they both improve , or are neutral in this regard.
-            // return -1 if move 1 does not improve the ace pile, and move 2 does.
-
-            @Override
-            public int compare(Move o1, Move o2) {
-
-                // we set up a scenario on checking the first Priority condition,
-                // this means we se if the ace condition is improved.
-                if( o1.improvesAceCondition() == o2.improvesAceCondition()) {
-                    return secondPrio(o1,o2);
-                }else{
-                    // o1 and o2 values are oposate each other, so we can check one of them then asume the reversed
-                    if(o1.improvesAceCondition())
-                        return 1;
-                    return -1;
-                }
-            }
-
-            // this methods job is to return 1 if move o1 is better than o2
-            // better being revealing an unknown card.
-            private int secondPrio(Move o1, Move o2){
-                if (o1.improvesByTurningCard() == o2.improvesByTurningCard()){
-                    return 0;
-                }else{
-                    // o1 and o2 values are oposate each other, so we can check one of them then asume the reversed
-                    if(o1.improvesByTurningCard())
-                        return 1;
-                    return -1;
-                }
-            }
-
-        };
 
         // now that the list is sorted. we return the best element, the first one.
         moves.sort(comp);
         return moves.get(0);
 
-    };
+    }
 
+    @Override
+    public void makeMove(Move move) {
+        boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
+    }
+
+
+    // so we want to sort the moves by two values
+    // 1st priority : does it move something into the ace pile
+    // 2nd priority : does it reveal an unknown card
+    // then the list would have the elements that does both first,
+    // then the element that does 1st priority
+    // then the elements that does the 2nd priority
+    // then then the elements that does none of these things.
+    private Comparator<Move> comp = (o1,  o2) -> {
+        // we set up a scenario on checking the first Priority condition,
+        // this means we se if the ace condition is improved.
+        if( o1.improvesAceCondition() == o2.improvesAceCondition()) {
+            // better being revealing an unknown card.
+            if (o1.improvesByTurningCard() == o2.improvesByTurningCard()){
+                return 0;
+            }else{
+                // o1 and o2 values are oposate each other, so we can check one of them then asume the reversed
+                if(o1.improvesByTurningCard())
+                    return 1;
+                return -1;
+            }
+        }else{
+            // o1 and o2 values are oposate each other, so we can check one of them then asume the reversed
+            if(o1.improvesAceCondition())
+                return 1;
+            return -1;
+        }
+    };
 }
