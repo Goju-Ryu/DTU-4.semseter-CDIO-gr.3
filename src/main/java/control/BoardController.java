@@ -41,10 +41,10 @@ public class BoardController implements I_BoardController {
 
         Map<String, I_CardModel> usrInputMap = new HashMap<>();
         usrInputMap.put(TURNPILE.name(), usrInput.get(0));
-        usrInputMap.put(HEARTSACEPILE.name(), usrInput.get(1));
-        usrInputMap.put(DIAMONDACEPILE.name(), usrInput.get(2));
-        usrInputMap.put(SPADESACEPILE.name(), usrInput.get(3));
-        usrInputMap.put(CLUBSACEPILE.name(), usrInput.get(4));
+        usrInputMap.put(HEARTSACEPILE.name(), null);
+        usrInputMap.put(DIAMONDACEPILE.name(), null);
+        usrInputMap.put(SPADESACEPILE.name(), null);
+        usrInputMap.put(CLUBSACEPILE.name(), null);
         usrInputMap.put(BUILDSTACK1.name(), usrInput.get(5));
         usrInputMap.put(BUILDSTACK2.name(), usrInput.get(6));
         usrInputMap.put(BUILDSTACK3.name(), usrInput.get(7));

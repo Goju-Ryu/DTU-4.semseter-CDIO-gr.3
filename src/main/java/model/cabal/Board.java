@@ -56,11 +56,9 @@ public final class Board implements I_BoardModel {
             if (data != null)
                 piles[pileID.ordinal()].add(data);
         }
-        
     }
 
 //---------  Genneral methods  -------------------------------------------------------------------------------------
-
 
     @Override
     public boolean isStackComplete(E_PileID pileID) {
