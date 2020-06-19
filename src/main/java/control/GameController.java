@@ -1,9 +1,12 @@
 package control;
 
 import model.Move;
+import model.cabal.Board;
 import model.cabal.I_BoardModel;
 
 import java.util.List;
+import java.util.Scanner;
+import java.util.logging.Logger;
 
 /**
  * This class is for controlling an entire game,
@@ -16,19 +19,37 @@ import java.util.List;
 
 public class GameController implements I_GameController{
 
-    //Todo implement this so that it returns I_BoardModel here
-    public void startGame(String UiChoice){
-        I_BoardController boardCtrl = new BoardController();
-        I_BoardModel boardMod = null;
-        if(UiChoice =="simulation"){
-            //TODO: implement that it can iniate a simulated board here
-        }else{
-            boardMod = boardCtrl.MakeNewBoard(UiChoice);
-        }
+    I_BoardController boardCtrl;
+    Logger log = Logger.getLogger(getClass().getName());
+    Scanner scan = new Scanner(System.in).useDelimiter("(\\b|\\B)");
 
-        List<Move> moves = boardCtrl.possibleMoves(boardMod);
-        boardCtrl.pickMove(moves);
+    public void startGame(String uiChoice){
+        if (uiChoice.equalsIgnoreCase("sim"))
+            boardCtrl = new BoardControllerSimulated();
+        else
+            boardCtrl = new BoardController(uiChoice);
 
+        gameLoop();
+
+    }
+
+    private void gameLoop() {
+        List<Move> moves;
+        do {
+            moves = boardCtrl.possibleMoves();
+            log.info("Possible moves: " + moves.size());
+            Move move = boardCtrl.pickMove(moves);
+            log.info("Chose move: " + move);
+            promptPlayer(move);
+            if (move != null)
+                boardCtrl.makeMove(move);
+        } while (moves.size() > 0);
+    }
+
+
+    private void promptPlayer(Move move) {
+        System.out.println("Complete the following move, then press any button to continue:\n\t" + move);
+        scan.next();
     }
 
 }

@@ -1,13 +1,19 @@
 package control;
 
 import data.InputSimDTO;
+import data.MockBoard;
 import model.Move;
 import model.cabal.Board;
+import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
-import model.cabal.internals.card.Card;
+import model.cabal.internals.I_SolitaireStacks;
+import model.cabal.internals.card.I_CardModel;
+import model.error.IllegalMoveException;
 
-import java.util.LinkedList;
+import java.beans.PropertyChangeListener;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class is for the individual controlls of each Board,
@@ -20,26 +26,22 @@ import java.util.List;
  */
 public class BoardControllerSimulated extends BoardController {
 
-    private InputSimDTO accessInput = new InputSimDTO();
+    private I_BoardModel refBoardModel;
 
-    @Override
-    public I_BoardModel MakeNewBoard(String UiChoice) {
-        return super.MakeNewBoard(UiChoice);
+     public BoardControllerSimulated() {
+         this(new MockBoard());
+     }
+
+    public BoardControllerSimulated(I_BoardModel refBoard) {
+        refBoardModel = refBoard;
+        inputDTO = new InputSimDTO(refBoardModel);
+        boardModel = new Board(inputDTO.getUsrInput());
     }
 
     @Override
-    public List<Move> possibleMoves(I_BoardModel boardModel) {
-        return super.possibleMoves(boardModel);
-    }
-
-    @Override
-    public Move pickMove(List<Move> moves) {
-        return super.pickMove(moves);
-    }
-
-    @Override
-    public List<Card> getUserInput(String UiChoice) {
-        return accessInput.getUsrInput(UiChoice);
+    public void makeMove(Move move) {
+        refBoardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
+        super.makeMove(move);
     }
 
 }

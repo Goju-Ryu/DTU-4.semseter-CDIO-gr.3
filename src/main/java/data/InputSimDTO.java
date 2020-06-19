@@ -1,67 +1,115 @@
 package data;
 
+import model.GameCardDeck;
+import model.cabal.E_PileID;
+import model.cabal.I_BoardModel;
 import model.cabal.internals.card.Card;
-import model.cabal.internals.card.E_CardSuit;
+import model.cabal.internals.card.I_CardModel;
 
-import java.util.ArrayList;
+import java.util.AbstractMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This class is intented to translate the input string we get to a json object.
  */
-public class InputSimDTO {
-        // Todo ust return less cards at first, because sui stacks arent filled in at start.
+public class InputSimDTO implements I_InputDTO {
 
-    private ArrayList<Card> listTop = new ArrayList<>(4*13);
-    private ArrayList<Card> listAll = new ArrayList<>(4*13);
-    private boolean first = true;
+    private I_BoardModel boardModel;
 
-    public InputSimDTO(){
-        // filling in ALL Cards
-        E_CardSuit[] a = {E_CardSuit.HEARTS, E_CardSuit.DIAMONDS,E_CardSuit.CLUBS,E_CardSuit.SPADES};
-        for (int i = 0; i < 4; i++) {
-            for (int j = 1; j <= 13; j++) {
-                listAll.add(new Card(a[i],j));
-            }
+    /**
+     * A constructor taking no arguments. This will make the class return random unused card in each position.
+     */
+    public InputSimDTO() {
+        this(null);
+    }
+
+    /**
+     * This constructor takes an implementation of the {@link I_BoardModel} interface that it will keep itself
+     * consistent with.
+     * Example uses are:
+     *  - Having a board model used to by the game as internal model, with some face up and some face down cards.
+     *  For face down cards a new random unused card is returned, but for the know values, that value is returned.
+     *  - Having a board model with all cards known to act as the physical board. this class will always return the top
+     *  card of each pile of that board. It does require an outside class to make the "physical" and virtual boards
+     *  stay in sync. If one forgets that, the state will quickly be inconsistent. to do so, remember to use the
+     *  move method with the same parameters in both boards.
+     * @param simulatedBoard The board used as reference for which cards should be returned.
+     */
+    public InputSimDTO(I_BoardModel simulatedBoard){
+       boardModel = simulatedBoard;
+    }
+
+    public void setSimulatedBoard(I_BoardModel simulatedBoard) {
+        boardModel = simulatedBoard;
+    }
+
+
+    @Override
+    public Map<String, I_CardModel> getUsrInput(){
+        if (boardModel != null)
+            return getImgData(boardModel);
+
+        return getImgData();
+    }
+
+    /**
+     * Artificially makes an imageData that agrees with board in all instances except for when a card is face down.
+     * When a face down card is encountered it is replaced by a random face up card.
+     * @param board The board to which the data should conform;
+     * @return a map representing imgData as in the actual system
+     */
+    private Map<String, I_CardModel> getImgData(I_BoardModel board) {
+        return Stream.of(E_PileID.values())
+                .filter(pile -> board.getPile(pile).size() > 1)
+                .map( // transforms elements of the stream to mapEntries
+                        pile -> {
+                            var pileList = board.getPile(pile);
+                            return new AbstractMap.SimpleEntry<>(pile.name(), pileList.get(pileList.size() - 1));
+                        }
+                )
+                .peek(entry -> { if (entry.getValue() == null) entry.setValue(new Card());} )
+                .peek(entry -> { // replaces face down cards with a randomly generated card
+                            if (!entry.getValue().isFacedUp())
+                                entry.setValue(getRandCard());
+                        }
+                )
+                .collect(Collectors.toMap(
+                        AbstractMap.SimpleEntry::getKey,
+                        AbstractMap.SimpleEntry::getValue
+                )); // converts result to a map
+    }
+
+    /**
+     * Artificially makes an imageData that contains a random set of face up cards.
+     * @return a map representing imgData as in the actual system
+     */
+    private Map<String, I_CardModel> getImgData() {
+        return Stream.of(E_PileID.values())
+                .map(pile -> new AbstractMap.SimpleEntry<>(pile.name(), getRandCard()))
+                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+    }
+
+    /**
+     * @return a random face up card within the confines of legal suit and rank values
+     */
+    private I_CardModel getRandCard() {
+        var deck = GameCardDeck.getInstance();
+        var deckIterator = deck.iterator();
+        var rand = new Random();
+        var randIndex = rand.nextInt(deck.size());
+        I_CardModel card = deckIterator.next();
+        for (int i = 0; i < randIndex; i++) {
+            card = deckIterator.next();
         }
 
-        // 7 is the build stacks
-        // 1 is the drawStack
-        // 0 is for the suit stacks
-        for (int i = 0; i < ( 7 + 1 + 0 + 4)  ; i++) {
-            listTop.add(popRanCard());
-        }
+        if (card == null)
+            throw new NoSuchElementException();
+
+        return card;
     }
 
-    public ArrayList<Card> getUsrInput(String UIChoice){
-        if(first){
-          return listTop;
-        }else{
-
-            // todo, remove this and make a method that is called when one decides a move.
-            int ranAll = getRandom( listAll.size() );
-            int ranTop = getRandom( listTop.size() );
-
-            Card newCard = listAll.get(ranAll);
-            listTop.set(ranTop, newCard);
-
-            return listTop;
-        }
-    }
-
-    public Card popRanCard(){
-        int ran = getRandom( listAll.size() );
-        Card c = listAll.get( ran );
-        listAll.remove(ran);
-        return c;
-    }
-    public Card popSelCard(int rank, int suit){
-        int i = rank * suit;
-        Card c = listAll.get(i);
-        listAll.remove(i);
-        return c;
-    }
-
-    private int getRandom(int maxValue){
-        return (int) (Math.random() * maxValue);
-    }
 }
