@@ -1,17 +1,6 @@
 import control.GameController;
 import control.GameControllerSimulated;
 import control.I_GameController;
-import model.cabal.Board;
-import model.cabal.E_PileID;
-import static model.cabal.E_PileID.*;
-import model.cabal.I_BoardModel;
-import model.cabal.internals.card.Card;
-import model.cabal.internals.card.E_CardSuit;
-import model.cabal.internals.card.I_CardModel;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class main {
     public static void main(String[] args) {
