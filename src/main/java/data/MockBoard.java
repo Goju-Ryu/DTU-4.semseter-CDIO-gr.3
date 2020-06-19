@@ -49,7 +49,7 @@ public class MockBoard implements I_BoardModel {
      */
     @Override
     public List<I_CardModel> getPile(E_PileID pile) {
-        return null;
+        return boardImplementation.getPile(pile);
     }
 
     /**
@@ -72,7 +72,7 @@ public class MockBoard implements I_BoardModel {
      */
     @Override
     public I_CardModel turnCard(Map<String, I_CardModel> imgData) {
-        return null;
+        return boardImplementation.turnCard(imgData);
     }
 
     /**
@@ -85,7 +85,7 @@ public class MockBoard implements I_BoardModel {
 
     @Override
     public I_SolitaireStacks[] getPiles() {
-        return new I_SolitaireStacks[0];
+        return boardImplementation.getPiles();
     }
 
     /**
@@ -99,8 +99,9 @@ public class MockBoard implements I_BoardModel {
      */
     @Override
     public void move(E_PileID origin, int originPos, E_PileID destination, Map<String, I_CardModel> imgData) throws IllegalMoveException {
-
+        boardImplementation.move(origin, originPos, destination, imgData);
     }
+
 
     /**
      * This function will determine if the move is legal when you look at the rules
@@ -112,6 +113,28 @@ public class MockBoard implements I_BoardModel {
      */
     @Override
     public boolean canMove(E_PileID origin, int originPos, E_PileID destination) {
+        return false;
+    }
+
+    /**
+     * This function will do the same as the one above, but you dont have to define the position where you
+     * would split the pile.
+     * <p>
+     * This will be useful when moving from turnPile or suitPiles because you can only take the top card in the pile.
+     * <p>
+     * We dont have to implement this.
+     *
+     * @param origin      Where the pile is moved from
+     * @param destination Where the pile is moved to
+     * @return true if legal or false if illegal
+     */
+    @Override
+    public boolean canMove(E_PileID origin, E_PileID destination) {
+        return false;
+    }
+
+    @Override
+    public boolean canMoveFrom(E_PileID origin, int range) {
         return false;
     }
 

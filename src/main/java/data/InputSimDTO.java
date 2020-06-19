@@ -68,7 +68,7 @@ public class InputSimDTO implements I_InputDTO {
                 .map( // transforms elements of the stream to mapEntries
                         pile -> {
                             var pileList = board.getPile(pile);
-                            return new AbstractMap.SimpleImmutableEntry<>(pile.name(), pileList.get(pileList.size() - 1));
+                            return new AbstractMap.SimpleEntry<>(pile.name(), pileList.get(pileList.size() - 1));
                         }
                 )
                 .peek(entry -> { if (entry.getValue() == null) entry.setValue(new Card());} )
@@ -78,8 +78,8 @@ public class InputSimDTO implements I_InputDTO {
                         }
                 )
                 .collect(Collectors.toMap(
-                        AbstractMap.SimpleImmutableEntry::getKey,
-                        AbstractMap.SimpleImmutableEntry::getValue
+                        AbstractMap.SimpleEntry::getKey,
+                        AbstractMap.SimpleEntry::getValue
                 )); // converts result to a map
     }
 

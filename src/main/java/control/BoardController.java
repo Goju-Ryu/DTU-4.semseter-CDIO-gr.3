@@ -50,16 +50,20 @@ public class BoardController implements I_BoardController {
         // so i save the current pile as pile
         // and i do a for each card in this pile.
 
-        for(E_PileID from: E_PileID.values()){
-            for (E_PileID to: E_PileID.values()) {
-                if(from == to)
-                    continue;
+        for(E_PileID from: values()){
+            for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
+                for (E_PileID to: values()) {
+                    if(from == to)
+                        continue;
 
-                for (int depth = 1; depth < boardModel.getPile(from).size(); depth++) {
 
                     // now we need to check if the move is even possible at this index.
-                    if (!boardModel.canMove(from, depth, to)) {
+                    if (!boardModel.canMoveFrom(from, depth)) {
                         break;
+                    }
+
+                    if(!boardModel.canMove(from,depth,to)){
+                        continue;
                     }
 
                     boolean improveCardReveal = false;
@@ -68,7 +72,7 @@ public class BoardController implements I_BoardController {
                     } catch (Exception ignored) {}
 
                     boolean improveAce = false;
-                    if (to == HEARTSACEPILE ||to == CLUBSACEPILE || to == E_PileID.DIAMONDACEPILE ||to == SPADESACEPILE ){
+                    if (to == SUITSTACKSPADES ||to == SUITSTACKCLUBS || to == SUITSTACKDIAMONDS ||to == SUITSTACKHEARTS ){
                         improveAce = true;
                     }
 

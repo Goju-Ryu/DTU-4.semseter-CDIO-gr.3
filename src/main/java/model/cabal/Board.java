@@ -29,14 +29,14 @@ public class Board implements I_BoardModel {
         change = new PropertyChangeSupport(this);
         piles = new I_SolitaireStacks[values().length];
 
-        piles[TURNPILE.ordinal()] = new DrawStack();
-        piles[HEARTSACEPILE.ordinal()]  = new SuitStack();
-        piles[DIAMONDACEPILE.ordinal()] = new SuitStack();
-        piles[CLUBSACEPILE.ordinal()]   = new SuitStack();
-        piles[SPADESACEPILE.ordinal()]  = new SuitStack();
+        piles[DRAWSTACK.ordinal()] = new DrawStack();
+        piles[SUITSTACKHEARTS.ordinal()]  = new SuitStack();
+        piles[SUITSTACKDIAMONDS.ordinal()] = new SuitStack();
+        piles[SUITSTACKCLUBS.ordinal()]   = new SuitStack();
+        piles[SUITSTACKSPADES.ordinal()]  = new SuitStack();
 
         for (int i = 0; i < 24; i++) {
-            piles[TURNPILE.ordinal()].add(new Card());
+            piles[DRAWSTACK.ordinal()].add(new Card());
         }
 
         for (int i = 0; i < 7; i++) { // for each build pile
@@ -48,7 +48,7 @@ public class Board implements I_BoardModel {
             }
         }
 
-        for (E_PileID pileID : E_PileID.values()) {
+        for (E_PileID pileID : values()) {
             var data = extractImgData(imgData, pileID);
 
             if (data != null)
@@ -65,7 +65,7 @@ public class Board implements I_BoardModel {
         if (pileID.isBuildStack())
             return pile.getCard(0).getRank() == 1; // true if ace on top
 
-        if (pileID == TURNPILE)
+        if (pileID == DRAWSTACK)
             return pile.isEmpty();
 
         //Now we know only suit stacks are left
@@ -152,22 +152,22 @@ public class Board implements I_BoardModel {
 
     @Override
     public I_CardModel turnCard(Map<String, I_CardModel> imgData) {
-        var turnPile = (DrawStack) get(TURNPILE);
+        var turnPile = (DrawStack) get(DRAWSTACK);
 
         if (turnPile.isEmpty())
                 throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
 
         var returnable = turnPile.turnCard();
 
-        var imgCard = extractImgData(imgData, TURNPILE);
-        validateCardState(TURNPILE, returnable, imgCard);
+        var imgCard = extractImgData(imgData, DRAWSTACK);
+        validateCardState(DRAWSTACK, returnable, imgCard);
 
         return returnable;
     }
 
     @Override
     public I_CardModel getTurnedCard() {
-        var turnPile = (DrawStack) get(TURNPILE);
+        var turnPile = (DrawStack) get(DRAWSTACK);
         return turnPile.getTopCard();
     }
 
@@ -217,24 +217,23 @@ public class Board implements I_BoardModel {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
-
         int fromIndex = from.size() - range;
         if( from.getCard(fromIndex).isFacedUp()) {
             E_CardSuit suit = from.getCard(fromIndex).getSuit();
             switch (destination) {
-                case SPADESACEPILE:
+                case SUITSTACKSPADES:
                     if (suit != E_CardSuit.SPADES)
                         return false;
                     break;
-                case CLUBSACEPILE:
+                case SUITSTACKCLUBS:
                     if (suit != E_CardSuit.CLUBS)
                         return false;
                     break;
-                case DIAMONDACEPILE:
+                case SUITSTACKDIAMONDS:
                     if (suit != E_CardSuit.DIAMONDS)
                         return false;
                     break;
-                case HEARTSACEPILE:
+                case SUITSTACKHEARTS:
                     if (suit != E_CardSuit.HEARTS)
                         return false;
                     break;
@@ -246,6 +245,12 @@ public class Board implements I_BoardModel {
                && to.canMoveTo(from.getSubset(range));
     }
 
+    @Override
+    public boolean canMoveFrom(E_PileID origin, int range){
+        I_SolitaireStacks from = get(origin);
+        return from.canMoveFrom(range);
+    }
+
     private boolean isValidMove(I_SolitaireStacks from, I_SolitaireStacks to) {
 
         // if you try to move to the same stack
@@ -253,7 +258,7 @@ public class Board implements I_BoardModel {
             return false;
 
         // If you try to move to the turn pile
-        var turnPile = get(TURNPILE);
+        var turnPile = get(DRAWSTACK);
         if (to.equals(turnPile))
             return false;
 

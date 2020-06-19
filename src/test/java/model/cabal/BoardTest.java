@@ -31,8 +31,8 @@ class BoardTest {
 
         assertEquals(7, board.getPile(E_PileID.BUILDSTACK7).size());
         assertEquals(1, board.getPile(E_PileID.BUILDSTACK1).size());
-        assertEquals(24, board.getPile(E_PileID.TURNPILE).size());
-        assertEquals(0, board.getPile(E_PileID.HEARTSACEPILE).size());
+        assertEquals(24, board.getPile(E_PileID.DRAWSTACK).size());
+        assertEquals(0, board.getPile(E_PileID.SUITSTACKHEARTS).size());
     }
 
     @Test
@@ -49,7 +49,7 @@ class BoardTest {
         board.turnCard(inputSim.getUsrInput());
 
 
-        if (board.canMove(E_PileID.BUILDSTACK1, E_PileID.SPADESACEPILE)) {
+        if (board.canMove(E_PileID.BUILDSTACK1, E_PileID.SUITSTACKSPADES)) {
             System.out.println("The move is legal");
         }
 
