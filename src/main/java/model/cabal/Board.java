@@ -27,7 +27,7 @@ public class Board implements I_BoardModel {
     //can start here
     public Board(Map<String, I_CardModel> imgData) { //TODO board should take imgData to initialize self
         change = new PropertyChangeSupport(this);
-        piles = new I_SolitaireStacks[values().length];
+        piles = new I_SolitaireStacks[E_PileID.values().length];
 
         piles[DRAWSTACK.ordinal()] = new DrawStack();
         piles[SUITSTACKHEARTS.ordinal()]  = new SuitStack();
@@ -180,7 +180,7 @@ public class Board implements I_BoardModel {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
-        if (!isValidMove(from, to))
+        if (!isValidMove(origin, originPos, destination))
             throw new IllegalMoveException("Cards cannot be moved between " + origin + " and " + destination);
 
         if (!from.canMoveFrom(originPos))
