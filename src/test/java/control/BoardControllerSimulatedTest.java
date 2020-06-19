@@ -78,7 +78,6 @@ class BoardControllerSimulatedTest {
 
     }
 
-
     @Test
     void PossibleMoves_0Moves() {
 
