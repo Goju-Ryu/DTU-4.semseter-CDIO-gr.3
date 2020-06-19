@@ -1,6 +1,7 @@
 package model;
 
 import model.cabal.Board;
+import model.cabal.E_PileID;
 
 public interface I_Move {
 
@@ -18,12 +19,12 @@ public interface I_Move {
     /**
      * @return an index that reveals what stack is being moved from
      * */
-    int moveFromStack_index();
+    E_PileID moveFromStack();
 
     /**
      * @return an index that reveals what stack is being moved to
      * */
-    int moveToStack_index();
+    E_PileID moveToStack();
 
     /**
      * @return an index that reveals how deep the move is moving from a stack.

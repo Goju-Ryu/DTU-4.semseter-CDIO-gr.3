@@ -32,7 +32,6 @@ public interface I_BoardModel {
     boolean isStackComplete(E_PileID pileID);
 
 
-
 //---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
 
     /**

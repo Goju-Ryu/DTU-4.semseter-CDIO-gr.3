@@ -1,18 +1,19 @@
 package model;
 
 import model.cabal.Board;
+import model.cabal.E_PileID;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
 public class Move implements I_Move {
 
-    int to = 0;
-    int from = 0;
-    int depth = 0;
+    E_PileID to;
+    E_PileID from;
+    int depth;
     boolean improveAce = false;
     boolean improveShow= false;
     String toStr = "";
 
-    public Move(int to, int from, int depth, boolean improveAce, boolean improveShow, String toStr) {
+    public Move(E_PileID to, E_PileID from, int depth, boolean improveAce, boolean improveShow, String toStr) {
         this.to = to;
         this.from = from;
         this.depth = depth;
@@ -32,12 +33,12 @@ public class Move implements I_Move {
     }
 
     @Override
-    public int moveFromStack_index() {
+    public E_PileID moveFromStack() {
         return from;
     }
 
     @Override
-    public int moveToStack_index() {
+    public E_PileID moveToStack() {
         return to;
     }
 

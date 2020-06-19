@@ -1,5 +1,6 @@
 package model.cabal.internals;
 
+import model.cabal.E_PileID;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
@@ -16,6 +17,7 @@ public class DrawStack extends StackBase {
      * This means that the index always points at the card that is able to be drawn out on the board.
      */
     protected int drawIndex;
+
 
     public DrawStack() {
         this(new ArrayList<>());
@@ -49,12 +51,14 @@ public class DrawStack extends StackBase {
 
     @Override
     public boolean canMoveFrom(int range) {
-        try {
-            return canMoveFromMsg(range).isEmpty();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-            return false;
+        // if FaceDown. -
+        if( range > stack.size() ){
+            throw new IllegalArgumentException(
+                    "Range was larger than the stack size",
+                    new IndexOutOfBoundsException("range: " + range + ", but size is only: " + size())
+            );
         }
+        return true;
     }
 
     private String canMoveFromMsg(int range){
@@ -77,6 +81,7 @@ public class DrawStack extends StackBase {
         }
         return builder.toString();
     }
+
 
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {

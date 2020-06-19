@@ -75,7 +75,6 @@ public abstract class StackBase implements I_SolitaireStacks {
         return stack.contains(o);
     }
 
-
     @Override
     public @NonNullType Iterator<I_CardModel> iterator() {
         return stack.iterator();
