@@ -5,6 +5,7 @@ import model.cabal.Board;
 import model.cabal.I_BoardModel;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * This class is for controlling an entire game,
@@ -18,6 +19,7 @@ import java.util.List;
 public class GameController implements I_GameController{
 
     I_BoardController boardCtrl;
+    Logger log = Logger.getLogger(getClass().getName());
 
     public void startGame(String uiChoice){
         if (uiChoice.equalsIgnoreCase("sim"))
@@ -33,7 +35,9 @@ public class GameController implements I_GameController{
         List<Move> moves;
         do {
             moves = boardCtrl.possibleMoves();
+            log.info("Possible moves: " + moves.size());
             Move move = boardCtrl.pickMove(moves);
+            log.info("Chose move: " + move);
             if (move != null)
                 boardCtrl.makeMove(move);
         } while (moves.size() > 0);
