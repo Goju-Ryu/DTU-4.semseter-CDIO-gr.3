@@ -137,14 +137,14 @@ public class Board implements I_BoardModel {
      */
     private void
     validateCardState(E_PileID origin, I_CardModel cardModel, I_CardModel imgCard) throws IllegalStateException {
-        if (!cardModel.isFacedUp()) {
+        if ( cardModel != null && !cardModel.isFacedUp()) {
             if (GameCardDeck.getInstance().remove(imgCard)) { //if the card was in deck and now removed
                 cardModel.reveal(imgCard.getSuit(), imgCard.getRank());
             } else {
                 throw new IllegalStateException("Trying to reveal card but card is already in play.\ncard: " + imgCard);
             }
         } else {
-            if (!cardModel.equals(imgCard))
+            if (!Objects.equals(cardModel, imgCard))
                 throw makeStateException(origin, imgCard, cardModel, "no info");
         }
     }
@@ -201,6 +201,8 @@ public class Board implements I_BoardModel {
         //check that state is consistent with the physical board
         if (!from.isEmpty( ))
             validateCardState(origin, from.getCard(from.size() - 1), extractImgData(imgData, origin));
+        else
+            validateCardState(origin, null, extractImgData(imgData, origin));
 
         //notify listeners om state before and after state change
         change.firePropertyChange( makePropertyChangeEvent(origin, oldOrigin) );
