@@ -113,14 +113,14 @@ public class BoardController implements I_BoardController {
             }else{
                 // o1 and o2 values are oposate each other, so we can check one of them then asume the reversed
                 if(o1.improvesByTurningCard())
-                    return 1;
-                return -1;
+                    return -1;
+                return 1;
             }
         }else{
             // o1 and o2 values are oposate each other, so we can check one of them then asume the reversed
             if(o1.improvesAceCondition())
-                return 1;
-            return -1;
+                return -1;
+            return 1;
         }
     };
 }

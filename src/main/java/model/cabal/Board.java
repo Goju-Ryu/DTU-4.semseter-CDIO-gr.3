@@ -199,7 +199,7 @@ public class Board implements I_BoardModel {
         to.addAll(from.popSubset(originPos));
 
         //check that state is consistent with the physical board
-        if ( !from.isEmpty( ))
+        if (!from.isEmpty( ))
             validateCardState(origin, from.getCard(from.size() - 1), extractImgData(imgData, origin));
 
         //notify listeners om state before and after state change
