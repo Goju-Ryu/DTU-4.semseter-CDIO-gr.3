@@ -21,7 +21,8 @@ import java.util.List;
 public class BoardControllerSimulated extends BoardController {
 
 
-     public BoardControllerSimulated(String uiChoice) {
+     public BoardControllerSimulated() {
+         super("none");
          accessInput = new InputSimDTO();
      }
 

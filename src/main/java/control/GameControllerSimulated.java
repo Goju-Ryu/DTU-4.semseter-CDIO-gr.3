@@ -18,15 +18,15 @@ public class GameControllerSimulated implements I_GameController{
 
     //Todo implement this so that it returns I_BoardModel here
     public void startGame(String UiChoice){
-        I_BoardController boardCtrl = new BoardControllerSimulated();
-        I_BoardModel boardMod = null;
-        if( UiChoice == "simulation" ){
-            //TODO: implement that it can iniate a simulated board here
-        }else{
-            boardMod = boardCtrl.MakeNewBoard(UiChoice);
-        }
-        List<Move> moves = boardCtrl.possibleMoves(boardMod);
-        //boardCtrl.pickMove(moves);
+//        I_BoardController boardCtrl = new BoardControllerSimulated();
+//        I_BoardModel boardMod = null;
+//        if( UiChoice == "simulation" ){
+//            //TODO: implement that it can iniate a simulated board here
+//        }else{
+//            boardMod = boardCtrl.MakeNewBoard(UiChoice);
+//        }
+//        List<Move> moves = boardCtrl.possibleMoves(boardMod);
+//        //boardCtrl.pickMove(moves);
 
     }
 }

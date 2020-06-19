@@ -18,12 +18,12 @@ public class GameController implements I_GameController{
 
     //Todo implement this so that it returns I_BoardModel here
     public void startGame(String UiChoice){
-        I_BoardController boardCtrl = new BoardController();
-        I_BoardModel boardMod = boardCtrl.MakeNewBoard(UiChoice);
-
-
-        List<Move> moves = boardCtrl.possibleMoves(boardMod);
-        boardCtrl.pickMove(moves);
+//        I_BoardController boardCtrl = new BoardController();
+//        I_BoardModel boardMod = boardCtrl.MakeNewBoard(UiChoice);
+//
+//
+//        List<Move> moves = boardCtrl.possibleMoves(boardMod);
+//        boardCtrl.pickMove(moves);
 
     }
 

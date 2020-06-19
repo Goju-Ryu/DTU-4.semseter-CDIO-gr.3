@@ -32,31 +32,16 @@ import static model.cabal.E_PileID.BUILDSTACK7;
 */
 public class BoardController implements I_BoardController {
 
-    protected I_InputDTO accessInput = new InputDTO();
+    protected I_InputDTO accessInput;
     protected String uiChoice;
 
     public BoardController(String uiChoice) {
         this.uiChoice = uiChoice;
+        accessInput = new InputDTO(uiChoice);
     }
 
     public I_BoardModel MakeNewBoard(String uiChoice){
-        List<Card> usrInput = getUserInput();
-
-        Map<String, I_CardModel> usrInputMap = new HashMap<>();
-        usrInputMap.put(DRAWSTACK.name(), usrInput.get(0));
-        usrInputMap.put(SUITSTACKHEARTS.name(), usrInput.get(1));
-        usrInputMap.put(SUITSTACKDIAMONDS.name(), usrInput.get(2));
-        usrInputMap.put(SUITSTACKSPADES.name(), usrInput.get(3));
-        usrInputMap.put(SUITSTACKCLUBS.name(), usrInput.get(4));
-        usrInputMap.put(BUILDSTACK1.name(), usrInput.get(5));
-        usrInputMap.put(BUILDSTACK2.name(), usrInput.get(6));
-        usrInputMap.put(BUILDSTACK3.name(), usrInput.get(7));
-        usrInputMap.put(BUILDSTACK4.name(), usrInput.get(8));
-        usrInputMap.put(BUILDSTACK5.name(), usrInput.get(9));
-        usrInputMap.put(BUILDSTACK6.name(), usrInput.get(10));
-        usrInputMap.put(BUILDSTACK7.name(), usrInput.get(11));
-
-        return new Board(usrInputMap);
+        return new Board(getUserInput());
     }
 
     public List<Move> possibleMoves(I_BoardModel boardModel){
@@ -176,8 +161,8 @@ public class BoardController implements I_BoardController {
 
     };
 
-    protected List<Card> getUserInput(){
-        return accessInput.getUsrInput(uiChoice);
+    protected Map<String, I_CardModel> getUserInput(){
+        return accessInput.getUsrInput();
     }
 
 }
