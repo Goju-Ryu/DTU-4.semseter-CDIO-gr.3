@@ -18,7 +18,7 @@ public class MockBoard implements I_BoardModel {
     public MockBoard() {
         boardImplementation = new Board(Map.of());
         EnumMap<E_PileID, List<I_CardModel>> map = new EnumMap<>(E_PileID.class);
-        //TODO Make standard layout of RefBoard
+        //TODO Make standard layout of MockBoard
 
         for (E_PileID pileID : E_PileID.values()) {
             boardImplementation.getPile(pileID).clear();
