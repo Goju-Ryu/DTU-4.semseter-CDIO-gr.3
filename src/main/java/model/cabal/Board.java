@@ -219,22 +219,22 @@ public class Board implements I_BoardModel {
 
         int fromIndex = from.size() - range;
         if( from.getCard(fromIndex).isFacedUp()) {
-            E_CardSuit suit = from.getCard(fromIndex).getSuit();
+            E_CardSuit fromSuit = from.getCard(fromIndex).getSuit();
             switch (destination) {
                 case SUITSTACKSPADES:
-                    if (suit != E_CardSuit.SPADES)
+                    if (fromSuit != E_CardSuit.SPADES)
                         return false;
                     break;
                 case SUITSTACKCLUBS:
-                    if (suit != E_CardSuit.CLUBS)
+                    if (fromSuit != E_CardSuit.CLUBS)
                         return false;
                     break;
                 case SUITSTACKDIAMONDS:
-                    if (suit != E_CardSuit.DIAMONDS)
+                    if (fromSuit != E_CardSuit.DIAMONDS)
                         return false;
                     break;
                 case SUITSTACKHEARTS:
-                    if (suit != E_CardSuit.HEARTS)
+                    if (fromSuit != E_CardSuit.HEARTS)
                         return false;
                     break;
             }

@@ -58,14 +58,7 @@ class BoardTest {
 
 
 
-
-
-
         System.out.println(board.getPile(E_PileID.BUILDSTACK1));
-
-
-
-
     }
 
     @Test

@@ -11,7 +11,7 @@ class videoGen:
         pass
 
     def getVideo(self):
-        vid = SVideo()
+        vid = Video()
         # vid = Video()
         return vid
 
