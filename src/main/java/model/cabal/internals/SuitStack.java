@@ -10,50 +10,44 @@ import java.util.List;
 
 public class SuitStack extends StackBase {
 
-
     public SuitStack(List<I_CardModel> list) {
         this.stack = list;
     }
-
     public SuitStack(){
         stack = new ArrayList<>();
     }
 
+    /**
+     * this method must only be used from one of the extending classes that overides this method
+     * */
     @Override
+    @NonNullType
     public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
-
-        int toIndex = stack.size();
-        int fromIndex = toIndex - range;
-
-        if (range > 1){
-            throw new IllegalMoveException("You can only take the top card!");
-        }else {
-            List<I_CardModel> subList = stack.subList(fromIndex,toIndex);
-            this.stack = stack.subList(0,fromIndex);
-
-            return new SuitStack(subList);
-        }
+        return null;
     }
 
     @Override
     public boolean canMoveFrom(int range) {
 
-        if (range > 1) {
-            throw new IllegalArgumentException("Range cant be bigger than 0");
-        }
-
-        if (!(stack.get(range).isFacedUp())){
+        if (range != 1) {
             return false;
         }
 
         if (stack.isEmpty()){
-            throw new IllegalStateException("Stack must not be empty");
+            return false;
         }
+
+        if (!(stack.get(stack.size() - range).isFacedUp())){
+            return false;
+        }
+
         return true;
     }
 
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
+
+        if (cards.isEmpty()) return false;
 
         I_CardModel card = null;
         for (I_CardModel inCard : cards) {
@@ -61,7 +55,8 @@ public class SuitStack extends StackBase {
         }
 
         if (stack.isEmpty()){
-            if (card.getRank() == 1){
+            assert card != null;
+            if (card.getRank() == 1 ){
                 return true;
             }else {
                 return false;
@@ -104,4 +99,6 @@ public class SuitStack extends StackBase {
 
         return true;
     }
+
+
 }

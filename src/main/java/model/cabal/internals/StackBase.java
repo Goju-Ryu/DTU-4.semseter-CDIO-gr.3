@@ -55,7 +55,7 @@ public abstract class StackBase implements I_SolitaireStacks {
 
     @Override
     public Collection<I_CardModel> getSubset(int range) {
-        int toIndex = stack.size() - 1;
+        int toIndex = stack.size();
         int frIndex = toIndex - range;
         return stack.subList(frIndex, toIndex);
     }
@@ -74,7 +74,6 @@ public abstract class StackBase implements I_SolitaireStacks {
     public boolean contains(Object o) {
         return stack.contains(o);
     }
-
 
     @Override
     public @NonNullType Iterator<I_CardModel> iterator() {
@@ -101,11 +100,11 @@ public abstract class StackBase implements I_SolitaireStacks {
     }
 
     /**
-     * This overridden version of remove will remove a card from the top of the stack of cards
-     *
-     * @param o The object in the list that is to be removed.
-     * @return true when the object is removed, and false if otherwise
-     */
+    * This overridden version of remove will remove a card from the top of the stack of cards
+    *
+    * @param o The object in the list that is to be removed.
+    * @return true when the object is removed, and false if otherwise
+    */
     @Override
     public boolean remove(Object o) {
         return stack.remove(o);
@@ -115,7 +114,6 @@ public abstract class StackBase implements I_SolitaireStacks {
     public boolean containsAll(@Nonnull Collection c) {
         return stack.containsAll(c);
     }
-
 
     @Override
     public boolean containsCard(I_CardModel card) {

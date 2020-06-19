@@ -1,5 +1,6 @@
 package model.cabal.internals;
 
+import model.cabal.E_PileID;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
@@ -17,15 +18,15 @@ public class DrawStack extends StackBase {
      */
     protected int drawIndex;
 
+
     public DrawStack() {
         this(new ArrayList<>());
     }
 
     public DrawStack(List<I_CardModel> list) {
         super(list);
-        drawIndex = -1;
+        drawIndex = 0;
     }
-
 
 //-----------  Implementation ----------------------------------------------------------------
 
@@ -50,23 +51,25 @@ public class DrawStack extends StackBase {
 
     @Override
     public boolean canMoveFrom(int range) {
-        try {
-            return canMoveFromMsg(range).isEmpty();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-            return false;
+        // if FaceDown. -
+        if( range > stack.size() ){
+            throw new IllegalArgumentException(
+                    "Range was larger than the stack size",
+                    new IndexOutOfBoundsException("range: " + range + ", but size is only: " + size())
+            );
         }
+        return true;
     }
 
     private String canMoveFromMsg(int range){
         StringBuilder builder = new StringBuilder();
-        int cases = 0;
-        if (range > 0) {
+        int caseNum = 0;
+        if (range > 1) {
             builder.append("Range cannot be greater than 0.");
-            cases++;
+            caseNum++;
         }
         if (drawIndex < 0) {
-            if (cases++ > 0)
+            if (caseNum++ > 0)
                 builder.append("\n");
             builder.append("Index too low, no cards have been drawn yet.");
         }
@@ -79,12 +82,14 @@ public class DrawStack extends StackBase {
         return builder.toString();
     }
 
+
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
         return false;
     }
 
 //-------------------  DrawStack specific methods  ----------------------------------------------------------
+
     public I_CardModel turnCard() {
         return getCard(++drawIndex);
     }

@@ -66,7 +66,7 @@ class StackBaseTest {
 
         //SuitStack
         SuitStack suitStack = createSuitStack(5);
-        I_CardModel card = new Card(E_CardSuit.CLUBS,6,true);
+        I_CardModel card = new Card(E_CardSuit.HEARTS,6,true);
         SuitStack suitStack1 = new SuitStack();
         suitStack1.add(card);
 
@@ -178,7 +178,7 @@ class StackBaseTest {
 
         //SuitStack
         SuitStack suitStack = createSuitStack(10);
-        I_CardModel suitCard = new Card(E_CardSuit.CLUBS,6,true);
+        I_CardModel suitCard = new Card(E_CardSuit.HEARTS,6,true);
         assertTrue(suitCard.equals(suitStack.getCard(5)));
         assertEquals(suitCard,suitStack.getCard(5));
 
@@ -224,7 +224,7 @@ class StackBaseTest {
         assertEquals(9,suitStack.size());
 
         for (int i = 0; i < 4; i++) {
-            I_CardModel card = new Card(E_CardSuit.DIAMONDS,i+2,true);
+            I_CardModel card = new Card(E_CardSuit.HEARTS,i+2,true);
             suitStack.add(card);
         }
 
@@ -377,13 +377,13 @@ class StackBaseTest {
 
         //SuitStack
         SuitStack suitStack = createSuitStack(6);
-        I_CardModel suitCard = new Card(E_CardSuit.CLUBS,10,true);
+        I_CardModel suitCard = new Card(E_CardSuit.HEARTS,10,true);
         assertEquals(6,suitStack.size());
         suitStack.add(suitCard);
         assertEquals(7,suitStack.size());
 
         for (I_CardModel card1 : suitStack){
-            if (card1.getRank() == 10 && card1.getSuit() == E_CardSuit.CLUBS && card1.isFacedUp()){
+            if (card1.getRank() == 10 && card1.getSuit() == E_CardSuit.HEARTS && card1.isFacedUp()){
                 assertEquals(suitCard,card1);
             }
         }
@@ -457,7 +457,7 @@ class StackBaseTest {
 
         //SuitStack
         SuitStack suitStack = createSuitStack(8);
-        I_CardModel suitCard = new Card(E_CardSuit.CLUBS,5,true);
+        I_CardModel suitCard = new Card(E_CardSuit.HEARTS,5,true);
         assertTrue(suitStack.containsCard(suitCard));
 
         //DrawStack
@@ -480,7 +480,7 @@ class StackBaseTest {
         SuitStack stack = new SuitStack();
 
         for (int i = 0; i < stacksize; i++) {
-            I_CardModel card = new Card(E_CardSuit.CLUBS, i + 1, true);
+            I_CardModel card = new Card(E_CardSuit.HEARTS, i + 1, true);
             stack.add(card);
         }
         return stack;
