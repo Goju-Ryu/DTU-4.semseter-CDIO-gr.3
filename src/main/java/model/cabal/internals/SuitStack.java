@@ -12,25 +12,18 @@ import java.util.List;
 
 public abstract class SuitStack extends StackBase {
 
-    @NonNullType
-    private E_PileID pileID;
-
-    @NonNullType
-    private E_CardSuit stackSuit;
-
     public SuitStack(List<I_CardModel> list) {
         this.stack = list;
     }
-
     public SuitStack(){
         stack = new ArrayList<>();
     }
 
-    @Override
-    @NonNullType
     /**
      * this method must only be used from one of the extending classes that overides this method
      * */
+    @Override
+    @NonNullType
     public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
         return null;
     }
@@ -65,7 +58,7 @@ public abstract class SuitStack extends StackBase {
 
         if (stack.isEmpty()){
             assert card != null;
-            if (card.getRank() == 1 && card.getSuit() == this.stackSuit ){
+            if (card.getRank() == 1 && card.getSuit() == this.getStackSuit() ){
                 return true;
             }else {
                 return false;
@@ -109,10 +102,9 @@ public abstract class SuitStack extends StackBase {
         return true;
     }
 
-    public E_PileID getPileID() {
-        return pileID;
-    }
-    public E_CardSuit getStackSuit() {
-        return stackSuit;
-    }
+    @NonNullType
+    public abstract E_PileID getPileID();
+
+    @NonNullType
+    public abstract E_CardSuit getStackSuit();
 }
