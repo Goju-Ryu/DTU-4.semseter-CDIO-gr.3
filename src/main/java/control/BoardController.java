@@ -50,6 +50,11 @@ public class BoardController implements I_BoardController {
 
         for(E_PileID from: values()){
             for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
+                /*
+                TODO check if there are facedown cards in turnpile. if there are, they can be represented
+                by a move from Turnpile to Turnpile with revealcard = true
+                */
+
                 for (E_PileID to: values()) {
                     if(from == to)
                         continue;
