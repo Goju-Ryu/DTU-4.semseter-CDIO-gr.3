@@ -23,7 +23,18 @@ public class SuitStack extends StackBase {
     @Override
     @NonNullType
     public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
-        return null;
+
+        int toIndex = stack.size();
+        int fromIndex = toIndex - range;
+
+        if (range > 1){
+            throw new IllegalMoveException("You can only take the top card!");
+        }else {
+            List<I_CardModel> subList = stack.subList(fromIndex,toIndex);
+            this.stack = stack.subList(0,fromIndex);
+
+            return new SuitStack(subList);
+        }
     }
 
     @Override
