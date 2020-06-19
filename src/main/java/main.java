@@ -15,35 +15,24 @@ import java.util.Map;
 
 public class main {
     public static void main(String[] args) {
-        I_GameController Klondike = new GameController();
+        I_GameController gameController;
+        String uiChoice;
 
+        if (args.length == 0) {
+            gameController = new GameController();
+            gameController.startGame("default");
+        } else if (args[0].equalsIgnoreCase("sim")) {
+            gameController = new GameControllerSimulated();
+            gameController.startGame("sim");
 
-        Map<String, I_CardModel> usrInput = new HashMap<>();
-        usrInput.put(TURNPILE.name(), new Card(E_CardSuit.HEARTS,1));
-        usrInput.put(HEARTSACEPILE.name(), new Card());
-        usrInput.put(DIAMONDACEPILE.name(), new Card());
-        usrInput.put(SPADESACEPILE.name(), new Card());
-        usrInput.put(CLUBSACEPILE.name(), new Card());
-        usrInput.put(BUILDSTACK1.name(), new Card(E_CardSuit.HEARTS,2));
-        usrInput.put(BUILDSTACK2.name(), new Card(E_CardSuit.HEARTS,3));
-        usrInput.put(BUILDSTACK3.name(), new Card(E_CardSuit.HEARTS,4));
-        usrInput.put(BUILDSTACK4.name(), new Card(E_CardSuit.HEARTS,5));
-        usrInput.put(BUILDSTACK5.name(), new Card(E_CardSuit.HEARTS,6));
-        usrInput.put(BUILDSTACK6.name(), new Card(E_CardSuit.HEARTS,7));
-        usrInput.put(BUILDSTACK7.name(), new Card(E_CardSuit.HEARTS,8));
+        } else if (args[0].equalsIgnoreCase("cam")){
+            gameController = new GameController();
+            gameController.startGame("default");
 
+        } else if (args[0].equalsIgnoreCase("gui")) {
+            gameController = new GameController();
+            gameController.startGame("ManGUI");
+        } else throw new IllegalArgumentException("Option: \"" + args[0] + "\" is not a valid option.");
 
-        I_BoardModel board = new Board(usrInput);
-
-        System.out.println("Stack 7"+board.getPile(E_PileID.BUILDSTACK7));
-        System.out.println("Stack 1"+board.getPile(E_PileID.BUILDSTACK1));
-        System.out.println("turn pile:"+board.getPile(E_PileID.TURNPILE));
-
-
-//        Klondike.startGame("ManGUI");
-////        Klondike.startGame("sdsldfndslfnds");
-//
-//        System.out.println("Hello Main World!");
-//        //change
     }
 }
