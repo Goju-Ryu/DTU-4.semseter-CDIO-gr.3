@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * This class is intented to translate the input string we get to a json object.
  */
-public class InputSimDTO implements I_InputDTO {
+public class InputSimDTO {
         // Todo ust return less cards at first, because sui stacks arent filled in at start.
 
     private ArrayList<Card> listTop = new ArrayList<>(4*13);

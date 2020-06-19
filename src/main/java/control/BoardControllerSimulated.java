@@ -20,14 +20,11 @@ import java.util.List;
  */
 public class BoardControllerSimulated extends BoardController {
 
-
-     public BoardControllerSimulated(String uiChoice) {
-         accessInput = new InputSimDTO();
-     }
+    private InputSimDTO accessInput = new InputSimDTO();
 
     @Override
-    public I_BoardModel MakeNewBoard(String uiChoice) {
-        return super.MakeNewBoard(uiChoice);
+    public I_BoardModel MakeNewBoard(String UiChoice) {
+        return super.MakeNewBoard(UiChoice);
     }
 
     @Override
@@ -38,5 +35,10 @@ public class BoardControllerSimulated extends BoardController {
     @Override
     public Move pickMove(List<Move> moves) {
         return super.pickMove(moves);
+    }
+
+    @Override
+    public List<Card> getUserInput(String UiChoice) {
+        return accessInput.getUsrInput(UiChoice);
     }
 }

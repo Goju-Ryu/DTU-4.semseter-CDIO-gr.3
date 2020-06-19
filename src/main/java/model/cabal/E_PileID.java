@@ -9,11 +9,11 @@ package model.cabal;
  */
 public enum E_PileID {
 
-    DRAWSTACK(false,"The turned card pile"),
-    SUITSTACKHEARTS(false,"The ace pile for Hearts"),
-    SUITSTACKDIAMONDS(false,"The ace pile for Diamond"),
-    SUITSTACKSPADES(false,"The ace pile for Spades"),
-    SUITSTACKCLUBS(false,"The ace pile for Clubs"),
+    TURNPILE(false,"The turned card pile"),
+    HEARTSACEPILE(false,"The ace pile for Hearts"),
+    DIAMONDACEPILE(false,"The ace pile for Diamond"),
+    SPADESACEPILE(false,"The ace pile for Spades"),
+    CLUBSACEPILE(false,"The ace pile for Clubs"),
     BUILDSTACK1(true,"The first build stack"),
     BUILDSTACK2(true,"The second build stack"),
     BUILDSTACK3(true,"The third build stack"),

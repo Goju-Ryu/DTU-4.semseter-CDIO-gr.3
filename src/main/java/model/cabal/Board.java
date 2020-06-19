@@ -28,14 +28,14 @@ public final class Board implements I_BoardModel {
         change = new PropertyChangeSupport(this);
         piles = new I_SolitaireStacks[values().length];
 
-        piles[DRAWSTACK.ordinal()] = new DrawStack();
-        piles[SUITSTACKHEARTS.ordinal()]  = new SuitStack();
-        piles[SUITSTACKDIAMONDS.ordinal()] = new SuitStack();
-        piles[SUITSTACKCLUBS.ordinal()]   = new SuitStack();
-        piles[SUITSTACKSPADES.ordinal()]  = new SuitStack();
+        piles[TURNPILE.ordinal()] = new DrawStack();
+        piles[HEARTSACEPILE.ordinal()]  = new SuitStack();
+        piles[DIAMONDACEPILE.ordinal()] = new SuitStack();
+        piles[CLUBSACEPILE.ordinal()]   = new SuitStack();
+        piles[SPADESACEPILE.ordinal()]  = new SuitStack();
 
         for (int i = 0; i < 24; i++) {
-            piles[DRAWSTACK.ordinal()].add(new Card());
+            piles[TURNPILE.ordinal()].add(new Card());
         }
 
         for (int i = 0; i < 7; i++) { // for each build pile
@@ -64,7 +64,7 @@ public final class Board implements I_BoardModel {
         if (pileID.isBuildStack())
             return pile.getCard(0).getRank() == 1; // true if ace on top
 
-        if (pileID == DRAWSTACK)
+        if (pileID == TURNPILE)
             return pile.isEmpty();
 
         //Now we know only suit stacks are left
@@ -151,22 +151,22 @@ public final class Board implements I_BoardModel {
 
     @Override
     public I_CardModel turnCard(Map<String, I_CardModel> imgData) {
-        var turnPile = (DrawStack) get(DRAWSTACK);
+        var turnPile = (DrawStack) get(TURNPILE);
 
         if (turnPile.isEmpty())
                 throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
 
         var returnable = turnPile.turnCard();
 
-        var imgCard = extractImgData(imgData, DRAWSTACK);
-        validateCardState(DRAWSTACK, returnable, imgCard);
+        var imgCard = extractImgData(imgData, TURNPILE);
+        validateCardState(TURNPILE, returnable, imgCard);
 
         return returnable;
     }
 
     @Override
     public I_CardModel getTurnedCard() {
-        var turnPile = (DrawStack) get(DRAWSTACK);
+        var turnPile = (DrawStack) get(TURNPILE);
         return turnPile.getTopCard();
     }
 
@@ -227,7 +227,7 @@ public final class Board implements I_BoardModel {
         if(from == to)
             return false;
 
-        var turnPile = get(DRAWSTACK);
+        var turnPile = get(TURNPILE);
 
         // If you try to move to the turn pile
         if (to.equals(turnPile))

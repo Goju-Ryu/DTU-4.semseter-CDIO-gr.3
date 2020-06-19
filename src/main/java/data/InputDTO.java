@@ -3,27 +3,19 @@ package data;
 import com.google.gson.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import model.cabal.E_PileID;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
-import model.cabal.internals.card.I_CardModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
 
 /**
  * This class is intented to translate the input string we get to a json object.
  */
-public class InputDTO implements I_InputDTO {
-    private String uiType;
+public class InputDTO {
+    private Gson g = new Gson();
 
-    public InputDTO(String uiChoice) {
-        uiType = uiChoice;
-    }
-
-    @Override
-    public Map<String, I_CardModel> getUsrInput(){
+    public ArrayList<Card> getUsrInput(String UIChoice){
         ArrayList<Card> cards = new ArrayList<>();
         String usrInput ="";
         String target = "localhost:50051";
@@ -34,14 +26,14 @@ public class InputDTO implements I_InputDTO {
                 .build();
         InputAccesPoint accessInput = new InputAccesPoint(channel);
         try{
-            usrInput = accessInput.getInput(uiType);
+            usrInput = accessInput.getInput(UIChoice);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
         //System.out.println("From getUsrInput: "+usrInput);
 
         JsonObject cardsJson = stringToJson(usrInput);
-        cards = jsonToCardMap(cardsJson);
+        cards = jsonToCard(cardsJson);
 
         return cards;
     }
@@ -49,8 +41,11 @@ public class InputDTO implements I_InputDTO {
     /**
      * We are using the gson libary to transform our string into a json object
      *///TODO: Transform the string into a JSON object that you use when you initilize the cards
-    private JsonObject stringToJson(String toJson){
-        return new JsonParser().parse(toJson).getAsJsonObject();
+
+    public JsonObject stringToJson(String toJson){
+        //System.out.println("from String to Json: "+toJson);
+        JsonObject jsonObject = new JsonParser().parse(toJson).getAsJsonObject();
+        return jsonObject;
     }
     /**
      * When initiating a board we have made the cards so that they are given in
@@ -59,18 +54,31 @@ public class InputDTO implements I_InputDTO {
      * and finally the buildstacs ordered from 1-7
      * @return a list of card to initate the board.
      */// TODO: This class parses a json object to a string back to another json objects, there must be some way to do that smarter
-    private Map<String, I_CardModel> jsonToCardMap(JsonObject jsonObject){
+    public ArrayList<Card> jsonToCard(JsonObject jsonObject){
         ArrayList<Card> cards = new ArrayList<>();
         // All the stacks that we iterate trough and makes cards from
-
-        for(E_PileID pileID : E_PileID.values()){
+        ArrayList<String> stacks = new ArrayList<>(
+                Arrays.asList("drawPile",
+                        "SuitStackHearts",
+                        "SuitStackClubs",
+                        "SuitStackDiamonds",
+                        "SuitStackSpades",
+                        "Column1",
+                        "Column2",
+                        "Column3",
+                        "Column4",
+                        "Column5",
+                        "Column6",
+                        "Column7")
+        );
+        for(int i = 0; i< stacks.size();i++){
             //||takeout the json object belonging to a vien key as a string
             //System.out.println("stack: "+stacks.get(i));
             //String tmp = jsonObject.getAsJsonArray(stacks.get(i)).get(0).getAsString();
             //||turn it back into a json object.
             //JsonObject givenStack = new JsonParser().parse(tmp).getAsJsonObject();
             //System.out.println("givenStack:"+givenStack);
-            JsonObject givenStack = jsonObject.getAsJsonObject(pileID.name()); //TODO make python return correct names
+            JsonObject givenStack = jsonObject.getAsJsonObject(stacks.get(i));
 //            JsonElement smt = givenStack.get("suit");
 //            System.out.printf("givenstack: "+smt);
             //|| Get the rand and suit value of the card

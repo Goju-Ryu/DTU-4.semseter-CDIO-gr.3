@@ -1,19 +1,15 @@
 package control;
 
-import data.I_InputDTO;
 import data.InputDTO;
 import model.Move;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
-import model.cabal.internals.BuildStack;
-import model.cabal.internals.DrawStack;
-import model.cabal.internals.I_SolitaireStacks;
-import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.I_CardModel;
 
-import java.util.Collection;
+
+
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,22 +31,17 @@ import static model.cabal.E_PileID.BUILDSTACK7;
 */
 public class BoardController implements I_BoardController {
 
-    protected I_InputDTO accessInput = new InputDTO();
-    protected String uiChoice;
+    private InputDTO accessInput = new InputDTO();
 
-    public BoardController(String uiChoice) {
-        this.uiChoice = uiChoice;
-    }
-
-    public I_BoardModel MakeNewBoard(String uiChoice){
-        List<Card> usrInput = getUserInput();
+    public I_BoardModel MakeNewBoard(String UiChoice){
+        List<Card> usrInput = getUserInput(UiChoice);
 
         Map<String, I_CardModel> usrInputMap = new HashMap<>();
-        usrInputMap.put(DRAWSTACK.name(), usrInput.get(0));
-        usrInputMap.put(SUITSTACKHEARTS.name(), usrInput.get(1));
-        usrInputMap.put(SUITSTACKDIAMONDS.name(), usrInput.get(2));
-        usrInputMap.put(SUITSTACKSPADES.name(), usrInput.get(3));
-        usrInputMap.put(SUITSTACKCLUBS.name(), usrInput.get(4));
+        usrInputMap.put(TURNPILE.name(), usrInput.get(0));
+        usrInputMap.put(HEARTSACEPILE.name(), null);
+        usrInputMap.put(DIAMONDACEPILE.name(), null);
+        usrInputMap.put(SPADESACEPILE.name(), null);
+        usrInputMap.put(CLUBSACEPILE.name(), null);
         usrInputMap.put(BUILDSTACK1.name(), usrInput.get(5));
         usrInputMap.put(BUILDSTACK2.name(), usrInput.get(6));
         usrInputMap.put(BUILDSTACK3.name(), usrInput.get(7));
@@ -89,7 +80,7 @@ public class BoardController implements I_BoardController {
                     } catch (Exception ignored) {}
 
                     boolean improveAce = false;
-                    if (to == E_PileID.SPADESACEPILE ||to == E_PileID.CLUBSACEPILE || to == E_PileID.DIAMONDACEPILE ||to == E_PileID.HEARTSACEPILE ){
+                    if (to == HEARTSACEPILE ||to == CLUBSACEPILE || to == E_PileID.DIAMONDACEPILE ||to == SPADESACEPILE ){
                         improveAce = true;
                     }
 
@@ -159,8 +150,8 @@ public class BoardController implements I_BoardController {
 
     };
 
-    protected List<Card> getUserInput(){
-        return accessInput.getUsrInput(uiChoice);
+    public List<Card> getUserInput(String UiChoice){
+        return accessInput.getUsrInput(UiChoice);
     }
 
 }
