@@ -1,5 +1,7 @@
 package model.cabal.internals;
 
+import model.cabal.E_PileID;
+import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
@@ -8,8 +10,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class SuitStack extends StackBase {
+public abstract class SuitStack extends StackBase {
 
+    @NonNullType
+    private E_PileID pileID;
+
+    @NonNullType
+    private E_CardSuit stackSuit;
 
     public SuitStack(List<I_CardModel> list) {
         this.stack = list;
@@ -20,19 +27,12 @@ public class SuitStack extends StackBase {
     }
 
     @Override
+    @NonNullType
+    /**
+     * this method must only be used from one of the extending classes that overides this method
+     * */
     public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
-
-        int toIndex = stack.size();
-        int fromIndex = toIndex - range;
-
-        if (range > 1){
-            throw new IllegalMoveException("You can only take the top card!");
-        }else {
-            List<I_CardModel> subList = stack.subList(fromIndex,toIndex);
-            this.stack = stack.subList(0,fromIndex);
-
-            return new SuitStack(subList);
-        }
+        return null;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class SuitStack extends StackBase {
 
         if (stack.isEmpty()){
             assert card != null;
-            if (card.getRank() == 1){
+            if (card.getRank() == 1 && card.getSuit() == this.stackSuit ){
                 return true;
             }else {
                 return false;
@@ -107,5 +107,12 @@ public class SuitStack extends StackBase {
         }
 
         return true;
+    }
+
+    public E_PileID getPileID() {
+        return pileID;
+    }
+    public E_CardSuit getStackSuit() {
+        return stackSuit;
     }
 }

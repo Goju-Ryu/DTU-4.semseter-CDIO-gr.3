@@ -1,10 +1,7 @@
 package model.cabal;
 
 import model.GameCardDeck;
-import model.cabal.internals.BuildStack;
-import model.cabal.internals.DrawStack;
-import model.cabal.internals.I_SolitaireStacks;
-import model.cabal.internals.SuitStack;
+import model.cabal.internals.*;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
@@ -32,10 +29,10 @@ public final class Board implements I_BoardModel {
         piles = new I_SolitaireStacks[values().length];
 
         piles[TURNPILE.ordinal()] = new DrawStack();
-        piles[HEARTSACEPILE.ordinal()] = new SuitStack();
-        piles[DIAMONDACEPILE.ordinal()] = new SuitStack();
-        piles[CLUBSACEPILE.ordinal()] = new SuitStack();
-        piles[SPADESACEPILE.ordinal()] = new SuitStack();
+        piles[HEARTSACEPILE.ordinal()]  = new HeartStack();
+        piles[DIAMONDACEPILE.ordinal()] = new DiamondsStack();
+        piles[CLUBSACEPILE.ordinal()]   = new ClubsStack();
+        piles[SPADESACEPILE.ordinal()]  = new SpadesStack();
 
         for (int i = 0; i < 24; i++) {
             piles[TURNPILE.ordinal()].add(new Card());

@@ -2,7 +2,11 @@ package model.cabal.internals;
 
 import model.cabal.E_PileID;
 import model.cabal.internals.card.I_CardModel;
+import model.error.IllegalMoveException;
+import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class HeartStack extends SuitStack {
@@ -14,9 +18,23 @@ public class HeartStack extends SuitStack {
     }
 
     public HeartStack() {
+        stack = new ArrayList<>();
     }
 
-    public E_PileID getPileID() {
-        return pileID;
+    @Override
+    @NonNullType
+    public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
+        int toIndex = stack.size();
+        int fromIndex = toIndex - range;
+
+        if (range > 1){
+            throw new IllegalMoveException("You can only take the top card!");
+        }else {
+            List<I_CardModel> subList = stack.subList(fromIndex,toIndex);
+            this.stack = stack.subList(0,fromIndex);
+
+            return new HeartStack(subList) {
+            };
+        }
     }
 }
