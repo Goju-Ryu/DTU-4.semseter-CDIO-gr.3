@@ -1,18 +1,23 @@
 package control;
 
 import model.Move;
+import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
+import model.cabal.internals.DrawStack;
+import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.util.*;
 
+import static model.cabal.E_PileID.CLUBSACEPILE;
+import static model.cabal.E_PileID.TURNPILE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 
 class BoardControllerSimulatedTest {
@@ -41,15 +46,19 @@ class BoardControllerSimulatedTest {
             // and i do a for each card in this pile.
 
             for(E_PileID from: E_PileID.values()){
-                for (E_PileID to: E_PileID.values()) {
-                    if(from == to)
-                        continue;
+                for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
+                    for (E_PileID to: E_PileID.values()) {
+                        if(from == to)
+                            continue;
 
-                    for (int depth = 1; depth <= boardModel.getPile(from).size(); depth++) {
 
                         // now we need to check if the move is even possible at this index.
-                        if (!boardModel.canMove(from, depth, to)) {
+                        if (!boardModel.canMoveFrom(from, depth)) {
                             break;
+                        }
+
+                        if(!boardModel.canMove(from,depth,to)){
+                            continue;
                         }
 
                         boolean improveCardReveal = false;
@@ -77,6 +86,35 @@ class BoardControllerSimulatedTest {
         }
 
     }
+    @Test
+    void PossibleMoves_Drawstack() {
+
+        Card drStack[] = {
+                new Card( E_CardSuit.SPADES     , 1 ),
+                new Card( E_CardSuit.HEARTS     , 1  ),
+                new Card( E_CardSuit.CLUBS      ,  1 )};
+
+        I_SolitaireStacks drawStack = (I_SolitaireStacks) new DrawStack(Arrays.asList(drStack));
+
+        Card cards[] = {
+                new Card( E_CardSuit.SPADES     , 9  ),
+                new Card( E_CardSuit.HEARTS     , 9  ),
+                new Card( E_CardSuit.CLUBS      , 9  ),
+                new Card( E_CardSuit.HEARTS     , 9  ),
+                new Card( E_CardSuit.SPADES     , 9  ),
+                new Card( E_CardSuit.DIAMONDS   , 9  ),
+                new Card( E_CardSuit.CLUBS      , 9  ),
+                new Card( E_CardSuit.DIAMONDS   , 9  ) };
+
+        testBoardCont boardCnt = new testBoardCont(cards);
+        I_BoardModel board = boardCnt.MakeNewBoard("hej");
+        board = changeDrawStack(board,drawStack);
+
+        List<Move> result = boardCnt.possibleMoves(board);
+        assertEquals(3,result.size());
+
+    }
+
 
     @Test
     void PossibleMoves_0Moves() {
@@ -197,6 +235,28 @@ class BoardControllerSimulatedTest {
     }
 
 
+
+    private I_BoardModel changeDrawStack(I_BoardModel board, I_SolitaireStacks drawStack){
+        Class<?> secretClass = board.getClass();
+
+        Field fields[] = secretClass.getDeclaredFields();
+        System.out.println("Access all the fields");
+        for (Field field : fields) {
+            System.out.println("Field Name: " + field.getName());
+            field.setAccessible(true);
+            try {
+                System.out.println(field.get(board) + "\n");
+                if(field.getName().equals("piles")){
+                    I_SolitaireStacks[] piles = (I_SolitaireStacks[]) field.get(board);
+                    piles[TURNPILE.ordinal()] = drawStack;
+                    field.set(board,piles);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return board;
+    }
     private List<Move> getPosMoves(Card d1, Card b1,Card b2, Card b3,Card b4, Card b5,Card b6, Card c8){
         Card cards[] = {d1,b1,b2,b3,b4,b5,b6,c8};
 

@@ -103,6 +103,8 @@ public interface I_BoardModel {
 
 //-----------  PropertyListener Support   ----------------------------------------
 
+    boolean canMoveFrom(E_PileID origin, int range);
+
     /**
      * Add a listener to the board. This subscribes it to all piles on the board.
      * @param listener the listener to be attached.

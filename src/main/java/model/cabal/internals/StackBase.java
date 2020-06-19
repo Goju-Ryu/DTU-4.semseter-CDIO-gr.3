@@ -119,4 +119,18 @@ public abstract class StackBase implements I_SolitaireStacks {
     public boolean containsCard(I_CardModel card) {
         return stack.contains(card);
     }
+
+    @Override
+    public boolean canMoveFrom(int range) {
+
+        if( range > stack.size() ){
+            throw new IllegalArgumentException(
+                    "Range was larger than the stack size",
+                    new IndexOutOfBoundsException("range: " + range + ", but size is only: " + size())
+            );
+        }
+
+        int reversedRange = stack.size() - ( range );
+        return stack.get(reversedRange).isFacedUp();
+    }
 }
