@@ -230,13 +230,18 @@ public class Board implements I_BoardModel {
         if (to.equals(DRAWSTACK))
             return false;
 
-        var toPile = get(from);
-        var cardSuits = toPile.getSubset(originPos).stream()
+        var fromPile = get(from);
+
+        if ( !fromPile.getCard(fromPile.size() - originPos).isFacedUp() )
+            return false;
+
+        var cardSuits = fromPile.getSubset(originPos).stream()
                 .map(I_CardModel::getSuit);
         switch (to) {
             case SUITSTACKHEARTS:
                 if (cardSuits.anyMatch( suit -> !suit.equals(HEARTS)))
-                    break;
+                    return false;
+                break;
             case SUITSTACKDIAMONDS:
                 if (cardSuits.anyMatch( suit -> !suit.equals(DIAMONDS)))
                     return false;
