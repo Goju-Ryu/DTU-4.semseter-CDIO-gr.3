@@ -24,14 +24,14 @@ import static model.cabal.E_PileID.BUILDSTACK6;
 import static model.cabal.E_PileID.BUILDSTACK7;
 
 /**
- * This class is for the individual controlls of each Board,
- * so all the things you can do to an individual Board.
- *
- * the diffrence on this and Game controller, is that this only acts in relation
- * to one given state of the game where as GameController can play trough an entire game.
- * This controller is one Game controller uses everytime it needs to make
- * a move
- */
+* This class is for the individual controlls of each Board,
+* so all the things you can do to an individual Board.
+*
+* the diffrence on this and Game controller, is that this only acts in relation
+* to one given state of the game where as GameController can play trough an entire game.
+* This controller is one Game controller uses everytime it needs to make
+* a move
+*/
 public class BoardController implements I_BoardController {
 
     private InputDTO accessInput = new InputDTO();
@@ -121,6 +121,7 @@ public class BoardController implements I_BoardController {
         if( moves.size() == 0){
             return null;
         }
+
         // so we want to sort the moves by two values
         // 1st priority : does it move something into the ace pile
         // 2nd priority : does it reveal an unknown card

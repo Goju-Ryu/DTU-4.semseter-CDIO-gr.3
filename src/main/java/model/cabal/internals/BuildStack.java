@@ -14,7 +14,6 @@ public class BuildStack extends StackBase {
     public BuildStack(List<I_CardModel> list) {
         this.stack = list;
     }
-
     public BuildStack(){
         stack = new ArrayList<>();
     }
@@ -112,7 +111,4 @@ public class BuildStack extends StackBase {
             return myRank - otRank == 1;
         }
     }
-
-
-
 }

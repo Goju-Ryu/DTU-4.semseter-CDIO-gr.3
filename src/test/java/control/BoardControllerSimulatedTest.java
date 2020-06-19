@@ -118,20 +118,20 @@ class BoardControllerSimulatedTest {
                 new Card( E_CardSuit.SPADES , 8  ),      // buildStack 6
                 new Card( E_CardSuit.SPADES , 9  )      // buildStack 7
         );
-        assertEquals(res.size(),0);
+        assertEquals(0,res.size());
 
         res = getPosMoves(
-                // Assert that we can move 1 onto Ace pile
-                new Card( E_CardSuit.SPADES , 1 ),     // the drawStack
-                new Card( E_CardSuit.SPADES , 3  ),     // buildStack 1
-                new Card( E_CardSuit.SPADES , 4  ),     // buildStack 2
-                new Card( E_CardSuit.SPADES , 5  ),     // buildStack 3
-                new Card( E_CardSuit.SPADES , 1  ),     // buildStack 4
-                new Card( E_CardSuit.SPADES , 7  ),   // buildStack 5
-                new Card( E_CardSuit.SPADES , 8  ),      // buildStack 6
-                new Card( E_CardSuit.SPADES , 9  )      // buildStack 7
+                // Assert that we can move 1 onto Ace pile from a drawstack
+                new Card( E_CardSuit.SPADES , 1 ),      // 0  // aces = 1 , 2, 3, 4
+                new Card( E_CardSuit.SPADES , 3  ),     // 5
+                new Card( E_CardSuit.SPADES , 4  ),     // 6
+                new Card( E_CardSuit.SPADES , 5  ),     // 7
+                new Card( E_CardSuit.SPADES , 1  ),     // 8
+                new Card( E_CardSuit.SPADES , 7  ),     // 9
+                new Card( E_CardSuit.SPADES , 8  ),     // 10
+                new Card( E_CardSuit.SPADES , 9  )      // 11
         );
-        assertEquals(res.size(),1);
+        assertEquals(1,res.size());
 
     }
     private List<Move> getPosMoves(Card c1, Card c2,Card c3, Card c4,Card c5, Card c6,Card c7, Card c8){
