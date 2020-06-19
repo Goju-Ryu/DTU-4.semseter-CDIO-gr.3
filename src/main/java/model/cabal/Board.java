@@ -3,6 +3,7 @@ package model.cabal;
 import model.GameCardDeck;
 import model.cabal.internals.*;
 import model.cabal.internals.card.Card;
+import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
@@ -17,7 +18,7 @@ import static model.cabal.E_PileID.*;
 /**
  * This is the model of the entire cabal
  */
-public final class Board implements I_BoardModel {
+public class Board implements I_BoardModel {
 
     private PropertyChangeSupport change;
 
@@ -212,13 +213,37 @@ public final class Board implements I_BoardModel {
     }
 
     @Override
-    public boolean canMove(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException {
+    public boolean canMove(E_PileID origin, int range, E_PileID destination) throws IllegalMoveException {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
+
+        int fromIndex = from.size() - range;
+        if( from.getCard(fromIndex).isFacedUp()) {
+            E_CardSuit suit = from.getCard(fromIndex).getSuit();
+            switch (destination) {
+                case SPADESACEPILE:
+                    if (suit != E_CardSuit.SPADES)
+                        return false;
+                    break;
+                case CLUBSACEPILE:
+                    if (suit != E_CardSuit.CLUBS)
+                        return false;
+                    break;
+                case DIAMONDACEPILE:
+                    if (suit != E_CardSuit.DIAMONDS)
+                        return false;
+                    break;
+                case HEARTSACEPILE:
+                    if (suit != E_CardSuit.HEARTS)
+                        return false;
+                    break;
+            }
+        }
+
         return isValidMove(from, to)
-               && from.canMoveFrom(originPos)
-               && to.canMoveTo(from.getSubset(originPos));
+               && from.canMoveFrom(range)
+               && to.canMoveTo(from.getSubset(range));
     }
 
     private boolean isValidMove(I_SolitaireStacks from, I_SolitaireStacks to) {
@@ -227,11 +252,11 @@ public final class Board implements I_BoardModel {
         if(from == to)
             return false;
 
-        var turnPile = get(TURNPILE);
-
         // If you try to move to the turn pile
+        var turnPile = get(TURNPILE);
         if (to.equals(turnPile))
             return false;
+
 
         return true;
     }

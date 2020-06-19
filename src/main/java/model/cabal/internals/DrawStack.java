@@ -25,7 +25,7 @@ public class DrawStack extends StackBase {
 
     public DrawStack(List<I_CardModel> list) {
         super(list);
-        drawIndex = 0;
+        drawIndex = -1;
     }
 
 //-----------  Implementation ----------------------------------------------------------------
@@ -51,14 +51,16 @@ public class DrawStack extends StackBase {
 
     @Override
     public boolean canMoveFrom(int range) {
-        // if FaceDown. -
+
         if( range > stack.size() ){
             throw new IllegalArgumentException(
                     "Range was larger than the stack size",
                     new IndexOutOfBoundsException("range: " + range + ", but size is only: " + size())
             );
         }
-        return true;
+
+        int reversedRange = stack.size() - ( range );
+        return stack.get(reversedRange).isFacedUp();
     }
 
     private String canMoveFromMsg(int range){
@@ -97,4 +99,5 @@ public class DrawStack extends StackBase {
     public I_CardModel getTopCard() {
         return super.getCard(drawIndex);
     }
+
 }

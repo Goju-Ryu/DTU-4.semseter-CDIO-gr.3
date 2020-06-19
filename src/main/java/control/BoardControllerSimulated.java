@@ -41,4 +41,5 @@ public class BoardControllerSimulated extends BoardController {
     public List<Card> getUserInput(String UiChoice) {
         return accessInput.getUsrInput(UiChoice);
     }
+
 }
