@@ -55,6 +55,6 @@ public class Move implements I_Move {
 
     @Override
     public String toString() {
-        return toStr;
+        return "from:" + from + ". to:" + to + ". depth:" + depth;
     }
 }
