@@ -219,6 +219,7 @@ public class Board implements I_BoardModel {
 
         int fromIndex = from.size() - range;
         if( from.getCard(fromIndex).isFacedUp()) {
+            int rank = from.getCard(fromIndex).getRank();
             E_CardSuit suit = from.getCard(fromIndex).getSuit();
             switch (destination) {
                 case SPADESACEPILE:

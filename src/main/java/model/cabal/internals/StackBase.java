@@ -57,7 +57,8 @@ public abstract class StackBase implements I_SolitaireStacks {
     public Collection<I_CardModel> getSubset(int range) {
         int toIndex = stack.size();
         int frIndex = toIndex - range;
-        return stack.subList(frIndex, toIndex);
+        Collection<I_CardModel> c = stack.subList(frIndex, toIndex);
+        return c;
     }
 
     @Override

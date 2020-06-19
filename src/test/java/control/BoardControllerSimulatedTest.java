@@ -37,50 +37,6 @@ class BoardControllerSimulatedTest {
         }
 
         @Override
-        public List<Move> possibleMoves(I_BoardModel boardModel){
-
-            LinkedList<Move> moves = new LinkedList<>();
-
-            // go through each card in each pile
-            // so i save the current pile as pile
-            // and i do a for each card in this pile.
-
-            for(E_PileID from: E_PileID.values()){
-                for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
-                    for (E_PileID to: E_PileID.values()) {
-                        if(from == to)
-                            continue;
-
-
-                        // now we need to check if the move is even possible at this index.
-                        if (!boardModel.canMoveFrom(from, depth)) {
-                            break;
-                        }
-
-                        if(!boardModel.canMove(from,depth,to)){
-                            continue;
-                        }
-
-                        boolean improveCardReveal = false;
-                        try {
-                            improveCardReveal = !boardModel.getPile(from).get(depth).isFacedUp();
-                        } catch (Exception ignored) {}
-
-                        boolean improveAce = false;
-                        if (to == E_PileID.SPADESACEPILE ||to == E_PileID.CLUBSACEPILE || to == E_PileID.DIAMONDACEPILE ||to == E_PileID.HEARTSACEPILE ){
-                            improveAce = true;
-                        }
-
-                        Move move = new Move(to, from, depth, improveAce, improveCardReveal, "Move Desc");
-                        moves.add(move);
-
-                    }
-                }
-            }
-            return moves;
-        }
-
-        @Override
         public List<Card> getUserInput(String UiChoice) {
             return cards;
         }
@@ -114,6 +70,74 @@ class BoardControllerSimulatedTest {
         assertEquals(3,result.size());
 
     }
+    @Test
+    void PossibleMoves_Drawstack2() {
+
+        Card drStack[] = {
+                new Card( E_CardSuit.SPADES     , 1 ),
+                new Card( E_CardSuit.HEARTS     , 1  ),
+                new Card( E_CardSuit.CLUBS      ,  1 ),
+                new Card( E_CardSuit.CLUBS      ,  2 ),
+                new Card( E_CardSuit.DIAMONDS      ,  2 ),
+                new Card( E_CardSuit.SPADES      ,  2 ),
+        };
+
+        I_SolitaireStacks drawStack = (I_SolitaireStacks) new DrawStack(Arrays.asList(drStack));
+
+        Card cards[] = {
+                new Card( E_CardSuit.SPADES     , 9  ),
+                new Card( E_CardSuit.HEARTS     , 9  ),
+                new Card( E_CardSuit.CLUBS      , 9  ),
+                new Card( E_CardSuit.HEARTS     , 9  ),
+                new Card( E_CardSuit.SPADES     , 9  ),
+                new Card( E_CardSuit.DIAMONDS   , 9  ),
+                new Card( E_CardSuit.CLUBS      , 9  ),
+                new Card( E_CardSuit.DIAMONDS   , 9  ) };
+
+        testBoardCont boardCnt = new testBoardCont(cards);
+        I_BoardModel board = boardCnt.MakeNewBoard("hej");
+        board = changeDrawStack(board,drawStack);
+
+        List<Move> result = boardCnt.possibleMoves(board);
+        assertEquals(3,result.size());
+
+    }
+    @Test
+    void PossibleMoves_Drawstack3() {
+
+        Card drStack[] = {
+                new Card( E_CardSuit.SPADES     , 12 ),
+                new Card( E_CardSuit.HEARTS     , 11  ),
+                new Card( E_CardSuit.CLUBS      ,  1 ),
+                new Card( E_CardSuit.CLUBS      ,  3 ),
+                new Card( E_CardSuit.DIAMONDS      ,  6 ),
+                new Card( E_CardSuit.SPADES      ,  7 ),
+                new Card( E_CardSuit.CLUBS      ,  5 ),
+                new Card( E_CardSuit.DIAMONDS      ,  7 ),
+                new Card( E_CardSuit.SPADES      ,  3 )
+        };
+
+        I_SolitaireStacks drawStack = (I_SolitaireStacks) new DrawStack(Arrays.asList(drStack));
+
+        Card cards[] = {
+                new Card( E_CardSuit.SPADES     , 9  ),
+                new Card( E_CardSuit.HEARTS     , 9  ),
+                new Card( E_CardSuit.CLUBS      , 9  ),
+                new Card( E_CardSuit.HEARTS     , 9  ),
+                new Card( E_CardSuit.SPADES     , 4  ),
+                new Card( E_CardSuit.DIAMONDS   , 8  ),
+                new Card( E_CardSuit.CLUBS      , 9  ),
+                new Card( E_CardSuit.DIAMONDS   , 9  ) };
+
+        testBoardCont boardCnt = new testBoardCont(cards);
+        I_BoardModel board = boardCnt.MakeNewBoard("hej");
+        board = changeDrawStack(board,drawStack);
+
+        List<Move> result = boardCnt.possibleMoves(board);
+        assertEquals(4,result.size());
+
+    }
+
 
 
     @Test
