@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class SuitStack extends StackBase {
+public class SuitStack extends StackBase {
 
     public SuitStack(List<I_CardModel> list) {
         this.stack = list;
@@ -58,7 +58,7 @@ public abstract class SuitStack extends StackBase {
 
         if (stack.isEmpty()){
             assert card != null;
-            if (card.getRank() == 1 && card.getSuit() == this.getStackSuit() ){
+            if (card.getRank() == 1 ){
                 return true;
             }else {
                 return false;
@@ -102,9 +102,5 @@ public abstract class SuitStack extends StackBase {
         return true;
     }
 
-    @NonNullType
-    public abstract E_PileID getPileID();
 
-    @NonNullType
-    public abstract E_CardSuit getStackSuit();
 }

@@ -29,10 +29,10 @@ public final class Board implements I_BoardModel {
         piles = new I_SolitaireStacks[values().length];
 
         piles[DRAWSTACK.ordinal()] = new DrawStack();
-        piles[SUITSTACKHEARTS.ordinal()]  = new HeartStack();
-        piles[SUITSTACKDIAMONDS.ordinal()] = new DiamondsStack();
-        piles[SUITSTACKCLUBS.ordinal()]   = new ClubsStack();
-        piles[SUITSTACKSPADES.ordinal()]  = new SpadesStack();
+        piles[SUITSTACKHEARTS.ordinal()]  = new SuitStack();
+        piles[SUITSTACKDIAMONDS.ordinal()] = new SuitStack();
+        piles[SUITSTACKCLUBS.ordinal()]   = new SuitStack();
+        piles[SUITSTACKSPADES.ordinal()]  = new SuitStack();
 
         for (int i = 0; i < 24; i++) {
             piles[DRAWSTACK.ordinal()].add(new Card());
