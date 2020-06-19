@@ -1,5 +1,6 @@
 package model.cabal;
 
+import model.GameCardDeck;
 import model.cabal.internals.BuildStack;
 import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
@@ -93,8 +94,11 @@ public final class Board implements I_BoardModel {
      * @param imgData state to validate against
      * @throws IllegalStateException if state is out of sync
      */
-    private void validateState(Map<String, I_CardModel> imgData) {
-
+    private void validateState(Map<String, I_CardModel> imgData) throws IllegalStateException {
+        for (E_PileID pileID : E_PileID.values()) {
+            var pile = piles[pileID.ordinal()];
+            validateCardState(pileID, pile.getCard(pile.size() - 1), extractImgData(imgData, pileID));
+        }
     }
 
     /**
@@ -127,6 +131,27 @@ public final class Board implements I_BoardModel {
         );
     }
 
+    /**
+     * Checks if the state of a card is compatible with the card gotten from the external model.
+     * If the card is face down, the method will try to reveal it with the correct values.
+     * @param origin the pile the card is from.
+     * @param cardModel the card to validate.
+     * @param imgCard the card being validated against
+     */
+    private void
+    validateCardState(E_PileID origin, I_CardModel cardModel, I_CardModel imgCard) throws IllegalStateException {
+        if (!cardModel.isFacedUp()) {
+            if (GameCardDeck.getInstance().remove(imgCard)) { //if the card was in deck and now removed
+                cardModel.reveal(imgCard.getSuit(), imgCard.getRank());
+            } else {
+                throw new IllegalStateException("Trying to reveal card but card is already in play.\ncard: " + imgCard);
+            }
+        } else {
+            if (!cardModel.equals(imgCard))
+                throw makeStateException(origin, imgCard, cardModel, "no info");
+        }
+    }
+
 //---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
 
     @Override
@@ -139,12 +164,7 @@ public final class Board implements I_BoardModel {
         var returnable = turnPile.turnCard();
 
         var imgCard = extractImgData(imgData, TURNPILE);
-        if ( !returnable.isFacedUp() ) {
-            returnable.reveal(imgCard.getSuit(), imgCard.getRank());
-        } else {
-            if ( !returnable.equals(imgCard) )
-                throw makeStateException(TURNPILE, imgCard, returnable, "no info");
-        }
+        validateCardState(TURNPILE, returnable, imgCard);
 
         return returnable;
     }
@@ -182,15 +202,15 @@ public final class Board implements I_BoardModel {
         to.addAll(from.popSubset(originPos));
 
         //check that state is consistent with the physical board
-        var exposedCard = from.getCard(from.size() - 1);
+        I_CardModel exposedCard = null;
         var imgCard = extractImgData(imgData, origin);
-        if ( !exposedCard.isFacedUp() ) {
-            exposedCard.reveal(imgCard.getSuit(), imgCard.getRank());
+        if ( !from.isEmpty() ) {
+            exposedCard = from.getCard(from.size() - 1);
+            validateCardState(origin, exposedCard, imgCard);
         } else {
-            if ( !exposedCard.equals(imgCard) )
-                throw makeStateException(origin, imgCard, exposedCard, "no info");
+            if (null != imgCard)
+                throw makeStateException(origin, imgCard, null, "A virtual stack is empty but the physical stack is not");
         }
-
         //notify listeners om state before and after state change
         change.firePropertyChange( makePropertyChangeEvent(origin, oldOrigin) );
         change.firePropertyChange( makePropertyChangeEvent(destination, oldDest) );

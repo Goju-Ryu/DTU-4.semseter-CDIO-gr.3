@@ -58,7 +58,7 @@ class SuitStackTest {
         assertTrue(suitStack.canMoveFrom(1));
 
         // Check that an exception will be thrown if range is greater than 1
-        assertThrows(IllegalArgumentException.class, () -> suitStack.canMoveFrom(2));
+        assertFalse(suitStack.canMoveFrom(2));
 
         // Check if the function returns false if the card to be moved is face down
         assertFalse(suitStack1.canMoveFrom(1));
@@ -67,7 +67,7 @@ class SuitStackTest {
             System.out.println("isEmpty test passed");
 
             // Check if an exception will be thrown if the suit stack is empty an we want to know if we can move the top card
-            assertThrows(IndexOutOfBoundsException.class,() -> suitStack2.canMoveFrom(0));
+            assertFalse(suitStack2.canMoveFrom(1));
         }else {
             fail();
         }
@@ -107,17 +107,17 @@ class SuitStackTest {
         BuildStack buildStack5 = new BuildStack();
         buildStack5.add(new Card(E_CardSuit.SPADES,9,false));
 
-        if (buildStack.canMoveFrom(0)){
+        if (buildStack.canMoveFrom(1)){
             System.out.println("1st pass");
-            if (!buildStack1.canMoveFrom(1)){
+            if (!buildStack1.canMoveFrom(2)){
                 System.out.println("2nd pass");
-                if (buildStack2.canMoveFrom(0)){
+                if (buildStack2.canMoveFrom(1)){
                     System.out.println("3th pass");
-                    if (buildStack3.canMoveFrom(0)){
+                    if (buildStack3.canMoveFrom(1)){
                         System.out.println("4th pass");
-                        if (buildStack4.canMoveFrom(0)){
+                        if (buildStack4.canMoveFrom(1)){
                             System.out.println("5th pass");
-                            if (!buildStack5.canMoveFrom(0)){
+                            if (!buildStack5.canMoveFrom(1)){
                                 System.out.println("6th pass");
 
                                 assertTrue(receivingStackEmpty.canMoveTo(aceStack));
@@ -173,11 +173,11 @@ class SuitStackTest {
         drawStack5.add(new Card(E_CardSuit.SPADES,9,false));
         drawStack5.turnCard();
 
-        if (drawStack.canMoveFrom(0)){
-            if (drawStack2.canMoveFrom(0)){
-                if (drawStack3.canMoveFrom(0)){
-                    if (drawStack4.canMoveFrom(0)){
-                        if (drawStack5.canMoveFrom(0)){
+        if (drawStack.canMoveFrom(1)){
+            if (drawStack2.canMoveFrom(1)){
+                if (drawStack3.canMoveFrom(1)){
+                    if (drawStack4.canMoveFrom(1)){
+                        if (drawStack5.canMoveFrom(1)){
                             System.out.println("all canMoveFrom tests passed");
 
                             assertTrue(receivingStack.canMoveTo(drawStack));
@@ -192,7 +192,7 @@ class SuitStackTest {
                     }
                 }
             }
-        }else {
+        } else {
             fail();
         }
     }

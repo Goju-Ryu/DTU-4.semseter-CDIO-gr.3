@@ -40,18 +40,18 @@ public class BoardController implements I_BoardController {
         List<Card> usrInput = getUserInput(UiChoice);
 
         Map<String, I_CardModel> usrInputMap = new HashMap<>();
-        usrInputMap.put(TURNPILE.name(), usrInputMap.get(0));
-        usrInputMap.put(HEARTSACEPILE.name(), usrInputMap.get(1));
-        usrInputMap.put(DIAMONDACEPILE.name(), usrInputMap.get(2));
-        usrInputMap.put(SPADESACEPILE.name(), usrInputMap.get(3));
-        usrInputMap.put(CLUBSACEPILE.name(), usrInputMap.get(4));
-        usrInputMap.put(BUILDSTACK1.name(), usrInputMap.get(5));
-        usrInputMap.put(BUILDSTACK2.name(), usrInputMap.get(6));
-        usrInputMap.put(BUILDSTACK3.name(), usrInputMap.get(7));
-        usrInputMap.put(BUILDSTACK4.name(), usrInputMap.get(8));
-        usrInputMap.put(BUILDSTACK5.name(), usrInputMap.get(9));
-        usrInputMap.put(BUILDSTACK6.name(), usrInputMap.get(10));
-        usrInputMap.put(BUILDSTACK7.name(), usrInputMap.get(11));
+        usrInputMap.put(TURNPILE.name(), usrInput.get(0));
+        usrInputMap.put(HEARTSACEPILE.name(), usrInput.get(1));
+        usrInputMap.put(DIAMONDACEPILE.name(), usrInput.get(2));
+        usrInputMap.put(SPADESACEPILE.name(), usrInput.get(3));
+        usrInputMap.put(CLUBSACEPILE.name(), usrInput.get(4));
+        usrInputMap.put(BUILDSTACK1.name(), usrInput.get(5));
+        usrInputMap.put(BUILDSTACK2.name(), usrInput.get(6));
+        usrInputMap.put(BUILDSTACK3.name(), usrInput.get(7));
+        usrInputMap.put(BUILDSTACK4.name(), usrInput.get(8));
+        usrInputMap.put(BUILDSTACK5.name(), usrInput.get(9));
+        usrInputMap.put(BUILDSTACK6.name(), usrInput.get(10));
+        usrInputMap.put(BUILDSTACK7.name(), usrInput.get(11));
 
         return new Board(usrInputMap);
     }

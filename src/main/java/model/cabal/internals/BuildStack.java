@@ -33,13 +33,13 @@ public class BuildStack extends StackBase {
 
     @Override
     public boolean canMoveFrom(int range) {
+        if (stack.isEmpty()) return false;
 
-        int top = stack.size() - 1;
-        int newid = top - (range);
-        if (newid < 0 ){
+        int top = stack.size();
+        if (top - range < 0 ){
             return false;
         }
-        return stack.get(newid).isFacedUp();
+        return stack.get(top - range).isFacedUp();
     }
 
     @Override
@@ -72,7 +72,6 @@ public class BuildStack extends StackBase {
         System.out.println("my suit: "+mySuit);
         System.out.println("other suit: "+otSuit);
 
-        // todo consider this as a switch? makes it easyer to collapse, and easyer to change ( maybe havent read it through )
         if((cards.iterator().next().getSuit() == E_CardSuit.HEARTS) && (card.getSuit() == E_CardSuit.HEARTS)){
             System.out.println("Both cards were HEARTS");
             return false;
