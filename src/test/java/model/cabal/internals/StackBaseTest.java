@@ -67,7 +67,7 @@ class StackBaseTest {
         //SuitStack
         SuitStack suitStack = createSuitStack(5);
         I_CardModel card = new Card(E_CardSuit.HEARTS,6,true);
-        SuitStack suitStack1 = new ClubsStack();
+        SuitStack suitStack1 = new SuitStack();
         suitStack1.add(card);
 
         suitStack.addAll(suitStack1);
@@ -477,7 +477,7 @@ class StackBaseTest {
     }
 
     private SuitStack createSuitStack(int stacksize) {
-        SuitStack stack = new HeartStack();
+        SuitStack stack = new SuitStack();
 
         for (int i = 0; i < stacksize; i++) {
             I_CardModel card = new Card(E_CardSuit.HEARTS, i + 1, true);

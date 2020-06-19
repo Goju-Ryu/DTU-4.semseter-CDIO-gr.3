@@ -102,7 +102,7 @@ class BoardTest {
 
     // todo note that this only tests heartstack, this should be exended to test all implementations of suitstack, even if they are identical
     private SuitStack createSuitStack(int elements){
-        SuitStack suitStack = new HeartStack();
+        SuitStack suitStack = new SuitStack();
 
         for (int i = 0; i < elements; i++) {
             I_CardModel card = new Card(E_CardSuit.HEARTS,i+1);

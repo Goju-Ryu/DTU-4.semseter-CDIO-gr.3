@@ -52,7 +52,7 @@ class SuitStackTest {
 
         SuitStack suitStack = createSuitStack(10,true);
         SuitStack suitStack1 = createSuitStack(4,false);
-        SuitStack suitStack2 = new HeartStack();
+        SuitStack suitStack2 = new SuitStack();
 
         //Check that a card can be moved from the top of the stack
         assertTrue(suitStack.canMoveFrom(1));
@@ -77,7 +77,7 @@ class SuitStackTest {
     void canMoveTo() {
 
         SuitStack receivingStack = createSuitStack(8,true);
-        SuitStack receivingStackEmpty = new HeartStack();
+        SuitStack receivingStackEmpty = new SuitStack();
 
         //The  build stack that should be able to be merged into receivingStack
         BuildStack buildStack = new BuildStack();
@@ -198,7 +198,7 @@ class SuitStackTest {
     }
 
     private SuitStack createSuitStack(int elements, boolean isFaceUp){
-        SuitStack suitStack = new HeartStack();
+        SuitStack suitStack = new SuitStack();
 
         for (int i = 0; i < elements; i++) {
             I_CardModel card = new Card(E_CardSuit.HEARTS,i+1,isFaceUp);

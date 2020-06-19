@@ -124,7 +124,7 @@ class BuildStackTest {
         kingStack2.add(new Card(E_CardSuit.SPADES,10));
 
         // The Suit Stack that will receive a Card
-        SuitStack suitStack = new HeartStack();
+        SuitStack suitStack = new SuitStack();
         suitStack.add(new Card(E_CardSuit.HEARTS,1));
         suitStack.add(new Card(E_CardSuit.HEARTS,2));
         suitStack.add(new Card(E_CardSuit.HEARTS,3));

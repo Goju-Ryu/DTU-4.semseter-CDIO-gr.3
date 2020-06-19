@@ -1,7 +1,5 @@
 package model.cabal.internals;
 
-import model.cabal.E_PileID;
-import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
