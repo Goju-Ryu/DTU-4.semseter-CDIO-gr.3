@@ -84,4 +84,6 @@ public interface I_SolitaireStacks extends Collection<I_CardModel> {
      */
     boolean containsCard(I_CardModel card);
 
+
+
 }
