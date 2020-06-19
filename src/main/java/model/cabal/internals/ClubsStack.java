@@ -18,7 +18,6 @@ public class ClubsStack extends SuitStack {
     public ClubsStack(List<I_CardModel> list) {
         super(list);
     }
-
     public ClubsStack() {
         stack = new ArrayList<>();
     }

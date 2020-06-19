@@ -18,7 +18,6 @@ public class DiamondsStack extends SuitStack {
     public DiamondsStack(List<I_CardModel> list) {
         super(list);
     }
-
     public DiamondsStack() {
         stack = new ArrayList<>();
     }

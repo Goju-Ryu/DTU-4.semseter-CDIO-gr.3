@@ -23,9 +23,8 @@ public class DrawStack extends StackBase {
 
     public DrawStack(List<I_CardModel> list) {
         super(list);
-        drawIndex = -1;
+        drawIndex = 0;
     }
-
 
 //-----------  Implementation ----------------------------------------------------------------
 
@@ -85,6 +84,7 @@ public class DrawStack extends StackBase {
     }
 
 //-------------------  DrawStack specific methods  ----------------------------------------------------------
+
     public I_CardModel turnCard() {
         return getCard(++drawIndex);
     }

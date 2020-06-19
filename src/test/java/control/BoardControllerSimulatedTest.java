@@ -120,19 +120,31 @@ class BoardControllerSimulatedTest {
         );
         assertEquals(0,res.size());
 
+        // Assert that we can move 1 onto Ace pile from a drawstack
         res = getPosMoves(
-                // Assert that we can move 1 onto Ace pile from a drawstack
                 new Card( E_CardSuit.SPADES , 1 ),      // 0  // aces = 1 , 2, 3, 4
                 new Card( E_CardSuit.SPADES , 3  ),     // 5
                 new Card( E_CardSuit.SPADES , 4  ),     // 6
                 new Card( E_CardSuit.SPADES , 5  ),     // 7
-                new Card( E_CardSuit.SPADES , 1  ),     // 8
+                new Card( E_CardSuit.SPADES , 6  ),     // 8
                 new Card( E_CardSuit.SPADES , 7  ),     // 9
                 new Card( E_CardSuit.SPADES , 8  ),     // 10
                 new Card( E_CardSuit.SPADES , 9  )      // 11
         );
         assertEquals(1,res.size());
 
+
+        res = getPosMoves(
+                new Card( E_CardSuit.SPADES , 1 ),      // 0  // aces = 1 , 2, 3, 4
+                new Card( E_CardSuit.HEARTS , 2  ),     // 5
+                new Card( E_CardSuit.CLUBS , 3  ),     // 6
+                new Card( E_CardSuit.HEARTS , 4  ),     // 7
+                new Card( E_CardSuit.SPADES , 5  ),     // 8
+                new Card( E_CardSuit.DIAMONDS , 6  ),     // 9
+                new Card( E_CardSuit.CLUBS , 7  ),     // 10
+                new Card( E_CardSuit.DIAMONDS , 8  )      // 11
+        );
+        assertEquals(7,res.size());
     }
     private List<Move> getPosMoves(Card c1, Card c2,Card c3, Card c4,Card c5, Card c6,Card c7, Card c8){
         Card cards[] = {c1,c2,c3,c4,c5,c6,c7,c8};
