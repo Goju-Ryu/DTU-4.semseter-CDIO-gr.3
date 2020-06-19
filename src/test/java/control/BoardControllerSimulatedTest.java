@@ -1,8 +1,6 @@
 package control;
 
-import data.InputSimDTO;
 import model.Move;
-import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.card.Card;
@@ -10,10 +8,9 @@ import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -112,10 +109,10 @@ class BoardControllerSimulatedTest {
                 new Card(E_CardSuit.SPADES, 8),     // 10
                 new Card(E_CardSuit.SPADES, 9)      // 11
         );
-        //assertEquals(1,res.size());
+        assertEquals(1,res.size());
     }
     @Test
-    void PossibleMoves_7BuildMoves() {
+    void PossibleMoves_8Moves() {
 
         List<Move>res = getPosMoves(
                 new Card( E_CardSuit.SPADES , 1 ),      // 0  // aces = 1 , 2, 3, 4
@@ -130,7 +127,75 @@ class BoardControllerSimulatedTest {
         assertEquals(8,res.size());
 
     }
+    @Test
+    void PossibleMoves_12Moves(){
+        List<Move>res = getPosMoves(
+                new Card( E_CardSuit.CLUBS , 4 ),
+                new Card( E_CardSuit.SPADES , 4  ),
+                new Card( E_CardSuit.DIAMONDS , 5  ),
+                new Card( E_CardSuit.HEARTS , 5  ),
+                new Card( E_CardSuit.CLUBS , 6  ),
+                new Card( E_CardSuit.SPADES , 6  ),
+                new Card( E_CardSuit.HEARTS , 7  ),
+                new Card( E_CardSuit.DIAMONDS , 7  )
+        );
+        assertEquals(12,res.size());
+    }
 
+    @Test
+    void PossibleMoves_5Moves(){
+
+    }
+
+    @Test
+    void PossibleMoves_4Moves(){
+
+    }
+
+    @Test
+    void PossibleMoves_3Moves(){
+
+    }
+
+    @Test
+    void PossibleMoves_4_3_2AceMoves(){
+        List<Move> res = getPosMoves(
+                new Card( E_CardSuit.CLUBS , 1 ),
+                new Card( E_CardSuit.DIAMONDS , 4  ),
+                new Card( E_CardSuit.DIAMONDS , 1  ),
+                new Card( E_CardSuit.HEARTS , 5  ),
+                new Card( E_CardSuit.DIAMONDS , 6  ),
+                new Card( E_CardSuit.SPADES , 1  ),
+                new Card( E_CardSuit.HEARTS , 1  ),
+                new Card( E_CardSuit.DIAMONDS , 7  )
+        );
+        assertEquals(4,res.size());
+
+        List<Move> res1 = getPosMoves(
+                new Card( E_CardSuit.CLUBS , 3 ),
+                new Card( E_CardSuit.SPADES , 10  ),
+                new Card( E_CardSuit.DIAMONDS , 5  ),
+                new Card( E_CardSuit.HEARTS , 5  ),
+                new Card( E_CardSuit.CLUBS , 1  ),
+                new Card( E_CardSuit.SPADES , 1  ),
+                new Card( E_CardSuit.HEARTS , 1),
+                new Card( E_CardSuit.DIAMONDS , 12  )
+        );
+        assertEquals(3,res1.size());
+
+        List<Move> res2 = getPosMoves(
+                new Card( E_CardSuit.CLUBS , 4 ),
+                new Card( E_CardSuit.SPADES , 4  ),
+                new Card( E_CardSuit.DIAMONDS , 6  ),
+                new Card( E_CardSuit.HEARTS , 1  ),
+                new Card( E_CardSuit.CLUBS , 8  ),
+                new Card( E_CardSuit.SPADES , 10  ),
+                new Card( E_CardSuit.SPADES , 1),
+                new Card( E_CardSuit.DIAMONDS , 12  )
+        );
+        assertEquals(2,res2.size());
+
+    }
 
 
     private List<Move> getPosMoves(Card d1, Card b1,Card b2, Card b3,Card b4, Card b5,Card b6, Card c8){
