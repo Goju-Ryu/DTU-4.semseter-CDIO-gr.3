@@ -40,4 +40,13 @@ public class ClubsStack extends SuitStack {
         }
     }
 
+    @Override
+    public E_CardSuit getStackSuit() {
+        return stackSuit;
+    }
+
+    @Override
+    public E_PileID getPileID() {
+        return pileID;
+    }
 }

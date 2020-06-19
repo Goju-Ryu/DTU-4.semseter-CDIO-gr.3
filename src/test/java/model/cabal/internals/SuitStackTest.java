@@ -52,7 +52,7 @@ class SuitStackTest {
 
         SuitStack suitStack = createSuitStack(10,E_CardSuit.CLUBS,true);
         SuitStack suitStack1 = createSuitStack(4,E_CardSuit.HEARTS,false);
-        SuitStack suitStack2 = new SuitStack();
+        SuitStack suitStack2 = new HeartStack();
 
         //Check that a card can be moved from the top of the stack
         assertTrue(suitStack.canMoveFrom(1));

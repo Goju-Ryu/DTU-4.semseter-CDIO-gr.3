@@ -170,6 +170,7 @@ public class BoardController implements I_BoardController {
         // now that the list is sorted. we return the best element, the first one.
         moves.sort(comp);
         return moves.get(0);
+
     };
 
     public List<Card> getUserInput(String UiChoice){

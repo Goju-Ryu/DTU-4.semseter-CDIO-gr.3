@@ -1,6 +1,7 @@
 package model.cabal.internals;
 
 import model.cabal.E_PileID;
+import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
@@ -12,6 +13,7 @@ import java.util.List;
 public class SpadesStack extends SuitStack{
 
     private final E_PileID pileID = E_PileID.SPADESACEPILE;
+    private final E_CardSuit stackSuit = E_CardSuit.SPADES;
 
     public SpadesStack(List<I_CardModel> list) {
         super(list);
@@ -37,5 +39,15 @@ public class SpadesStack extends SuitStack{
             };
         }
     };
+
+    @Override
+    public E_CardSuit getStackSuit() {
+        return stackSuit;
+    }
+
+    @Override
+    public E_PileID getPileID() {
+        return pileID;
+    }
 
 }

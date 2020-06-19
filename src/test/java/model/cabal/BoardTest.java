@@ -1,6 +1,7 @@
 package model.cabal;
 
 import model.GameCardDeck;
+import model.cabal.internals.HeartStack;
 import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
@@ -102,8 +103,9 @@ class BoardTest {
     void removePropertyChangeListener() {
     }
 
+    // todo note that this only tests heartstack, this should be exended to test all implementations of suitstack, even if they are identical
     private SuitStack createSuitStack(int elements, E_CardSuit suit){
-        SuitStack suitStack = new SuitStack();
+        SuitStack suitStack = new HeartStack();
 
         for (int i = 0; i < elements; i++) {
             I_CardModel card = new Card(suit,i+1);
