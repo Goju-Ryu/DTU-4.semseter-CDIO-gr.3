@@ -1,11 +1,9 @@
 package model.cabal;
 
 import model.GameCardDeck;
-import model.cabal.internals.BuildStack;
-import model.cabal.internals.DrawStack;
-import model.cabal.internals.I_SolitaireStacks;
-import model.cabal.internals.SuitStack;
+import model.cabal.internals.*;
 import model.cabal.internals.card.Card;
+import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
@@ -20,21 +18,22 @@ import static model.cabal.E_PileID.*;
 /**
  * This is the model of the entire cabal
  */
-public final class Board implements I_BoardModel {
+public class Board implements I_BoardModel {
 
     private PropertyChangeSupport change;
 
     private I_SolitaireStacks[] piles;
+
     //can start here
     public Board(Map<String, I_CardModel> imgData) { //TODO board should take imgData to initialize self
         change = new PropertyChangeSupport(this);
         piles = new I_SolitaireStacks[values().length];
 
         piles[TURNPILE.ordinal()] = new DrawStack();
-        piles[HEARTSACEPILE.ordinal()] = new SuitStack();
+        piles[HEARTSACEPILE.ordinal()]  = new SuitStack();
         piles[DIAMONDACEPILE.ordinal()] = new SuitStack();
-        piles[CLUBSACEPILE.ordinal()] = new SuitStack();
-        piles[SPADESACEPILE.ordinal()] = new SuitStack();
+        piles[CLUBSACEPILE.ordinal()]   = new SuitStack();
+        piles[SPADESACEPILE.ordinal()]  = new SuitStack();
 
         for (int i = 0; i < 24; i++) {
             piles[TURNPILE.ordinal()].add(new Card());
@@ -55,13 +54,9 @@ public final class Board implements I_BoardModel {
             if (data != null)
                 piles[pileID.ordinal()].add(data);
         }
-        
     }
 
-
-
 //---------  Genneral methods  -------------------------------------------------------------------------------------
-
 
     @Override
     public boolean isStackComplete(E_PileID pileID) {
@@ -176,7 +171,6 @@ public final class Board implements I_BoardModel {
         return turnPile.getTopCard();
     }
 
-
 //----------  Move card methods  -----------------------------------------------------------------------------
 
     @Override
@@ -219,13 +213,37 @@ public final class Board implements I_BoardModel {
     }
 
     @Override
-    public boolean canMove(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException {
+    public boolean canMove(E_PileID origin, int range, E_PileID destination) throws IllegalMoveException {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
+
+        int fromIndex = from.size() - range;
+        if( from.getCard(fromIndex).isFacedUp()) {
+            E_CardSuit suit = from.getCard(fromIndex).getSuit();
+            switch (destination) {
+                case SPADESACEPILE:
+                    if (suit != E_CardSuit.SPADES)
+                        return false;
+                    break;
+                case CLUBSACEPILE:
+                    if (suit != E_CardSuit.CLUBS)
+                        return false;
+                    break;
+                case DIAMONDACEPILE:
+                    if (suit != E_CardSuit.DIAMONDS)
+                        return false;
+                    break;
+                case HEARTSACEPILE:
+                    if (suit != E_CardSuit.HEARTS)
+                        return false;
+                    break;
+            }
+        }
+
         return isValidMove(from, to)
-               && from.canMoveFrom(originPos)
-               && to.canMoveTo(from.getSubset(originPos));
+               && from.canMoveFrom(range)
+               && to.canMoveTo(from.getSubset(range));
     }
 
     private boolean isValidMove(I_SolitaireStacks from, I_SolitaireStacks to) {
@@ -234,19 +252,16 @@ public final class Board implements I_BoardModel {
         if(from == to)
             return false;
 
-        var turnPile = get(TURNPILE);
-
         // If you try to move to the turn pile
+        var turnPile = get(TURNPILE);
         if (to.equals(turnPile))
             return false;
+
 
         return true;
     }
 
-
 //-----------------------------------PropertyEditor methods-------------------------------------------------------------
-
-
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {

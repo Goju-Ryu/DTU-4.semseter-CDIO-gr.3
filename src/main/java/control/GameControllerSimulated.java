@@ -14,21 +14,19 @@ import java.util.List;
  * However this will use BoardControler when i needs to make a move on the board
  */
 
-public class GameController implements I_GameController{
+public class GameControllerSimulated implements I_GameController{
 
     //Todo implement this so that it returns I_BoardModel here
     public void startGame(String UiChoice){
-        I_BoardController boardCtrl = new BoardController();
+        I_BoardController boardCtrl = new BoardControllerSimulated();
         I_BoardModel boardMod = null;
-        if(UiChoice =="simulation"){
+        if( UiChoice == "simulation" ){
             //TODO: implement that it can iniate a simulated board here
         }else{
             boardMod = boardCtrl.MakeNewBoard(UiChoice);
         }
-
         List<Move> moves = boardCtrl.possibleMoves(boardMod);
-        boardCtrl.pickMove(moves);
+        //boardCtrl.pickMove(moves);
 
     }
-
 }

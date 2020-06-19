@@ -10,16 +10,18 @@ import java.util.List;
 
 public class SuitStack extends StackBase {
 
-
     public SuitStack(List<I_CardModel> list) {
         this.stack = list;
     }
-
     public SuitStack(){
         stack = new ArrayList<>();
     }
 
+    /**
+     * this method must only be used from one of the extending classes that overides this method
+     * */
     @Override
+    @NonNullType
     public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
 
         int toIndex = stack.size();
@@ -65,7 +67,7 @@ public class SuitStack extends StackBase {
 
         if (stack.isEmpty()){
             assert card != null;
-            if (card.getRank() == 1){
+            if (card.getRank() == 1 ){
                 return true;
             }else {
                 return false;
@@ -108,4 +110,6 @@ public class SuitStack extends StackBase {
 
         return true;
     }
+
+
 }

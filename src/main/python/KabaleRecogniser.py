@@ -87,18 +87,18 @@ class KabaleRecogniser:
         # The corresponding elements in the cards list for this class starts with 0th element at the buttom right cornor of a game board, you imagine in from of you
 
         results = json.dumps({
-            "drawPile": {"suit": stackTop[5].suit, "rank": stackTop[5].rank},
-            "SuitStackHearts": {"suit": stackTop[0].suit, "rank": stackTop[0].rank},
-            "SuitStackClubs": {"suit": stackTop[1].suit, "rank": stackTop[1].rank},
-            "SuitStackDiamonds": {"suit": stackTop[2].suit, "rank": stackTop[2].rank},
-            "SuitStackSpades": {"suit": stackTop[3].suit, "rank": stackTop[3].rank},
-            "Column1": {"suit": stackBottom[6].suit, "rank": stackBottom[6].rank},
-            "Column2": {"suit": stackBottom[5].suit, "rank": stackBottom[5].rank},
-            "Column3": {"suit": stackBottom[4].suit, "rank": stackBottom[4].rank},
-            "Column4": {"suit": stackBottom[3].suit, "rank": stackBottom[3].rank},
-            "Column5": {"suit": stackBottom[2].suit, "rank": stackBottom[2].rank},
-            "Column6": {"suit": stackBottom[1].suit, "rank": stackBottom[1].rank},
-            "Column7": {"suit": stackBottom[0].suit, "rank": stackBottom[0].rank},
+            "DRAWSTACK": {"suit": stackTop[5].suit, "rank": stackTop[5].rank},
+            "SUITSTACKHEARTS": {"suit": stackTop[0].suit, "rank": stackTop[0].rank},
+            "SUITSTACKCLUBS": {"suit": stackTop[1].suit, "rank": stackTop[1].rank},
+            "SUITSTACKDIAMONDS": {"suit": stackTop[2].suit, "rank": stackTop[2].rank},
+            "SUITSTACKSPADES": {"suit": stackTop[3].suit, "rank": stackTop[3].rank},
+            "BUILDSTACK1": {"suit": stackBottom[6].suit, "rank": stackBottom[6].rank},
+            "BUILDSTACK2": {"suit": stackBottom[5].suit, "rank": stackBottom[5].rank},
+            "BUILDSTACK3": {"suit": stackBottom[4].suit, "rank": stackBottom[4].rank},
+            "BUILDSTACK4": {"suit": stackBottom[3].suit, "rank": stackBottom[3].rank},
+            "BUILDSTACK5": {"suit": stackBottom[2].suit, "rank": stackBottom[2].rank},
+            "BUILDSTACK6": {"suit": stackBottom[1].suit, "rank": stackBottom[1].rank},
+            "BUILDSTACK7": {"suit": stackBottom[0].suit, "rank": stackBottom[0].rank},
         })
         return results
 

@@ -7,17 +7,14 @@ import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static model.cabal.E_PileID.*;
-
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BoardTest {
 
@@ -92,6 +89,7 @@ class BoardTest {
 
     @Test
     void canMove() {
+
     }
 
     @Test
@@ -102,11 +100,12 @@ class BoardTest {
     void removePropertyChangeListener() {
     }
 
-    private SuitStack createSuitStack(int elements, E_CardSuit suit){
+    // todo note that this only tests heartstack, this should be exended to test all implementations of suitstack, even if they are identical
+    private SuitStack createSuitStack(int elements){
         SuitStack suitStack = new SuitStack();
 
         for (int i = 0; i < elements; i++) {
-            I_CardModel card = new Card(suit,i+1);
+            I_CardModel card = new Card(E_CardSuit.HEARTS,i+1);
             suitStack.add(card);
         }
 
