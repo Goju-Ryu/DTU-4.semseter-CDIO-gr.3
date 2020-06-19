@@ -12,7 +12,7 @@ cardAnal = CardAnalyser()
 cardVal = CardValidator()
 
 
-SUCCESCRITERIA = 30
+SUCCESCRITERIA = 100
 
 # kabale recogniser is a class that recognises our kabale syntax, and returns a string of what cards, the program
 # can see on the board.
@@ -88,18 +88,18 @@ class KabaleRecogniser:
         # corner of a game board, you imagine in from of you
 
         results = json.dumps({
-            "DRAWSTACK": {"suit": stackTop[5].suit.upper(), "rank": int(stackTop[5].rank), "isFacedUp": "true"},
-            "SUITSTACKHEARTS": {"suit": stackTop[0].suit.upper(), "rank": int(stackTop[0].rank), "isFacedUp": "true"},
-            "SUITSTACKCLUBS": {"suit": stackTop[1].suit.upper(), "rank": int(stackTop[1].rank), "isFacedUp": "true"},
-            "SUITSTACKDIAMONDS": {"suit": stackTop[2].suit.upper(), "rank": int(stackTop[2].rank), "isFacedUp": "true"},
-            "SUITSTACKSPADES": {"suit": stackTop[3].suit.upper(), "rank": int(stackTop[3].rank), "isFacedUp": "true"},
-            "BUILDSTACK1": {"suit": stackBottom[6].suit.upper(), "rank": int(stackBottom[6].rank), "isFacedUp": "true"},
-            "BUILDSTACK2": {"suit": stackBottom[5].suit.upper(), "rank": int(stackBottom[5].rank), "isFacedUp": "true"},
-            "BUILDSTACK3": {"suit": stackBottom[4].suit.upper(), "rank": int(stackBottom[4].rank), "isFacedUp": "true"},
-            "BUILDSTACK4": {"suit": stackBottom[3].suit.upper(), "rank": int(stackBottom[3].rank), "isFacedUp": "true"},
-            "BUILDSTACK5": {"suit": stackBottom[2].suit.upper(), "rank": int(stackBottom[2].rank), "isFacedUp": "true"},
-            "BUILDSTACK6": {"suit": stackBottom[1].suit.upper(), "rank": int(stackBottom[1].rank), "isFacedUp": "true"},
-            "BUILDSTACK7": {"suit": stackBottom[0].suit.upper(), "rank": int(stackBottom[0].rank), "isFacedUp": "true"},
+            "DRAWSTACK": None if not stackTop[5].exists else {"suit": stackTop[5].suit.upper(), "rank": int(stackTop[5].rank), "isFacedUp": "true"},
+            "SUITSTACKHEARTS": None if not stackTop[0].exists else  {"suit": stackTop[0].suit.upper(), "rank": int(stackTop[0].rank), "isFacedUp": "true"},
+            "SUITSTACKCLUBS": None if not stackTop[1].exists else {"suit": stackTop[1].suit.upper(), "rank": int(stackTop[1].rank), "isFacedUp": "true"},
+            "SUITSTACKDIAMONDS": None if not stackTop[2].exists else {"suit": stackTop[2].suit.upper(), "rank": int(stackTop[2].rank), "isFacedUp": "true"},
+            "SUITSTACKSPADES": None if not stackTop[3].exists else {"suit": stackTop[3].suit.upper(), "rank": int(stackTop[3].rank), "isFacedUp": "true"},
+            "BUILDSTACK1": None if not stackBottom[6].exists else {"suit": stackBottom[6].suit.upper(), "rank": int(stackBottom[6].rank), "isFacedUp": "true"},
+            "BUILDSTACK2": None if not stackBottom[5].exists else {"suit": stackBottom[5].suit.upper(), "rank": int(stackBottom[5].rank), "isFacedUp": "true"},
+            "BUILDSTACK3": None if not stackBottom[4].exists else {"suit": stackBottom[4].suit.upper(), "rank": int(stackBottom[4].rank), "isFacedUp": "true"},
+            "BUILDSTACK4": None if not stackBottom[3].exists else {"suit": stackBottom[3].suit.upper(), "rank": int(stackBottom[3].rank), "isFacedUp": "true"},
+            "BUILDSTACK5": None if not stackBottom[2].exists else {"suit": stackBottom[2].suit.upper(), "rank": int(stackBottom[2].rank), "isFacedUp": "true"},
+            "BUILDSTACK6": None if not stackBottom[1].exists else {"suit": stackBottom[1].suit.upper(), "rank": int(stackBottom[1].rank), "isFacedUp": "true"},
+            "BUILDSTACK7": None if not stackBottom[0].exists else {"suit": stackBottom[0].suit.upper(), "rank": int(stackBottom[0].rank), "isFacedUp": "true"},
         })
         return results
 

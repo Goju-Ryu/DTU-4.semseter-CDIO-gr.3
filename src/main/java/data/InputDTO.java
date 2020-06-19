@@ -51,7 +51,9 @@ public class InputDTO implements I_InputDTO {
      * {@code E_PileID.name()} as key to the card in the corresponding pile.
      */
     Map<String, I_CardModel> deserializeJson(String jsonString){
-        Gson gson = new Gson();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.serializeNulls();
+        Gson gson = gsonBuilder.setPrettyPrinting().create();
         Type mapType = new TypeToken<Map<String, Card>>(){}.getType();
         return gson.fromJson(jsonString, mapType);
     }
