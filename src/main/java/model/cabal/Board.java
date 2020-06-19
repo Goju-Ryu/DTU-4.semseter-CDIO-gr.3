@@ -217,7 +217,6 @@ public class Board implements I_BoardModel {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
-
         int fromIndex = from.size() - range;
         if( from.getCard(fromIndex).isFacedUp()) {
             E_CardSuit suit = from.getCard(fromIndex).getSuit();
@@ -244,6 +243,12 @@ public class Board implements I_BoardModel {
         return isValidMove(from, to)
                && from.canMoveFrom(range)
                && to.canMoveTo(from.getSubset(range));
+    }
+
+    @Override
+    public boolean canMoveFrom(E_PileID origin, int range){
+        I_SolitaireStacks from = get(origin);
+        return from.canMoveFrom(range);
     }
 
     private boolean isValidMove(I_SolitaireStacks from, I_SolitaireStacks to) {

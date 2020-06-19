@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class DrawStack extends StackBase {
+public class DrawStack extends StackBase implements I_SolitaireStacks {
 
     /**
      * This variable describes which cards have been drawn and which haven't
@@ -60,7 +60,8 @@ public class DrawStack extends StackBase {
         }
 
         int reversedRange = stack.size() - ( range );
-        return stack.get(reversedRange).isFacedUp();
+        boolean val = stack.get(reversedRange).isFacedUp();
+        return val;
     }
 
     private String canMoveFromMsg(int range){

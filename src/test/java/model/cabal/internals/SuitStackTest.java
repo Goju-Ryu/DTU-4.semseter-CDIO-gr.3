@@ -24,6 +24,7 @@ class SuitStackTest {
         I_CardModel card = new Card(E_CardSuit.HEARTS,4,true);
 
         if (suitStack.canMoveFrom(1)){
+
             System.out.println("passed canMoveFrom test");
 
             Collection<I_CardModel> suitStack1 = suitStack.popSubset(1);
