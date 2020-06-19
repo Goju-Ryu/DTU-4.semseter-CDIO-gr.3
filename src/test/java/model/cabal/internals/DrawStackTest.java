@@ -61,7 +61,7 @@ class DrawStackTest {
         BuildStack buildStack = new BuildStack();
         buildStack.add(new Card(E_CardSuit.HEARTS,5));
 
-        SuitStack suitStack = new SuitStack();
+        SuitStack suitStack = new DiamondsStack();
         suitStack.add(new Card(E_CardSuit.DIAMONDS,8));
 
         // you cannot move a card from anywhere to the draw stack

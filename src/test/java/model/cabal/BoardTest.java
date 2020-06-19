@@ -1,23 +1,21 @@
 package model.cabal;
 
 import model.GameCardDeck;
+import model.cabal.internals.HeartStack;
 import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static model.cabal.E_PileID.*;
-
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BoardTest {
 
@@ -102,11 +100,11 @@ class BoardTest {
     void removePropertyChangeListener() {
     }
 
-    private SuitStack createSuitStack(int elements, E_CardSuit suit){
-        SuitStack suitStack = new SuitStack();
+    private SuitStack createSuitStack(int elements){
+        SuitStack suitStack = new HeartStack();
 
         for (int i = 0; i < elements; i++) {
-            I_CardModel card = new Card(suit,i+1);
+            I_CardModel card = new Card(E_CardSuit.HEARTS,i+1);
             suitStack.add(card);
         }
 
