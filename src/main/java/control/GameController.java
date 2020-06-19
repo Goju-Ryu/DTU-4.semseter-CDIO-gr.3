@@ -25,7 +25,7 @@ public class GameController implements I_GameController{
         else
             boardCtrl = new BoardController(uiChoice);
 
-
+        gameLoop();
 
     }
 
