@@ -1,5 +1,6 @@
 package model.cabal.internals;
 
+import model.cabal.E_PileID;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
@@ -17,13 +18,14 @@ public class DrawStack extends StackBase {
      */
     protected int drawIndex;
 
+
     public DrawStack() {
         this(new ArrayList<>());
     }
 
     public DrawStack(List<I_CardModel> list) {
         super(list);
-        drawIndex = 0;
+        drawIndex = -1;
     }
 
 //-----------  Implementation ----------------------------------------------------------------
@@ -49,12 +51,16 @@ public class DrawStack extends StackBase {
 
     @Override
     public boolean canMoveFrom(int range) {
-        try {
-            return canMoveFromMsg(range).isEmpty();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-            return false;
+
+        if( range > stack.size() ){
+            throw new IllegalArgumentException(
+                    "Range was larger than the stack size",
+                    new IndexOutOfBoundsException("range: " + range + ", but size is only: " + size())
+            );
         }
+
+        int reversedRange = stack.size() - ( range );
+        return stack.get(reversedRange).isFacedUp();
     }
 
     private String canMoveFromMsg(int range){
@@ -78,6 +84,7 @@ public class DrawStack extends StackBase {
         return builder.toString();
     }
 
+
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
         return false;
@@ -92,4 +99,5 @@ public class DrawStack extends StackBase {
     public I_CardModel getTopCard() {
         return super.getCard(drawIndex);
     }
+
 }

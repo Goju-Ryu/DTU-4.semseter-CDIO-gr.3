@@ -3,6 +3,7 @@ package model.cabal;
 import model.GameCardDeck;
 import model.cabal.internals.*;
 import model.cabal.internals.card.Card;
+import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
@@ -17,7 +18,7 @@ import static model.cabal.E_PileID.*;
 /**
  * This is the model of the entire cabal
  */
-public final class Board implements I_BoardModel {
+public class Board implements I_BoardModel {
 
     private PropertyChangeSupport change;
 
@@ -28,14 +29,14 @@ public final class Board implements I_BoardModel {
         change = new PropertyChangeSupport(this);
         piles = new I_SolitaireStacks[values().length];
 
-        piles[DRAWSTACK.ordinal()] = new DrawStack();
-        piles[SUITSTACKHEARTS.ordinal()]  = new HeartStack();
-        piles[SUITSTACKDIAMONDS.ordinal()] = new DiamondsStack();
-        piles[SUITSTACKCLUBS.ordinal()]   = new ClubsStack();
-        piles[SUITSTACKSPADES.ordinal()]  = new SpadesStack();
+        piles[TURNPILE.ordinal()] = new DrawStack();
+        piles[HEARTSACEPILE.ordinal()]  = new SuitStack();
+        piles[DIAMONDACEPILE.ordinal()] = new SuitStack();
+        piles[CLUBSACEPILE.ordinal()]   = new SuitStack();
+        piles[SPADESACEPILE.ordinal()]  = new SuitStack();
 
         for (int i = 0; i < 24; i++) {
-            piles[DRAWSTACK.ordinal()].add(new Card());
+            piles[TURNPILE.ordinal()].add(new Card());
         }
 
         for (int i = 0; i < 7; i++) { // for each build pile
@@ -64,7 +65,7 @@ public final class Board implements I_BoardModel {
         if (pileID.isBuildStack())
             return pile.getCard(0).getRank() == 1; // true if ace on top
 
-        if (pileID == DRAWSTACK)
+        if (pileID == TURNPILE)
             return pile.isEmpty();
 
         //Now we know only suit stacks are left
@@ -151,22 +152,22 @@ public final class Board implements I_BoardModel {
 
     @Override
     public I_CardModel turnCard(Map<String, I_CardModel> imgData) {
-        var turnPile = (DrawStack) get(DRAWSTACK);
+        var turnPile = (DrawStack) get(TURNPILE);
 
         if (turnPile.isEmpty())
                 throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
 
         var returnable = turnPile.turnCard();
 
-        var imgCard = extractImgData(imgData, DRAWSTACK);
-        validateCardState(DRAWSTACK, returnable, imgCard);
+        var imgCard = extractImgData(imgData, TURNPILE);
+        validateCardState(TURNPILE, returnable, imgCard);
 
         return returnable;
     }
 
     @Override
     public I_CardModel getTurnedCard() {
-        var turnPile = (DrawStack) get(DRAWSTACK);
+        var turnPile = (DrawStack) get(TURNPILE);
         return turnPile.getTopCard();
     }
 
@@ -212,13 +213,37 @@ public final class Board implements I_BoardModel {
     }
 
     @Override
-    public boolean canMove(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException {
+    public boolean canMove(E_PileID origin, int range, E_PileID destination) throws IllegalMoveException {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
+
+        int fromIndex = from.size() - range;
+        if( from.getCard(fromIndex).isFacedUp()) {
+            E_CardSuit suit = from.getCard(fromIndex).getSuit();
+            switch (destination) {
+                case SPADESACEPILE:
+                    if (suit != E_CardSuit.SPADES)
+                        return false;
+                    break;
+                case CLUBSACEPILE:
+                    if (suit != E_CardSuit.CLUBS)
+                        return false;
+                    break;
+                case DIAMONDACEPILE:
+                    if (suit != E_CardSuit.DIAMONDS)
+                        return false;
+                    break;
+                case HEARTSACEPILE:
+                    if (suit != E_CardSuit.HEARTS)
+                        return false;
+                    break;
+            }
+        }
+
         return isValidMove(from, to)
-               && from.canMoveFrom(originPos)
-               && to.canMoveTo(from.getSubset(originPos));
+               && from.canMoveFrom(range)
+               && to.canMoveTo(from.getSubset(range));
     }
 
     private boolean isValidMove(I_SolitaireStacks from, I_SolitaireStacks to) {
@@ -227,11 +252,11 @@ public final class Board implements I_BoardModel {
         if(from == to)
             return false;
 
-        var turnPile = get(DRAWSTACK);
-
         // If you try to move to the turn pile
+        var turnPile = get(TURNPILE);
         if (to.equals(turnPile))
             return false;
+
 
         return true;
     }

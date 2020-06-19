@@ -20,7 +20,7 @@ class DrawStackTest {
         // You need to turn a Card before you can pop it from the pile
         drawStack.turnCard();
 
-        if (drawStack.canMoveFrom(0)){
+        if (drawStack.canMoveFrom(1)){
             Collection<I_CardModel> drawStack1 = drawStack.popSubset();
 
             System.out.println("Card in that is popped from the drawstack: "+drawStack1);
@@ -41,16 +41,19 @@ class DrawStackTest {
     void canMoveFrom() {
 
         //create the Draw stack and turn a card to make sure that you have something to pop
-        DrawStack drawStack = createDrawstack(10,E_CardSuit.HEARTS);
-        drawStack.turnCard();
+        DrawStack drawStack = createDrawstack(10, E_CardSuit.HEARTS);
+        System.out.println(drawStack.size());
 
         //Check if a card can be removed from the top of the draw stack
         assertTrue(drawStack.canMoveFrom());
 
-        //heck if all the other cards can be moved
-        for (int i = 1; i < 10; i++) {
-            assertFalse(drawStack.canMoveFrom(i+1));
+        //check if all the other cards can be moved
+        for (int i = 2; i < 10; i++) {
+            assertTrue(drawStack.canMoveFrom(i));
         }
+
+        drawStack.add(new Card());
+        assertFalse(drawStack.canMoveFrom(1));
     }
 
     @Test
@@ -61,7 +64,7 @@ class DrawStackTest {
         BuildStack buildStack = new BuildStack();
         buildStack.add(new Card(E_CardSuit.HEARTS,5));
 
-        SuitStack suitStack = new DiamondsStack();
+        SuitStack suitStack = new SuitStack();
         suitStack.add(new Card(E_CardSuit.DIAMONDS,8));
 
         // you cannot move a card from anywhere to the draw stack

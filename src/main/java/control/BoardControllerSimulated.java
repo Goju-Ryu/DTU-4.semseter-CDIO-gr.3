@@ -27,8 +27,8 @@ public class BoardControllerSimulated extends BoardController {
      }
 
     @Override
-    public I_BoardModel MakeNewBoard(String uiChoice) {
-        return super.MakeNewBoard(uiChoice);
+    public I_BoardModel MakeNewBoard(String UiChoice) {
+        return super.MakeNewBoard(UiChoice);
     }
 
     @Override

@@ -26,21 +26,23 @@ class SuitStackTest {
         if (suitStack.canMoveFrom(1)){
             System.out.println("passed canMoveFrom test");
 
-            Collection<I_CardModel> suitStack1 = suitStack.popSubset(1);
+            Collection<I_CardModel> newSuitStack = suitStack.popSubset(1);
+
+            assertNotNull(newSuitStack);
 
             // The new suit stack with the one card in it
-            for (I_CardModel card1 : suitStack){
+            for (I_CardModel card1 : newSuitStack){
                 System.out.println("The new suit stack: "+card1);
             }
 
-            System.out.println("Card in that is popped from the drawstack: "+suitStack1.iterator().next());
-            System.out.println("Card to compare with: "+card);
+            System.out.println("Card in that is popped from the drawstack: "+newSuitStack.iterator().next());
+            System.out.println("Card to compare with: " + card);
 
             // The method will throw an exception if you try to pop more than range 1
             assertThrows(IllegalMoveException.class,() -> suitStack.popSubset(2));
 
             // check if the popped card is the card we want
-            assertEquals(card,suitStack1.iterator().next());
+            assertEquals(card,newSuitStack.iterator().next());
 
         }else {
             fail();
@@ -52,7 +54,7 @@ class SuitStackTest {
 
         SuitStack suitStack = createSuitStack(10,true);
         SuitStack suitStack1 = createSuitStack(4,false);
-        SuitStack suitStack2 = new HeartStack();
+        SuitStack suitStack2 = new SuitStack();
 
         //Check that a card can be moved from the top of the stack
         assertTrue(suitStack.canMoveFrom(1));
@@ -77,7 +79,7 @@ class SuitStackTest {
     void canMoveTo() {
 
         SuitStack receivingStack = createSuitStack(8,true);
-        SuitStack receivingStackEmpty = new HeartStack();
+        SuitStack receivingStackEmpty = new SuitStack();
 
         //The  build stack that should be able to be merged into receivingStack
         BuildStack buildStack = new BuildStack();
@@ -198,7 +200,7 @@ class SuitStackTest {
     }
 
     private SuitStack createSuitStack(int elements, boolean isFaceUp){
-        SuitStack suitStack = new HeartStack();
+        SuitStack suitStack = new SuitStack();
 
         for (int i = 0; i < elements; i++) {
             I_CardModel card = new Card(E_CardSuit.HEARTS,i+1,isFaceUp);

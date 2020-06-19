@@ -2,7 +2,6 @@ package model.cabal;
 
 import data.InputSimDTO;
 import model.GameCardDeck;
-import model.cabal.internals.HeartStack;
 import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
@@ -32,8 +31,8 @@ class BoardTest {
 
         assertEquals(7, board.getPile(E_PileID.BUILDSTACK7).size());
         assertEquals(1, board.getPile(E_PileID.BUILDSTACK1).size());
-        assertEquals(24, board.getPile(E_PileID.DRAWSTACK).size());
-        assertEquals(0, board.getPile(E_PileID.SUITSTACKHEARTS).size());
+        assertEquals(24, board.getPile(E_PileID.TURNPILE).size());
+        assertEquals(0, board.getPile(E_PileID.HEARTSACEPILE).size());
     }
 
     @Test
@@ -50,7 +49,7 @@ class BoardTest {
         board.turnCard(inputSim.getUsrInput());
 
 
-        if (board.canMove(E_PileID.BUILDSTACK1, E_PileID.SUITSTACKSPADES)) {
+        if (board.canMove(E_PileID.BUILDSTACK1, E_PileID.SPADESACEPILE)) {
             System.out.println("The move is legal");
         }
 
@@ -103,7 +102,7 @@ class BoardTest {
 
     // todo note that this only tests heartstack, this should be exended to test all implementations of suitstack, even if they are identical
     private SuitStack createSuitStack(int elements){
-        SuitStack suitStack = new HeartStack();
+        SuitStack suitStack = new SuitStack();
 
         for (int i = 0; i < elements; i++) {
             I_CardModel card = new Card(E_CardSuit.HEARTS,i+1);
