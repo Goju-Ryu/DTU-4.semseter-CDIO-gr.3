@@ -10,8 +10,6 @@ import model.cabal.I_BoardModel;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 
 import static model.cabal.E_PileID.*;
 
@@ -56,12 +54,7 @@ public class BoardController implements I_BoardController {
                     if(from == to)
                         continue;
 
-
-                    // now we need to check if the move is even possible at this index.
-                    if (!boardModel.canMoveFrom(from, depth)) {
-                        break;
-                    }
-
+                    //Check if move is legal
                     if(!boardModel.canMove(from,depth,to)){
                         continue;
                     }

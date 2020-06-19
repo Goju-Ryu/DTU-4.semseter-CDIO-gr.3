@@ -80,8 +80,6 @@ public class SuitStack extends StackBase {
             card2 = element;
         }
 
-        System.out.println("incomming card: "+card);
-        System.out.println("suit stack card: "+card2);
 
         // check size of collection
         if (cards.size() != 1){

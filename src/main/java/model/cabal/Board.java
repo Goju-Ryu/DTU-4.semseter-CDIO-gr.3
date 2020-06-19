@@ -13,6 +13,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 import static model.cabal.E_PileID.*;
+import static model.cabal.internals.card.E_CardSuit.*;
 
 
 /**
@@ -48,7 +49,7 @@ public class Board implements I_BoardModel {
             }
         }
 
-        for (E_PileID pileID : values()) {
+        for (E_PileID pileID : E_PileID.values()) {
             var data = extractImgData(imgData, pileID);
 
             if (data != null)
@@ -198,74 +199,60 @@ public class Board implements I_BoardModel {
         to.addAll(from.popSubset(originPos));
 
         //check that state is consistent with the physical board
-        I_CardModel exposedCard = null;
-        var imgCard = extractImgData(imgData, origin);
-        if ( !from.isEmpty() ) {
-            exposedCard = from.getCard(from.size() - 1);
-            validateCardState(origin, exposedCard, imgCard);
-        } else {
-            if (null != imgCard)
-                throw makeStateException(origin, imgCard, null, "A virtual stack is empty but the physical stack is not");
-        }
+        if ( !from.isEmpty( ))
+            validateCardState(origin, from.getCard(from.size() - 1), extractImgData(imgData, origin));
+
         //notify listeners om state before and after state change
         change.firePropertyChange( makePropertyChangeEvent(origin, oldOrigin) );
         change.firePropertyChange( makePropertyChangeEvent(destination, oldDest) );
     }
 
+
     @Override
-    public boolean canMove(E_PileID origin, int range, E_PileID destination) throws IllegalMoveException {
+    public boolean canMove(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
-        int fromIndex = from.size() - range;
-        if( from.getCard(fromIndex).isFacedUp()) {
-            E_CardSuit fromSuit = from.getCard(fromIndex).getSuit();
-            switch (destination) {
-                case SUITSTACKSPADES:
-                    if (fromSuit != E_CardSuit.SPADES)
-                        return false;
-                    break;
-                case SUITSTACKCLUBS:
-                    if (fromSuit != E_CardSuit.CLUBS)
-                        return false;
-                    break;
-                case SUITSTACKDIAMONDS:
-                    if (fromSuit != E_CardSuit.DIAMONDS)
-                        return false;
-                    break;
-                case SUITSTACKHEARTS:
-                    if (fromSuit != E_CardSuit.HEARTS)
-                        return false;
-                    break;
-            }
-        }
-
-        return isValidMove(from, to)
-               && from.canMoveFrom(range)
-               && to.canMoveTo(from.getSubset(range));
+        return isValidMove(origin, originPos, destination)
+                && from.canMoveFrom(originPos)
+                && to.canMoveTo(from.getSubset(originPos));
     }
 
-    @Override
-    public boolean canMoveFrom(E_PileID origin, int range){
-        I_SolitaireStacks from = get(origin);
-        return from.canMoveFrom(range);
-    }
 
-    private boolean isValidMove(I_SolitaireStacks from, I_SolitaireStacks to) {
+
+    private boolean isValidMove(E_PileID from, int originPos, E_PileID to) {
 
         // if you try to move to the same stack
         if(from == to)
             return false;
 
         // If you try to move to the turn pile
-        var turnPile = get(DRAWSTACK);
-        if (to.equals(turnPile))
+        if (to.equals(DRAWSTACK))
             return false;
 
+        var toPile = get(from);
+        var cardSuits = toPile.getSubset(originPos).stream()
+                .map(I_CardModel::getSuit);
+        switch (to) {
+            case SUITSTACKHEARTS:
+                if (cardSuits.anyMatch( suit -> !suit.equals(HEARTS)))
+                    break;
+            case SUITSTACKDIAMONDS:
+                if (cardSuits.anyMatch( suit -> !suit.equals(DIAMONDS)))
+                    return false;
+                break;
+            case SUITSTACKSPADES:
+                if (cardSuits.anyMatch( suit -> !suit.equals(SPADES)))
+                    return false;
+                break;
+            case SUITSTACKCLUBS:
+                if (cardSuits.anyMatch( suit -> !suit.equals(CLUBS)))
+                    return false;
+                break;
+        }
 
         return true;
     }
-
 //-----------------------------------PropertyEditor methods-------------------------------------------------------------
 
     @Override

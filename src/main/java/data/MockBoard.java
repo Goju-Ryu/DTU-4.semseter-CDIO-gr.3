@@ -133,10 +133,6 @@ public class MockBoard implements I_BoardModel {
         return false;
     }
 
-    @Override
-    public boolean canMoveFrom(E_PileID origin, int range) {
-        return false;
-    }
 
     /**
      * Add a listener to the board. This subscribes it to all piles on the board.
