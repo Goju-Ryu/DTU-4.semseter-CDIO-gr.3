@@ -1,8 +1,6 @@
 package model.cabal;
 
 import data.InputSimDTO;
-import model.GameCardDeck;
-import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
@@ -10,8 +8,6 @@ import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

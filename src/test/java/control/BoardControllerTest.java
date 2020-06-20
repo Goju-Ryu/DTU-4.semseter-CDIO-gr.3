@@ -256,7 +256,8 @@ class BoardControllerTest {
         Class<?> secretClass = controller.getClass();
         I_BoardModel board = null;
 
-        while( secretClass.getSuperclass() != null) {
+
+        while(!secretClass.getName().equals(BoardController.class.getName())) {
             secretClass = secretClass.getSuperclass();
         }
 
