@@ -51,7 +51,8 @@ public class BoardController implements I_BoardController {
             System.out.println("currDrawCard: " + drawCard.toString());
             //scanner.next();
         }
-        this.boardModel = new Board(getCards(uiChoice));
+//        this.boardModel = new Board(getCards(uiChoice), drawCards);
+        this.boardModel = new Board(inputDTO.getUsrInput(), drawCards);
     }
 
     @Override
