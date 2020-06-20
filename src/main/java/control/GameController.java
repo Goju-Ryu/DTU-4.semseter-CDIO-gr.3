@@ -24,9 +24,14 @@ public class GameController implements I_GameController{
     Scanner scan = new Scanner(System.in).useDelimiter("(\\b|\\B)");
 
     public void startGame(String uiChoice){
+
+
+
         if (uiChoice.equalsIgnoreCase("sim"))
             boardCtrl = new BoardControllerSimulated();
         else
+
+
             boardCtrl = new BoardController(uiChoice);
 
         gameLoop();

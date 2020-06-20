@@ -6,10 +6,9 @@ import model.Move;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
+import model.cabal.internals.card.I_CardModel;
 
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static model.cabal.E_PileID.*;
 
@@ -28,6 +27,8 @@ public class BoardController implements I_BoardController {
     protected I_InputDTO inputDTO;
     protected String uiChoice;
 
+    Scanner scanner = new Scanner(System.in);
+
     public BoardController() {
 
     }
@@ -35,6 +36,18 @@ public class BoardController implements I_BoardController {
     public BoardController(String uiChoice) {
         this.uiChoice = uiChoice;
         inputDTO = new InputDTO(uiChoice);
+        //turn the draw stack through.
+        ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
+        for(int i = 0; i < 24; i++) {
+            I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
+            drawCards.add(drawCard);
+            System.out.println("currDrawCard: " + drawCard.toString());
+            //scanner.next();
+        }
+
+
+        //todo: make board take the draw stack as input
+        //make the board
         this.boardModel = new Board(inputDTO.getUsrInput());
     }
 

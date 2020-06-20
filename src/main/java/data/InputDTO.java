@@ -21,6 +21,7 @@ public class InputDTO implements I_InputDTO {
     private String uiType;
 
     private boolean usedOnce = false;
+    int drawIterator = 24;
 
     public InputDTO(String uiChoice) {
         uiType = uiChoice;
@@ -44,10 +45,17 @@ public class InputDTO implements I_InputDTO {
 
 // __________If this gets commented out, and the card values are repetetively inserted in ManGUI, a game can be simulated ________________
             //TODO make sure that the RevealCardGUI is only called when a new card is revealed
-            if(usedOnce && uiType.equals("ManGUI")){
-                uiType = "RevealCardGUI";
+//            if(usedOnce && uiType.equals("ManGUI")){
+//                uiType = "ManGUI";//"RevealCardGUI";
+//            }else{
+//                this.usedOnce = true;
+//            }
+
+            if(drawIterator == 0){
+                uiType = "ManGUI";//"RevealCardGUI";
             }else{
-                this.usedOnce = true;
+                drawIterator--;
+                uiType = "turnDrawstack";
             }
 //_______________________________________________________________________________________________________________________________________
 
