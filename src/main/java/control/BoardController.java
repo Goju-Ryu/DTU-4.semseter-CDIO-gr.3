@@ -99,51 +99,6 @@ public class BoardController implements I_BoardController {
         return moves;
     }
 
-
-    public List<Move> possibleMoves2(){
-
-        LinkedList<Move> moves = new LinkedList<>();
-
-        // go through each card in each pile
-        // so i save the current pile as pile
-        // and i do a for each card in this pile.
-
-        for(E_PileID from: values()){
-            for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
-                /*
-                TODO check if there are facedown cards in turnpile. if there are, they can be represented
-                by a move from Turnpile to Turnpile with revealcard = true
-                */
-
-                for (E_PileID to: values()) {
-                    if(from == to)
-                        continue;
-
-                    //Check if move is legal
-                    if(!boardModel.canMove(from,depth,to)){
-                        continue;
-                    }
-
-                    boolean improveCardReveal = false;
-                    try {
-                        var fromPile = boardModel.getPile(from);
-                        improveCardReveal = !fromPile.get(fromPile.size() - depth).isFacedUp();
-                    } catch (Exception ignored) {}
-
-                    boolean improveAce = false;
-                    if (to == SUITSTACKSPADES ||to == SUITSTACKCLUBS || to == SUITSTACKDIAMONDS ||to == SUITSTACKHEARTS ){
-                        improveAce = true;
-                    }
-
-                    Move move = new Move(to, from, depth, improveAce, improveCardReveal, "Move Desc");
-                    moves.add(move);
-
-                }
-            }
-        }
-        return moves;
-    }
-
     public Move pickMove(List<Move> moves) {
 
         if(moves.size() == 0){
