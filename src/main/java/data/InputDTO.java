@@ -19,12 +19,14 @@ import java.util.Map;
  */
 public class InputDTO implements I_InputDTO {
     private String uiType;
+    private String uiChoice;
 
     private boolean usedOnce = false;
     int drawIterator = 24;
 
     public InputDTO(String uiChoice) {
         uiType = uiChoice;
+        this.uiChoice = uiChoice;
     }
 
 
@@ -54,7 +56,7 @@ public class InputDTO implements I_InputDTO {
 //            }
 
             if(drawIterator == 0){
-                uiType = "ManGUI";//"RevealCardGUI";
+                uiType = uiChoice;//"RevealCardGUI";
             }else{
                 drawIterator--;
                 uiType = "turnDrawstack";

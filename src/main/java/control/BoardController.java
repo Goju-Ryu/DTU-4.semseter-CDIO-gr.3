@@ -30,12 +30,10 @@ public class BoardController implements I_BoardController {
     Scanner scanner = new Scanner(System.in);
 
     public BoardController() {
-
     }
 
     public BoardController(String uiChoice) {
       init(uiChoice);
-
     }
 
     @Override
@@ -49,10 +47,12 @@ public class BoardController implements I_BoardController {
             //drawCard.
             drawCards.add(drawCard);
             System.out.println("currDrawCard: " + drawCard.toString());
-            //scanner.next();
+            scanner.next();
         }
 //        this.boardModel = new Board(getCards(uiChoice), drawCards);
         this.boardModel = new Board(inputDTO.getUsrInput(), drawCards);
+//        this.boardModel = new Board(getCards(uiChoice), drawCards);
+
     }
 
     @Override
