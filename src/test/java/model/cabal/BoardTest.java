@@ -45,7 +45,8 @@ class BoardTest {
 
         I_BoardModel board = new Board(map);
         InputSimDTO inputSim = new InputSimDTO(board);
-
+        //Todo: the error is probably here, try and figure out why it does not print
+        System.out.println("sflvknsflvk"+map);
         board.turnCard(inputSim.getUsrInput());
 
 
