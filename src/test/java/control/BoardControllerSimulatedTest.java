@@ -59,10 +59,10 @@ class BoardControllerSimulatedTest {
                 new Card( E_CardSuit.DIAMONDS   , 9  ) };
 
         testBoardCont boardCnt = new testBoardCont(cards);
-        I_BoardModel board = boardCnt.MakeNewBoard("hej");
+        I_BoardModel board = boardCnt.MakeNewBoard("hej",);
         board = changeDrawStack(board,drawStack);
 
-        List<Move> result = boardCnt.possibleMoves(board);
+        List<Move> result = boardCnt.possibleMoves();
         assertEquals(3,result.size());
 
     }
@@ -214,7 +214,7 @@ class BoardControllerSimulatedTest {
 
         testBoardCont boardCnt = new testBoardCont(cards);
         I_BoardModel board = boardCnt.MakeNewBoard("hej",);
-        List<Move> result = boardCnt.possibleMoves(board);
+        List<Move> result = boardCnt.possibleMoves();
 
         for (Move m: result) {
             List<I_CardModel> stack = board.getPile(m.moveFromStack());
