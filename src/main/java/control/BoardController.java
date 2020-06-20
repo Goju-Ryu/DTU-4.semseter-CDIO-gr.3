@@ -40,6 +40,7 @@ public class BoardController implements I_BoardController {
         ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
         for(int i = 0; i < 24; i++) {
             I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
+            //drawCard.
             drawCards.add(drawCard);
             System.out.println("currDrawCard: " + drawCard.toString());
             //scanner.next();
@@ -48,7 +49,7 @@ public class BoardController implements I_BoardController {
 
         //todo: make board take the draw stack as input
         //make the board
-        this.boardModel = new Board(inputDTO.getUsrInput());
+        this.boardModel = new Board(inputDTO.getUsrInput(), drawCards);
     }
 
 
