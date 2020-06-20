@@ -49,7 +49,15 @@ public class Board implements I_BoardModel {
             }
         }
 
-        for (E_PileID pileID : E_PileID.values()) {
+        for (E_PileID e: E_PileID.values()) {
+
+            I_CardModel c = imgData.get(e.toString());
+            if(c == null)
+                continue;
+            piles[e.ordinal()].add(c);
+        }
+
+        /*for (E_PileID pileID : E_PileID.values()) {
             var data = extractImgData(imgData, pileID);
 
             if (data != null) {
@@ -60,7 +68,7 @@ public class Board implements I_BoardModel {
                 }
             }
 
-        }
+        }*/
     }
 
 //---------  Genneral methods  -------------------------------------------------------------------------------------

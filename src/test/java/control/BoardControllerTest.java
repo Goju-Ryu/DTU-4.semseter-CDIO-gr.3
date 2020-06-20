@@ -47,6 +47,7 @@ class BoardControllerTest {
         }
 
     }
+
     @Test
     void PossibleMoves_Drawstack() {
 
@@ -137,7 +138,6 @@ class BoardControllerTest {
 
     }
 
-
     @Test
     void PossibleMoves_0Moves() {
 
@@ -203,19 +203,15 @@ class BoardControllerTest {
 
     @Test
     void PossibleMoves_5Moves(){
-
     }
-
     @Test
     void PossibleMoves_4Moves(){
 
     }
-
     @Test
     void PossibleMoves_3Moves(){
 
     }
-
     @Test
     void PossibleMoves_4_3_2AceMoves(){
         List<Move> res = getPosMoves(
@@ -255,8 +251,6 @@ class BoardControllerTest {
         assertEquals(2,res2.size());
 
     }
-
-
 
     private BoardController changeDrawStack(BoardController controller, I_SolitaireStacks drawStack){
         Class<?> secretClass = controller.getClass();
@@ -303,8 +297,6 @@ class BoardControllerTest {
         }
         return board;
     }
-
-
     private List<Move> getPosMoves(Card d1, Card b1,Card b2, Card b3,Card b4, Card b5,Card b6, Card c8){
         Card cards[] = {d1,b1,b2,b3,b4,b5,b6,c8};
 
