@@ -10,6 +10,7 @@ import model.cabal.I_BoardModel;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static model.cabal.E_PileID.*;
 
@@ -24,7 +25,7 @@ import static model.cabal.E_PileID.*;
 */
 public class BoardController implements I_BoardController {
 
-    protected I_BoardModel boardModel;
+    private I_BoardModel boardModel;
     protected I_InputDTO inputDTO;
     protected String uiChoice;
 
@@ -33,11 +34,20 @@ public class BoardController implements I_BoardController {
     }
 
     public BoardController(String uiChoice) {
-        this.uiChoice = uiChoice;
-        inputDTO = new InputDTO(uiChoice);
-        this.boardModel = new Board(inputDTO.getUsrInput());
+      init(uiChoice);
     }
 
+    @Override
+    public void init(String uiChoice){
+        this.uiChoice = uiChoice;
+        this.boardModel = new Board(getCards(uiChoice));
+    }
+
+    @Override
+    public Map getCards(String uiChoice){
+        inputDTO = new InputDTO(uiChoice);
+        return inputDTO.getUsrInput();
+    }
 
     @Override
     public List<Move> possibleMoves(){
@@ -129,4 +139,9 @@ public class BoardController implements I_BoardController {
             return 1;
         }
     };
+
+    public I_BoardModel getBoardModel() {
+        return boardModel;
+    }
 }
+

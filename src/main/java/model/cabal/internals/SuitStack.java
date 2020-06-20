@@ -60,10 +60,11 @@ public class SuitStack extends StackBase {
 
         if (cards.isEmpty()) return false;
 
-        I_CardModel card = null;
-        for (I_CardModel inCard : cards) {
+
+        I_CardModel card = cards.iterator().next();
+        /*for (I_CardModel inCard : cards) {
             card = inCard;
-        }
+        }*/
 
         if (stack.isEmpty()){
             assert card != null;

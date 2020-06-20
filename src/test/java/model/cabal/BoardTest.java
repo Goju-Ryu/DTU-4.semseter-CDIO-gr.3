@@ -49,7 +49,6 @@ class BoardTest {
         System.out.println("sflvknsflvk"+map);
         board.turnCard(inputSim.getUsrInput());
 
-
         if (board.canMove(E_PileID.BUILDSTACK1, E_PileID.SUITSTACKSPADES)) {
             System.out.println("The move is legal");
         }

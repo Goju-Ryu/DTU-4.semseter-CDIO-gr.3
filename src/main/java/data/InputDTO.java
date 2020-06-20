@@ -26,6 +26,7 @@ public class InputDTO implements I_InputDTO {
 
     @Override
     public Map<String, I_CardModel> getUsrInput(){
+
         ArrayList<Card> cards = new ArrayList<>();
         String usrInput ="";
         String target = "localhost:50051";
@@ -34,6 +35,7 @@ public class InputDTO implements I_InputDTO {
                 // needing certificates.
                 .usePlaintext()
                 .build();
+
         InputAccesPoint accessInput = new InputAccesPoint(channel);
         try{
             usrInput = accessInput.getInput(uiType);

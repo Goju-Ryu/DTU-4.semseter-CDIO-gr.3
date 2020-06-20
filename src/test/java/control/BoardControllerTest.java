@@ -1,5 +1,7 @@
 package control;
 
+import com.google.gson.JsonObject;
+import data.InputDTO;
 import model.Move;
 import model.cabal.Board;
 import model.cabal.E_PileID;
@@ -16,25 +18,32 @@ import java.util.*;
 import static model.cabal.E_PileID.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class BoardControllerSimulatedTest {
+class BoardControllerTest {
 
-    private class testBoardCont extends BoardControllerSimulated{
+    private class testBoardCont extends BoardController{
 
         List<Card> cards = new ArrayList<>(8);
+
         public testBoardCont( Card ncards[] ){
             int q = 0;
             for (int i = 1; i <=( 1 + 4 + 7 ) ; i++) {
                 if((i > 1 && i < 6 )){
-                    cards.add( null );
+                    cards.add( null ); // Aces
                 }else{
-                    cards.add(ncards[q++]);
+                    cards.add(ncards[q++]); //
                 }
             }
+            init("testing");
         }
 
         @Override
-        public List<Card> getUserInput(String UiChoice) {
-            return cards;
+        public Map getCards(String uiChoice){
+            Map<E_PileID , I_CardModel > m = new HashMap<E_PileID , I_CardModel > ();
+            int i = 0;
+            for (E_PileID e: E_PileID.values()) {
+                m.put( e, cards.get(i++) );
+            }
+            return m;
         }
 
     }
@@ -58,12 +67,73 @@ class BoardControllerSimulatedTest {
                 new Card( E_CardSuit.CLUBS      , 9  ),
                 new Card( E_CardSuit.DIAMONDS   , 9  ) };
 
-        testBoardCont boardCnt = new testBoardCont(cards);
-        I_BoardModel board = boardCnt.MakeNewBoard("hej");
-        board = changeDrawStack(board,drawStack);
-
-        List<Move> result = boardCnt.possibleMoves(board);
+        BoardController boardCnt = new testBoardCont(cards);
+        boardCnt = changeDrawStack(boardCnt,drawStack);
+        List<Move> result = boardCnt.possibleMoves();
         assertEquals(3,result.size());
+
+    }
+    @Test
+    void PossibleMoves_Drawstack2() {
+
+        Card drStack[] = {
+                new Card( E_CardSuit.SPADES     , 1 ),
+                new Card( E_CardSuit.HEARTS     , 1  ),
+                new Card( E_CardSuit.CLUBS      ,  1 ),
+                new Card( E_CardSuit.CLUBS      ,  2 ),
+                new Card( E_CardSuit.DIAMONDS      ,  2 ),
+                new Card( E_CardSuit.SPADES      ,  2 ),
+        };
+
+        I_SolitaireStacks drawStack = (I_SolitaireStacks) new DrawStack(Arrays.asList(drStack));
+
+        Card cards[] = {
+                new Card( E_CardSuit.SPADES     , 9  ),
+                new Card( E_CardSuit.HEARTS     , 9  ),
+                new Card( E_CardSuit.CLUBS      , 9  ),
+                new Card( E_CardSuit.HEARTS     , 9  ),
+                new Card( E_CardSuit.SPADES     , 9  ),
+                new Card( E_CardSuit.DIAMONDS   , 9  ),
+                new Card( E_CardSuit.CLUBS      , 9  ),
+                new Card( E_CardSuit.DIAMONDS   , 9  ) };
+
+        BoardController boardCnt = new testBoardCont(cards);
+        boardCnt = changeDrawStack(boardCnt,drawStack);
+        List<Move> result = boardCnt.possibleMoves();
+        assertEquals(3,result.size());
+
+    }
+    @Test
+    void PossibleMoves_Drawstack3() {
+
+        Card drStack[] = {
+                new Card( E_CardSuit.SPADES     , 12 ),
+                new Card( E_CardSuit.HEARTS     , 11  ),
+                new Card( E_CardSuit.CLUBS      ,  1 ),
+                new Card( E_CardSuit.CLUBS      ,  3 ),
+                new Card( E_CardSuit.DIAMONDS      ,  6 ),
+                new Card( E_CardSuit.SPADES      ,  7 ),
+                new Card( E_CardSuit.CLUBS      ,  5 ),
+                new Card( E_CardSuit.DIAMONDS      ,  7 ),
+                new Card( E_CardSuit.SPADES      ,  3 )
+        };
+
+        I_SolitaireStacks drawStack = (I_SolitaireStacks) new DrawStack(Arrays.asList(drStack));
+
+        Card cards[] = {
+                new Card( E_CardSuit.SPADES     , 9  ),
+                new Card( E_CardSuit.HEARTS     , 9  ),
+                new Card( E_CardSuit.CLUBS      , 9  ),
+                new Card( E_CardSuit.HEARTS     , 9  ),
+                new Card( E_CardSuit.SPADES     , 4  ),
+                new Card( E_CardSuit.DIAMONDS   , 8  ),
+                new Card( E_CardSuit.CLUBS      , 9  ),
+                new Card( E_CardSuit.DIAMONDS   , 9  ) };
+
+        BoardController boardCnt = new testBoardCont(cards);
+        boardCnt = changeDrawStack(boardCnt,drawStack);
+        List<Move> result = boardCnt.possibleMoves();
+        assertEquals(4,result.size());
 
     }
 
@@ -188,16 +258,40 @@ class BoardControllerSimulatedTest {
 
 
 
-    private I_BoardModel changeDrawStack(I_BoardModel board, I_SolitaireStacks drawStack){
-        Class<?> secretClass = board.getClass();
+    private BoardController changeDrawStack(BoardController controller, I_SolitaireStacks drawStack){
+        Class<?> secretClass = controller.getClass();
+        I_BoardModel board = null;
 
+        while( secretClass.getSuperclass() != null) {
+            secretClass = secretClass.getSuperclass();
+        }
+
+        // firstly find the board.
         Field fields[] = secretClass.getDeclaredFields();
-        System.out.println("Access all the fields");
+
         for (Field field : fields) {
-            System.out.println("Field Name: " + field.getName());
             field.setAccessible(true);
             try {
-                System.out.println(field.get(board) + "\n");
+                if(field.getName().equals("boardModel")){
+                    board = (I_BoardModel) field.get(controller);
+                    I_BoardModel b = step2ChangeDrawStack(board, drawStack);
+                    field.set( controller ,b );
+                    break;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return controller;
+    }
+    private I_BoardModel step2ChangeDrawStack(I_BoardModel board, I_SolitaireStacks drawStack ){
+        Class<?> secretClass = board.getClass();
+        Field fields[] = secretClass.getDeclaredFields();
+
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
                 if(field.getName().equals("piles")){
                     I_SolitaireStacks[] piles = (I_SolitaireStacks[]) field.get(board);
                     piles[DRAWSTACK.ordinal()] = drawStack;
@@ -209,15 +303,15 @@ class BoardControllerSimulatedTest {
         }
         return board;
     }
+
+
     private List<Move> getPosMoves(Card d1, Card b1,Card b2, Card b3,Card b4, Card b5,Card b6, Card c8){
         Card cards[] = {d1,b1,b2,b3,b4,b5,b6,c8};
 
         testBoardCont boardCnt = new testBoardCont(cards);
-        I_BoardModel board = boardCnt.MakeNewBoard("hej",);
-        List<Move> result = boardCnt.possibleMoves(board);
-
+        List<Move> result = boardCnt.possibleMoves();
         for (Move m: result) {
-            List<I_CardModel> stack = board.getPile(m.moveFromStack());
+            List<I_CardModel> stack = boardCnt.getBoardModel().getPile(m.moveFromStack());
             int i = stack.size() - m.moveFromRange();
             I_CardModel c =  stack.get(i) ;
             System.out.println("\n currentCard = " +c.getSuit() + ", " + c.getRank() );
@@ -226,4 +320,5 @@ class BoardControllerSimulatedTest {
 
         return result;
     }
+
 }

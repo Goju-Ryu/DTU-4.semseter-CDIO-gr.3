@@ -37,9 +37,7 @@ public class BoardControllerSimulated extends BoardController {
      }
 
     public BoardControllerSimulated(I_BoardModel refBoard) {
-        refBoardModel = refBoard;
-        inputDTO = new InputSimDTO(refBoardModel);
-        boardModel = new Board(inputDTO.getUsrInput());
+
     }
 
     @Override
