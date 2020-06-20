@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 
-class BoardControllerSimulatedTest {
+class BoardControllerTest {
 
     private class testBoardCont extends BoardControllerSimulated{
 
@@ -138,8 +138,6 @@ class BoardControllerSimulatedTest {
 
     }
 
-
-
     @Test
     void PossibleMoves_0Moves() {
 
@@ -207,12 +205,10 @@ class BoardControllerSimulatedTest {
     void PossibleMoves_5Moves(){
 
     }
-
     @Test
     void PossibleMoves_4Moves(){
 
     }
-
     @Test
     void PossibleMoves_3Moves(){
 
