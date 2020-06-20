@@ -98,6 +98,7 @@ public class BoardController implements I_BoardController {
 
     @Override
     public void makeMove(Move move) {
+        //todo: make it so that inputDTO promts for ui every time
         boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
     }
 

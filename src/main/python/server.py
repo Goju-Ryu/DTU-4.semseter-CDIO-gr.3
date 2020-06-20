@@ -35,8 +35,12 @@ class Greeter(grpc_pb2_grpc.GreeterServicer):
 
         print("request name: "+request.name)
 
-        if(request.name == "Java world"):
+        if(request.name == "ManGUI"):
             from GUI.ManGui import ManGUI
+            self.GUI = ManGUI()
+            self.GUIType = 1
+        elif(request.name == "RevealCardGUI"):
+            from GUI.ManGuiRevealCard import ManGUI
             self.GUI = ManGUI()
             self.GUIType = 1
         else:
