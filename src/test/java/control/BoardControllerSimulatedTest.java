@@ -1,8 +1,6 @@
 package control;
 
 import model.Move;
-import model.cabal.Board;
-import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
@@ -12,9 +10,10 @@ import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import static model.cabal.E_PileID.CLUBSACEPILE;
 import static model.cabal.E_PileID.TURNPILE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
