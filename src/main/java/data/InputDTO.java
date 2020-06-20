@@ -20,10 +20,15 @@ import java.util.Map;
 public class InputDTO implements I_InputDTO {
     private String uiType;
 
+    private boolean usedOnce = false;
+
     public InputDTO(String uiChoice) {
         uiType = uiChoice;
     }
 
+
+
+    //TODO Modify to take just one card when uiType == RevealCardGUI
     @Override
     public Map<String, I_CardModel> getUsrInput(){
         ArrayList<Card> cards = new ArrayList<>();
@@ -36,6 +41,12 @@ public class InputDTO implements I_InputDTO {
                 .build();
         InputAccesPoint accessInput = new InputAccesPoint(channel);
         try{
+            //TODO make sure that the RevealCardGUI is only called when a new card is revealed
+            if(usedOnce && uiType.equals("ManGUI")){
+                uiType = "RevealCardGUI";
+            }else{
+                this.usedOnce = true;
+            }
             usrInput = accessInput.getInput(uiType);
         }catch (Exception e){
             System.out.println(e.getMessage());
