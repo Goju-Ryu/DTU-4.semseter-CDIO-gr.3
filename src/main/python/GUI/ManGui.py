@@ -11,22 +11,19 @@ import json as json
 
 
 def stringToJson(inputStr):
-    returnStr = ""
     suit = ""
     su = inputStr[0:1]
-    nr = inputStr[1:2]
+    nr = inputStr[1:]
     if(su == "h"):
-        suit = "Hearts"
+        suit = "HEARTS"
     elif(su == "c"):
-        suit = "Clubs"
+        suit = "CLUBS"
     elif(su == "d"):
-        suit = "Diamonds"
+        suit = "DIAMONDS"
     elif(su == "s"):
-        suit = "Spades"
+        suit = "SPADES"
 
-    returnStrings = [suit, nr]
-
-    return returnStrings
+    return [suit, nr]
 
 class ManGUI(AbstractUI):
     input = ""
@@ -52,17 +49,17 @@ class ManGUI(AbstractUI):
 
         #making sure they are shown onscreen
         ePile.grid(row =6, column=0)
-        eSuit1.grid(row =1, column=2)
-        eSuit2.grid(row =1, column=3)
-        eSuit3.grid(row =1, column=4)
-        eSuit4.grid(row =1, column=5)
+        eSuit1.grid(row =1, column=3)
+        eSuit2.grid(row =1, column=4)
+        eSuit3.grid(row =1, column=5)
+        eSuit4.grid(row =1, column=6)
         ecol1.grid(row =3, column=1)
         ecol2.grid(row =4, column=2)
         ecol3.grid(row =5, column=3)
         ecol4.grid(row =6, column=4)
         ecol5.grid(row =7, column=5)
         ecol6.grid(row =8, column=6)
-        ecol6.grid(row =9, column=7)
+        ecol7.grid(row =9, column=7)
 
         #Labels I use
         myLabel0 = Label(root, text="SOLITARE KLODINKE")
@@ -78,15 +75,15 @@ class ManGUI(AbstractUI):
 
         myLabel0.grid(row =0, column=0)
         myLabel4.grid(row =0, column=1)
-        myLabel5.grid(row =0, column=2)
-        myLabel6.grid(row =0, column=3)
-        myLabel7.grid(row =0, column=4)
-        myLabel8.grid(row =0, column=5)
+        myLabel5.grid(row =0, column=3)
+        myLabel6.grid(row =0, column=4)
+        myLabel7.grid(row =0, column=5)
+        myLabel8.grid(row =0, column=6)
 
 
         myLabel1.grid(row =5, column=0)
         myLabel2.grid(row =2, column=1)
-        myLabel3.grid(row =1, column=1)
+        myLabel3.grid(row =1, column=2)
 
         moveCount = 0
         def myClick():
@@ -96,31 +93,82 @@ class ManGUI(AbstractUI):
 
             # stringToJson(...) now returns a list containing two strings: "[suitInput]", "[rankInput]"
             inp = json.dumps(
-                {"drawPile": {"suit": stringToJson(ePile.get())[0], "rank": stringToJson(ePile.get())[1]},
-                "SuitStackHearts": {"suit": stringToJson(eSuit1.get())[0], "rank": stringToJson(eSuit1.get())[1]},
-                "SuitStackClubs": {"suit": stringToJson(eSuit2.get())[0], "rank": stringToJson(eSuit2.get())[1]},
-                "SuitStackDiamonds": {"suit": stringToJson(eSuit3.get())[0], "rank": stringToJson(eSuit3.get())[1]},
-                "SuitStackSpades": {"suit": stringToJson(eSuit4.get())[0], "rank": stringToJson(eSuit4.get())[1]},
-                "Column1": {"suit": stringToJson(ecol1.get())[0], "rank": stringToJson(ecol1.get())[1]},
-                "Column2": {"suit": stringToJson(ecol2.get())[0], "rank": stringToJson(ecol2.get())[1]},
-                "Column3": {"suit": stringToJson(ecol3.get())[0], "rank": stringToJson(ecol3.get())[1]},
-                "Column4": {"suit": stringToJson(ecol4.get())[0], "rank": stringToJson(ecol4.get())[1]},
-                "Column5": {"suit": stringToJson(ecol5.get())[0], "rank": stringToJson(ecol5.get())[1]},
-                "Column6": {"suit": stringToJson(ecol6.get())[0], "rank": stringToJson(ecol6.get())[1]},
-                "Column7": {"suit": stringToJson(ecol7.get())[0], "rank": stringToJson(ecol7.get())[1]}}
+                {
+                    "DRAWSTACK": None if stringToJson(ePile.get())[0] == "" or stringToJson(ePile.get())[1] == ""
+                    else {
+                        "suit": stringToJson(ePile.get())[0],
+                        "rank": int(stringToJson(ePile.get())[1]),
+                        "isFacedUp": True
+                        },
+                    "SUITSTACKHEARTS": None if stringToJson(eSuit1.get())[0] == "" or stringToJson(eSuit1.get())[1] == ""
+                    else {
+                        "suit": stringToJson(eSuit1.get())[0],
+                        "rank": int(stringToJson(eSuit1.get())[1]),
+                        "isFacedUp": True
+                        },
+                    "SUITSTACKCLUBS": None if stringToJson(eSuit2.get())[0] == "" or stringToJson(eSuit2.get())[1] == ""
+                    else {
+                        "suit": stringToJson(eSuit2.get())[0],
+                        "rank": int(stringToJson(eSuit2.get())[1]),
+                        "isFacedUp": True
+                        },
+                    "SUITSTACKDIAMONDS": None if stringToJson(eSuit3.get())[0] == "" or stringToJson(eSuit3.get())[1] == ""
+                    else {
+                        "suit": stringToJson(eSuit3.get())[0],
+                        "rank": int(stringToJson(eSuit3.get())[1]),
+                        "isFacedUp": True
+                         },
+                    "SUITSTACKSPADES": None if stringToJson(eSuit4.get())[0] == "" or stringToJson(eSuit4.get())[1] == ""
+                    else {
+                        "suit": stringToJson(eSuit4.get())[0],
+                        "rank": int(stringToJson(eSuit4.get())[1]),
+                        "isFacedUp": True
+                        },
+                    "BUILDSTACK1": None if stringToJson(ecol1.get())[0] == "" or stringToJson(ecol1.get())[1] == ""
+                    else {
+                        "suit": stringToJson(ecol1.get())[0],
+                        "rank": int(stringToJson(ecol1.get())[1]),
+                        "isFacedUp": True
+                        },
+                    "BUILDSTACK2": None if stringToJson(ecol2.get())[0] == "" or stringToJson(ecol2.get())[1] == ""
+                    else {
+                        "suit": stringToJson(ecol2.get())[0],
+                        "rank": int(stringToJson(ecol2.get())[1]),
+                        "isFacedUp": True
+                        },
+                    "BUILDSTACK3": None if stringToJson(ecol3.get())[0] == "" or stringToJson(ecol3.get())[1] == ""
+                    else {
+                        "suit": stringToJson(ecol3.get())[0],
+                        "rank": int(stringToJson(ecol3.get())[1]),
+                        "isFacedUp": True
+                        },
+                    "BUILDSTACK4": None if stringToJson(ecol4.get())[0] == "" or stringToJson(ecol4.get())[1] == ""
+                    else {
+                        "suit": stringToJson(ecol4.get())[0],
+                        "rank": int(stringToJson(ecol4.get())[1]),
+                        "isFacedUp": True
+                        },
+                    "BUILDSTACK5": None if stringToJson(ecol5.get())[0] == "" or stringToJson(ecol5.get())[1] == ""
+                    else {
+                        "suit": stringToJson(ecol5.get())[0],
+                        "rank": int(stringToJson(ecol5.get())[1]),
+                        "isFacedUp": True
+                        },
+                    "BUILDSTACK6": None if stringToJson(ecol6.get())[0] == "" or stringToJson(ecol6.get())[1] == ""
+                    else {
+                        "suit": stringToJson(ecol6.get())[0],
+                        "rank": int(stringToJson(ecol6.get())[1]),
+                        "isFacedUp": True
+                        },
+                    "BUILDSTACK7": None if stringToJson(ecol7.get())[0] == "" or stringToJson(ecol7.get())[1] == ""
+                    else {
+                        "suit": stringToJson(ecol7.get())[0],
+                        "rank": int(stringToJson(ecol7.get())[1]),
+                        "isFacedUp": True
+                        }
+                }
             )
-            # {"drawPile": {"suit": "Clubs", "rank": "2"},
-            #  "SuitStackHearts": {"suit": "", "rank": ""},
-            #  "SuitStackClubs": {"suit": "", "rank": ""},
-            #  "SuitStackDiamonds": {"suit": "", "rank": ""},
-            #  "SuitStackSpades": {"suit": "", "rank": ""},
-            #  "Column1": {"suit": "Hearts", "rank": "3"},
-            #  "Column2": {"suit": "Hearts", "rank": "4"},
-            #  "Column3": {"suit": "Hearts", "rank": "5"},
-            #  "Column4": {"suit": "Hearts", "rank": "6"},
-            #  "Column5": {"suit": "Hearts", "rank": "7"},
-            #  "Column6": {"suit": "Hearts", "rank": "9"},
-            #  "Column7": {"suit": "Hearts", "rank": "10"}}
+
             self.updateInp(inp)
             print(inp)
             root.destroy()
@@ -133,25 +181,24 @@ class ManGUI(AbstractUI):
         # should be comented out when not developing
         def myMove():
             inp = json.dumps(
-                {"drawPile": {"suit": "Clubs", "rank": "2"},
-                 "SuitStackHearts": {"suit": "", "rank": ""},
-                 "SuitStackClubs": {"suit": "", "rank": ""},
-                 "SuitStackDiamonds": {"suit": "", "rank": ""},
-                 "SuitStackSpades": {"suit": "", "rank": ""},
-                 "Column1": {"suit": "Hearts", "rank": "3"},
-                 "Column2": {"suit": "Hearts", "rank": "4"},
-                 "Column3": {"suit": "Hearts", "rank": "5"},
-                 "Column4": {"suit": "Hearts", "rank": "6"},
-                 "Column5": {"suit": "Hearts", "rank": "7"},
-                 "Column6": {"suit": "Hearts", "rank": "9"},
-                 "Column7": {"suit": "Hearts", "rank": "10"}}
+                {"DRAWSTACK": {"suit": "HEARTS", "rank": 2, "isFacedUp": "true"},
+                 "SUITSTACKHEARTS": None,
+                 "SUITSTACKCLUBS": None,
+                 "SUITSTACKDIAMONDS": None,
+                 "SUITSTACKSPADES": None,
+                 "BUILDSTACK1": {"suit": "HEARTS", "rank": 3, "isFacedUp": "true"},
+                 "BUILDSTACK2": {"suit": "SPADES", "rank": 4, "isFacedUp": "true"},
+                 "BUILDSTACK3": {"suit": "DIAMONDS", "rank": 5, "isFacedUp": "true"},
+                 "BUILDSTACK4": {"suit": "HEARTS", "rank": 6, "isFacedUp": "true"},
+                 "BUILDSTACK5": {"suit": "CLUBS", "rank": 7, "isFacedUp": "true"},
+                 "BUILDSTACK6": {"suit": "HEARTS", "rank": 9, "isFacedUp": "true"},
+                 "BUILDSTACK7": {"suit": "HEARTS", "rank": 10, "isFacedUp": "true"}}
             )
-
 
             self.updateInp(inp)
             root.destroy()
         myButton = Button(root, text="testmove",command = myMove)
-        myButton.grid(row =2, column=7)
+        myButton.grid(row =6, column=7)
         #----------------------------------------------
 
         root.mainloop()
