@@ -312,5 +312,4 @@ class BoardControllerTest {
 
         return result;
     }
-
 }
