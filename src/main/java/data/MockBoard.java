@@ -12,6 +12,12 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A mock Board is much like a normal board,
+ * instead of staring at the starting state it just starts at a given state,
+ * this means that you can initiate a board with multiple cards face op in one of the buildstacks
+ * or maybe even have an empty buildstack.
+ */
 public class MockBoard implements I_BoardModel {
     I_BoardModel boardImplementation;
 

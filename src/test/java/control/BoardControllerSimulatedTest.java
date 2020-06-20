@@ -59,7 +59,8 @@ class BoardControllerSimulatedTest {
                 new Card( E_CardSuit.DIAMONDS   , 9  ) };
 
         testBoardCont boardCnt = new testBoardCont(cards);
-        I_BoardModel board = boardCnt.MakeNewBoard("hej",);
+        List<I_CardModel> testCards = null;
+        I_BoardModel board = boardCnt.MakeNewBoard("hej",testCards);
         board = changeDrawStack(board,drawStack);
 
         List<Move> result = boardCnt.possibleMoves();
