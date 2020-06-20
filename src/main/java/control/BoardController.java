@@ -6,6 +6,7 @@ import model.Move;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
+import model.cabal.internals.card.I_CardModel;
 
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -51,6 +52,55 @@ public class BoardController implements I_BoardController {
 
     @Override
     public List<Move> possibleMoves(){
+        LinkedList<Move> moves = new LinkedList<>();
+
+        // go through each card in each pile
+        // so i save the current pile as pile
+        // and i do a for each card in this pile.
+
+        for(E_PileID from: E_PileID.values()){
+            for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
+                for (E_PileID to: E_PileID.values()) {
+                    boolean aceTo = false;
+                    if((to == SUITSTACKCLUBS || to == SUITSTACKHEARTS || to == SUITSTACKDIAMONDS || to==SUITSTACKSPADES))
+                        aceTo=true;
+
+                    int a = boardModel.getPile(from).size() - depth;
+                    I_CardModel c = boardModel.getPile(from).get(a);
+                    if(from == to)
+                        continue;
+
+
+                    // now we need to check if the move is even possible at this index.
+                    if (!boardModel.canMoveFrom(from, depth)) {
+                        break;
+                    }
+
+                    if(!boardModel.canMove(from,depth,to)){
+                        continue;
+                    }
+
+                    boolean improveCardReveal = false;
+                    try {
+                        improveCardReveal = !boardModel.getPile(from).get(depth).isFacedUp();
+                    } catch (Exception ignored) {}
+
+                    boolean improveAce = false;
+                    if (to == SUITSTACKSPADES ||to == SUITSTACKCLUBS || to == SUITSTACKDIAMONDS ||to == SUITSTACKHEARTS ){
+                        improveAce = true;
+                    }
+
+                    Move move = new Move(to, from, depth, improveAce, improveCardReveal, "Move Desc");
+                    moves.add(move);
+
+                }
+            }
+        }
+        return moves;
+    }
+
+
+    public List<Move> possibleMoves2(){
 
         LinkedList<Move> moves = new LinkedList<>();
 

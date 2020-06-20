@@ -158,4 +158,11 @@ public class MockBoard implements I_BoardModel {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
 
     }
+
+    @Override
+    public boolean canMoveFrom(E_PileID origin, int range){
+        // todo implement this
+        return false;
+    }
+
 }

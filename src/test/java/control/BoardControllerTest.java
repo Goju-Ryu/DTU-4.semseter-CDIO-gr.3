@@ -22,28 +22,48 @@ class BoardControllerTest {
 
     private class testBoardCont extends BoardController{
 
-        List<Card> cards = new ArrayList<>(8);
+        Map map = null;
+        public testBoardCont( Map map ){
+            this.map = map;
+            init("testing");
+        }
 
-        public testBoardCont( Card ncards[] ){
-            int q = 0;
-            for (int i = 1; i <=( 1 + 4 + 7 ) ; i++) {
-                if((i > 1 && i < 6 )){
-                    cards.add( null ); // Aces
-                }else{
-                    cards.add(ncards[q++]); //
+        public testBoardCont(Card cards[]){
+            Map<String, I_CardModel> map = new HashMap<>();
+            for (E_PileID e: E_PileID.values()) {
+                switch (e){
+                    case DRAWSTACK:
+                        map.put(e.toString(),cards[0]);
+                        break;
+                    case BUILDSTACK1:
+                        map.put(e.toString(),cards[1]);
+                        break;
+                    case BUILDSTACK2:
+                        map.put(e.toString(),cards[2]);
+                        break;
+                    case BUILDSTACK3:
+                        map.put(e.toString(),cards[3]);
+                        break;
+                    case BUILDSTACK4:
+                        map.put(e.toString(),cards[4]);
+                        break;
+                    case BUILDSTACK5:
+                        map.put(e.toString(),cards[5]);
+                        break;
+                    case BUILDSTACK6:
+                        map.put(e.toString(),cards[6]);
+                        break;
+                    case BUILDSTACK7:
+                        map.put(e.toString(),cards[7]);
                 }
             }
+            this.map = map;
             init("testing");
         }
 
         @Override
         public Map getCards(String uiChoice){
-            Map<E_PileID , I_CardModel > m = new HashMap<E_PileID , I_CardModel > ();
-            int i = 0;
-            for (E_PileID e: E_PileID.values()) {
-                m.put( e, cards.get(i++) );
-            }
-            return m;
+            return map;
         }
 
     }
@@ -298,11 +318,41 @@ class BoardControllerTest {
         }
         return board;
     }
-    private List<Move> getPosMoves(Card d1, Card b1,Card b2, Card b3,Card b4, Card b5,Card b6, Card c8){
-        Card cards[] = {d1,b1,b2,b3,b4,b5,b6,c8};
+    private List<Move> getPosMoves(Card d1, Card b1,Card b2, Card b3,Card b4, Card b5,Card b6, Card b7){
 
-        testBoardCont boardCnt = new testBoardCont(cards);
+        Map<String, I_CardModel> map = new HashMap<>();
+        for (E_PileID e: E_PileID.values()) {
+            switch (e){
+                case DRAWSTACK:
+                    map.put(e.toString(),d1);
+                    break;
+                case BUILDSTACK1:
+                    map.put(e.toString(),b1);
+                    break;
+                case BUILDSTACK2:
+                    map.put(e.toString(),b2);
+                    break;
+                case BUILDSTACK3:
+                    map.put(e.toString(),b3);
+                    break;
+                case BUILDSTACK4:
+                    map.put(e.toString(),b4);
+                    break;
+                case BUILDSTACK5:
+                    map.put(e.toString(),b5);
+                    break;
+                case BUILDSTACK6:
+                    map.put(e.toString(),b6);
+                    break;
+                case BUILDSTACK7:
+                    map.put(e.toString(),b7);
+            }
+        }
+
+        testBoardCont boardCnt = new testBoardCont(map);
         List<Move> result = boardCnt.possibleMoves();
+
+
         for (Move m: result) {
             List<I_CardModel> stack = boardCnt.getBoardModel().getPile(m.moveFromStack());
             int i = stack.size() - m.moveFromRange();
@@ -313,4 +363,5 @@ class BoardControllerTest {
 
         return result;
     }
+
 }

@@ -229,9 +229,18 @@ public class Board implements I_BoardModel {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
-        return isValidMove(origin, originPos, destination)
-                && from.canMoveFrom(originPos)
-                && to.canMoveTo(from.getSubset(originPos));
+        boolean a = isValidMove(origin, originPos, destination);
+        boolean b = from.canMoveFrom(originPos);
+        boolean c = to.canMoveTo(from.getSubset(originPos));
+
+        return a && b && c;
+
+    }
+
+    @Override
+    public boolean canMoveFrom(E_PileID origin, int range){
+        I_SolitaireStacks from = get(origin);
+        return from.canMoveFrom(range);
     }
 
 
@@ -248,29 +257,31 @@ public class Board implements I_BoardModel {
 
         var fromPile = get(from);
 
-        if ( !fromPile.getCard(fromPile.size() - originPos).isFacedUp() )
+        I_CardModel c = fromPile.getCard(fromPile.size() - originPos);
+        if ( !c.isFacedUp() )
             return false;
 
-        var cardSuits = fromPile.getSubset(originPos).stream()
-                .map(I_CardModel::getSuit);
+        //var cardSuits = fromPile.getSubset(originPos).stream().map(I_CardModel::getSuit);
+
         switch (to) {
             case SUITSTACKHEARTS:
-                if (cardSuits.anyMatch( suit -> !suit.equals(HEARTS)))
+                if(c.getSuit() != HEARTS)
                     return false;
                 break;
             case SUITSTACKDIAMONDS:
-                if (cardSuits.anyMatch( suit -> !suit.equals(DIAMONDS)))
+                if(c.getSuit() != DIAMONDS)
                     return false;
                 break;
             case SUITSTACKSPADES:
-                if (cardSuits.anyMatch( suit -> !suit.equals(SPADES)))
+                if(c.getSuit() != SPADES)
                     return false;
                 break;
             case SUITSTACKCLUBS:
-                if (cardSuits.anyMatch( suit -> !suit.equals(CLUBS)))
+                if(c.getSuit() != CLUBS)
                     return false;
                 break;
         }
+
 
         return true;
     }
