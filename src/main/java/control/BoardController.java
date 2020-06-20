@@ -23,7 +23,7 @@ import static model.cabal.E_PileID.*;
 */
 public class BoardController implements I_BoardController {
 
-    protected I_BoardModel boardModel;
+    private I_BoardModel boardModel;
     protected I_InputDTO inputDTO;
     protected String uiChoice;
 
@@ -34,6 +34,12 @@ public class BoardController implements I_BoardController {
     }
 
     public BoardController(String uiChoice) {
+      init(uiChoice);
+
+    }
+
+    @Override
+    public void init(String uiChoice){
         this.uiChoice = uiChoice;
         inputDTO = new InputDTO(uiChoice);
         //turn the draw stack through.
@@ -45,11 +51,13 @@ public class BoardController implements I_BoardController {
             System.out.println("currDrawCard: " + drawCard.toString());
             //scanner.next();
         }
+        this.boardModel = new Board(getCards(uiChoice));
+    }
 
-
-        //todo: make board take the draw stack as input
-        //make the board
-        this.boardModel = new Board(inputDTO.getUsrInput(), drawCards);
+    @Override
+    public Map getCards(String uiChoice){
+        inputDTO = new InputDTO(uiChoice);
+        return inputDTO.getUsrInput();
     }
 
 
@@ -62,26 +70,31 @@ public class BoardController implements I_BoardController {
         // so i save the current pile as pile
         // and i do a for each card in this pile.
 
-        for(E_PileID from: values()){
+        for(E_PileID from: E_PileID.values()){
             for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
-                /*
-                TODO check if there are facedown cards in turnpile. if there are, they can be represented
-                by a move from Turnpile to Turnpile with revealcard = true
-                */
+                for (E_PileID to: E_PileID.values()) {
+                    boolean aceTo = false;
+                    if((to == SUITSTACKCLUBS || to == SUITSTACKHEARTS || to == SUITSTACKDIAMONDS || to==SUITSTACKSPADES))
+                        aceTo=true;
 
-                for (E_PileID to: values()) {
+                    int a = boardModel.getPile(from).size() - depth;
+                    I_CardModel c = boardModel.getPile(from).get(a);
                     if(from == to)
                         continue;
 
-                    //Check if move is legal
+
+                    // now we need to check if the move is even possible at this index.
+                    if (!boardModel.canMoveFrom(from, depth)) {
+                        break;
+                    }
+
                     if(!boardModel.canMove(from,depth,to)){
                         continue;
                     }
 
                     boolean improveCardReveal = false;
                     try {
-                        var fromPile = boardModel.getPile(from);
-                        improveCardReveal = !fromPile.get(fromPile.size() - depth).isFacedUp();
+                        improveCardReveal = !boardModel.getPile(from).get(depth).isFacedUp();
                     } catch (Exception ignored) {}
 
                     boolean improveAce = false;
@@ -144,4 +157,9 @@ public class BoardController implements I_BoardController {
             return 1;
         }
     };
+
+    public I_BoardModel getBoardModel() {
+        return boardModel;
+    }
 }
+
