@@ -31,6 +31,7 @@ public class InputDTO implements I_InputDTO {
     //TODO Modify to take just one card when uiType == RevealCardGUI
     @Override
     public Map<String, I_CardModel> getUsrInput(){
+
         ArrayList<Card> cards = new ArrayList<>();
         String usrInput ="";
         String target = "localhost:50051";
@@ -39,6 +40,7 @@ public class InputDTO implements I_InputDTO {
                 // needing certificates.
                 .usePlaintext()
                 .build();
+
         InputAccesPoint accessInput = new InputAccesPoint(channel);
         try{
 

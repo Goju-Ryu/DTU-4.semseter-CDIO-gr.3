@@ -6,10 +6,12 @@ import model.Move;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
+import model.cabal.internals.card.I_CardModel;
 
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static model.cabal.E_PileID.*;
 
@@ -24,7 +26,7 @@ import static model.cabal.E_PileID.*;
 */
 public class BoardController implements I_BoardController {
 
-    protected I_BoardModel boardModel;
+    private I_BoardModel boardModel;
     protected I_InputDTO inputDTO;
     protected String uiChoice;
 
@@ -33,41 +35,54 @@ public class BoardController implements I_BoardController {
     }
 
     public BoardController(String uiChoice) {
-        this.uiChoice = uiChoice;
-        inputDTO = new InputDTO(uiChoice);
-        this.boardModel = new Board(inputDTO.getUsrInput());
+      init(uiChoice);
     }
 
+    @Override
+    public void init(String uiChoice){
+        this.uiChoice = uiChoice;
+        this.boardModel = new Board(getCards(uiChoice));
+    }
+
+    @Override
+    public Map getCards(String uiChoice){
+        inputDTO = new InputDTO(uiChoice);
+        return inputDTO.getUsrInput();
+    }
 
     @Override
     public List<Move> possibleMoves(){
-
         LinkedList<Move> moves = new LinkedList<>();
 
         // go through each card in each pile
         // so i save the current pile as pile
         // and i do a for each card in this pile.
 
-        for(E_PileID from: values()){
+        for(E_PileID from: E_PileID.values()){
             for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
-                /*
-                TODO check if there are facedown cards in turnpile. if there are, they can be represented
-                by a move from Turnpile to Turnpile with revealcard = true
-                */
+                for (E_PileID to: E_PileID.values()) {
+                    boolean aceTo = false;
+                    if((to == SUITSTACKCLUBS || to == SUITSTACKHEARTS || to == SUITSTACKDIAMONDS || to==SUITSTACKSPADES))
+                        aceTo=true;
 
-                for (E_PileID to: values()) {
+                    int a = boardModel.getPile(from).size() - depth;
+                    I_CardModel c = boardModel.getPile(from).get(a);
                     if(from == to)
                         continue;
 
-                    //Check if move is legal
+
+                    // now we need to check if the move is even possible at this index.
+                    if (!boardModel.canMoveFrom(from, depth)) {
+                        break;
+                    }
+
                     if(!boardModel.canMove(from,depth,to)){
                         continue;
                     }
 
                     boolean improveCardReveal = false;
                     try {
-                        var fromPile = boardModel.getPile(from);
-                        improveCardReveal = !fromPile.get(fromPile.size() - depth).isFacedUp();
+                        improveCardReveal = !boardModel.getPile(from).get(depth).isFacedUp();
                     } catch (Exception ignored) {}
 
                     boolean improveAce = false;
@@ -130,4 +145,9 @@ public class BoardController implements I_BoardController {
             return 1;
         }
     };
+
+    public I_BoardModel getBoardModel() {
+        return boardModel;
+    }
 }
+
