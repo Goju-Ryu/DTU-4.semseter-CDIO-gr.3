@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BoardControllerTest {
 
-    private class testBoardController extends BoardController{
+    private class testBoardController extends BoardControllerSimulated{
 
         protected I_BoardModel refBoardModel;
         public testBoardController(I_BoardModel refBoard, GameCardDeck deck) {
@@ -189,53 +189,6 @@ class BoardControllerTest {
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(5, result.size());
-    }
-
-
-
-    @Test
-    void make_a_move(){
-
-        // What is the top cards of the rows, anything undeclared is empty list.
-        Map<E_PileID, I_CardModel> map = new HashMap<>();
-        map.put(BUILDSTACK1,new Card( SPADES    , 3  ));
-        map.put(BUILDSTACK2,new Card( HEARTS    , 3  ));
-        map.put(BUILDSTACK3,new Card( CLUBS     , 10 ));
-        map.put(BUILDSTACK4,new Card( HEARTS    , 10 ));
-        map.put(BUILDSTACK5,new Card( SPADES    , 10 ));
-        map.put(BUILDSTACK6,new Card( CLUBS     , 10 ));
-        map.put(BUILDSTACK7,new Card( HEARTS    , 8  ));
-
-        // the drawStack.
-        ArrayList<I_CardModel> list = new ArrayList<>();
-        list.add(new Card( SPADES     , 8 ));
-        list.add(new Card( DIAMONDS   , 8 ));
-        list.add(new Card( CLUBS      , 8 ));
-        list.add(new Card( SPADES     , 9 ));
-        list.add(new Card( DIAMONDS   , 9 ));
-        list.add(new Card( CLUBS      , 9 ));
-        list.add(new Card( HEARTS     , 9 ));
-
-        //Move Queue
-        Queue<Move> moves = new LinkedList<>();
-        moves.add( new Move(DRAWSTACK, BUILDSTACK6, 1, false , false,"") );
-        moves.add( new Move(DRAWSTACK, BUILDSTACK4, 1, false , false,"") );
-        moves.add( new Move(DRAWSTACK, BUILDSTACK5, 1, false , false,"") );
-        moves.add( new Move(DRAWSTACK, BUILDSTACK3, 1, false , false,"") );
-
-        //moves.add( new Move(BUILDSTACK7, BUILDSTACK6, 1, false , false,"") );
-        //moves.add( new Move(DRAWSTACK, BUILDSTACK4, 1, false , false,"") );
-        //moves.add( new Move(DRAWSTACK, BUILDSTACK5, 1, false , false,"") );
-        //moves.add( new Move(DRAWSTACK, BUILDSTACK3, 1, false , false,"") );
-
-        GameCardDeck deck = new TestGameCardDeck(map);
-        I_BoardModel board = new testBoard(map,list,deck);
-        BoardController boardCnt = new testBoardController(board,deck);
-
-        for (Move m: moves) {
-            boardCnt.makeMove(m);
-        }
-        System.out.println("asd");
     }
 
     private class testBoard extends AbstractBoardUtility implements I_BoardModel{
