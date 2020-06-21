@@ -14,11 +14,11 @@ from imageOperator.imageOperator import imageOperator
 # then for each of these scanning for squares and taking ones that are large enough to be cards.
 class Isolator:
 
-    def __init__(self, showBoard, showBoardMask, showCards, showCardsMask ):
+    def __init__(self, showBoard, showBoardRulers, showCards, showCardsMask):
 
         ## show image booleans
         self.showBoard = showBoard
-        self.showBoardMask = showBoardMask
+        self.showBoardRulers = showBoardRulers
         self.showCards = showCards
         self.showCardsMask = showCardsMask
 
@@ -39,8 +39,10 @@ class Isolator:
             if self.showBoard:
                 cv2.imshow("board",image)
 
-            if self.showBoardMask:
-                cv2.imshow("boardMask", mask)
+            if self.showBoardRulers:
+                newBoardImage= cv2.resize(image,(480,270))
+                self.board.decorateImageRulerLines(newBoardImage)
+                cv2.imshow("ruler Window", newBoardImage)
 
             # here we cut the images into sections, where a section is an array where we exspect
             # a single card to be.

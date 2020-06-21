@@ -32,7 +32,6 @@ public interface I_BoardModel {
     boolean isStackComplete(E_PileID pileID);
 
 
-
 //---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
 
     /**
@@ -72,7 +71,7 @@ public interface I_BoardModel {
      * @throws IllegalMoveException If one of the piles cannot do the operation due to rules constraints.
      */
     default void move(E_PileID origin, E_PileID destination, Map<String, I_CardModel> imgData) throws IllegalMoveException {
-        move(origin, 0, destination, imgData);
+        move(origin, 1, destination, imgData);
     }
 
     /**
@@ -98,15 +97,17 @@ public interface I_BoardModel {
      * @return true if legal or false if illegal
      */
     default boolean canMove(E_PileID origin, E_PileID destination) {
-        return canMove(origin,0,destination);
+        return canMove(origin,1, destination);
     }
 
 
 //-----------  PropertyListener Support   ----------------------------------------
 
-    /**
-     * Add a listener to the board. This subscribes it to all piles on the board.
-     * @param listener the listener to be attached.
+    boolean canMoveFrom(E_PileID origin, int range);
+
+    /**ner to the board. This subscribes it to all piles on the board.
+     * @pa
+     *      * Add a listeram listener the listener to be attached.
      */
     void addPropertyChangeListener(PropertyChangeListener listener);
 

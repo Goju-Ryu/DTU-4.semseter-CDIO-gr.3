@@ -1,14 +1,19 @@
 import control.GameController;
-import control.I_GameController;
-import model.cabal.Board;
-import model.cabal.I_BoardModel;
 
 public class main {
     public static void main(String[] args) {
-        I_GameController Klondike = new GameController();
-        Klondike.startGame("ManGUI");
+        var gameController = new GameController();
+        String uiChoice;
 
-        System.out.println("Hello Main World!");
-        //change
+        if (args.length == 0) {
+            gameController.startGame("cam");
+        } else if (args[0].equalsIgnoreCase("sim")) {
+            gameController.startGame("sim");
+        } else if (args[0].equalsIgnoreCase("cam")){
+            gameController.startGame("cam");
+        } else if (args[0].equalsIgnoreCase("gui")) {
+            gameController.startGame("ManGUI");
+        } else throw new IllegalArgumentException("Option: \"" + args[0] + "\" is not a valid option.");
+
     }
 }

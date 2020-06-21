@@ -1,5 +1,6 @@
 package model.cabal.internals;
 
+import model.cabal.E_PileID;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class DrawStack extends StackBase {
+public class DrawStack extends StackBase implements I_SolitaireStacks {
 
     /**
      * This variable describes which cards have been drawn and which haven't
@@ -16,6 +17,7 @@ public class DrawStack extends StackBase {
      * This means that the index always points at the card that is able to be drawn out on the board.
      */
     protected int drawIndex;
+
 
     public DrawStack() {
         this(new ArrayList<>());
@@ -25,7 +27,6 @@ public class DrawStack extends StackBase {
         super(list);
         drawIndex = -1;
     }
-
 
 //-----------  Implementation ----------------------------------------------------------------
 
@@ -50,23 +51,28 @@ public class DrawStack extends StackBase {
 
     @Override
     public boolean canMoveFrom(int range) {
-        try {
-            return canMoveFromMsg(range).isEmpty();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-            return false;
+
+        if( range > stack.size() ){
+            throw new IllegalArgumentException(
+                    "Range was larger than the stack size",
+                    new IndexOutOfBoundsException("range: " + range + ", but size is only: " + size())
+            );
         }
+
+        int reversedRange = stack.size() - ( range );
+        boolean val = stack.get(reversedRange).isFacedUp();
+        return val;
     }
 
     private String canMoveFromMsg(int range){
         StringBuilder builder = new StringBuilder();
-        int cases = 0;
-        if (range > 0) {
+        int caseNum = 0;
+        if (range > 1) {
             builder.append("Range cannot be greater than 0.");
-            cases++;
+            caseNum++;
         }
         if (drawIndex < 0) {
-            if (cases++ > 0)
+            if (caseNum++ > 0)
                 builder.append("\n");
             builder.append("Index too low, no cards have been drawn yet.");
         }
@@ -79,12 +85,14 @@ public class DrawStack extends StackBase {
         return builder.toString();
     }
 
+
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
         return false;
     }
 
 //-------------------  DrawStack specific methods  ----------------------------------------------------------
+
     public I_CardModel turnCard() {
         return getCard(++drawIndex);
     }
@@ -92,4 +100,5 @@ public class DrawStack extends StackBase {
     public I_CardModel getTopCard() {
         return super.getCard(drawIndex);
     }
+
 }

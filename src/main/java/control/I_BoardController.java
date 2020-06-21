@@ -1,14 +1,21 @@
 package control;
 
-import model.cabal.Board;
+import model.Move;
 import model.cabal.I_BoardModel;
-import model.cabal.internals.card.Card;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public interface I_BoardController {
-    I_BoardModel MakeNewBoard(String UiChoice);
 
-    //TODO: Correct the return value and parameters, and the methods
-    void possibleMoves(I_BoardModel boardModel);
+    List<Move> possibleMoves();
 
-    void pickMove(Board[] moves);
+    Move pickMove(List<Move> moves);
+
+    void makeMove(Move move);
+
+    void init(String uiChoice);
+
+    Map getCards(String uiChoice);
 }

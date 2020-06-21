@@ -56,14 +56,13 @@ public class InputAccesPoint {
     }
 
     public String getInput(String UIChoice)throws Exception{
+        boolean usedOnce = false;
         String user ="";
         String target = "localhost:50051";
 
-        if(UIChoice == "ManGUI"){
-            user = "Java world";
-        }else if(UIChoice == "OpenCV"){
-            user = "OpenCV";
-        }
+        user = UIChoice;
+
+
 
         // Create a communication channel to the server, known as a Channel. Channels are thread-safe
         // and reusable. It is common to create channels at the beginning of your application and reuse

@@ -10,41 +10,105 @@ import java.util.List;
 
 public class SuitStack extends StackBase {
 
-
     public SuitStack(List<I_CardModel> list) {
         this.stack = list;
     }
-
     public SuitStack(){
         stack = new ArrayList<>();
     }
 
+    /**
+     * this method must only be used from one of the extending classes that overides this method
+     * */
     @Override
+    @NonNullType
     public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
+
+        int toIndex = stack.size();
+        int fromIndex = toIndex - range;
+
         if (range > 1){
             throw new IllegalMoveException("You can only take the top card!");
+        }else {
+            List<I_CardModel> subList = stack.subList(fromIndex,toIndex);
+            this.stack = stack.subList(0,fromIndex);
+
+            return new SuitStack(subList);
         }
-        return stack.subList((stack.size()-1) - range,stack.size() - 1);
     }
 
     @Override
     public boolean canMoveFrom(int range) {
-        // If the suit stack is not empty and the range is 0, then we can move a card from the suit stack.
-        if ((!stack.isEmpty()) && range == 0){
-            return true;
+
+        if (range != 1) {
+            return false;
         }
-        return false;
+
+        if (stack.isEmpty()){
+            return false;
+        }
+
+        if (!(stack.get(stack.size() - range).isFacedUp())){
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
-        if (cards.size() == 1){ // check size of collection
-            I_CardModel card = cards.iterator().next();
-            if (stack.get(0).getSuit().equals(card.getSuit())){ // check if the suit is the same
-                return stack.get(0).getRank() + 1 == card.getRank(); // check if the cards collection is 1 rank higher
+
+        if (cards.isEmpty()) return false;
+
+
+        I_CardModel card = cards.iterator().next();
+        /*for (I_CardModel inCard : cards) {
+            card = inCard;
+        }*/
+
+        if (stack.isEmpty()){
+            assert card != null;
+            if (card.getRank() == 1 ){
+                return true;
+            }else {
+                return false;
             }
+        }
+
+        I_CardModel card2 = null;
+
+        for (I_CardModel element : stack){
+            card2 = element;
+        }
+
+
+        // check size of collection
+        if (cards.size() != 1){
             return false;
         }
-        return false;
+
+        // check if the suit is the same
+        assert card2 != null;
+        if (!(card2.getSuit() == card.getSuit())){
+            return false;
+        }
+
+        // check if the card in cards collection is 1 rank higher
+        if (!(card.getRank() - card2.getRank() == 1)){
+            return false;
+        }
+
+        // check if the card is face up
+        if (!cards.iterator().next().isFacedUp()){
+            return false;
+        }
+
+        if (stack.isEmpty() && card.getRank() == 1){
+            return true;
+        }
+
+        return true;
     }
+
+
 }
