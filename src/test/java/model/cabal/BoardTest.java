@@ -201,24 +201,14 @@ class BoardTest {
 
         I_BoardModel board = createBoard( drawStack, aceStacks, buildStacks );
 
-        List<Move> moves = new ArrayList<>();
-        moves.add(new Move(DRAWSTACK, BUILDSTACK1, 1, false , false,""));
-        moves.add(new Move(DRAWSTACK, BUILDSTACK2, 2, false , false,""));
-
-        moves.add(new Move(DRAWSTACK, SUITSTACKHEARTS, 6, false , false,""));
-        moves.add(new Move(DRAWSTACK, SUITSTACKDIAMONDS, 3, false , false,""));
-        moves.add(new Move(DRAWSTACK, SUITSTACKCLUBS, 4, false , false,""));
-        moves.add(new Move(DRAWSTACK, SUITSTACKSPADES, 5, false , false,""));
-
         InputSimDTO in = new InputSimDTO(board);
-        for (Move m: moves) {
-            board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
-            
-        }
+
+        System.out.println("from DRAWSTACK " + drawStack[drawStack.length-1] + " to BUILDSTACK " + buildStacks[1]);
+        Move m = new Move(DRAWSTACK, BUILDSTACK2, 1, false , false,"");
+        board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
 
 
 
-        System.out.println("hje");
     }
 
     @Test

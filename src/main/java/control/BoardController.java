@@ -97,7 +97,7 @@ public class BoardController implements I_BoardController {
                         improveAce = true;
                     }
 
-                    Move move = new Move(to, from, depth, improveAce, improveCardReveal, "Move Desc");
+                    Move move = new Move( from,to, depth, improveAce, improveCardReveal, "Move Desc");
                     moves.add(move);
 
                 }
