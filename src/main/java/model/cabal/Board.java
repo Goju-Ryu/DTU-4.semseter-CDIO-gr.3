@@ -209,7 +209,7 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         int pileIndex = pile.ordinal();
         return new PropertyChangeEvent(
                 piles[pileIndex],
-                pile.getDescription(),
+                pile.name(),
                 oldVal,
                 Collections.unmodifiableCollection(piles[pileIndex])
         );
