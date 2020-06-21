@@ -37,17 +37,17 @@ public class GameHistory implements I_GameHistory {
      * The list must have a concept of sequence and random access is not important
      * The lists in the sequential list must be copy on write to ensure no changes to the past ever occurs.
      */
-    protected AbstractSequentialList<Map<E_PileID, List<I_CardModel>>> history;
-
+    //protected AbstractSequentialList<Map<E_PileID, List<I_CardModel>>> history;
+    protected AbstractSequentialList<I_GameState> history;
     /**
      * A variable holding an  up to date image of the game state.
      */
-    protected I_GameState currentState;
+    private I_GameState currentState;
 
     /**
      * An iterator to do the heavy work of implementing the Iterator Interface
      */
-    protected Iterator<Map<E_PileID, List<I_CardModel>>> iterator;
+    protected Iterator<I_GameState> iterator;
 
     private Logger log ;
     private int numNonDrawEvents;
@@ -145,8 +145,20 @@ public class GameHistory implements I_GameHistory {
             addGameState();
         }
 
+        var newValue = event.getNewValue();
+        if (newValue instanceof Collection)
+            if (((Collection) newValue).isEmpty()) {
+                currentState.put(pileID, List.of());
+            } else {
+                if (((Collection<Object>) newValue).stream().anyMatch(e -> !(e instanceof  I_CardModel))) {
+                    log.warning("An event caught by this class did not conform to type: Collection<I_CardModel>." +
+                            "\n\tEvent: " + event);
+                } else {
+                    currentState.put(pileID, (List<I_CardModel>)newValue);
+                }
 
-        currentState.put(pileID, (((List<I_CardModel>) event.getNewValue())));
+            }
+
     }
 
 
@@ -177,7 +189,7 @@ public class GameHistory implements I_GameHistory {
      * Makes a copy of the current state of the game and adds it to the history list
      */
     private void addGameState() {
-        history.add(0, Map.copyOf(currentState));
+        history.add(0, currentState.clone());
         log.info("State added to history:\n\t" + currentState);
     }
 

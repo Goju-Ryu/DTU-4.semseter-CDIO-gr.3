@@ -33,10 +33,10 @@ public class HistoryImplementationTest {
 
         board.addPropertyChangeListener(hist);
 
-        assertEquals(0, hist.eventBatch.size());
+        assertEquals(0, hist.history.size());
 
         board.turnCard(getImgData(board));
-        assertEquals(1, hist.eventBatch.size());
+        assertEquals(0, hist.history.size());
     }
 
     /**
