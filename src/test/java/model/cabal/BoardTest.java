@@ -2,7 +2,6 @@ package model.cabal;
 
 import control.BoardController;
 import data.InputSimDTO;
-import data.MockBoard;
 import model.GameCardDeck;
 import model.Move;
 import model.cabal.internals.I_SolitaireStacks;
@@ -10,7 +9,6 @@ import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
@@ -23,11 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BoardTest {
 
-    @AfterEach
-    void closeDeck(){
-        GameCardDeck.getInstance().close();
-    }
-
     @Test
     void constructor() {
         Map<String, I_CardModel> map = new HashMap<>();
@@ -36,7 +29,7 @@ class BoardTest {
         }
         map.put("BUILDSTACK1", new Card(E_CardSuit.SPADES, 1));
 
-        I_BoardModel board = new Board(map);
+        I_BoardModel board = new Board(map, new GameCardDeck());
 
         assertEquals(7, board.getPile(E_PileID.BUILDSTACK7).size());
         assertEquals(1, board.getPile(E_PileID.BUILDSTACK1).size());
@@ -59,8 +52,8 @@ class BoardTest {
 
             map.put( e.toString() , new Card(E_CardSuit.SPADES, i++) );
         }
-
-        I_BoardModel board = new Board(map);
+        var deck = new GameCardDeck();
+        I_BoardModel board = new Board(map, deck);
 
         for (E_PileID e: E_PileID.values()) {
             List<I_CardModel> stack = board.getPile(e);
@@ -172,16 +165,11 @@ class BoardTest {
                 null
         };
         I_CardModel drawStack[] = {
-                new Card(HEARTS, 1),
-                new Card(SPADES, 1),
-                new Card(CLUBS, 1),
-                new Card(DIAMONDS, 1),
-                new Card(HEARTS, 2),
-                new Card(CLUBS,2)
+
         };
 
         I_BoardModel board = createBoard( drawStack, aceStacks, buildStacks );
-        InputSimDTO in = new InputSimDTO(board);
+        InputSimDTO in = new InputSimDTO();
         System.out.println("from DRAWSTACK " + drawStack[drawStack.length-1] + " to BUILDSTACK " + buildStacks[1]);
 
         Move m = new Move(DRAWSTACK, BUILDSTACK2, 1, false , false,"");
@@ -303,23 +291,23 @@ class BoardTest {
             listBuildstacks.add(newArr);
         }
 
-        Map<E_PileID, List<I_CardModel>> map =  new HashMap<>();
-        map.put(DRAWSTACK, new ArrayList<>(Arrays.asList(drawstack)));
+        Map<String, List<I_CardModel>> map =  new HashMap<>();
+        map.put(DRAWSTACK.name(), new ArrayList<>(Arrays.asList(drawstack)));
 
         // in tests created with this method, the Order of card suits here are
         // important for the test to succed
-        map.put(SUITSTACKHEARTS     , listAceStacks.get(0));
-        map.put(SUITSTACKDIAMONDS   , listAceStacks.get(1));
-        map.put(SUITSTACKCLUBS      , listAceStacks.get(2));
-        map.put(SUITSTACKSPADES     , listAceStacks.get(3));
+        map.put(SUITSTACKHEARTS.name()     , listAceStacks.get(0));
+        map.put(SUITSTACKDIAMONDS.name()   , listAceStacks.get(1));
+        map.put(SUITSTACKCLUBS.name()      , listAceStacks.get(2));
+        map.put(SUITSTACKSPADES.name()     , listAceStacks.get(3));
 
-        map.put(BUILDSTACK1  , listBuildstacks.get(0));
-        map.put(BUILDSTACK2  , listBuildstacks.get(1));
-        map.put(BUILDSTACK3  , listBuildstacks.get(2));
-        map.put(BUILDSTACK4  , listBuildstacks.get(3));
-        map.put(BUILDSTACK5  , listBuildstacks.get(4));
-        map.put(BUILDSTACK6  , listBuildstacks.get(5));
-        map.put(BUILDSTACK7  , listBuildstacks.get(6));
-        return new MockBoard(map);
+        map.put(BUILDSTACK1.name()  , listBuildstacks.get(0));
+        map.put(BUILDSTACK2.name()  , listBuildstacks.get(1));
+        map.put(BUILDSTACK3.name()  , listBuildstacks.get(2));
+        map.put(BUILDSTACK4.name()  , listBuildstacks.get(3));
+        map.put(BUILDSTACK5.name()  , listBuildstacks.get(4));
+        map.put(BUILDSTACK6.name()  , listBuildstacks.get(5));
+        map.put(BUILDSTACK7.name()  , listBuildstacks.get(6));
+        return new RefBoard(map);
     }
 }

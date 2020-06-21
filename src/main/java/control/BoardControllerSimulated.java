@@ -1,10 +1,10 @@
 package control;
 
 import data.InputSimDTO;
-import data.MockBoard;
 import model.Move;
 import model.cabal.Board;
 import model.cabal.I_BoardModel;
+import model.cabal.RefBoard;
 
 /**
  * This class is for the individual controlls of each Board,
@@ -17,16 +17,16 @@ import model.cabal.I_BoardModel;
  */
 public class BoardControllerSimulated extends BoardController {
 
-    private I_BoardModel refBoardModel;
+    protected I_BoardModel refBoardModel;
 
     public BoardControllerSimulated() {
-        this(new MockBoard());
+        this(new RefBoard());
     }
 
     public BoardControllerSimulated(I_BoardModel refBoard) {
         refBoardModel = refBoard;
-        inputDTO = new InputSimDTO(refBoardModel);
-        boardModel = new Board(inputDTO.getUsrInput());
+        inputDTO = new InputSimDTO(refBoardModel, deck);
+        boardModel = new Board(inputDTO.getUsrInput(), deck);
     }
 
     @Override

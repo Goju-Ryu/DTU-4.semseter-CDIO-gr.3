@@ -14,6 +14,7 @@ import static model.cabal.internals.card.E_CardSuit.CLUBS;
 public abstract class AbstractBoardUtility {
 
     protected I_SolitaireStacks[] piles;
+    protected GameCardDeck deck;
 
     /**
      * Query the map for the relevant data and return it.
@@ -72,7 +73,7 @@ public abstract class AbstractBoardUtility {
     protected void
     validateCardState(E_PileID origin, I_CardModel cardModel, I_CardModel imgCard) throws IllegalStateException {
         if ( cardModel != null && !cardModel.isFacedUp()) {
-            if (GameCardDeck.getInstance().remove(imgCard)) { //if the card was in deck and now removed
+            if (deck.remove(imgCard)) { //if the card was in deck and now removed
                 cardModel.reveal(imgCard.getSuit(), imgCard.getRank());
             } else {
                 throw new IllegalStateException("Trying to reveal card but card is already in play.\ncard: " + imgCard);

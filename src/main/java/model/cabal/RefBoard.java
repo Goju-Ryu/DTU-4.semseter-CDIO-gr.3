@@ -9,15 +9,23 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
 import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 import static model.cabal.E_PileID.*;
-import static model.cabal.E_PileID.DRAWSTACK;
+import static model.cabal.internals.card.E_CardSuit.*;
 
 public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
 
+
+
+    public RefBoard() {
+        this(stdBoard);
+    }
+
+
     //Constructors
-    public RefBoard(Map<String, I_CardModel> imgData) { //TODO board should take imgData to initialize self
+    public RefBoard(Map<String, List<I_CardModel>> boardData) { //TODO board should take imgData to initialize self
         piles = new I_SolitaireStacks[E_PileID.values().length];
 
         piles[DRAWSTACK.ordinal()] = new DrawStack();
@@ -26,36 +34,11 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         piles[SUITSTACKCLUBS.ordinal()]   = new SuitStack();
         piles[SUITSTACKSPADES.ordinal()]  = new SuitStack();
 
-        for (int i = 0; i < 24; i++) {
-            piles[DRAWSTACK.ordinal()].add(new Card());
-        }
-
-        for (int i = 0; i < 7; i++) { // for each build pile
-            for (int j = 0; j <= i; j++) {  // how many cards in this pile
-                if (piles[BUILDSTACK1.ordinal() + i] == null)
-                    piles[BUILDSTACK1.ordinal() + i] = new BuildStack();
-                else
-                    piles[BUILDSTACK1.ordinal() + i].add(new Card());
-            }
-        }
-
         for (E_PileID pileID : E_PileID.values()) {
-            I_CardModel data = extractImgData(imgData, pileID);
-            piles[pileID.ordinal()].add(data);
+            if (pileID.isBuildStack())
+                piles[pileID.ordinal()] = new BuildStack();
+            piles[pileID.ordinal()].addAll(boardData.get(pileID.name()));
         }
-    }
-
-    /**
-     * Use this to play the instantiate a board with a draw stack
-     *
-     * @param imgData
-     * @param drawStack
-     */
-    public RefBoard(Map<String, I_CardModel> imgData, ArrayList<I_CardModel> drawStack) {
-        this(imgData);
-        get(DRAWSTACK).clear();
-        drawStack.add(extractImgData(imgData,DRAWSTACK));
-        get(DRAWSTACK).addAll(drawStack);
     }
 
 
@@ -146,4 +129,76 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
     @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
     }
+
+    private static Map<String, List<I_CardModel>> stdBoard = Map.of(
+            DRAWSTACK.name(), List.of( //24 cards
+                    new Card(HEARTS,2 ),
+                    new Card(SPADES, 1),
+                    new Card(CLUBS, 6),
+                    new Card(HEARTS,5 ),
+                    new Card(DIAMONDS, 4),
+                    new Card(HEARTS, 11),
+                    new Card(CLUBS, 7),
+                    new Card(CLUBS, 1),
+                    new Card(HEARTS, 12),
+                    new Card(DIAMONDS, 10),
+                    new Card(HEARTS, 3),
+                    new Card(SPADES,4 ),
+                    new Card(SPADES, 7),
+                    new Card(CLUBS, 2),
+                    new Card(HEARTS, 4),
+                    new Card(CLUBS, 9),
+                    new Card(DIAMONDS, 11),
+                    new Card(HEARTS, 13),
+                    new Card(DIAMONDS, 5),
+                    new Card(HEARTS,10 ),
+                    new Card(SPADES, 6),
+                    new Card(CLUBS, 8),
+                    new Card(HEARTS,9 ),
+                    new Card(SPADES, 5)
+
+            ),
+            BUILDSTACK1.name(), List.of( // 1 card
+                    new Card(DIAMONDS,6)
+            ),
+            BUILDSTACK2.name(), List.of( // 2 cards
+                    new Card(CLUBS,3),
+                    new Card(SPADES,8)
+            ),
+            BUILDSTACK3.name(), List.of( // 3 cards
+                    new Card(DIAMONDS,13),
+                    new Card(DIAMONDS,7),
+                    new Card(SPADES,9)
+            ),
+            BUILDSTACK4.name(), List.of( // 4 cards
+                    new Card(SPADES,13),
+                    new Card(DIAMONDS,12),
+                    new Card(DIAMONDS,9),
+                    new Card(CLUBS,10)
+            ),
+            BUILDSTACK5.name(), List.of( // 5 cards
+                    new Card(SPADES,11),
+                    new Card(CLUBS,13),
+                    new Card(SPADES,3),
+                    new Card(CLUBS,12),
+                    new Card(HEARTS,6)
+            ),
+            BUILDSTACK6.name(), List.of( // 6 cards
+                    new Card(SPADES,12),
+                    new Card(HEARTS,8),
+                    new Card(SPADES,2),
+                    new Card(CLUBS,4),
+                    new Card(DIAMONDS,8),
+                    new Card(HEARTS,7)
+            ),
+            BUILDSTACK7.name(), List.of( // 7 cards
+                    new Card(DIAMONDS,2),
+                    new Card(SPADES,10),
+                    new Card(CLUBS,5),
+                    new Card(DIAMONDS,3),
+                    new Card(DIAMONDS,1),
+                    new Card(HEARTS,1),
+                    new Card(CLUBS,11)
+            )
+    );
 }
