@@ -93,7 +93,6 @@ public class BoardController implements I_BoardController {
         return inputDTO.getUsrInput();
     }
 
-
     @Override
     public List<Move> possibleMoves(){
 
