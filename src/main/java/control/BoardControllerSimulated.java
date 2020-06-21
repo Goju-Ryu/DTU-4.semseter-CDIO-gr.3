@@ -1,6 +1,7 @@
 package control;
 
 import data.InputSimDTO;
+import model.GameCardDeck;
 import model.Move;
 import model.cabal.Board;
 import model.cabal.I_BoardModel;
@@ -20,13 +21,14 @@ public class BoardControllerSimulated extends BoardController {
     protected I_BoardModel refBoardModel;
 
     public BoardControllerSimulated() {
-        this(new RefBoard());
+        this(new RefBoard(), new GameCardDeck());
     }
 
-    public BoardControllerSimulated(I_BoardModel refBoard) {
+    public BoardControllerSimulated(I_BoardModel refBoard, GameCardDeck cardDeck) {
+        super(new InputSimDTO(refBoard, cardDeck));
         refBoardModel = refBoard;
-        inputDTO = new InputSimDTO(refBoardModel, deck);
-        boardModel = new Board(inputDTO.getUsrInput(), deck);
+        boardModel = new Board(inputDTO.getUsrInput(), cardDeck);
+        deck = cardDeck;
     }
 
     @Override

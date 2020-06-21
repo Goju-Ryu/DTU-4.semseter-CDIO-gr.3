@@ -32,67 +32,57 @@ public class BoardController implements I_BoardController {
 
     protected I_BoardModel boardModel;
     protected I_InputDTO inputDTO;
-    protected String uiChoice;
     protected GameCardDeck deck;
     private ArrayList<I_CardModel> listOfDrawpileCards = new ArrayList<I_CardModel>();
 
 
     public BoardController(){
+        this("cam");
     }
 
     public BoardController(String uiChoice) {
-      init(uiChoice);
+        this(new InputDTO(uiChoice));
     }
 
-
-    @Override
-    public void init(String uiChoice){
-        this.uiChoice = uiChoice;
-        inputDTO = new InputDTO(uiChoice);
+    public BoardController(I_InputDTO inputDTO) {
+        this.inputDTO = inputDTO;
         deck = new GameCardDeck();
         //turn the draw stack through.
-        ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
+//        ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
 
         //TODO: refactor this as a tes(but not a unit test)
         //This is for testing purposes in regards to drawstack in simulation.
         //used in conjunction with "test" see below ...
         for (int i = 1; i <= 12; i++) {
-                I_CardModel simDrawCard = new Card(E_CardSuit.HEARTS,12, true);
-                I_CardModel simDrawCard2 = new Card(E_CardSuit.CLUBS, 9, true);
+            I_CardModel simDrawCard = new Card(E_CardSuit.HEARTS,12, true);
+            I_CardModel simDrawCard2 = new Card(E_CardSuit.CLUBS, 9, true);
             listOfDrawpileCards.add(simDrawCard);
             listOfDrawpileCards.add(simDrawCard2);
         }
 
         //This is intended for testing purposes and should not be used for the usual "cam" or "gui"
-        if (!uiChoice.equals("test")) {
-            for(int i = 0; i < 24; i++) {
-                I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
-                //drawCard.
-                drawCards.add(drawCard);
-                System.out.println("currDrawCard: " + drawCard.toString());
+//        if (!uiChoice.equals("test")) {
+//            for(int i = 0; i < 24; i++) {
+//                I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
+//                //drawCard.
+//                drawCards.add(drawCard);
+//                System.out.println("currDrawCard: " + drawCard.toString());
+//
+//                if(uiChoice.equals("cam")) {
+//                    ScanSingleton.getScanner().next();
+//                }
+//            }
+//        } else {
+//            drawCards.addAll(this.listOfDrawpileCards);
+//            System.out.println("List of sim drawstack: " + drawCards.toString());
+//        }
 
-                if(uiChoice.equals("cam")) {
-                    ScanSingleton.getScanner().next();
-                }
-            }
-        } else {
-            drawCards.addAll(this.listOfDrawpileCards);
-            System.out.println("List of sim drawstack: " + drawCards.toString());
-        }
+//        System.out.println("Type anything followed by a whitespace char, to confirm" +
+//                " continuing on from intializing the drawstack to actualy start the game");
+//        ScanSingleton.getScanner().next();
 
-        System.out.println("Type anything followed by a whitespace char, to confirm" +
-                " continuing on from intializing the drawstack to actualy start the game");
-        ScanSingleton.getScanner().next();
+        this.boardModel = new Board(inputDTO.getUsrInput(), deck);//, drawCards);
 
-        this.boardModel = new Board(inputDTO.getUsrInput(), deck, drawCards);
-
-
-    }
-
-    @Override
-    public Map getCards(String uiChoice){
-        inputDTO = new InputDTO(uiChoice);
-        return inputDTO.getUsrInput();
     }
 
     @Override

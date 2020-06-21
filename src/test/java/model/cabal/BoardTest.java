@@ -170,7 +170,7 @@ class BoardTest {
 
         I_BoardModel board = createBoard( drawStack, aceStacks, buildStacks );
         InputSimDTO in = new InputSimDTO();
-        System.out.println("from DRAWSTACK " + drawStack[drawStack.length-1] + " to BUILDSTACK " + buildStacks[1]);
+//        System.out.println("from DRAWSTACK " + drawStack[drawStack.length-1] + " to BUILDSTACK " + buildStacks[1]);
 
         Move m = new Move(DRAWSTACK, BUILDSTACK2, 1, false , false,"");
         board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
