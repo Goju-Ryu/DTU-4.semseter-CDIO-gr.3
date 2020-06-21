@@ -335,6 +335,7 @@ public class Board implements I_BoardModel {
         change.addPropertyChangeListener(listener);
     }
 
+
     @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         change.removePropertyChangeListener(listener);
