@@ -133,6 +133,7 @@ public class GameHistory implements I_GameHistory {
 
         if (!matchesPreviousEvents(event)) {
             addGameState();
+            numNonDrawEvents = 0;
         }
 
         var newValue = event.getNewValue();
