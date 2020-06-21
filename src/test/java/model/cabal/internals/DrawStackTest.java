@@ -59,7 +59,7 @@ class DrawStackTest {
         }
 
         drawStack.add(new Card());
-        assertFalse(drawStack.canMoveFrom(1));
+        assertTrue(drawStack.canMoveFrom(1));
     }
 
     @Test
