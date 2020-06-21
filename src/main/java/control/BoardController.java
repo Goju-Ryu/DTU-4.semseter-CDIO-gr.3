@@ -10,7 +10,11 @@ import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
 
 import static model.cabal.E_PileID.*;
 
@@ -25,19 +29,20 @@ import static model.cabal.E_PileID.*;
 */
 public class BoardController implements I_BoardController {
 
-    private I_BoardModel boardModel;
+    protected I_BoardModel boardModel;
     protected I_InputDTO inputDTO;
     protected String uiChoice;
     private ArrayList<I_CardModel> listOfDrawpileCards = new ArrayList<I_CardModel>();
 
 
 
-    public BoardController() {
+    public BoardController(){
     }
 
     public BoardController(String uiChoice) {
       init(uiChoice);
     }
+
 
     @Override
     public void init(String uiChoice){
@@ -77,9 +82,8 @@ public class BoardController implements I_BoardController {
                 " continuing on from intializing the drawstack to actualy start the game");
         ScanSingleton.getScanner().next();
 
-//        this.boardModel = new Board(getCards(uiChoice), drawCards);
         this.boardModel = new Board(inputDTO.getUsrInput(), drawCards);
-//        this.boardModel = new Board(getCards(uiChoice), drawCards);
+
 
     }
 
@@ -131,7 +135,7 @@ public class BoardController implements I_BoardController {
                         improveAce = true;
                     }
 
-                    Move move = new Move(to, from, depth, improveAce, improveCardReveal, "Move Desc");
+                    Move move = new Move( from,to, depth, improveAce, improveCardReveal, "Move Desc");
                     moves.add(move);
 
                 }
@@ -155,9 +159,19 @@ public class BoardController implements I_BoardController {
     @Override
     public void makeMove(Move move) {
         //todo: make it so that inputDTO promts for ui every time
-        boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
-    }
+        if( move.moveFromStack() == DRAWSTACK ){
+            // draw stack has a unique rule set, that makes.
+            for (int i = 0; i < move.moveFromRange()-1 ; i++) {
+                boardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
+            }
+            // now when it has turned all the necesary cards in the drawstack we give it an input.
+            boardModel.turnCard(inputDTO.getUsrInput());
+            boardModel.move(move.moveFromStack(), 1, move.moveToStack(), inputDTO.getUsrInput());
+        }else {
+            boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
+        }
 
+    }
 
     // so we want to sort the moves by two values
     // 1st priority : does it move something into the ace pile

@@ -33,13 +33,17 @@ public class MockBoard implements I_BoardModel {
     }
 
     public MockBoard(Map<E_PileID, List<I_CardModel>> boardMap) {
+
         boardImplementation = new Board(Map.of());
+        I_SolitaireStacks[] solitaireStacks = boardImplementation.getPiles();
 
         for (E_PileID pileID : E_PileID.values()) {
-            boardImplementation.getPile(pileID).clear();
-            boardImplementation.getPile(pileID).addAll(boardMap.get(pileID));
-        }
 
+            solitaireStacks[pileID.ordinal()].clear();
+            solitaireStacks[pileID.ordinal()].addAll(boardMap.get(pileID));
+
+        }
+        System.out.println("hej");
     }
 
     public MockBoard(I_BoardModel boardModel) {

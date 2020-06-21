@@ -1,99 +1,61 @@
 package control;
 
-import com.google.gson.JsonObject;
-import data.InputDTO;
+import data.MockBoard;
+import model.GameCardDeck;
 import model.Move;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
-import model.cabal.internals.DrawStack;
-import model.cabal.internals.I_SolitaireStacks;
+import model.cabal.RefBoard;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
 import java.util.*;
 import static model.cabal.E_PileID.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BoardControllerTest {
 
-    private class testBoardCont extends BoardController{
-
-        Map map = null;
-        public testBoardCont( Map map ){
-            this.map = map;
-            init("testing");
+    private class testBoardCont extends BoardControllerSimulated{
+        public testBoardCont(I_BoardModel refBoard){
+            super(refBoard);
         }
-
-        public testBoardCont(Card cards[]){
-            Map<String, I_CardModel> map = new HashMap<>();
-            for (E_PileID e: E_PileID.values()) {
-                switch (e){
-                    case DRAWSTACK:
-                        map.put(e.toString(),cards[0]);
-                        break;
-                    case BUILDSTACK1:
-                        map.put(e.toString(),cards[1]);
-                        break;
-                    case BUILDSTACK2:
-                        map.put(e.toString(),cards[2]);
-                        break;
-                    case BUILDSTACK3:
-                        map.put(e.toString(),cards[3]);
-                        break;
-                    case BUILDSTACK4:
-                        map.put(e.toString(),cards[4]);
-                        break;
-                    case BUILDSTACK5:
-                        map.put(e.toString(),cards[5]);
-                        break;
-                    case BUILDSTACK6:
-                        map.put(e.toString(),cards[6]);
-                        break;
-                    case BUILDSTACK7:
-                        map.put(e.toString(),cards[7]);
-                }
-            }
-            this.map = map;
-            init("testing");
-        }
-
-        @Override
-        public Map getCards(String uiChoice){
-            return map;
-        }
-
     }
 
     @Test
     void PossibleMoves_Drawstack() {
 
-        Card drStack[] = {
-                new Card( E_CardSuit.SPADES     , 1 ),
-                new Card( E_CardSuit.HEARTS     , 1  ),
-                new Card( E_CardSuit.CLUBS      ,  1 )};
+        // what is the top cards of the rows, anything undeclared is empty list.
+        Map<String, I_CardModel> map = new HashMap<>();
+        map.put(BUILDSTACK1.name(),new Card( E_CardSuit.HEARTS     , 9  ));
+        map.put(BUILDSTACK2.name(),new Card( E_CardSuit.HEARTS     , 7  ));
+        map.put(BUILDSTACK3.name(),new Card( E_CardSuit.CLUBS      , 9  ));
+        map.put(BUILDSTACK4.name(),new Card( E_CardSuit.CLUBS      , 7  ));
+        map.put(BUILDSTACK5.name(),new Card( E_CardSuit.SPADES     , 5  ));
+        map.put(BUILDSTACK6.name(),new Card( E_CardSuit.DIAMONDS   , 9  ));
+        map.put(BUILDSTACK7.name(),new Card( E_CardSuit.DIAMONDS   , 7  ));
 
-        I_SolitaireStacks drawStack = (I_SolitaireStacks) new DrawStack(Arrays.asList(drStack));
+        // the drawStack.
+        ArrayList<I_CardModel> list = new ArrayList<>();
+        list.add(new Card( E_CardSuit.SPADES     , 1 ));
+        list.add(new Card( E_CardSuit.HEARTS     , 1 ));
+        list.add(new Card( E_CardSuit.CLUBS     , 1 ));
 
-        Card cards[] = {
-                new Card( E_CardSuit.SPADES     , 9  ),
-                new Card( E_CardSuit.HEARTS     , 9  ),
-                new Card( E_CardSuit.CLUBS      , 9  ),
-                new Card( E_CardSuit.HEARTS     , 9  ),
-                new Card( E_CardSuit.SPADES     , 9  ),
-                new Card( E_CardSuit.DIAMONDS   , 9  ),
-                new Card( E_CardSuit.CLUBS      , 9  ),
-                new Card( E_CardSuit.DIAMONDS   , 9  ) };
 
-        BoardController boardCnt = new testBoardCont(cards);
-        boardCnt = changeDrawStack(boardCnt,drawStack);
+        I_BoardModel board = new RefBoard(map,list);
+        I_BoardModel mBoard = new MockBoard(board);
+
+        GameCardDeck a = GameCardDeck.getInstance();
+        BoardController boardCnt = new testBoardCont(board);
         List<Move> result = boardCnt.possibleMoves();
+
         assertEquals(3,result.size());
 
     }
+
+    /*
     @Test
     void PossibleMoves_Drawstack2() {
 
@@ -321,47 +283,25 @@ class BoardControllerTest {
     private List<Move> getPosMoves(Card d1, Card b1,Card b2, Card b3,Card b4, Card b5,Card b6, Card b7){
 
         Map<String, I_CardModel> map = new HashMap<>();
-        for (E_PileID e: E_PileID.values()) {
-            switch (e){
-                case DRAWSTACK:
-                    map.put(e.toString(),d1);
-                    break;
-                case BUILDSTACK1:
-                    map.put(e.toString(),b1);
-                    break;
-                case BUILDSTACK2:
-                    map.put(e.toString(),b2);
-                    break;
-                case BUILDSTACK3:
-                    map.put(e.toString(),b3);
-                    break;
-                case BUILDSTACK4:
-                    map.put(e.toString(),b4);
-                    break;
-                case BUILDSTACK5:
-                    map.put(e.toString(),b5);
-                    break;
-                case BUILDSTACK6:
-                    map.put(e.toString(),b6);
-                    break;
-                case BUILDSTACK7:
-                    map.put(e.toString(),b7);
-            }
-        }
 
-        testBoardCont boardCnt = new testBoardCont(map);
+        map.put(DRAWSTACK.name(),d1);
+        map.put(BUILDSTACK1.name(),b1);
+        map.put(BUILDSTACK2.name(),b2);
+        map.put(BUILDSTACK3.name(),b3);
+        map.put(BUILDSTACK4.name(),b4);
+        map.put(BUILDSTACK5.name(),b5);
+        map.put(BUILDSTACK6.name(),b6);
+        map.put(BUILDSTACK7.name(),b7);
+
+
+        testBoardCont boardCnt = new testBoardCont(board);
         List<Move> result = boardCnt.possibleMoves();
-
-
-        for (Move m: result) {
-            List<I_CardModel> stack = boardCnt.getBoardModel().getPile(m.moveFromStack());
-            int i = stack.size() - m.moveFromRange();
-            I_CardModel c =  stack.get(i) ;
-            System.out.println("\n currentCard = " +c.getSuit() + ", " + c.getRank() );
-            System.out.println(m);
-        }
 
         return result;
     }
+
+    private List<Move> getPosMovesDrawStack(){
+
+    }*/
 
 }

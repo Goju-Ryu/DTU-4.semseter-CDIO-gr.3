@@ -3,15 +3,16 @@ package data;
 import model.GameCardDeck;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
+import model.cabal.internals.DrawStack;
+import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.I_CardModel;
 
-import java.util.AbstractMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static model.cabal.E_PileID.*;
 
 /**
  * This class is intented to translate the input string we get to a json object.
@@ -40,13 +41,12 @@ public class InputSimDTO implements I_InputDTO {
      * @param simulatedBoard The board used as reference for which cards should be returned.
      */
     public InputSimDTO(I_BoardModel simulatedBoard){
-       boardModel = simulatedBoard;
+        boardModel = simulatedBoard;
     }
 
     public void setSimulatedBoard(I_BoardModel simulatedBoard) {
         boardModel = simulatedBoard;
     }
-
 
     @Override
     public Map<String, I_CardModel> getUsrInput(){
@@ -63,6 +63,57 @@ public class InputSimDTO implements I_InputDTO {
      * @return a map representing imgData as in the actual system
      */
     private Map<String, I_CardModel> getImgData(I_BoardModel board) {
+        Map< String , I_CardModel > map = new HashMap<>();
+        I_SolitaireStacks[] a = board.getPiles();
+
+        // DRAWSTACKS
+
+        DrawStack drawstack = (DrawStack) a[DRAWSTACK.ordinal()];
+        drawstack.turnCard();
+        map.put(DRAWSTACK.name(), drawstack.getTopCard() );
+
+        // ACES
+
+        I_SolitaireStacks stack = a[SUITSTACKHEARTS.ordinal()];
+        if(stack.size() != 0)
+            map.put(SUITSTACKHEARTS.name(),stack.getCard(stack.size() -1 ));
+
+        stack = a[SUITSTACKDIAMONDS.ordinal()];
+        if(stack.size() != 0)
+            map.put(SUITSTACKDIAMONDS.name(),stack.getCard(stack.size() -1 ));
+
+        stack = a[SUITSTACKSPADES.ordinal()];
+        if(stack.size() != 0)
+            map.put(SUITSTACKSPADES.name(),stack.getCard(stack.size() -1 ));
+
+        stack = a[SUITSTACKCLUBS.ordinal()];
+        if(stack.size() != 0)
+            map.put(SUITSTACKCLUBS.name(),stack.getCard(stack.size() -1 ));
+
+        //BUILDStacks
+        stack = a[BUILDSTACK1.ordinal()];
+        map.put(BUILDSTACK1.name(),stack.getCard(stack.size() -1 ));
+
+        stack = a[BUILDSTACK2.ordinal()];
+        map.put(BUILDSTACK2.name(),stack.getCard(stack.size() -1 ));
+
+        stack = a[BUILDSTACK3.ordinal()];
+        map.put(BUILDSTACK3.name(),stack.getCard(stack.size() -1) );
+
+        stack = a[BUILDSTACK4.ordinal()];
+        map.put(BUILDSTACK4.name(),stack.getCard(stack.size() -1) );
+
+        stack = a[BUILDSTACK5.ordinal()];
+        map.put(BUILDSTACK5.name(),stack.getCard(stack.size()-1) );
+
+        stack = a[BUILDSTACK6.ordinal()];
+        map.put(BUILDSTACK6.name(),stack.getCard(stack.size()-1) );
+
+        stack = a[BUILDSTACK7.ordinal()];
+        map.put(BUILDSTACK7.name(),stack.getCard(stack.size() -1) );
+
+        return map;
+        /*
         return Stream.of(E_PileID.values())
                 .filter(pile -> board.getPile(pile).size() > 1)
                 .map( // transforms elements of the stream to mapEntries
@@ -81,6 +132,7 @@ public class InputSimDTO implements I_InputDTO {
                         AbstractMap.SimpleEntry::getKey,
                         AbstractMap.SimpleEntry::getValue
                 )); // converts result to a map
+        */
     }
 
     /**

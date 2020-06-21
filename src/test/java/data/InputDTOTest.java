@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
-import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;

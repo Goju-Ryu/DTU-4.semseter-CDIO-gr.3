@@ -2,7 +2,6 @@ package model;
 
 import model.cabal.Board;
 import model.cabal.E_PileID;
-import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
 public class Move implements I_Move {
 
@@ -13,7 +12,7 @@ public class Move implements I_Move {
     boolean improveShow= false;
     String toStr = "";
 
-    public Move(E_PileID to, E_PileID from, int depth, boolean improveAce, boolean improveShow, String toStr) {
+    public Move( E_PileID from,E_PileID to, int depth, boolean improveAce, boolean improveShow, String toStr) {
         this.to = to;
         this.from = from;
         this.depth = depth;

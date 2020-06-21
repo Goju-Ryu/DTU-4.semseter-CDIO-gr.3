@@ -1,6 +1,5 @@
 package model.cabal.internals;
 
-import model.cabal.E_PileID;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
@@ -31,21 +30,28 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
 //-----------  Implementation ----------------------------------------------------------------
 
     public Collection<I_CardModel> popSubset() throws IllegalMoveException {
-        return popSubset(0);
+        return popSubset(1);
     }
 
     @Override
     public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
-        var errors = canMoveFromMsg(range);
-        if (!errors.isEmpty())
-            throw new IllegalMoveException(errors);
-        if (range != 0){
-            throw new IllegalMoveException(errors);
+        if (!canMoveFrom()) {
+            throw new IllegalMoveException();//todo msg
         }
+
+        if (range > 1)
+            throw new IllegalMoveException("drawstack can only move one card at a time.");
+
+        int rangeIndex = drawIndex + range ;
+        if(!stack.get(rangeIndex % size()).isFacedUp()){
+            throw new IllegalMoveException("Card at this range: "+range+" has not been turned yet");
+        }
+
+        if (range == 0)
+            return List.of();
 
         var returnable = List.of( stack.get(drawIndex) );
         stack.remove(drawIndex--); //remove the card and lower index to point to the new card that can be drawn
-
         return returnable;
     }
 
@@ -59,31 +65,11 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
             );
         }
 
-        int reversedRange = stack.size() - ( range );
-        boolean val = stack.get(reversedRange).isFacedUp();
-        return val;
+        int rangeIndex = drawIndex + range ;
+
+        return stack.get(rangeIndex % size()).isFacedUp();
     }
 
-    private String canMoveFromMsg(int range){
-        StringBuilder builder = new StringBuilder();
-        int caseNum = 0;
-        if (range > 1) {
-            builder.append("Range cannot be greater than 0.");
-            caseNum++;
-        }
-        if (drawIndex < 0) {
-            if (caseNum++ > 0)
-                builder.append("\n");
-            builder.append("Index too low, no cards have been drawn yet.");
-        }
-        if (drawIndex > size()) {
-            throw new IllegalStateException(
-                    "Lost Track of Where in the DrawStack The next card should be turned from...",
-                    new IndexOutOfBoundsException("DrawStack index: " + drawIndex + ", but size is only: " + size())
-            );
-        }
-        return builder.toString();
-    }
 
 
     @Override
