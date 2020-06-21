@@ -6,18 +6,16 @@ import data.InputSimDTO;
 import data.MockBoard;
 import model.GameCardDeck;
 import model.Move;
-import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
-
 
 import static model.cabal.E_PileID.*;
 import static model.cabal.internals.card.E_CardSuit.*;
@@ -25,6 +23,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BoardTest {
+
+    @AfterEach
+    void closeDeck(){
+        GameCardDeck.getInstance().close();
+    }
 
     @Test
     void constructor() {
