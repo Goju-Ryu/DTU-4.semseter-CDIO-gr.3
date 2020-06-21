@@ -37,7 +37,6 @@ public class BoardController implements I_BoardController {
     private ArrayList<I_CardModel> listOfDrawpileCards = new ArrayList<I_CardModel>();
 
 
-
     public BoardController(){
     }
 
