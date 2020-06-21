@@ -102,12 +102,13 @@ public class BoardController implements I_BoardController {
             for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
                 for (E_PileID to: E_PileID.values()) {
                     // out kommented commands used for easy debugging
-                    /*boolean aceTo = false;
+                    boolean aceTo = false;
                     if((to == SUITSTACKCLUBS || to == SUITSTACKHEARTS || to == SUITSTACKDIAMONDS || to==SUITSTACKSPADES))
                         aceTo=true;
 
                     int a = boardModel.getPile(from).size() - depth;
-                    I_CardModel c = boardModel.getPile(from).get(a);*/
+                    I_CardModel c = boardModel.getPile(from).get(a);
+
                     if(from == to)
                         continue;
 

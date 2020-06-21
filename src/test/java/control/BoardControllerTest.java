@@ -29,7 +29,7 @@ class BoardControllerTest {
 
         protected I_BoardModel refBoardModel;
         public testBoardController(I_BoardModel refBoard, GameCardDeck deck) {
-            super(true);
+            super(deck);
             refBoardModel = refBoard;
             inputDTO = new InputSimDTO(deck);
             boardModel = refBoard;
@@ -71,7 +71,7 @@ class BoardControllerTest {
 
         GameCardDeck deck = new GameCardDeck();
         I_BoardModel board = new testBoard(map,list,deck);
-        BoardController boardCnt = new BoardControllerSimulated(deck);
+        BoardController boardCnt = new testBoardController(board,deck);
 
 
         List<Move> result = boardCnt.possibleMoves();
@@ -105,7 +105,7 @@ class BoardControllerTest {
         // the Board and Getting Results.
         GameCardDeck deck = new GameCardDeck();
         I_BoardModel board = new testBoard(map,list,deck);
-        BoardController boardCnt = new BoardControllerSimulated(deck);
+        BoardController boardCnt = new testBoardController(board,deck);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(7,result.size());
@@ -126,8 +126,8 @@ class BoardControllerTest {
 
 
         GameCardDeck deck = new GameCardDeck();
-        I_BoardModel board = new testBoard(map ,deck);
-        BoardController boardCnt = new BoardControllerSimulated(deck);
+        I_BoardModel board = new testBoard(map,deck);
+        BoardController boardCnt = new testBoardController(board,deck);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(0, result.size());
@@ -147,7 +147,7 @@ class BoardControllerTest {
 
         GameCardDeck deck = new GameCardDeck();
         I_BoardModel board = new testBoard(map,deck);
-        BoardController boardCnt = new BoardControllerSimulated(deck);
+        BoardController boardCnt = new testBoardController(board,deck);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(1, result.size());
@@ -167,7 +167,7 @@ class BoardControllerTest {
 
         GameCardDeck deck = new GameCardDeck();
         I_BoardModel board = new testBoard(map,deck);
-        BoardController boardCnt = new BoardControllerSimulated(deck);
+        BoardController boardCnt = new testBoardController(board,deck);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(6, result.size());
@@ -188,7 +188,7 @@ class BoardControllerTest {
 
         GameCardDeck deck = new GameCardDeck();
         I_BoardModel board = new testBoard(map,deck);
-        BoardController boardCnt = new BoardControllerSimulated(deck);
+        BoardController boardCnt = new testBoardController(board,deck);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(5, result.size());
@@ -233,7 +233,7 @@ class BoardControllerTest {
 
         GameCardDeck deck = new GameCardDeck();
         I_BoardModel board = new testBoard(map,list,deck);
-        BoardController boardCnt = new BoardControllerSimulated(deck);
+        BoardController boardCnt = new testBoardController(board,deck);
 
         for (Move m: moves) {
             boardCnt.makeMove(m);

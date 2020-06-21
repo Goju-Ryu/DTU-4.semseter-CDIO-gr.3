@@ -127,7 +127,7 @@ public class InputSimDTO implements I_InputDTO {
                 throw new IllegalArgumentException("coin can either be 1 or 0 but was found to be " + cointoss);
         }
 
-        I_CardModel card = deckIterator.next(); //Todo be wary of this, might be an error but i'm not sure
+        I_CardModel card = null; //Todo be wary of this, might be an error but i'm not sure
         for (int i = 0; i < randIndex; i++) {
             card = deckIterator.next();
         }
