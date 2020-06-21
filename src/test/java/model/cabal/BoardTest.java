@@ -1,6 +1,7 @@
 package model.cabal;
 
 import control.BoardController;
+import control.BoardControllerSimulated;
 import data.I_InputDTO;
 import data.InputSimDTO;
 import model.GameCardDeck;
@@ -147,12 +148,12 @@ class BoardTest {
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
         list.add(new Card( SPADES     , 8 ));
-       /* list.add(new Card( DIAMONDS   , 8 ));
+        list.add(new Card( DIAMONDS   , 8 ));
         list.add(new Card( CLUBS      , 8 ));
         list.add(new Card( SPADES     , 9 ));
         list.add(new Card( DIAMONDS   , 9 ));
         list.add(new Card( CLUBS      , 9 ));
-        list.add(new Card( HEARTS     , 9 ));*/
+        list.add(new Card( HEARTS     , 9 ));
 
         //Move Queue
         Queue<Move> moves = new LinkedList<>();
@@ -160,7 +161,7 @@ class BoardTest {
         moves.add( new Move(DRAWSTACK, BUILDSTACK4, 1, false , false,"") );
         moves.add( new Move(DRAWSTACK, BUILDSTACK5, 1, false , false,"") );
         moves.add( new Move(DRAWSTACK, BUILDSTACK3, 1, false , false,"") );
-        moves.add( new Move(DRAWSTACK, BUILDSTACK4, 2, false , false,"") );
+        //moves.add( new Move(DRAWSTACK, BUILDSTACK4, 2, false , false,"") );
 
 
         GameCardDeck deck = new GameCardDeck();
@@ -345,6 +346,28 @@ class BoardTest {
 
         @Override
         public void removePropertyChangeListener(PropertyChangeListener listener) {
+        }
+    }
+    private class testBoardController extends BoardControllerSimulated {
+
+        protected I_BoardModel refBoardModel;
+        public testBoardController(I_BoardModel refBoard, GameCardDeck deck) {
+            super(true);
+            refBoardModel = refBoard;
+            inputDTO = new InputSimDTO(refBoard,deck);
+            boardModel = refBoard;
+        }
+
+    }
+    private class TestGameCardDeck extends GameCardDeck{
+        public TestGameCardDeck(Map<E_PileID, I_CardModel> m){
+            super();
+            for (E_PileID e : E_PileID.values() ) {
+                I_CardModel c = m.get(e);
+                if(c!=null)
+                    if(c.isFacedUp())
+                        super.remove(c);
+            }
         }
     }
 }
