@@ -1,6 +1,5 @@
 package model.cabal.internals;
 
-import model.cabal.E_PileID;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
@@ -63,8 +62,9 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
             );
         }
 
-        int reversedRange = stack.size() - ( range );
-        boolean val = stack.get(reversedRange).isFacedUp();
+        int rangeIndex = drawIndex + range ;
+
+        boolean val = stack.get(rangeIndex % size()).isFacedUp();
         return val;
     }
 
