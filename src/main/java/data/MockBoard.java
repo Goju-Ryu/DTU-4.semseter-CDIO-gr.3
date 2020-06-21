@@ -1,5 +1,6 @@
 package data;
 
+import model.GameCardDeck;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
@@ -21,7 +22,7 @@ public class MockBoard implements I_BoardModel {
     I_BoardModel boardImplementation;
 
     public MockBoard() {
-        boardImplementation = new Board(Map.of());
+        boardImplementation = new Board(Map.of(), new GameCardDeck());
         EnumMap<E_PileID, List<I_CardModel>> map = new EnumMap<>(E_PileID.class);
         //TODO Make standard layout of MockBoard
 
@@ -34,7 +35,7 @@ public class MockBoard implements I_BoardModel {
 
     public MockBoard(Map<E_PileID, List<I_CardModel>> boardMap) {
 
-        boardImplementation = new Board(Map.of());
+        boardImplementation = new Board(Map.of(), new GameCardDeck());
         I_SolitaireStacks[] solitaireStacks = boardImplementation.getPiles();
 
         for (E_PileID pileID : E_PileID.values()) {

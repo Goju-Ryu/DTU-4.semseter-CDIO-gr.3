@@ -23,11 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BoardTest {
 
-    @AfterEach
-    void closeDeck(){
-        GameCardDeck.getInstance().close();
-    }
-
     @Test
     void constructor() {
         Map<String, I_CardModel> map = new HashMap<>();
@@ -36,7 +31,7 @@ class BoardTest {
         }
         map.put("BUILDSTACK1", new Card(E_CardSuit.SPADES, 1));
 
-        I_BoardModel board = new Board(map);
+        I_BoardModel board = new Board(map, new GameCardDeck());
 
         assertEquals(7, board.getPile(E_PileID.BUILDSTACK7).size());
         assertEquals(1, board.getPile(E_PileID.BUILDSTACK1).size());
@@ -59,8 +54,8 @@ class BoardTest {
 
             map.put( e.toString() , new Card(E_CardSuit.SPADES, i++) );
         }
-
-        I_BoardModel board = new Board(map);
+        var deck = new GameCardDeck();
+        I_BoardModel board = new Board(map, deck);
 
         for (E_PileID e: E_PileID.values()) {
             List<I_CardModel> stack = board.getPile(e);
@@ -172,16 +167,11 @@ class BoardTest {
                 null
         };
         I_CardModel drawStack[] = {
-                new Card(HEARTS, 1),
-                new Card(SPADES, 1),
-                new Card(CLUBS, 1),
-                new Card(DIAMONDS, 1),
-                new Card(HEARTS, 2),
-                new Card(CLUBS,2)
+
         };
 
-        I_BoardModel board = createBoard( drawStack, aceStacks, buildStacks );
-        InputSimDTO in = new InputSimDTO(board);
+        I_BoardModel board = ;//createBoard( drawStack, aceStacks, buildStacks );
+        InputSimDTO in = new InputSimDTO();
         System.out.println("from DRAWSTACK " + drawStack[drawStack.length-1] + " to BUILDSTACK " + buildStacks[1]);
 
         Move m = new Move(DRAWSTACK, BUILDSTACK2, 1, false , false,"");
@@ -320,6 +310,6 @@ class BoardTest {
         map.put(BUILDSTACK5  , listBuildstacks.get(4));
         map.put(BUILDSTACK6  , listBuildstacks.get(5));
         map.put(BUILDSTACK7  , listBuildstacks.get(6));
-        return new MockBoard(map);
+        return new RefBoard(map);
     }
 }

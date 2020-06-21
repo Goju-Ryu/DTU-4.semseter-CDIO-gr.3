@@ -2,6 +2,7 @@ package control;
 
 import data.I_InputDTO;
 import data.InputDTO;
+import model.GameCardDeck;
 import model.Move;
 import model.cabal.Board;
 import model.cabal.E_PileID;
@@ -32,6 +33,7 @@ public class BoardController implements I_BoardController {
     protected I_BoardModel boardModel;
     protected I_InputDTO inputDTO;
     protected String uiChoice;
+    protected GameCardDeck deck;
     private ArrayList<I_CardModel> listOfDrawpileCards = new ArrayList<I_CardModel>();
 
 
@@ -48,6 +50,7 @@ public class BoardController implements I_BoardController {
     public void init(String uiChoice){
         this.uiChoice = uiChoice;
         inputDTO = new InputDTO(uiChoice);
+        deck = new GameCardDeck();
         //turn the draw stack through.
         ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
 
@@ -82,7 +85,7 @@ public class BoardController implements I_BoardController {
                 " continuing on from intializing the drawstack to actualy start the game");
         ScanSingleton.getScanner().next();
 
-        this.boardModel = new Board(inputDTO.getUsrInput(), drawCards);
+        this.boardModel = new Board(inputDTO.getUsrInput(), deck, drawCards);
 
 
     }

@@ -11,10 +11,9 @@ import java.util.logging.Logger;
 
 public class GameCardDeck extends TreeSet<I_CardModel> {
 
-    private static GameCardDeck instance;
     private Logger log;
 
-    private GameCardDeck() {
+    public GameCardDeck() {
         super(comparator);
         for (E_CardSuit suit : E_CardSuit.values()) {
             for (int i = 0; i < 13; i++) {
@@ -24,13 +23,6 @@ public class GameCardDeck extends TreeSet<I_CardModel> {
 
         log = Logger.getLogger(getClass().getName());
         log.info("Created deck of cards: " + Arrays.toString(toArray()));
-    }
-
-    public static GameCardDeck getInstance() {
-        if (instance == null)
-            instance = new GameCardDeck();
-
-        return instance;
     }
 
     @Override
@@ -52,9 +44,4 @@ public class GameCardDeck extends TreeSet<I_CardModel> {
         int val2 = o2.getRank() + 13*(o2.getSuit().ordinal());
         return val1 - val2;
     };
-
-    public void close(){
-        instance = null;
-    }
-
 }

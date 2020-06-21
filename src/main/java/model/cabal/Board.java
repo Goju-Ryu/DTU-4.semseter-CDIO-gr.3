@@ -15,7 +15,6 @@ import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 import static model.cabal.E_PileID.*;
-import static model.cabal.internals.card.E_CardSuit.*;
 
 
 /**
@@ -26,7 +25,8 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
     private PropertyChangeSupport change;
 
 
-    public Board(Map<String, I_CardModel> imgData) { //TODO board should take imgData to initialize self
+    public Board(Map<String, I_CardModel> imgData, GameCardDeck cardDeck) { //TODO board should take imgData to initialize self
+        deck = cardDeck;
         change = new PropertyChangeSupport(this);
         piles = new I_SolitaireStacks[E_PileID.values().length];
 
@@ -56,8 +56,8 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
 
                 // if gets an instance of GameCardDeck, so this removes the card from a collection
                 // of cards we know we haven't seen yet
-                GameCardDeck a = GameCardDeck.getInstance();
-                if ( a.remove(data) ) {
+
+                if ( deck.remove(data) ) {
                     piles[pileID.ordinal()].add(data);
                 } else {
 
@@ -75,8 +75,8 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
      * @param imgData
      * @param drawStack
      */
-    public Board(Map<String, I_CardModel> imgData, ArrayList<I_CardModel> drawStack) {
-        this(imgData);
+    public Board(Map<String, I_CardModel> imgData, GameCardDeck cardDeck, ArrayList<I_CardModel> drawStack) {
+        this(imgData, cardDeck);
         get(DRAWSTACK).clear();
         drawStack.add(extractImgData(imgData,DRAWSTACK));
         get(DRAWSTACK).addAll(drawStack);
