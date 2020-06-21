@@ -12,7 +12,7 @@ cardAnal = CardAnalyser()
 cardVal = CardValidator()
 
 
-SUCCESCRITERIA = 100
+SUCCESCRITERIA = 30
 
 # kabale recogniser is a class that recognises our kabale syntax, and returns a string of what cards, the program
 # can see on the board.

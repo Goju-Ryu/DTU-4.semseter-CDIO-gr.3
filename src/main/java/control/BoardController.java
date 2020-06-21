@@ -27,7 +27,6 @@ public class BoardController implements I_BoardController {
     protected I_InputDTO inputDTO;
     protected String uiChoice;
 
-    Scanner scanner = new Scanner(System.in);
 
     public BoardController() {
     }
@@ -47,8 +46,16 @@ public class BoardController implements I_BoardController {
             //drawCard.
             drawCards.add(drawCard);
             System.out.println("currDrawCard: " + drawCard.toString());
-            scanner.next();
+
+            if(uiChoice.equals("cam")) {
+                ScanSingleton.getScanner().next();
+            }
+
         }
+        System.out.println("Type anything followed by a whitespace char, to confirm" +
+                " continuing on from intializing the drawstack to actualy start the game");
+        ScanSingleton.getScanner().next();
+
 //        this.boardModel = new Board(getCards(uiChoice), drawCards);
         this.boardModel = new Board(inputDTO.getUsrInput(), drawCards);
 //        this.boardModel = new Board(getCards(uiChoice), drawCards);
