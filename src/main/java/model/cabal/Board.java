@@ -1,9 +1,11 @@
 package model.cabal;
 
 import model.GameCardDeck;
-import model.cabal.internals.*;
+import model.cabal.internals.BuildStack;
+import model.cabal.internals.DrawStack;
+import model.cabal.internals.I_SolitaireStacks;
+import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
-import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
@@ -57,6 +59,8 @@ public class Board implements I_BoardModel {
             piles[e.ordinal()].add(c);
         }
 
+
+
         /*for (E_PileID pileID : E_PileID.values()) {
             var data = extractImgData(imgData, pileID);
 
@@ -69,6 +73,49 @@ public class Board implements I_BoardModel {
             }
 
         }*/
+    }
+
+    /**
+     * Use this to play the instantiate a board with a draw stack
+     *
+     * @param imgData
+     * @param drawStack
+     */
+    public Board(Map<String, I_CardModel> imgData,ArrayList<I_CardModel> drawStack) { //TODO board should take imgData to initialize self
+        change = new PropertyChangeSupport(this);
+        piles = new I_SolitaireStacks[E_PileID.values().length];
+
+        piles[DRAWSTACK.ordinal()] = new DrawStack();
+        piles[SUITSTACKHEARTS.ordinal()]  = new SuitStack();
+        piles[SUITSTACKDIAMONDS.ordinal()] = new SuitStack();
+        piles[SUITSTACKCLUBS.ordinal()]   = new SuitStack();
+        piles[SUITSTACKSPADES.ordinal()]  = new SuitStack();
+
+        for (int i = 0; i < 24; i++) {
+            piles[DRAWSTACK.ordinal()].add(drawStack.get(i));
+        }
+
+        for (int i = 0; i < 7; i++) { // for each build pile
+            for (int j = 0; j <= i; j++) {  // how many cards in this pile
+                if (piles[BUILDSTACK1.ordinal() + i] == null)
+                    piles[BUILDSTACK1.ordinal() + i] = new BuildStack();
+                else
+                    piles[BUILDSTACK1.ordinal() + i].add(new Card());
+            }
+        }
+
+        for (E_PileID pileID : E_PileID.values()) {
+            var data = extractImgData(imgData, pileID);
+
+            if (data != null) {
+                if (GameCardDeck.getInstance().remove(data)) { //if the card was in deck and now removed
+                    piles[pileID.ordinal()].add(data);
+                } else {
+                    throw new IllegalStateException("Trying to add the same card twice during construction.\ncard: " + data);
+                }
+            }
+
+        }
     }
 
 //---------  Genneral methods  -------------------------------------------------------------------------------------
