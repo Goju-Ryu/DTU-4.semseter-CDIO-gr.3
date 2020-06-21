@@ -166,10 +166,10 @@ class BoardTest {
 
         GameCardDeck deck = new GameCardDeck();
         I_BoardModel board = new testBoard(map,list,deck);
-        I_InputDTO input = new InputSimDTO(board,deck);
 
+        testBoardController boardController = new testBoardController(board, deck);
         for (Move m: moves) {
-            board.move(m.moveToStack(), m.moveFromRange() , m.moveFromStack(), input.getUsrInput() );
+            boardController.makeMove(m);
         }
         System.out.println("asd");
     }
