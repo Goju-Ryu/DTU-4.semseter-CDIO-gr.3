@@ -1,7 +1,6 @@
 package control;
 
 import data.InputSimDTO;
-import data.MockBoard;
 import model.GameCardDeck;
 import model.Move;
 import model.cabal.*;
@@ -18,28 +17,30 @@ import org.junit.jupiter.api.Test;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 import static model.cabal.E_PileID.*;
+import static model.cabal.internals.card.E_CardSuit.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BoardControllerTest {
 
-    private class testBoardCont extends BoardController{
+    private class testBoardController extends BoardController{
 
         protected I_BoardModel refBoardModel;
-        public testBoardCont(I_BoardModel refBoard) {
+        public testBoardController(I_BoardModel refBoard, GameCardDeck deck) {
+            super(true);
             refBoardModel = refBoard;
-            inputDTO = new InputSimDTO(new TestGameCardDeck(refBoard));
+            inputDTO = new InputSimDTO(deck);
             boardModel = refBoard;
         }
 
     }
     private class TestGameCardDeck extends GameCardDeck{
-        public TestGameCardDeck(I_BoardModel m){
+        public TestGameCardDeck(Map<E_PileID, I_CardModel> m){
             super();
-            for (I_SolitaireStacks s : m.getPiles()) {
-                for (I_CardModel c: s) {
-                    if(c.isFacedUp())
-                        super.remove(c);
-                }
+            for (E_PileID e : E_PileID.values() ) {
+                    I_CardModel c = m.get(e);
+                    if(c!=null)
+                        if(c.isFacedUp())
+                            super.remove(c);
             }
         }
     }
@@ -64,8 +65,10 @@ class BoardControllerTest {
         list.add(new Card( E_CardSuit.CLUBS     , 1 ));
 
         // the Board and Getting Results.
-        I_BoardModel board = new testBoard(map,list);
-        BoardController boardCnt = new testBoardCont(board);
+
+        GameCardDeck deck = new TestGameCardDeck(map);
+        I_BoardModel board = new testBoard(map,list,deck);
+        BoardController boardCnt = new testBoardController(board,deck);
 
 
         List<Move> result = boardCnt.possibleMoves();
@@ -97,8 +100,9 @@ class BoardControllerTest {
 
 
         // the Board and Getting Results.
-        I_BoardModel board = new testBoard(map,list);
-        BoardController boardCnt = new testBoardCont(board);
+        GameCardDeck deck = new TestGameCardDeck(map);
+        I_BoardModel board = new testBoard(map,list,deck);
+        BoardController boardCnt = new testBoardController(board,deck);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(7,result.size());
@@ -118,8 +122,9 @@ class BoardControllerTest {
         map.put(BUILDSTACK7,new Card( E_CardSuit.SPADES   , 8  ));
 
 
-        I_BoardModel board = new testBoard(map);
-        BoardController boardCnt = new testBoardCont(board);
+        GameCardDeck deck = new TestGameCardDeck(map);
+        I_BoardModel board = new testBoard(map ,deck);
+        BoardController boardCnt = new testBoardController(board,deck);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(0, result.size());
@@ -137,8 +142,9 @@ class BoardControllerTest {
         map.put(BUILDSTACK7,new Card( E_CardSuit.SPADES   , 8  ));
 
 
-        I_BoardModel board = new testBoard(map);
-        BoardController boardCnt = new testBoardCont(board);
+        GameCardDeck deck = new TestGameCardDeck(map);
+        I_BoardModel board = new testBoard(map,deck);
+        BoardController boardCnt = new testBoardController(board,deck);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(1, result.size());
@@ -156,8 +162,9 @@ class BoardControllerTest {
         map.put(BUILDSTACK7,new Card( E_CardSuit.CLUBS    , 8  ));
 
 
-        I_BoardModel board = new testBoard(map);
-        BoardController boardCnt = new testBoardCont(board);
+        GameCardDeck deck = new TestGameCardDeck(map);
+        I_BoardModel board = new testBoard(map,deck);
+        BoardController boardCnt = new testBoardController(board,deck);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(6, result.size());
@@ -176,17 +183,65 @@ class BoardControllerTest {
         map.put(BUILDSTACK7,new Card( E_CardSuit.DIAMONDS , 7  ));
 
 
-        I_BoardModel board = new testBoard(map);
-        BoardController boardCnt = new testBoardCont(board);
+        GameCardDeck deck = new TestGameCardDeck(map);
+        I_BoardModel board = new testBoard(map,deck);
+        BoardController boardCnt = new testBoardController(board,deck);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(5, result.size());
     }
 
 
+
+    @Test
+    void make_a_move(){
+
+        // What is the top cards of the rows, anything undeclared is empty list.
+        Map<E_PileID, I_CardModel> map = new HashMap<>();
+        map.put(BUILDSTACK1,new Card( SPADES    , 3  ));
+        map.put(BUILDSTACK2,new Card( HEARTS    , 3  ));
+        map.put(BUILDSTACK3,new Card( CLUBS     , 10 ));
+        map.put(BUILDSTACK4,new Card( HEARTS    , 10 ));
+        map.put(BUILDSTACK5,new Card( SPADES    , 10 ));
+        map.put(BUILDSTACK6,new Card( CLUBS     , 10 ));
+        map.put(BUILDSTACK7,new Card( HEARTS    , 8  ));
+
+        // the drawStack.
+        ArrayList<I_CardModel> list = new ArrayList<>();
+        list.add(new Card( SPADES     , 8 ));
+        list.add(new Card( DIAMONDS   , 8 ));
+        list.add(new Card( CLUBS      , 8 ));
+        list.add(new Card( SPADES     , 9 ));
+        list.add(new Card( DIAMONDS   , 9 ));
+        list.add(new Card( CLUBS      , 9 ));
+        list.add(new Card( HEARTS     , 9 ));
+
+        //Move Queue
+        Queue<Move> moves = new LinkedList<>();
+        moves.add( new Move(DRAWSTACK, BUILDSTACK6, 1, false , false,"") );
+        moves.add( new Move(DRAWSTACK, BUILDSTACK4, 1, false , false,"") );
+        moves.add( new Move(DRAWSTACK, BUILDSTACK5, 1, false , false,"") );
+        moves.add( new Move(DRAWSTACK, BUILDSTACK3, 1, false , false,"") );
+
+        //moves.add( new Move(BUILDSTACK7, BUILDSTACK6, 1, false , false,"") );
+        //moves.add( new Move(DRAWSTACK, BUILDSTACK4, 1, false , false,"") );
+        //moves.add( new Move(DRAWSTACK, BUILDSTACK5, 1, false , false,"") );
+        //moves.add( new Move(DRAWSTACK, BUILDSTACK3, 1, false , false,"") );
+
+        GameCardDeck deck = new TestGameCardDeck(map);
+        I_BoardModel board = new testBoard(map,list,deck);
+        BoardController boardCnt = new testBoardController(board,deck);
+
+        for (Move m: moves) {
+            boardCnt.makeMove(m);
+        }
+        System.out.println("asd");
+    }
+
     private class testBoard extends AbstractBoardUtility implements I_BoardModel{
 
-        public testBoard(Map<E_PileID, I_CardModel> map , List<I_CardModel> list){
+        public testBoard(Map<E_PileID, I_CardModel> map , List<I_CardModel> list,GameCardDeck cardDeck){
+            deck = cardDeck;
             piles = new I_SolitaireStacks[E_PileID.values().length];
 
             piles[DRAWSTACK.ordinal()] = new DrawStack(list);
@@ -210,9 +265,12 @@ class BoardControllerTest {
                     continue;
                 piles[pileID.ordinal()].add(data);
             }
+            removeDataFromDeck(list);
+
         }
 
-        public testBoard(Map<E_PileID, I_CardModel> map){
+        public testBoard(Map<E_PileID, I_CardModel> map,GameCardDeck cardDeck){
+            deck = cardDeck;
             piles = new I_SolitaireStacks[E_PileID.values().length];
 
             piles[DRAWSTACK.ordinal()] = new DrawStack();
@@ -236,7 +294,22 @@ class BoardControllerTest {
                     continue;
                 piles[pileID.ordinal()].add(data);
             }
+
         }
+        private void removeDataFromDeck( List<I_CardModel> cards){
+            /*for (I_SolitaireStacks stack: model.getPiles()) {
+                for (I_CardModel c: stack) {
+                    if(!c.isFacedUp())
+                        deck.remove(c);
+                }
+            }*/
+            if(cards != null)
+                for (I_CardModel c: cards) {
+                    if(!c.isFacedUp())
+                        deck.remove(c);
+                }
+        }
+
 
         private I_CardModel extractIMGData(Map<E_PileID, I_CardModel> imgData, E_PileID key) {
             return imgData.getOrDefault(key, null); //This assumes a strict naming scheme and will return null if not found
