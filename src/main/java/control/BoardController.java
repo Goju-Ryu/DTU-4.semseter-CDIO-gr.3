@@ -6,9 +6,15 @@ import model.Move;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
+import model.cabal.internals.card.Card;
+import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
 
 import static model.cabal.E_PileID.*;
 
@@ -26,6 +32,9 @@ public class BoardController implements I_BoardController {
     protected I_BoardModel boardModel;
     protected I_InputDTO inputDTO;
     protected String uiChoice;
+    private ArrayList<I_CardModel> listOfDrawpileCards = new ArrayList<I_CardModel>();
+
+
 
     public BoardController(){
     }
@@ -34,20 +43,49 @@ public class BoardController implements I_BoardController {
       init(uiChoice);
     }
 
-    public BoardController(String uiChoice,ArrayList<I_CardModel> drawStack) {
-        initTemp(uiChoice,drawStack);
-    }
 
     @Override
     public void init(String uiChoice){
         this.uiChoice = uiChoice;
-        this.boardModel = new Board(getCards(uiChoice));
-    }
+        inputDTO = new InputDTO(uiChoice);
+        //turn the draw stack through.
+        ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
 
-    // temporary Method for testing simulation
-    public void initTemp(String uiChoice, ArrayList<I_CardModel> drawStack){
-        this.uiChoice = uiChoice;
-        this.boardModel = new Board(getCards(uiChoice), drawStack );
+        //TODO: refactor this as a tes(but not a unit test)
+        //This is for testing purposes in regards to drawstack in simulation.
+        //used in conjunction with "test" see below ...
+        for (int i = 1; i <= 12; i++) {
+                I_CardModel simDrawCard = new Card(E_CardSuit.HEARTS,12, true);
+                I_CardModel simDrawCard2 = new Card(E_CardSuit.CLUBS, 9, true);
+            listOfDrawpileCards.add(simDrawCard);
+            listOfDrawpileCards.add(simDrawCard2);
+        }
+
+        //This is intended for testing purposes and should not be used for the usual "cam" or "gui"
+        if (!uiChoice.equals("test")) {
+            for(int i = 0; i < 24; i++) {
+                I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
+                //drawCard.
+                drawCards.add(drawCard);
+                System.out.println("currDrawCard: " + drawCard.toString());
+
+                if(uiChoice.equals("cam")) {
+                    ScanSingleton.getScanner().next();
+                }
+            }
+        } else {
+            drawCards.addAll(this.listOfDrawpileCards);
+            System.out.println("List of sim drawstack: " + drawCards.toString());
+        }
+
+        System.out.println("Type anything followed by a whitespace char, to confirm" +
+                " continuing on from intializing the drawstack to actualy start the game");
+        ScanSingleton.getScanner().next();
+
+//        this.boardModel = new Board(getCards(uiChoice), drawCards);
+        this.boardModel = new Board(inputDTO.getUsrInput(), drawCards);
+//        this.boardModel = new Board(getCards(uiChoice), drawCards);
+
     }
 
     @Override
@@ -56,8 +94,10 @@ public class BoardController implements I_BoardController {
         return inputDTO.getUsrInput();
     }
 
+
     @Override
     public List<Move> possibleMoves(){
+
         LinkedList<Move> moves = new LinkedList<>();
 
         // go through each card in each pile
@@ -73,9 +113,9 @@ public class BoardController implements I_BoardController {
 
                     int a = boardModel.getPile(from).size() - depth;
                     I_CardModel c = boardModel.getPile(from).get(a);
-
                     if(from == to)
                         continue;
+
 
                     // now we need to check if the move is even possible at this index.
                     if (!boardModel.canMoveFrom(from, depth)) {

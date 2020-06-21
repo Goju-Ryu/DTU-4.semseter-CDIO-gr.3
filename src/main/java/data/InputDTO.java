@@ -19,12 +19,16 @@ import java.util.Map;
  */
 public class InputDTO implements I_InputDTO {
     private String uiType;
+    private String uiChoice;
 
     private boolean usedOnce = false;
+    int drawIterator = 24;
 
     public InputDTO(String uiChoice) {
         uiType = uiChoice;
+        this.uiChoice = uiChoice;
     }
+
 
     //TODO Modify to take just one card when uiType == RevealCardGUI
     @Override
@@ -42,12 +46,15 @@ public class InputDTO implements I_InputDTO {
         InputAccesPoint accessInput = new InputAccesPoint(channel);
         try{
 
-// __________If this gets commented out, and the card values are repetetively inserted in ManGUI, a game can be simulated ________________
+//__________If this gets commented out, and the card values are repetetively inserted in ManGUI, a game can be simulated ________________
             //TODO make sure that the RevealCardGUI is only called when a new card is revealed
-            if(usedOnce && uiType.equals("ManGUI")){
-                uiType = "RevealCardGUI";
+            if(drawIterator == 0){
+                uiType = uiChoice;//"RevealCardGUI";
             }else{
-                this.usedOnce = true;
+                drawIterator--;
+                if(uiChoice.equals("ManGUI")){
+                    uiType = "turnDrawstack";
+                }
             }
 //_______________________________________________________________________________________________________________________________________
 
