@@ -32,9 +32,13 @@ public class BoardController implements I_BoardController {
 
     protected I_BoardModel boardModel;
     protected I_InputDTO inputDTO;
+    protected String uiChoice;
     protected GameCardDeck deck;
     private ArrayList<I_CardModel> listOfDrawpileCards = new ArrayList<I_CardModel>();
 
+    public BoardController(boolean testBoolean){
+
+    }
 
     public BoardController(){
         this("cam");
