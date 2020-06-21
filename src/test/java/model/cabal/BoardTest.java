@@ -200,14 +200,26 @@ class BoardTest {
         };
 
         I_BoardModel board = createBoard( drawStack, aceStacks, buildStacks );
-
         InputSimDTO in = new InputSimDTO(board);
-
         System.out.println("from DRAWSTACK " + drawStack[drawStack.length-1] + " to BUILDSTACK " + buildStacks[1]);
+
         Move m = new Move(DRAWSTACK, BUILDSTACK2, 1, false , false,"");
         board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
 
+        m = new Move(DRAWSTACK, BUILDSTACK1, 1, false , false,"");
+        board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
 
+        m = new Move(DRAWSTACK, SUITSTACKDIAMONDS, 1, false , false,"");
+        board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
+
+        m = new Move(DRAWSTACK, SUITSTACKCLUBS, 1, false , false,"");
+        board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
+
+        m = new Move(DRAWSTACK, SUITSTACKSPADES, 1, false , false,"");
+        board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
+
+        m = new Move(DRAWSTACK, SUITSTACKHEARTS, 1, false , false,"");
+        board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
 
     }
 
