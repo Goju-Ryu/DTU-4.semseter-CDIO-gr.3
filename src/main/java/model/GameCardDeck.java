@@ -4,33 +4,34 @@ import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.TreeSet;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 import java.util.logging.Logger;
 
-public class GameCardDeck extends TreeSet<I_CardModel> {
+public class GameCardDeck {
 
     private Logger log;
 
+    Map<String,I_CardModel> listCardsAll;
+
     public GameCardDeck() {
-        super(comparator);
+        listCardsAll = new HashMap<>(52);
         for (E_CardSuit suit : E_CardSuit.values()) {
             for (int i = 0; i < 13; i++) {
-                add(new Card(suit, i + 1));
+                listCardsAll.put(suit.name() +"-"+i + 1 ,new Card(suit, i + 1));
             }
         }
 
-        log = Logger.getLogger(getClass().getName());
-        log.info("Created deck of cards: " + Arrays.toString(toArray()));
     }
 
-    @Override
-    public boolean remove(Object o) {
-        log.info("cardDeck.Remove: " + o);
-        log.info("is contained: " + contains(o));
-        boolean b = super.remove(o);
-        return b;
+
+    public boolean remove(I_CardModel o) {
+        I_CardModel a = listCardsAll.remove(o.getSuit().name() +"-"+o.getRank());
+        if(a == null)
+            return false;
+
+        return a.getRank().equals(o.getRank()) && a.getSuit().ordinal() == o.getSuit().ordinal();
     }
 
     private static Comparator<I_CardModel> comparator = (o1, o2) -> {
