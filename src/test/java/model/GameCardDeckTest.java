@@ -8,10 +8,9 @@ class GameCardDeckTest {
 
     @Test
     void getInstance() {
-        var deck = GameCardDeck.getInstance();
+        var deck = new GameCardDeck();
 
         assertNotNull(deck);
         assertEquals(52, deck.size());
-        assertSame(deck, GameCardDeck.getInstance());
     }
 }
