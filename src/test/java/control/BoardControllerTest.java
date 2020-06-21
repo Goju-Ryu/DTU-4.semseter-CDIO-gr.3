@@ -3,7 +3,9 @@ package control;
 import data.InputSimDTO;
 import model.GameCardDeck;
 import model.Move;
-import model.cabal.*;
+import model.cabal.AbstractBoardUtility;
+import model.cabal.E_PileID;
+import model.cabal.I_BoardModel;
 import model.cabal.internals.BuildStack;
 import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
@@ -16,6 +18,7 @@ import org.junit.jupiter.api.Test;
 
 import java.beans.PropertyChangeListener;
 import java.util.*;
+
 import static model.cabal.E_PileID.*;
 import static model.cabal.internals.card.E_CardSuit.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -66,9 +69,9 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
 
-        GameCardDeck deck = new TestGameCardDeck(map);
+        GameCardDeck deck = new GameCardDeck();
         I_BoardModel board = new testBoard(map,list,deck);
-        BoardController boardCnt = new testBoardController(board,deck);
+        BoardController boardCnt = new BoardControllerSimulated(board,deck);
 
 
         List<Move> result = boardCnt.possibleMoves();
@@ -100,9 +103,9 @@ class BoardControllerTest {
 
 
         // the Board and Getting Results.
-        GameCardDeck deck = new TestGameCardDeck(map);
+        GameCardDeck deck = new GameCardDeck();
         I_BoardModel board = new testBoard(map,list,deck);
-        BoardController boardCnt = new testBoardController(board,deck);
+        BoardController boardCnt = new BoardControllerSimulated(board,deck);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(7,result.size());
@@ -122,9 +125,9 @@ class BoardControllerTest {
         map.put(BUILDSTACK7,new Card( E_CardSuit.SPADES   , 8  ));
 
 
-        GameCardDeck deck = new TestGameCardDeck(map);
+        GameCardDeck deck = new GameCardDeck();
         I_BoardModel board = new testBoard(map ,deck);
-        BoardController boardCnt = new testBoardController(board,deck);
+        BoardController boardCnt = new BoardControllerSimulated(board,deck);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(0, result.size());
@@ -142,9 +145,9 @@ class BoardControllerTest {
         map.put(BUILDSTACK7,new Card( E_CardSuit.SPADES   , 8  ));
 
 
-        GameCardDeck deck = new TestGameCardDeck(map);
+        GameCardDeck deck = new GameCardDeck();
         I_BoardModel board = new testBoard(map,deck);
-        BoardController boardCnt = new testBoardController(board,deck);
+        BoardController boardCnt = new BoardControllerSimulated(board,deck);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(1, result.size());
@@ -162,9 +165,9 @@ class BoardControllerTest {
         map.put(BUILDSTACK7,new Card( E_CardSuit.CLUBS    , 8  ));
 
 
-        GameCardDeck deck = new TestGameCardDeck(map);
+        GameCardDeck deck = new GameCardDeck();
         I_BoardModel board = new testBoard(map,deck);
-        BoardController boardCnt = new testBoardController(board,deck);
+        BoardController boardCnt = new BoardControllerSimulated(board,deck);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(6, result.size());
@@ -183,12 +186,59 @@ class BoardControllerTest {
         map.put(BUILDSTACK7,new Card( E_CardSuit.DIAMONDS , 7  ));
 
 
-        GameCardDeck deck = new TestGameCardDeck(map);
+        GameCardDeck deck = new GameCardDeck();
         I_BoardModel board = new testBoard(map,deck);
-        BoardController boardCnt = new testBoardController(board,deck);
+        BoardController boardCnt = new BoardControllerSimulated(board,deck);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(5, result.size());
+    }
+
+
+
+    @Test
+    void make_a_move(){
+
+        // What is the top cards of the rows, anything undeclared is empty list.
+        Map<E_PileID, I_CardModel> map = new HashMap<>();
+        map.put(BUILDSTACK1,new Card( SPADES    , 3  ));
+        map.put(BUILDSTACK2,new Card( HEARTS    , 3  ));
+        map.put(BUILDSTACK3,new Card( CLUBS     , 10 ));
+        map.put(BUILDSTACK4,new Card( HEARTS    , 10 ));
+        map.put(BUILDSTACK5,new Card( SPADES    , 10 ));
+        map.put(BUILDSTACK6,new Card( CLUBS     , 10 ));
+        map.put(BUILDSTACK7,new Card( HEARTS    , 8  ));
+
+        // the drawStack.
+        ArrayList<I_CardModel> list = new ArrayList<>();
+        list.add(new Card( SPADES     , 8 ));
+        list.add(new Card( DIAMONDS   , 8 ));
+        list.add(new Card( CLUBS      , 8 ));
+        list.add(new Card( SPADES     , 9 ));
+        list.add(new Card( DIAMONDS   , 9 ));
+        list.add(new Card( CLUBS      , 9 ));
+        list.add(new Card( HEARTS     , 9 ));
+
+        //Move Queue
+        Queue<Move> moves = new LinkedList<>();
+        moves.add( new Move(DRAWSTACK, BUILDSTACK6, 1, false , false,"") );
+        moves.add( new Move(DRAWSTACK, BUILDSTACK4, 1, false , false,"") );
+        moves.add( new Move(DRAWSTACK, BUILDSTACK5, 1, false , false,"") );
+        moves.add( new Move(DRAWSTACK, BUILDSTACK3, 1, false , false,"") );
+
+        //moves.add( new Move(BUILDSTACK7, BUILDSTACK6, 1, false , false,"") );
+        //moves.add( new Move(DRAWSTACK, BUILDSTACK4, 1, false , false,"") );
+        //moves.add( new Move(DRAWSTACK, BUILDSTACK5, 1, false , false,"") );
+        //moves.add( new Move(DRAWSTACK, BUILDSTACK3, 1, false , false,"") );
+
+        GameCardDeck deck = new GameCardDeck();
+        I_BoardModel board = new testBoard(map,list,deck);
+        BoardController boardCnt = new BoardControllerSimulated(deck);
+
+        for (Move m: moves) {
+            boardCnt.makeMove(m);
+        }
+        System.out.println("asd");
     }
 
     private class testBoard extends AbstractBoardUtility implements I_BoardModel{
@@ -218,7 +268,9 @@ class BoardControllerTest {
                     continue;
                 piles[pileID.ordinal()].add(data);
             }
-            removeDataFromDeck(list);
+            //removeDataFromDeck(list);
+            deck.removeAll(list);
+            deck.removeAll(map.values());
 
         }
 
@@ -247,20 +299,7 @@ class BoardControllerTest {
                     continue;
                 piles[pileID.ordinal()].add(data);
             }
-
-        }
-        private void removeDataFromDeck( List<I_CardModel> cards){
-            /*for (I_SolitaireStacks stack: model.getPiles()) {
-                for (I_CardModel c: stack) {
-                    if(!c.isFacedUp())
-                        deck.remove(c);
-                }
-            }*/
-            if(cards != null)
-                for (I_CardModel c: cards) {
-                    if(!c.isFacedUp())
-                        deck.remove(c);
-                }
+            deck.removeAll(map.values());
         }
 
 
@@ -325,7 +364,7 @@ class BoardControllerTest {
             to.addAll(from.popSubset(originPos));
 
             //check that state is consistent with the physical board
-            if (!from.isEmpty( ))
+            if (!from.isEmpty())
                 validateCardState(origin, from.getCard(from.size() - 1), extractImgData(imgData, origin));
             else
                 validateCardState(origin, null, extractImgData(imgData, origin));
