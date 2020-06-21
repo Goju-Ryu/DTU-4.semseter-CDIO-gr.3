@@ -4,9 +4,10 @@ import model.cabal.E_PileID;
 import model.cabal.internals.card.I_CardModel;
 
 import java.beans.PropertyChangeListener;
-import java.util.AbstractMap.SimpleImmutableEntry;
+import static java.util.AbstractMap.*;
 import java.util.*;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -95,16 +96,17 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
         if (state1 == null || state2 == null) throw new NullPointerException("A state cannot be null when comparing");
 
         // make a stream with a data structure containing both states
-        return Stream.of(new SimpleImmutableEntry<>(state1, state2))
+        return Stream.of(new SimpleEntry<>(state1, state2))
                 .flatMap( // transform the elements by making a new stream with the transformation to be used
                         pair -> Arrays.stream(E_PileID.values()) // stream the pileIDs
                                 // make new pair of the elements of that pile from each state
-                                .map(pileID -> new SimpleImmutableEntry<>(
+                                .map(pileID -> new SimpleEntry<>(
                                                 pair.getKey().get(pileID),
                                                 pair.getValue().get(pileID)
                                         )
                                 )
                 )
+                .map(I_GameHistory::replaceNulls)
                 .allMatch(pair -> pair.getKey().size() == pair.getValue().size()); // check they have equal sizes
     }
 
@@ -124,16 +126,17 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
         return Stream.of(new SimpleImmutableEntry<>(state1, state2))
                 .flatMap( //map the pair of states to many pairs of piles
                         statePair -> Arrays.stream(E_PileID.values())
-                                .map(pileID -> new SimpleImmutableEntry<>(
+                                .map(pileID -> new SimpleEntry<>(
                                                 statePair.getKey().get(pileID),
                                                 statePair.getValue().get(pileID)
                                         )
                                 )
                 )
+                .map(I_GameHistory::replaceNulls)
                 .flatMap(  // map the pairs of piles to many pairs of Optional<I_card>s.
                         listPair -> IntStream //make sure to always traverse the longer list
                                 .range(0, Math.max(listPair.getKey().size(), listPair.getValue().size()))
-                                .mapToObj(i -> new SimpleImmutableEntry<>(
+                                .mapToObj(i -> new SimpleEntry<>(
                                         getIfExists(listPair.getKey(), i),
                                         getIfExists(listPair.getValue(), i))
                                 )
@@ -142,6 +145,17 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
                 .map(cardPair -> Objects.equals(cardPair.getKey(), cardPair.getValue()))
                 // reduce the many values to one bool by saying all must be true or the statement is false
                 .reduce(true, (e1, e2) -> e1 && e2);
+    }
+
+    static SimpleEntry<List<I_CardModel>, List<I_CardModel>> replaceNulls(SimpleEntry<List<I_CardModel>, List<I_CardModel>> entry) {
+        var key = entry.getKey();
+        var value = entry.getValue();
+        if (key == null)
+            key = List.of();
+        if (value == null)
+            value = List.of();
+
+        return new SimpleEntry<>(key, value);
     }
 
     default <t extends I_GameState> Predicate<t> partiallyApplyPredicate(BiPredicate<t, t> biPred, t arg) {

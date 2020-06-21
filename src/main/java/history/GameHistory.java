@@ -14,16 +14,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.AbstractMap.SimpleEntry;
 
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-//  TODO: Please don't touch this class if you aren't Mads/GojuRyu       //
-//  lot's of plans are being prepared for with the methods that are      //
-//  empty. Any implementations that get even minor details wrong might   //
-//  be useless for their intended purpose. If you want to help with this //
-//  class please ask for a method to implement and you will get a very   //
-//  specific description of it's purpose and requirements.               //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
 
 /**
  *{@inheritDoc}
@@ -232,7 +222,7 @@ public class GameHistory implements I_GameHistory {
      */
     private boolean matchesPreviousEvents(PropertyChangeEvent event) {
         E_PileID pileID = getEventSourcePile(event);
-        if (pileID.equals(TURNPILE)) return true;
+        if (pileID.equals(DRAWSTACK)) return true;
 
         numNonDrawEvents++;
         return numNonDrawEvents < 2;
