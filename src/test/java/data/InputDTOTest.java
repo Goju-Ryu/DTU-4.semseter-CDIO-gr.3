@@ -1,6 +1,7 @@
 package data;
 
 import com.google.gson.Gson;
+import model.GameCardDeck;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
@@ -18,11 +19,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class InputDTOTest {
 
     @Test
-    void getUsrInput() {
-    }
+    void getUsrInput(){}
 
     @Test
-    void stringToJson() {
+    void stringToJson(){
         var gson = new Gson();
         InputDTO input = new InputDTO("");
 
@@ -95,7 +95,7 @@ class InputDTOTest {
         System.out.println(map);
 
         // checking the combination of the Board
-        I_BoardModel board = new Board(map);
+        I_BoardModel board = new Board(map, new GameCardDeck());
         System.out.println(board);
 
         for (E_PileID e: E_PileID.values() ) {
