@@ -21,8 +21,18 @@ public class InputSimDTO implements I_InputDTO {
     private I_BoardModel boardModel;
     private GameCardDeck deck;
 
+
+
     /**
      * A constructor taking no arguments. This will make the class return random unused card in each position.
+     */
+    public InputSimDTO() {
+        this(null, new GameCardDeck());
+    }
+
+    /**
+     * An inputSimDTO that is given a deck, possibly to share it with a Board.
+     * @param cardDeck
      */
     public InputSimDTO(GameCardDeck cardDeck) {
         this(null, cardDeck);
