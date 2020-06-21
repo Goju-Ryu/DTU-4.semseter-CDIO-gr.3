@@ -20,6 +20,10 @@ public class BoardControllerSimulated extends BoardController {
 
     protected I_BoardModel refBoardModel;
 
+    public BoardControllerSimulated(boolean testBoolean){
+        super(testBoolean);
+    }
+
 
     /**
      * Creates a standard simulation with a set game layout.

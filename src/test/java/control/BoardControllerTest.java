@@ -1,5 +1,6 @@
 package control;
 
+import data.InputSimDTO;
 import model.GameCardDeck;
 import model.Move;
 import model.cabal.AbstractBoardUtility;
@@ -23,6 +24,29 @@ import static model.cabal.internals.card.E_CardSuit.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BoardControllerTest {
+
+    private class testBoardController extends BoardControllerSimulated{
+
+        protected I_BoardModel refBoardModel;
+        public testBoardController(I_BoardModel refBoard, GameCardDeck deck) {
+            super(true);
+            refBoardModel = refBoard;
+            inputDTO = new InputSimDTO(deck);
+            boardModel = refBoard;
+        }
+
+    }
+    private class TestGameCardDeck extends GameCardDeck{
+        public TestGameCardDeck(Map<E_PileID, I_CardModel> m){
+            super();
+            for (E_PileID e : E_PileID.values() ) {
+                    I_CardModel c = m.get(e);
+                    if(c!=null)
+                        if(c.isFacedUp())
+                            super.remove(c);
+            }
+        }
+    }
 
     @Test
     void PossibleMoves_Drawstack() {
