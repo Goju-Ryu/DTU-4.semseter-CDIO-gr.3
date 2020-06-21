@@ -25,43 +25,6 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
 
     private PropertyChangeSupport change;
 
-    //can start here
-    public Board(Map<String, I_CardModel> imgData,ArrayList<I_CardModel> drawStack) { //TODO board should take imgData to initialize self
-        change = new PropertyChangeSupport(this);
-        piles = new I_SolitaireStacks[E_PileID.values().length];
-
-        piles[DRAWSTACK.ordinal()] = new DrawStack();
-        piles[SUITSTACKHEARTS.ordinal()]  = new SuitStack();
-        piles[SUITSTACKDIAMONDS.ordinal()] = new SuitStack();
-        piles[SUITSTACKCLUBS.ordinal()]   = new SuitStack();
-        piles[SUITSTACKSPADES.ordinal()]  = new SuitStack();
-
-        for (int i = 0; i < 24; i++) {
-            piles[DRAWSTACK.ordinal()].add(drawStack.get(i));
-        }
-
-        for (int i = 0; i < 7; i++) { // for each build pile
-            for (int j = 0; j <= i; j++) {  // how many cards in this pile
-                if (piles[BUILDSTACK1.ordinal() + i] == null)
-                    piles[BUILDSTACK1.ordinal() + i] = new BuildStack();
-                else
-                    piles[BUILDSTACK1.ordinal() + i].add(new Card());
-            }
-        }
-
-        for (E_PileID pileID : E_PileID.values()) {
-            var data = extractImgData(imgData, pileID);
-
-            if (data != null) {
-                if (GameCardDeck.getInstance().remove(data)) { //if the card was in deck and now removed
-                    piles[pileID.ordinal()].add(data);
-                } else {
-                    throw new IllegalStateException("Trying to add the same card twice during construction.\ncard: " + data);
-                }
-            }
-
-        }
-    }
 
     public Board(Map<String, I_CardModel> imgData) { //TODO board should take imgData to initialize self
         change = new PropertyChangeSupport(this);

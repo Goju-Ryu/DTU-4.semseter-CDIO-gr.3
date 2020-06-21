@@ -82,9 +82,8 @@ public class BoardController implements I_BoardController {
                 " continuing on from intializing the drawstack to actualy start the game");
         ScanSingleton.getScanner().next();
 
-//        this.boardModel = new Board(getCards(uiChoice), drawCards);
         this.boardModel = new Board(inputDTO.getUsrInput(), drawCards);
-//        this.boardModel = new Board(getCards(uiChoice), drawCards);
+
 
     }
 
