@@ -6,6 +6,8 @@ import model.Move;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
+import model.cabal.internals.card.Card;
+import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 
 import java.util.*;
@@ -26,6 +28,8 @@ public class BoardController implements I_BoardController {
     private I_BoardModel boardModel;
     protected I_InputDTO inputDTO;
     protected String uiChoice;
+    private ArrayList<I_CardModel> listOfDrawpileCards = new ArrayList<I_CardModel>();
+
 
 
     public BoardController() {
@@ -41,17 +45,34 @@ public class BoardController implements I_BoardController {
         inputDTO = new InputDTO(uiChoice);
         //turn the draw stack through.
         ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
-        for(int i = 0; i < 24; i++) {
-            I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
-            //drawCard.
-            drawCards.add(drawCard);
-            System.out.println("currDrawCard: " + drawCard.toString());
 
-            if(uiChoice.equals("cam")) {
-                ScanSingleton.getScanner().next();
-            }
-
+        //TODO: refactor this as a tes(but not a unit test)
+        //This is for testing purposes in regards to drawstack in simulation.
+        //used in conjunction with "test" see below ...
+        for (int i = 1; i <= 12; i++) {
+                I_CardModel simDrawCard = new Card(E_CardSuit.HEARTS,12, true);
+                I_CardModel simDrawCard2 = new Card(E_CardSuit.CLUBS, 9, true);
+            listOfDrawpileCards.add(simDrawCard);
+            listOfDrawpileCards.add(simDrawCard2);
         }
+
+        //This is intended for testing purposes and should not be used for the usual "cam" or "gui"
+        if (!uiChoice.equals("test")) {
+            for(int i = 0; i < 24; i++) {
+                I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
+                //drawCard.
+                drawCards.add(drawCard);
+                System.out.println("currDrawCard: " + drawCard.toString());
+
+                if(uiChoice.equals("cam")) {
+                    ScanSingleton.getScanner().next();
+                }
+            }
+        } else {
+            drawCards.addAll(this.listOfDrawpileCards);
+            System.out.println("List of sim drawstack: " + drawCards.toString());
+        }
+
         System.out.println("Type anything followed by a whitespace char, to confirm" +
                 " continuing on from intializing the drawstack to actualy start the game");
         ScanSingleton.getScanner().next();
