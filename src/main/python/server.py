@@ -15,6 +15,8 @@
 from concurrent import futures
 import logging
 
+import json as json
+
 import grpc
 
 import proto.grpc_pb2 as grpc_pb2
@@ -39,13 +41,32 @@ class Greeter(grpc_pb2_grpc.GreeterServicer):
             from GUI.ManGui import ManGUI
             self.GUI = ManGUI()
             self.GUIType = 1
-        elif(request.name == "turnDrawstack"):#RevealCardGUI #Todo: revert these when done with new gui
-            from GUI.ManGuiRevealCard import ManGUI
+        elif(request.name == "turnDrawstack"):
+            from GUI.ManGuiTurnDrawstack import ManGUI
             self.GUI = ManGUI()
             self.GUIType = 1
         elif(request.name == "RevealCardGUI"):
-            from GUI.ManGuiTurnDrawstack import ManGUI
-            self.GUI = ManGUI()
+            from GUI.ManGuiRevealCard import ManGUI
+
+            h = json.dumps(
+                {"DRAWSTACK": {"suit": "HEARTS", "rank": 2, "isFacedUp": "true"},
+                 "SUITSTACKHEARTS": None,
+                 "SUITSTACKCLUBS": None,
+                 "SUITSTACKDIAMONDS": None,
+                 "SUITSTACKSPADES": None,
+                 "BUILDSTACK1": "inputDesired",
+                 "BUILDSTACK2": {"suit": "SPADES", "rank": 4, "isFacedUp": "true"},
+                 "BUILDSTACK3": {"suit": "DIAMONDS", "rank": 5, "isFacedUp": "true"},
+                 "BUILDSTACK4": {"suit": "HEARTS", "rank": 6, "isFacedUp": "true"},
+                 "BUILDSTACK5": {"suit": "CLUBS", "rank": 7, "isFacedUp": "true"},
+                 "BUILDSTACK6": {"suit": "HEARTS", "rank": 9, "isFacedUp": "true"},
+                 "BUILDSTACK7": {"suit": "HEARTS", "rank": 10, "isFacedUp": "true"}}
+            )
+
+
+            # self.GUI = ManGUI("d1,h2,,h4,,h6,h7,h8,ace1,,ace3,EE")
+            print(h)
+            self.GUI = ManGUI(h)
             self.GUIType = 1
         else:
             from GUI.OpenCv2 import ManGUI

@@ -55,18 +55,23 @@ public class InputDTO implements I_InputDTO {
 //                this.usedOnce = true;
 //            }
 
-            if(drawIterator == 0){
-                uiType = uiChoice;//"RevealCardGUI";
-            }else{
-                drawIterator--;
-                uiType = "turnDrawstack";
-            }
+//            if(drawIterator == 0){
+//                uiType = uiChoice;//"RevealCardGUI";
+//            }else{
+//                drawIterator--;
+//                uiType = "turnDrawstack";
+//            }
+            uiType = "RevealCardGUI";
 //_______________________________________________________________________________________________________________________________________
+
+
+
 
             usrInput = accessInput.getInput(uiType);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+
 
         return deserializeJson(usrInput);
     }

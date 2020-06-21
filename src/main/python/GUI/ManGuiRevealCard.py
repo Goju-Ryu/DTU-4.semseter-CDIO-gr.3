@@ -24,7 +24,31 @@ def stringToJson(inputStr):
 
     return [suit, nr]
 
+def makeOutputString(inputStr, entries):
+    outputs = []
+    inputs = inputStr.split(",")
+    i = 0
+    for input in inputs:
+        if input == "EE":
+            outputs.append(None)
+        elif input != "":
+            outputs.append(input)
+        elif input == "":
+            outputs.append(entries[i])
+            i += i
+    return outputs
+
+
+
 class ManGUI(AbstractUI):
+
+    def __init__(self, paramStr):
+        self.returnedData = json.loads(paramStr)
+        self.paramStr = paramStr
+
+
+
+
     input = ""
     def updateInp(self,newString):
         self.input = newString
@@ -32,7 +56,14 @@ class ManGUI(AbstractUI):
     def run(self):
         root = Tk()
 
-        list = param.split(",")
+        # list = param.split(",")
+        #list = self.paramStr.split(",")
+
+
+        # TODO get a list with each cards suit and rank for later use
+        # for i in self.returnedData:
+        #     list = self.returnedData[i]
+
 
         self.labels_list = []
         self.entry_list = []
@@ -79,6 +110,7 @@ class ManGUI(AbstractUI):
                 label.grid(row=6, column=0)
                 self.labels_list.append(label)
 
+
         #Labels I use
         myLabel0 = Label(root, text="SOLITARE KLODINKE")
         myLabel1 = Label(root, text = "Insert revealed card below")
@@ -108,13 +140,13 @@ class ManGUI(AbstractUI):
             clickCount = "You did click me: "
             butLabel = Label(root, text =clickCount)
             butLabel.grid(row =3, column=7)
-
+            list2 = makeOutputString(self.paramStr, self.entry_list)
              #stringToJson(...) now returns a list containing two strings: "[suitInput]", "[rankInput]"
             inp = json.dumps(
                 {
                     "DRAWSTACK": None if stringToJson(ePile.get())[0] == "" or stringToJson(ePile.get())[1] == ""
                     else {
-                        "suit": stringToJson(ePile.get())[0],
+                        "suit": stringToJson(list2[0])[0],
                         "rank": int(stringToJson(ePile.get())[1]),
                         "isFacedUp": True
                     }
@@ -134,7 +166,18 @@ class ManGUI(AbstractUI):
         # should be comented out when not developing
         def myMove():
             inp = json.dumps(
-                {"BUILDSTACK2": {"suit": "SPADES", "rank": 4, "isFacedUp": "true"}}
+                {"DRAWSTACK": {"suit": "HEARTS", "rank": 2, "isFacedUp": "true"},
+                 "SUITSTACKHEARTS": None,
+                 "SUITSTACKCLUBS": None,
+                 "SUITSTACKDIAMONDS": None,
+                 "SUITSTACKSPADES": None,
+                 "BUILDSTACK1": {"suit": "HEARTS", "rank": 3, "isFacedUp": "true"},
+                 "BUILDSTACK2": {"suit": "SPADES", "rank": 4, "isFacedUp": "true"},
+                 "BUILDSTACK3": {"suit": "DIAMONDS", "rank": 5, "isFacedUp": "true"},
+                 "BUILDSTACK4": {"suit": "HEARTS", "rank": 6, "isFacedUp": "true"},
+                 "BUILDSTACK5": {"suit": "CLUBS", "rank": 7, "isFacedUp": "true"},
+                 "BUILDSTACK6": {"suit": "HEARTS", "rank": 9, "isFacedUp": "true"},
+                 "BUILDSTACK7": {"suit": "HEARTS", "rank": 10, "isFacedUp": "true"}}
             )
 
             self.updateInp(inp)
