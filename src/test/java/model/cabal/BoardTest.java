@@ -1,9 +1,7 @@
 package model.cabal;
 
 import control.BoardController;
-import data.InputSimDTO;
 import model.GameCardDeck;
-import model.Move;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
@@ -148,48 +146,7 @@ class BoardTest {
 
     @Test
     void canMove() {
-
-        I_CardModel buildStacks[] = {
-                new Card(SPADES, 3),
-                new Card(HEARTS, 3),
-                new Card(CLUBS, 10),
-                new Card(HEARTS, 10),
-                new Card(SPADES, 10),
-                new Card(CLUBS, 10),
-                new Card(HEARTS, 8)
-        };
-        I_CardModel aceStacks[] = {
-                null,
-                null,
-                null,
-                null
-        };
-        I_CardModel drawStack[] = {
-
-        };
-
-        I_BoardModel board = createBoard( drawStack, aceStacks, buildStacks );
-        InputSimDTO in = new InputSimDTO();
-//        System.out.println("from DRAWSTACK " + drawStack[drawStack.length-1] + " to BUILDSTACK " + buildStacks[1]);
-
-        Move m = new Move(DRAWSTACK, BUILDSTACK2, 1, false , false,"");
-        board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
-
-        m = new Move(DRAWSTACK, BUILDSTACK1, 1, false , false,"");
-        board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
-
-        m = new Move(DRAWSTACK, SUITSTACKDIAMONDS, 1, false , false,"");
-        board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
-
-        m = new Move(DRAWSTACK, SUITSTACKCLUBS, 1, false , false,"");
-        board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
-
-        m = new Move(DRAWSTACK, SUITSTACKSPADES, 1, false , false,"");
-        board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
-
-        m = new Move(DRAWSTACK, SUITSTACKHEARTS, 1, false , false,"");
-        board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
-
+        //TODO implement
     }
 
     @Test
@@ -257,7 +214,7 @@ class BoardTest {
         }
         return board;
     }
-    private I_BoardModel createBoard(I_CardModel[] drawstack, I_CardModel[] aceStack, I_CardModel[] buildstacks ){
+    private I_BoardModel createBoard(I_CardModel[] drawstack, I_CardModel[] aceStack, I_CardModel[] buildstacks, GameCardDeck cardDeck ){
 
         List<List<I_CardModel>> listAceStacks = new ArrayList<>();
         int i = 0;
@@ -308,6 +265,14 @@ class BoardTest {
         map.put(BUILDSTACK5.name()  , listBuildstacks.get(4));
         map.put(BUILDSTACK6.name()  , listBuildstacks.get(5));
         map.put(BUILDSTACK7.name()  , listBuildstacks.get(6));
-        return new RefBoard(map);
+        var board = new Board(Map.of(), cardDeck);
+
+        for (E_PileID pileID : E_PileID.values()) {
+            board.piles[pileID.ordinal()].clear();
+            board.piles[pileID.ordinal()].addAll(map.get(pileID.name()));
+
+            cardDeck.removeAll(map.get(pileID.name()));
+        }
+        return board;
     }
 }
