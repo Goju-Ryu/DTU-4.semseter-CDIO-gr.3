@@ -39,11 +39,11 @@ class Greeter(grpc_pb2_grpc.GreeterServicer):
             from GUI.ManGui import ManGUI
             self.GUI = ManGUI()
             self.GUIType = 1
-        elif(request.name == "RevealCardGUI"):
+        elif(request.name == "turnDrawstack"):#RevealCardGUI #Todo: revert these when done with new gui
             from GUI.ManGuiRevealCard import ManGUI
             self.GUI = ManGUI()
             self.GUIType = 1
-        elif(request.name == "turnDrawstack"):
+        elif(request.name == "RevealCardGUI"):
             from GUI.ManGuiTurnDrawstack import ManGUI
             self.GUI = ManGUI()
             self.GUIType = 1

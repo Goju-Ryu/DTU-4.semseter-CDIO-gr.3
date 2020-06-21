@@ -8,7 +8,7 @@ import json as json
 # and desire to only know what Card have been revealed
 #====================================.
 #TODO: consider moving this functionality into ManGUI
-
+param = "d1,h2,,h4,,h6,h7,h8,ace1,,ace3,EE"
 def stringToJson(inputStr):
     suit = ""
     su = inputStr[0:1]
@@ -29,60 +29,79 @@ class ManGUI(AbstractUI):
     def updateInp(self,newString):
         self.input = newString
 
-
     def run(self):
         root = Tk()
-        #Input fields
-        ePile = Entry(root)
-        #eSuit1 = Entry(root)
-        #eSuit2 = Entry(root)
-        #eSuit3 = Entry(root)
-        #eSuit4 = Entry(root)
-        #ecol1 = Entry(root)
-        #ecol2 = Entry(root)
-        #ecol3 = Entry(root)
-        #ecol4 = Entry(root)
-        #ecol5 = Entry(root)
-        #ecol6 = Entry(root)
-        #ecol7 = Entry(root)
 
-        #making sure they are shown onscreen
-        ePile.grid(row =6, column=0)
-        #eSuit1.grid(row =1, column=3)
-        #eSuit2.grid(row =1, column=4)
-        #eSuit3.grid(row =1, column=5)
-        #eSuit4.grid(row =1, column=6)
-        #ecol1.grid(row =3, column=1)
-        #ecol2.grid(row =4, column=2)
-        #ecol3.grid(row =5, column=3)
-        #ecol4.grid(row =6, column=4)
-        #ecol5.grid(row =7, column=5)
-        #ecol6.grid(row =8, column=6)
-        #ecol7.grid(row =9, column=7)
+        list = param.split(",")
+
+        self.labels_list = []
+        self.entry_list = []
+
+        aceList = list[8:13]
+        buildList = list[1:8]
+        drawList = list[0:1]
+        #Creates entries and labels for known and unknown builStacks
+        for i in range(len(buildList)):
+            if buildList[i] == '':
+                entry = Entry(root, text=buildList[i])
+                entry.grid(row=3+i, column=1+i)
+                self.entry_list.append(entry)
+            else:
+                label = Label(root, text=buildList[i])
+                label.grid(row=3+i, column=1+i)
+                self.labels_list.append(label)
+        #Creates entries and labels for known and unknown acestacks
+        for i in range(len(aceList)):
+            if aceList[i] == '':
+                label = Label(root, text="EMPTY")
+                label.grid(row=1, column=3+i)
+                self.labels_list.append(label)
+            elif aceList[i] == "EE":
+                entry = Entry(root, text=aceList[i])
+                entry.grid(row=1, column=3+i)
+                self.entry_list.append(entry)
+            else:
+                label = Label(root, text=aceList[i])
+                label.grid(row=1, column=3+i)
+                self.labels_list.append(label)
+        #Creates entries and labels for known and unknown drawstack
+        for i in range(len(drawList)):
+            if drawList[i] == '':
+                label = Label(root, text="EMPTY")
+                label.grid(row=6, column=0)
+                self.labels_list.append(label)
+            elif drawList[i] == "EE":
+                entry = Entry(root, text=drawList[i])
+                entry.grid(row=6, column=0)
+                self.entry_list.append(entry)
+            else:
+                label = Label(root, text=drawList[i])
+                label.grid(row=6, column=0)
+                self.labels_list.append(label)
 
         #Labels I use
         myLabel0 = Label(root, text="SOLITARE KLODINKE")
         myLabel1 = Label(root, text = "Insert revealed card below")
-        #myLabel2 = Label(root, text = "Coulumns: below")
-        #myLabel3 = Label(root, text = "Suits: right")
+        myLabel2 = Label(root, text = "Coulumns: below")
+        myLabel3 = Label(root, text = "Suits: right")
         myLabel4 = Label(root, text="CDIO DTU GR. 3")
-        #myLabel5 = Label(root, text="h1 = hearts 1")
-        #myLabel6 = Label(root, text="c2 = clubs 2")
-        #myLabel7 = Label(root, text="d1 = diamonds 1")
-        #myLabel8 = Label(root, text="s5 = spades 5")
+        myLabel5 = Label(root, text="h1 = hearts 1")
+        myLabel6 = Label(root, text="c2 = clubs 2")
+        myLabel7 = Label(root, text="d1 = diamonds 1")
+        myLabel8 = Label(root, text="s5 = spades 5")
 
 
         myLabel0.grid(row =0, column=0)
         myLabel4.grid(row =0, column=1)
-        #myLabel5.grid(row =0, column=3)
-        #myLabel6.grid(row =0, column=4)
-        #myLabel7.grid(row =0, column=5)
-        #myLabel8.grid(row =0, column=6)
+        myLabel5.grid(row =0, column=3)
+        myLabel6.grid(row =0, column=4)
+        myLabel7.grid(row =0, column=5)
+        myLabel8.grid(row =0, column=6)
 
 
         myLabel1.grid(row =5, column=0)
-        #myLabel2.grid(row =2, column=1)
-        #myLabel3.grid(row =1, column=2)
+        myLabel2.grid(row =2, column=1)
+        myLabel3.grid(row =1, column=2)
 
         moveCount = 0
         def myClick():
@@ -90,7 +109,7 @@ class ManGUI(AbstractUI):
             butLabel = Label(root, text =clickCount)
             butLabel.grid(row =3, column=7)
 
-            # stringToJson(...) now returns a list containing two strings: "[suitInput]", "[rankInput]"
+             #stringToJson(...) now returns a list containing two strings: "[suitInput]", "[rankInput]"
             inp = json.dumps(
                 {
                     "DRAWSTACK": None if stringToJson(ePile.get())[0] == "" or stringToJson(ePile.get())[1] == ""
