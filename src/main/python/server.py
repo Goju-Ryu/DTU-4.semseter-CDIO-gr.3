@@ -43,6 +43,10 @@ class Greeter(grpc_pb2_grpc.GreeterServicer):
             from GUI.ManGuiRevealCard import ManGUI
             self.GUI = ManGUI()
             self.GUIType = 1
+        elif(request.name == "turnDrawstack"):
+            from GUI.ManGuiTurnDrawstack import ManGUI
+            self.GUI = ManGUI()
+            self.GUIType = 1
         else:
             from GUI.OpenCv2 import ManGUI
             if self.GUIType == 0 or self.GUIType == 1 :
