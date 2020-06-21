@@ -1,5 +1,6 @@
 package control;
 
+import data.I_InputDTO;
 import data.InputSimDTO;
 import model.GameCardDeck;
 import model.Move;
@@ -29,7 +30,7 @@ class BoardControllerTest {
 
         protected I_BoardModel refBoardModel;
         public testBoardController(I_BoardModel refBoard, GameCardDeck deck) {
-            super(deck);
+            super(true);
             refBoardModel = refBoard;
             inputDTO = new InputSimDTO(deck);
             boardModel = refBoard;
@@ -196,7 +197,7 @@ class BoardControllerTest {
 
 
 
-    @Test
+    /*@Test
     void make_a_move(){
 
         // What is the top cards of the rows, anything undeclared is empty list.
@@ -233,13 +234,13 @@ class BoardControllerTest {
 
         GameCardDeck deck = new GameCardDeck();
         I_BoardModel board = new testBoard(map,list,deck);
-        BoardController boardCnt = new testBoardController(board,deck);
+        I_InputDTO input = new InputSimDTO(board, deck);
 
         for (Move m: moves) {
-            boardCnt.makeMove(m);
+            board.move(m.moveToStack(),m.moveFromRange(),m.moveFromStack(),input.getUsrInput());
         }
         System.out.println("asd");
-    }
+    }*/
 
     private class testBoard extends AbstractBoardUtility implements I_BoardModel{
 

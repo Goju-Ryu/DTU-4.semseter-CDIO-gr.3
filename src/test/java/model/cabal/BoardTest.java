@@ -1,19 +1,26 @@
 package model.cabal;
 
 import control.BoardController;
+import data.I_InputDTO;
+import data.InputSimDTO;
 import model.GameCardDeck;
+import model.Move;
+import model.cabal.internals.BuildStack;
+import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
+import model.error.IllegalMoveException;
 import org.junit.jupiter.api.Test;
 
+import java.beans.PropertyChangeListener;
 import java.lang.reflect.Field;
 import java.util.*;
 
 import static model.cabal.E_PileID.*;
-import static model.cabal.internals.card.E_CardSuit.HEARTS;
+import static model.cabal.internals.card.E_CardSuit.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -125,77 +132,48 @@ class BoardTest {
     }
 
     @Test
-    void getPile() {
-    }
+    void make_a_move(){
 
-    @Test
-    void getPiles() {
-    }
+        // What is the top cards of the rows, anything undeclared is empty list.
+        Map<E_PileID, I_CardModel> map = new HashMap<>();
+        map.put(BUILDSTACK1,new Card( SPADES    , 3  ));
+        map.put(BUILDSTACK2,new Card( HEARTS    , 3  ));
+        map.put(BUILDSTACK3,new Card( CLUBS     , 10 ));
+        map.put(BUILDSTACK4,new Card( HEARTS    , 10 ));
+        map.put(BUILDSTACK5,new Card( SPADES    , 10 ));
+        map.put(BUILDSTACK6,new Card( CLUBS     , 10 ));
+        map.put(BUILDSTACK7,new Card( HEARTS    , 8  ));
 
-    @Test
-    void turnCard() {
-    }
+        // the drawStack.
+        ArrayList<I_CardModel> list = new ArrayList<>();
+        list.add(new Card( SPADES     , 8 ));
+       /* list.add(new Card( DIAMONDS   , 8 ));
+        list.add(new Card( CLUBS      , 8 ));
+        list.add(new Card( SPADES     , 9 ));
+        list.add(new Card( DIAMONDS   , 9 ));
+        list.add(new Card( CLUBS      , 9 ));
+        list.add(new Card( HEARTS     , 9 ));*/
 
-    @Test
-    void getTurnedCard() {
-    }
+        //Move Queue
+        Queue<Move> moves = new LinkedList<>();
+        moves.add( new Move(DRAWSTACK, BUILDSTACK6, 1, false , false,"") );
+        moves.add( new Move(DRAWSTACK, BUILDSTACK4, 1, false , false,"") );
+        moves.add( new Move(DRAWSTACK, BUILDSTACK5, 1, false , false,"") );
+        moves.add( new Move(DRAWSTACK, BUILDSTACK3, 1, false , false,"") );
+        moves.add( new Move(DRAWSTACK, BUILDSTACK4, 2, false , false,"") );
 
-    @Test
-    void move() {
-    }
 
-    @Test
-    void canMove() {
-        //TODO implement
-    }
+        GameCardDeck deck = new GameCardDeck();
+        I_BoardModel board = new testBoard(map,list,deck);
+        I_InputDTO input = new InputSimDTO(board,deck);
 
-    @Test
-    void addPropertyChangeListener() {
-    }
-
-    @Test
-    void removePropertyChangeListener() {
+        for (Move m: moves) {
+            board.move(m.moveToStack(), m.moveFromRange() , m.moveFromStack(), input.getUsrInput() );
+        }
+        System.out.println("asd");
     }
 
     // todo note that this only tests heartstack, this should be exended to test all implementations of suitstack, even if they are identical
-    private SuitStack createSuitStack(int elements){
-        SuitStack suitStack = new SuitStack();
-
-        for (int i = 0; i < elements; i++) {
-            I_CardModel card = new Card(HEARTS,i+1);
-            suitStack.add(card);
-        }
-
-        return suitStack;
-    }
-    private BoardController changeDrawStack(BoardController controller, I_SolitaireStacks drawStack){
-        Class<?> secretClass = controller.getClass();
-        I_BoardModel board = null;
-
-
-        while(!secretClass.getName().equals(BoardController.class.getName())) {
-            secretClass = secretClass.getSuperclass();
-        }
-
-        // firstly find the board.
-        Field fields[] = secretClass.getDeclaredFields();
-
-        for (Field field : fields) {
-            field.setAccessible(true);
-            try {
-                if(field.getName().equals("boardModel")){
-                    board = (I_BoardModel) field.get(controller);
-                    I_BoardModel b = step2ChangeDrawStack(board, drawStack);
-                    field.set( controller ,b );
-                    break;
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-                return null;
-            }
-        }
-        return controller;
-    }
     private I_BoardModel step2ChangeDrawStack(I_BoardModel board, I_SolitaireStacks drawStack ){
         Class<?> secretClass = board.getClass();
         Field fields[] = secretClass.getDeclaredFields();
@@ -214,65 +192,159 @@ class BoardTest {
         }
         return board;
     }
-    private I_BoardModel createBoard(I_CardModel[] drawstack, I_CardModel[] aceStack, I_CardModel[] buildstacks, GameCardDeck cardDeck ){
+    private class testBoard extends AbstractBoardUtility implements I_BoardModel{
 
-        List<List<I_CardModel>> listAceStacks = new ArrayList<>();
-        int i = 0;
-        for (E_PileID e: E_PileID.values()) {
-            if(e == BUILDSTACK1 || e == BUILDSTACK2 ||e == BUILDSTACK3 ||e == BUILDSTACK4 ||e == BUILDSTACK5 ||e == BUILDSTACK6 || e== BUILDSTACK7) {
-                continue;
+        public testBoard(Map<E_PileID, I_CardModel> map , List<I_CardModel> list,GameCardDeck cardDeck){
+            deck = cardDeck;
+            piles = new I_SolitaireStacks[E_PileID.values().length];
+
+            piles[DRAWSTACK.ordinal()] = new DrawStack(list);
+            piles[SUITSTACKHEARTS.ordinal()]  = new SuitStack();
+            piles[SUITSTACKDIAMONDS.ordinal()] = new SuitStack();
+            piles[SUITSTACKCLUBS.ordinal()]   = new SuitStack();
+            piles[SUITSTACKSPADES.ordinal()]  = new SuitStack();
+
+            for (int i = 0; i < 7; i++) { // for each build pile
+                for (int j = 0; j <= i; j++) {  // how many cards in this pile
+                    if (piles[BUILDSTACK1.ordinal() + i] == null)
+                        piles[BUILDSTACK1.ordinal() + i] = new BuildStack();
+                    else
+                        piles[BUILDSTACK1.ordinal() + i].add(new Card());
+                }
             }
-            if(e== DRAWSTACK)
-                continue;
 
-            ArrayList<I_CardModel> newArr = new ArrayList<>();
-            I_CardModel c = aceStack[i++];
-            if( c != null)
-                newArr.add(aceStack[i++]);
-
-            listAceStacks.add(newArr);
-        }
-
-        List<List<I_CardModel>> listBuildstacks = new ArrayList<>();
-        i = 0;
-        for(E_PileID e: E_PileID.values()){
-            if(!(e == BUILDSTACK1 || e == BUILDSTACK2 ||e == BUILDSTACK3 ||e == BUILDSTACK4 ||e == BUILDSTACK5 ||e == BUILDSTACK6 || e== BUILDSTACK7))
-                continue;
-
-
-            ArrayList<I_CardModel> newArr = new ArrayList<>();
-            for (int j = 0; j < i; j++) {
-                newArr.add(new Card());
+            for (E_PileID pileID : E_PileID.values()) {
+                I_CardModel data = extractIMGData(map, pileID);
+                if(data == null)
+                    continue;
+                piles[pileID.ordinal()].add(data);
             }
-            newArr.add(buildstacks[i++]);
-            listBuildstacks.add(newArr);
+            //removeDataFromDeck(list);
+            deck.removeAll(list);
+            deck.removeAll(map.values());
+
         }
 
-        Map<String, List<I_CardModel>> map =  new HashMap<>();
-        map.put(DRAWSTACK.name(), new ArrayList<>(Arrays.asList(drawstack)));
+        public testBoard(Map<E_PileID, I_CardModel> map,GameCardDeck cardDeck){
+            deck = cardDeck;
+            piles = new I_SolitaireStacks[E_PileID.values().length];
 
-        // in tests created with this method, the Order of card suits here are
-        // important for the test to succed
-        map.put(SUITSTACKHEARTS.name()     , listAceStacks.get(0));
-        map.put(SUITSTACKDIAMONDS.name()   , listAceStacks.get(1));
-        map.put(SUITSTACKCLUBS.name()      , listAceStacks.get(2));
-        map.put(SUITSTACKSPADES.name()     , listAceStacks.get(3));
+            piles[DRAWSTACK.ordinal()] = new DrawStack();
+            piles[SUITSTACKHEARTS.ordinal()]  = new SuitStack();
+            piles[SUITSTACKDIAMONDS.ordinal()] = new SuitStack();
+            piles[SUITSTACKCLUBS.ordinal()]   = new SuitStack();
+            piles[SUITSTACKSPADES.ordinal()]  = new SuitStack();
 
-        map.put(BUILDSTACK1.name()  , listBuildstacks.get(0));
-        map.put(BUILDSTACK2.name()  , listBuildstacks.get(1));
-        map.put(BUILDSTACK3.name()  , listBuildstacks.get(2));
-        map.put(BUILDSTACK4.name()  , listBuildstacks.get(3));
-        map.put(BUILDSTACK5.name()  , listBuildstacks.get(4));
-        map.put(BUILDSTACK6.name()  , listBuildstacks.get(5));
-        map.put(BUILDSTACK7.name()  , listBuildstacks.get(6));
-        var board = new Board(Map.of(), cardDeck);
+            for (int i = 0; i < 7; i++) { // for each build pile
+                for (int j = 0; j <= i; j++) {  // how many cards in this pile
+                    if (piles[BUILDSTACK1.ordinal() + i] == null)
+                        piles[BUILDSTACK1.ordinal() + i] = new BuildStack();
+                    else
+                        piles[BUILDSTACK1.ordinal() + i].add(new Card());
+                }
+            }
 
-        for (E_PileID pileID : E_PileID.values()) {
-            board.piles[pileID.ordinal()].clear();
-            board.piles[pileID.ordinal()].addAll(map.get(pileID.name()));
-
-            cardDeck.removeAll(map.get(pileID.name()));
+            for (E_PileID pileID : E_PileID.values()) {
+                I_CardModel data = extractIMGData(map, pileID);
+                if(data == null)
+                    continue;
+                piles[pileID.ordinal()].add(data);
+            }
+            deck.removeAll(map.values());
         }
-        return board;
+
+
+        private I_CardModel extractIMGData(Map<E_PileID, I_CardModel> imgData, E_PileID key) {
+            return imgData.getOrDefault(key, null); //This assumes a strict naming scheme and will return null if not found
+        }
+
+        //InterFace implementation
+        @Override
+        public boolean isStackComplete(E_PileID pileID) {
+            I_SolitaireStacks pile = get(pileID);
+
+            if (pileID.isBuildStack())
+                return pile.getCard(0).getRank() == 1; // true if ace on top
+
+            if (pileID == DRAWSTACK)
+                return pile.isEmpty();
+
+            //Now we know only suit stacks are left
+            return pile.getCard(0).getRank() == 13; // true if suitStack has a king on top
+        }
+
+        @Override
+        public List<I_CardModel> getPile(E_PileID pile) {
+            I_SolitaireStacks s = get(pile);
+            List<I_CardModel> cs = new ArrayList<>(s);
+            return cs;
+        }
+
+        @Override
+        public I_SolitaireStacks[] getPiles() {
+            return piles;
+        }
+
+        // draw stack specific implementation.
+        @Override
+        public I_CardModel turnCard(Map<String, I_CardModel> imgData) {
+            DrawStack turnPile = (DrawStack) get(DRAWSTACK);
+
+            if (turnPile.isEmpty())
+                throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
+
+            var returnable = turnPile.turnCard();
+
+            var imgCard = extractImgData(imgData, DRAWSTACK);
+            validateCardState(DRAWSTACK, returnable, imgCard);
+
+            return returnable;
+        }
+
+        @Override
+        public I_CardModel getTurnedCard() {
+            return null;
+        }
+
+        @Override
+        public void move(E_PileID origin, int originPos, E_PileID destination, Map<String, I_CardModel> imgData) throws IllegalMoveException {
+            I_SolitaireStacks from = get(origin);
+            I_SolitaireStacks to = get(destination);
+
+            //change state
+            to.addAll(from.popSubset(originPos));
+
+            //check that state is consistent with the physical board
+            if (!from.isEmpty())
+                validateCardState(origin, from.getCard(from.size() - 1), extractImgData(imgData, origin));
+            else
+                validateCardState(origin, null, extractImgData(imgData, origin));
+        }
+
+        @Override
+        public boolean canMove(E_PileID origin, int originPos, E_PileID destination) {
+            I_SolitaireStacks from = get(origin);
+            I_SolitaireStacks to = get(destination);
+
+            boolean a = isValidMove(origin, originPos, destination);
+            boolean b = from.canMoveFrom(originPos);
+            boolean c = to.canMoveTo(from.getSubset(originPos));
+
+            return a && b && c;
+        }
+
+        @Override
+        public boolean canMoveFrom(E_PileID origin, int range) {
+            I_SolitaireStacks from = get(origin);
+            return from.canMoveFrom(range);
+        }
+
+        @Override
+        public void addPropertyChangeListener(PropertyChangeListener listener) {
+        }
+
+        @Override
+        public void removePropertyChangeListener(PropertyChangeListener listener) {
+        }
     }
 }

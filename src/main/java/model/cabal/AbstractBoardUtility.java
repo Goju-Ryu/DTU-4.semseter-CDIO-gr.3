@@ -73,7 +73,7 @@ public abstract class AbstractBoardUtility {
     protected void
     validateCardState(E_PileID origin, I_CardModel cardModel, I_CardModel imgCard) throws IllegalStateException {
         if ( cardModel != null && !cardModel.isFacedUp()) {
-            if (deck.remove(imgCard)) { //if the card was in deck and now removed
+            if ( !deck.remove(imgCard) ) { //if the card was in deck and now removed
                 cardModel.reveal(imgCard.getSuit(), imgCard.getRank());
             } else {
                 throw new IllegalStateException("Trying to reveal card but card is already in play.\ncard: " + imgCard);
