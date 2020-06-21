@@ -23,7 +23,7 @@ import static model.cabal.E_PileID.*;
 */
 public class BoardController implements I_BoardController {
 
-    private I_BoardModel boardModel;
+    protected I_BoardModel boardModel;
     protected I_InputDTO inputDTO;
     protected String uiChoice;
 

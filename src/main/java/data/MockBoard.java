@@ -4,6 +4,7 @@ import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.I_SolitaireStacks;
+import model.cabal.internals.StackBase;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
@@ -20,6 +21,7 @@ import java.util.Map;
 public class MockBoard implements I_BoardModel {
     I_BoardModel boardImplementation;
 
+
     public MockBoard() {
         boardImplementation = new Board(Map.of());
         EnumMap<E_PileID, List<I_CardModel>> map = new EnumMap<>(E_PileID.class);
@@ -33,13 +35,17 @@ public class MockBoard implements I_BoardModel {
     }
 
     public MockBoard(Map<E_PileID, List<I_CardModel>> boardMap) {
+
         boardImplementation = new Board(Map.of());
+        I_SolitaireStacks[] solitaireStacks = boardImplementation.getPiles();
 
         for (E_PileID pileID : E_PileID.values()) {
-            boardImplementation.getPile(pileID).clear();
-            boardImplementation.getPile(pileID).addAll(boardMap.get(pileID));
-        }
 
+            solitaireStacks[pileID.ordinal()].clear();
+            solitaireStacks[pileID.ordinal()].addAll(boardMap.get(pileID));
+
+        }
+        System.out.println("hej");
     }
 
     public MockBoard(I_BoardModel boardModel) {

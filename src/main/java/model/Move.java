@@ -2,7 +2,6 @@ package model;
 
 import model.cabal.Board;
 import model.cabal.E_PileID;
-import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
 public class Move implements I_Move {
 

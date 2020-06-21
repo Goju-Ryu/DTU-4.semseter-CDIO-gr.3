@@ -3,6 +3,9 @@ package model.cabal;
 import control.BoardController;
 import data.InputDTO;
 import data.InputSimDTO;
+import data.MockBoard;
+import model.Move;
+import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
@@ -14,8 +17,9 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
 
-import static model.cabal.E_PileID.DRAWSTACK;
-import static model.cabal.internals.card.E_CardSuit.HEARTS;
+
+import static model.cabal.E_PileID.*;
+import static model.cabal.internals.card.E_CardSuit.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -171,32 +175,49 @@ class BoardTest {
     @Test
     void canMove() {
 
-        I_CardModel cards[] = {
-                // AceStacks
-                null,
-                null,
-                null,
-                null,
-                // BuildStacks
-                new Card(HEARTS, 1),
-                new Card(HEARTS, 1),
-                new Card(HEARTS, 1),
-                new Card(HEARTS, 1),
-                new Card(HEARTS, 1),
-                new Card(HEARTS, 1),
-                new Card(HEARTS, 1)
+        I_CardModel buildStacks[] = {
+                new Card(SPADES, 3),
+                new Card(HEARTS, 3),
+                new Card(CLUBS, 10),
+                new Card(HEARTS, 10),
+                new Card(SPADES, 10),
+                new Card(CLUBS, 10),
+                new Card(HEARTS, 8)
         };
-
+        I_CardModel aceStacks[] = {
+                null,
+                null,
+                null,
+                null
+        };
         I_CardModel drawStack[] = {
                 new Card(HEARTS, 1),
-                new Card(HEARTS, 1),
-                new Card(HEARTS, 1),
-                new Card(HEARTS, 1),
-                new Card(HEARTS, 1)
+                new Card(SPADES, 1),
+                new Card(CLUBS, 1),
+                new Card(DIAMONDS, 1),
+                new Card(HEARTS, 2),
+                new Card(CLUBS,2)
         };
 
-        ArrayList<I_CardModel> arr = new ArrayList<>(Arrays.asList(cards));
-        I_BoardModel board = createBoard( arr, Arrays.asList(drawStack));
+        I_BoardModel board = createBoard( drawStack, aceStacks, buildStacks );
+
+        List<Move> moves = new ArrayList<>();
+        moves.add(new Move(DRAWSTACK, BUILDSTACK1, 1, false , false,""));
+        moves.add(new Move(DRAWSTACK, BUILDSTACK2, 2, false , false,""));
+
+        moves.add(new Move(DRAWSTACK, SUITSTACKHEARTS, 6, false , false,""));
+        moves.add(new Move(DRAWSTACK, SUITSTACKDIAMONDS, 3, false , false,""));
+        moves.add(new Move(DRAWSTACK, SUITSTACKCLUBS, 4, false , false,""));
+        moves.add(new Move(DRAWSTACK, SUITSTACKSPADES, 5, false , false,""));
+
+        InputSimDTO in = new InputSimDTO(board);
+        for (Move m: moves) {
+            board.move(m.moveFromStack(),m.moveToStack(),in.getUsrInput());
+            
+        }
+
+
+
         System.out.println("hje");
     }
 
@@ -265,20 +286,57 @@ class BoardTest {
         }
         return board;
     }
-    private I_BoardModel createBoard(ArrayList<I_CardModel> drawstack, List<I_CardModel> list ){
+    private I_BoardModel createBoard(I_CardModel[] drawstack, I_CardModel[] aceStack, I_CardModel[] buildstacks ){
 
-
-        Map<String, I_CardModel> map = new HashMap<>();
+        List<List<I_CardModel>> listAceStacks = new ArrayList<>();
         int i = 0;
         for (E_PileID e: E_PileID.values()) {
-            if(e == DRAWSTACK)
+            if(e == BUILDSTACK1 || e == BUILDSTACK2 ||e == BUILDSTACK3 ||e == BUILDSTACK4 ||e == BUILDSTACK5 ||e == BUILDSTACK6 || e== BUILDSTACK7) {
                 continue;
-            map.put(e.name() , list.get(i++));
+            }
+            if(e== DRAWSTACK)
+                continue;
+
+            ArrayList<I_CardModel> newArr = new ArrayList<>();
+            I_CardModel c = aceStack[i++];
+            if( c != null)
+                newArr.add(aceStack[i++]);
+
+            listAceStacks.add(newArr);
         }
 
+        List<List<I_CardModel>> listBuildstacks = new ArrayList<>();
+        i = 0;
+        for(E_PileID e: E_PileID.values()){
+            if(!(e == BUILDSTACK1 || e == BUILDSTACK2 ||e == BUILDSTACK3 ||e == BUILDSTACK4 ||e == BUILDSTACK5 ||e == BUILDSTACK6 || e== BUILDSTACK7))
+                continue;
 
 
-        I_BoardModel b = new Board(map, drawstack);
-        return b;
+            ArrayList<I_CardModel> newArr = new ArrayList<>();
+            for (int j = 0; j < i; j++) {
+                newArr.add(new Card());
+            }
+            newArr.add(buildstacks[i++]);
+            listBuildstacks.add(newArr);
+        }
+
+        Map<E_PileID, List<I_CardModel>> map =  new HashMap<>();
+        map.put(DRAWSTACK, new ArrayList<>(Arrays.asList(drawstack)));
+
+        // in tests created with this method, the Order of card suits here are
+        // important for the test to succed
+        map.put(SUITSTACKHEARTS     , listAceStacks.get(0));
+        map.put(SUITSTACKDIAMONDS   , listAceStacks.get(1));
+        map.put(SUITSTACKCLUBS      , listAceStacks.get(2));
+        map.put(SUITSTACKSPADES     , listAceStacks.get(3));
+
+        map.put(BUILDSTACK1  , listBuildstacks.get(0));
+        map.put(BUILDSTACK2  , listBuildstacks.get(1));
+        map.put(BUILDSTACK3  , listBuildstacks.get(2));
+        map.put(BUILDSTACK4  , listBuildstacks.get(3));
+        map.put(BUILDSTACK5  , listBuildstacks.get(4));
+        map.put(BUILDSTACK6  , listBuildstacks.get(5));
+        map.put(BUILDSTACK7  , listBuildstacks.get(6));
+        return new MockBoard(map);
     }
 }

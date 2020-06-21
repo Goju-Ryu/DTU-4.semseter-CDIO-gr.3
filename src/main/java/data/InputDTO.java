@@ -26,8 +26,6 @@ public class InputDTO implements I_InputDTO {
         uiType = uiChoice;
     }
 
-
-
     //TODO Modify to take just one card when uiType == RevealCardGUI
     @Override
     public Map<String, I_CardModel> getUsrInput(){
