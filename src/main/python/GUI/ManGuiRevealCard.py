@@ -57,7 +57,7 @@ class ManGUI(AbstractUI):
         root = Tk()
 
         # list = param.split(",")
-        #list = self.paramStr.split(",")
+        list = self.paramStr.split(",")
 
 
         # TODO get a list with each cards suit and rank for later use
