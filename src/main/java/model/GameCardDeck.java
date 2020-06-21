@@ -4,8 +4,9 @@ import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 
-import java.math.BigInteger;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 public class GameCardDeck extends TreeSet<I_CardModel> {
@@ -51,5 +52,9 @@ public class GameCardDeck extends TreeSet<I_CardModel> {
         int val2 = o2.getRank() + 13*(o2.getSuit().ordinal());
         return val1 - val2;
     };
+
+    public void close(){
+        instance = null;
+    }
 
 }
