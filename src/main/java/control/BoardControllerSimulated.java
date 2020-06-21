@@ -13,10 +13,7 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
 import java.beans.PropertyChangeListener;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class is for the individual controlls of each Board,
@@ -30,39 +27,32 @@ import java.util.Map;
 public class BoardControllerSimulated extends BoardController {
 
     private I_BoardModel refBoardModel;
-    protected I_InputDTO inputDTO;
+    protected InputSimDTO inputDTO;
 
-     public BoardControllerSimulated() {
-         //this(new MockBoard());
+    public BoardControllerSimulated() {
+        super();
+        inputDTO = new InputSimDTO();
+        ArrayList<I_CardModel> drawStack = inputDTO.getDrawstack();
+        initTemp("simulation", drawStack);
      }
 
-    public BoardControllerSimulated(I_BoardModel refBoard) {
-
+    @Override
+    public void initTemp(String uiChoice, ArrayList<I_CardModel> drawStack) {
+        super.initTemp(uiChoice, drawStack);
+        inputDTO.giveBoard(getBoardModel());
     }
 
     @Override
-    public void makeMove(Move move) {
-        refBoardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
-        super.makeMove(move);
+    public Map getCards(String uiChoice) {
+        return inputDTO.getCards();
     }
 
-    public I_BoardModel MakeNewBoard(String UiChoice,List<I_CardModel> cardsForBoard){
-
-        Map<String, I_CardModel> usrInputMap = new HashMap<>();
-        usrInputMap.put(E_PileID.DRAWSTACK.name(), cardsForBoard.get(0));
-        usrInputMap.put(E_PileID.SUITSTACKHEARTS.name(), null);
-        usrInputMap.put(E_PileID.SUITSTACKDIAMONDS.name(), null);
-        usrInputMap.put(E_PileID.SUITSTACKSPADES.name(), null);
-        usrInputMap.put(E_PileID.SUITSTACKCLUBS.name(), null);
-        usrInputMap.put(E_PileID.BUILDSTACK1.name(), cardsForBoard.get(5));
-        usrInputMap.put(E_PileID.BUILDSTACK2.name(), cardsForBoard.get(6));
-        usrInputMap.put(E_PileID.BUILDSTACK3.name(), cardsForBoard.get(7));
-        usrInputMap.put(E_PileID.BUILDSTACK4.name(), cardsForBoard.get(8));
-        usrInputMap.put(E_PileID.BUILDSTACK5.name(), cardsForBoard.get(9));
-        usrInputMap.put(E_PileID.BUILDSTACK6.name(), cardsForBoard.get(10));
-        usrInputMap.put(E_PileID.BUILDSTACK7.name(), cardsForBoard.get(11));
-
-        return new Board(usrInputMap);
+    @Override
+    public Move pickMove(List<Move> moves) {
+        Move m = super.pickMove(moves);
+        inputDTO.move(m);
+        return m;
     }
+
 
 }

@@ -43,9 +43,13 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
             throw new IllegalMoveException(errors);
         }
 
+        int reversedRange = stack.size() - ( range );
+        if(!stack.get(reversedRange).isFacedUp()){
+            throw new IllegalMoveException("Card at this range"+range+" has not been turned yet");
+        }
+
         var returnable = List.of( stack.get(drawIndex) );
         stack.remove(drawIndex--); //remove the card and lower index to point to the new card that can be drawn
-
         return returnable;
     }
 

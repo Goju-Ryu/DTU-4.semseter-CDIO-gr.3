@@ -1,15 +1,17 @@
 package data;
 
 import model.GameCardDeck;
+import model.Move;
+import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
+import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.Card;
+import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
+import model.error.IllegalMoveException;
 
-import java.util.AbstractMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,98 +20,107 @@ import java.util.stream.Stream;
  */
 public class InputSimDTO implements I_InputDTO {
 
-    private I_BoardModel boardModel;
+    private ArrayList<Card> listRemain = new ArrayList<>(4*13);
+    private Map<String, I_CardModel> imgData;
+    private I_BoardModel board;
 
     /**
      * A constructor taking no arguments. This will make the class return random unused card in each position.
      */
-    public InputSimDTO() {
-        this(null);
+    public InputSimDTO(){
+        // filling in ALL Cards
+        E_CardSuit[] a = {E_CardSuit.HEARTS, E_CardSuit.DIAMONDS,E_CardSuit.CLUBS,E_CardSuit.SPADES};
+        for (int i = 0; i < 4; i++) {
+            for (int j = 1; j <= 13; j++) {
+                listRemain.add(new Card(a[i],j));
+            }
+        }
+    }
+    public void giveBoard(I_BoardModel board){
+        this.board = board;
     }
 
-    /**
-     * This constructor takes an implementation of the {@link I_BoardModel} interface that it will keep itself
-     * consistent with.
-     * Example uses are:
-     *  - Having a board model used to by the game as internal model, with some face up and some face down cards.
-     *  For face down cards a new random unused card is returned, but for the know values, that value is returned.
-     *  - Having a board model with all cards known to act as the physical board. this class will always return the top
-     *  card of each pile of that board. It does require an outside class to make the "physical" and virtual boards
-     *  stay in sync. If one forgets that, the state will quickly be inconsistent. to do so, remember to use the
-     *  move method with the same parameters in both boards.
-     * @param simulatedBoard The board used as reference for which cards should be returned.
-     */
-    public InputSimDTO(I_BoardModel simulatedBoard){
-       boardModel = simulatedBoard;
+    // retrieving Start Simulating data sets.
+    public ArrayList<I_CardModel> getDrawstack(){
+        ArrayList<I_CardModel> drawStack = new ArrayList<>();
+        for (int i = 0; i <24 ; i++) {
+            drawStack.add(popRanCard());
+        }
+        return drawStack;
+    }
+    public Map<String, I_CardModel> getCards(){
+        Map<String, I_CardModel> usrInputMap = new HashMap<>();
+        usrInputMap.put(E_PileID.DRAWSTACK.name(),          null);
+        usrInputMap.put(E_PileID.SUITSTACKHEARTS.name(),    null);
+        usrInputMap.put(E_PileID.SUITSTACKDIAMONDS.name(),  null);
+        usrInputMap.put(E_PileID.SUITSTACKSPADES.name(),    null);
+        usrInputMap.put(E_PileID.SUITSTACKCLUBS.name(),     null);
+        usrInputMap.put(E_PileID.BUILDSTACK1.name(),        popRanCard());
+        usrInputMap.put(E_PileID.BUILDSTACK2.name(),        popRanCard());
+        usrInputMap.put(E_PileID.BUILDSTACK3.name(),        popRanCard());
+        usrInputMap.put(E_PileID.BUILDSTACK4.name(),        popRanCard());
+        usrInputMap.put(E_PileID.BUILDSTACK5.name(),        popRanCard());
+        usrInputMap.put(E_PileID.BUILDSTACK6.name(),        popRanCard());
+        usrInputMap.put(E_PileID.BUILDSTACK7.name(),        popRanCard());
+
+        imgData = usrInputMap;
+        return usrInputMap;
     }
 
-    public void setSimulatedBoard(I_BoardModel simulatedBoard) {
-        boardModel = simulatedBoard;
-    }
-
-
+    // interface
     @Override
-    public Map<String, I_CardModel> getUsrInput(){
-        if (boardModel != null)
-            return getImgData(boardModel);
-
-        return getImgData();
-    }
-
-    /**
-     * Artificially makes an imageData that agrees with board in all instances except for when a card is face down.
-     * When a face down card is encountered it is replaced by a random face up card.
-     * @param board The board to which the data should conform;
-     * @return a map representing imgData as in the actual system
-     */
-    private Map<String, I_CardModel> getImgData(I_BoardModel board) {
-        return Stream.of(E_PileID.values())
-                .filter(pile -> board.getPile(pile).size() > 1)
-                .map( // transforms elements of the stream to mapEntries
-                        pile -> {
-                            var pileList = board.getPile(pile);
-                            return new AbstractMap.SimpleEntry<>(pile.name(), pileList.get(pileList.size() - 1));
-                        }
-                )
-                .peek(entry -> { if (entry.getValue() == null) entry.setValue(new Card());} )
-                .peek(entry -> { // replaces face down cards with a randomly generated card
-                            if (!entry.getValue().isFacedUp())
-                                entry.setValue(getRandCard());
-                        }
-                )
-                .collect(Collectors.toMap(
-                        AbstractMap.SimpleEntry::getKey,
-                        AbstractMap.SimpleEntry::getValue
-                )); // converts result to a map
-    }
-
-    /**
-     * Artificially makes an imageData that contains a random set of face up cards.
-     * @return a map representing imgData as in the actual system
-     */
-    private Map<String, I_CardModel> getImgData() {
-        return Stream.of(E_PileID.values())
-                .map(pile -> new AbstractMap.SimpleEntry<>(pile.name(), getRandCard()))
-                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+    public Map<String, I_CardModel> getUsrInput() {
+        return imgData;
     }
 
     /**
      * @return a random face up card within the confines of legal suit and rank values
      */
-    private I_CardModel getRandCard() {
-        var deck = GameCardDeck.getInstance();
-        var deckIterator = deck.iterator();
-        var rand = new Random();
-        var randIndex = rand.nextInt(deck.size());
-        I_CardModel card = deckIterator.next();
-        for (int i = 0; i < randIndex; i++) {
-            card = deckIterator.next();
-        }
-
-        if (card == null)
-            throw new NoSuchElementException();
-
-        return card;
+    public Card popRanCard(){
+        int ran = getRandom( listRemain.size() );
+        Card c = listRemain.get( ran );
+        listRemain.remove(ran);
+        return c;
+    }
+    private int getRandom(int maxValue){
+        return (int) (Math.random() * maxValue);
     }
 
+
+    public void move( Move m ){
+
+        I_SolitaireStacks from = boardGet(m.moveFromStack());
+        I_SolitaireStacks to = boardGet(m.moveToStack());
+
+        //change state
+        to.addAll(from.popSubset(m.moveFromRange()));
+
+    }
+        private I_SolitaireStacks boardGet(E_PileID pile){
+            return board.getPiles()[pile.ordinal()];
+        }
+
+    private class SimBoard extends Board{
+        public SimBoard(Map<String, I_CardModel> imgData, ArrayList<I_CardModel> drawStack) {
+            super(imgData, drawStack);
+        }
+
+        @Override
+        public void move(E_PileID origin, int originPos, E_PileID destination, Map<String, I_CardModel> imgData) throws IllegalMoveException {
+            I_SolitaireStacks from = boardGet(origin);
+            I_SolitaireStacks to = boardGet(destination);
+
+            //change state
+            to.addAll(from.popSubset(originPos));
+        }
+
+        public Map<String,I_CardModel> getImageData(){
+            Map<String, I_CardModel>  map = new HashMap<>();
+            for (E_PileID e: E_PileID.values() ) {
+                List<I_CardModel> l = getPile(e);
+                map.put(e.name(), l.get(l.size() -1));
+            }
+            return map;
+        }
+    }
 }

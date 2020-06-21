@@ -8,10 +8,7 @@ import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.card.I_CardModel;
 
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static model.cabal.E_PileID.*;
 
@@ -38,10 +35,20 @@ public class BoardController implements I_BoardController {
       init(uiChoice);
     }
 
+    public BoardController(String uiChoice,ArrayList<I_CardModel> drawStack) {
+        initTemp(uiChoice,drawStack);
+    }
+
     @Override
     public void init(String uiChoice){
         this.uiChoice = uiChoice;
         this.boardModel = new Board(getCards(uiChoice));
+    }
+
+    // temporary Method for testing simulation
+    public void initTemp(String uiChoice, ArrayList<I_CardModel> drawStack){
+        this.uiChoice = uiChoice;
+        this.boardModel = new Board(getCards(uiChoice), drawStack );
     }
 
     @Override
@@ -116,7 +123,6 @@ public class BoardController implements I_BoardController {
         //todo: make it so that inputDTO promts for ui every time
         boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
     }
-
 
     // so we want to sort the moves by two values
     // 1st priority : does it move something into the ace pile

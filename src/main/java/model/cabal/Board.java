@@ -24,7 +24,6 @@ import static model.cabal.internals.card.E_CardSuit.*;
 public class Board implements I_BoardModel {
 
     private PropertyChangeSupport change;
-
     private I_SolitaireStacks[] piles;
 
     //can start here
@@ -270,7 +269,6 @@ public class Board implements I_BoardModel {
         change.firePropertyChange( makePropertyChangeEvent(destination, oldDest) );
     }
 
-
     @Override
     public boolean canMove(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException {
         I_SolitaireStacks from = get(origin);
@@ -289,8 +287,6 @@ public class Board implements I_BoardModel {
         I_SolitaireStacks from = get(origin);
         return from.canMoveFrom(range);
     }
-
-
 
     private boolean isValidMove(E_PileID from, int originPos, E_PileID to) {
 

@@ -1,14 +1,21 @@
 package model.cabal;
 
+import control.BoardController;
+import data.InputDTO;
 import data.InputSimDTO;
+import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.*;
 
+import static model.cabal.E_PileID.DRAWSTACK;
+import static model.cabal.internals.card.E_CardSuit.HEARTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -127,7 +134,7 @@ class BoardTest {
         map.put("BUILDSTACK1", new Card(E_CardSuit.SPADES, 1));
 
         I_BoardModel board = new Board(map);
-        InputSimDTO inputSim = new InputSimDTO(board);
+        InputDTO inputSim = new InputDTO("hej");
         //Todo: the error is probably here, try and figure out why it does not print
         System.out.println("sflvknsflvk"+map);
         board.turnCard(inputSim.getUsrInput());
@@ -163,6 +170,34 @@ class BoardTest {
 
     @Test
     void canMove() {
+
+        I_CardModel cards[] = {
+                // AceStacks
+                null,
+                null,
+                null,
+                null,
+                // BuildStacks
+                new Card(HEARTS, 1),
+                new Card(HEARTS, 1),
+                new Card(HEARTS, 1),
+                new Card(HEARTS, 1),
+                new Card(HEARTS, 1),
+                new Card(HEARTS, 1),
+                new Card(HEARTS, 1)
+        };
+
+        I_CardModel drawStack[] = {
+                new Card(HEARTS, 1),
+                new Card(HEARTS, 1),
+                new Card(HEARTS, 1),
+                new Card(HEARTS, 1),
+                new Card(HEARTS, 1)
+        };
+
+        ArrayList<I_CardModel> arr = new ArrayList<>(Arrays.asList(cards));
+        I_BoardModel board = createBoard( arr, Arrays.asList(drawStack));
+        System.out.println("hje");
     }
 
     @Test
@@ -178,10 +213,72 @@ class BoardTest {
         SuitStack suitStack = new SuitStack();
 
         for (int i = 0; i < elements; i++) {
-            I_CardModel card = new Card(E_CardSuit.HEARTS,i+1);
+            I_CardModel card = new Card(HEARTS,i+1);
             suitStack.add(card);
         }
 
         return suitStack;
+    }
+    private BoardController changeDrawStack(BoardController controller, I_SolitaireStacks drawStack){
+        Class<?> secretClass = controller.getClass();
+        I_BoardModel board = null;
+
+
+        while(!secretClass.getName().equals(BoardController.class.getName())) {
+            secretClass = secretClass.getSuperclass();
+        }
+
+        // firstly find the board.
+        Field fields[] = secretClass.getDeclaredFields();
+
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                if(field.getName().equals("boardModel")){
+                    board = (I_BoardModel) field.get(controller);
+                    I_BoardModel b = step2ChangeDrawStack(board, drawStack);
+                    field.set( controller ,b );
+                    break;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return controller;
+    }
+    private I_BoardModel step2ChangeDrawStack(I_BoardModel board, I_SolitaireStacks drawStack ){
+        Class<?> secretClass = board.getClass();
+        Field fields[] = secretClass.getDeclaredFields();
+
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                if(field.getName().equals("piles")){
+                    I_SolitaireStacks[] piles = (I_SolitaireStacks[]) field.get(board);
+                    piles[DRAWSTACK.ordinal()] = drawStack;
+                    field.set(board,piles);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return board;
+    }
+    private I_BoardModel createBoard(ArrayList<I_CardModel> drawstack, List<I_CardModel> list ){
+
+
+        Map<String, I_CardModel> map = new HashMap<>();
+        int i = 0;
+        for (E_PileID e: E_PileID.values()) {
+            if(e == DRAWSTACK)
+                continue;
+            map.put(e.name() , list.get(i++));
+        }
+
+
+
+        I_BoardModel b = new Board(map, drawstack);
+        return b;
     }
 }
