@@ -27,8 +27,7 @@ public class BoardController implements I_BoardController {
     protected I_InputDTO inputDTO;
     protected String uiChoice;
 
-    public BoardController() {
-
+    public BoardController(){
     }
 
     public BoardController(String uiChoice) {

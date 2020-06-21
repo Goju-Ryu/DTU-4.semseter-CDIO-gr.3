@@ -64,7 +64,6 @@ public class Board implements I_BoardModel {
 
                     //this else is only legit if we have seen a
                     // this specific card more than once.
-
                     throw new IllegalStateException("Trying to add the same card twice during construction.\ncard: " + data);
                 }
             }
