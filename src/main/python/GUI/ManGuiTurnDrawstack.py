@@ -62,7 +62,7 @@ class ManGUI(AbstractUI):
 
         #Labels I use
         myLabel0 = Label(root, text="SOLITARE KLODINKE")
-        myLabel1 = Label(root, text = "Insert revealed card below")
+        myLabel1 = Label(root, text = "Insert card from drawstack,\n and turn a new card in the drawstack")
         #myLabel2 = Label(root, text = "Coulumns: below")
         #myLabel3 = Label(root, text = "Suits: right")
         myLabel4 = Label(root, text="CDIO DTU GR. 3")

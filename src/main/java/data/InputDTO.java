@@ -31,7 +31,7 @@ public class InputDTO implements I_InputDTO {
 
 
 
-    //TODO Modify to take just one card when uiType == RevealCardGUI
+    //TODO Modify to take just one card when uiType == RevealCardGUI with camera
     @Override
     public Map<String, I_CardModel> getUsrInput(){
 
@@ -59,7 +59,9 @@ public class InputDTO implements I_InputDTO {
                 uiType = uiChoice;//"RevealCardGUI";
             }else{
                 drawIterator--;
-                uiType = "turnDrawstack";
+                if(uiChoice.equals("ManGUI")){
+                    uiType = "turnDrawstack";
+                }
             }
 //_______________________________________________________________________________________________________________________________________
 
