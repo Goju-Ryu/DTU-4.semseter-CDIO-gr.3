@@ -50,28 +50,25 @@ public class Board implements I_BoardModel {
             }
         }
 
-        for (E_PileID e: E_PileID.values()) {
-
-            I_CardModel c = imgData.get(e.toString());
-            if(c == null)
-                continue;
-            piles[e.ordinal()].add(c);
-        }
-
-
-
-        /*for (E_PileID pileID : E_PileID.values()) {
+        for (E_PileID pileID : E_PileID.values()) {
             var data = extractImgData(imgData, pileID);
 
             if (data != null) {
-                if (GameCardDeck.getInstance().remove(data)) { //if the card was in deck and now removed
+
+                // if gets an instance of GameCardDeck, so this removes the card from a collection
+                // of cards we know we haven't seen yet
+                GameCardDeck a = GameCardDeck.getInstance();
+                if ( a.remove(data) ) {
                     piles[pileID.ordinal()].add(data);
                 } else {
+
+                    //this else is only legit if we have seen a
+                    // this specific card more than once.
+
                     throw new IllegalStateException("Trying to add the same card twice during construction.\ncard: " + data);
                 }
             }
-
-        }*/
+        }
     }
 
     /**
@@ -80,41 +77,11 @@ public class Board implements I_BoardModel {
      * @param imgData
      * @param drawStack
      */
-    public Board(Map<String, I_CardModel> imgData,ArrayList<I_CardModel> drawStack) { //TODO board should take imgData to initialize self
-        change = new PropertyChangeSupport(this);
-        piles = new I_SolitaireStacks[E_PileID.values().length];
-
-        piles[DRAWSTACK.ordinal()] = new DrawStack();
-        piles[SUITSTACKHEARTS.ordinal()]  = new SuitStack();
-        piles[SUITSTACKDIAMONDS.ordinal()] = new SuitStack();
-        piles[SUITSTACKCLUBS.ordinal()]   = new SuitStack();
-        piles[SUITSTACKSPADES.ordinal()]  = new SuitStack();
-
-        for (int i = 0; i < 24; i++) {
-            piles[DRAWSTACK.ordinal()].add(drawStack.get(i));
-        }
-
-        for (int i = 0; i < 7; i++) { // for each build pile
-            for (int j = 0; j <= i; j++) {  // how many cards in this pile
-                if (piles[BUILDSTACK1.ordinal() + i] == null)
-                    piles[BUILDSTACK1.ordinal() + i] = new BuildStack();
-                else
-                    piles[BUILDSTACK1.ordinal() + i].add(new Card());
-            }
-        }
-
-        for (E_PileID pileID : E_PileID.values()) {
-            var data = extractImgData(imgData, pileID);
-
-            if (data != null) {
-                if (GameCardDeck.getInstance().remove(data)) { //if the card was in deck and now removed
-                    piles[pileID.ordinal()].add(data);
-                } else {
-                    throw new IllegalStateException("Trying to add the same card twice during construction.\ncard: " + data);
-                }
-            }
-
-        }
+    public Board(Map<String, I_CardModel> imgData,ArrayList<I_CardModel> drawStack) {
+        this(imgData);
+        get(DRAWSTACK).clear();
+        drawStack.add(extractImgData(imgData,DRAWSTACK));
+        get(DRAWSTACK).addAll(drawStack);
     }
 
 //---------  Genneral methods  -------------------------------------------------------------------------------------
