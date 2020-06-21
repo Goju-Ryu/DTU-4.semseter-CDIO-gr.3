@@ -1,20 +1,17 @@
 package control;
 
-import com.google.gson.JsonObject;
-import data.InputDTO;
+import data.MockBoard;
 import model.GameCardDeck;
 import model.Move;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
-import model.cabal.internals.DrawStack;
-import model.cabal.internals.I_SolitaireStacks;
+import model.cabal.RefBoard;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
 import java.util.*;
 import static model.cabal.E_PileID.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,9 +43,11 @@ class BoardControllerTest {
         list.add(new Card( E_CardSuit.HEARTS     , 1 ));
         list.add(new Card( E_CardSuit.CLUBS     , 1 ));
 
+
+        I_BoardModel board = new RefBoard(map,list);
+        I_BoardModel mBoard = new MockBoard(board);
+
         GameCardDeck a = GameCardDeck.getInstance();
-        I_BoardModel board = new Board(map, list);
-        a = GameCardDeck.getInstance();
         BoardController boardCnt = new testBoardCont(board);
         List<Move> result = boardCnt.possibleMoves();
 

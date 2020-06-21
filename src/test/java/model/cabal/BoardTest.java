@@ -1,8 +1,6 @@
 package model.cabal;
 
 import control.BoardController;
-import data.I_InputDTO;
-import data.InputDTO;
 import data.InputSimDTO;
 import data.MockBoard;
 import model.GameCardDeck;

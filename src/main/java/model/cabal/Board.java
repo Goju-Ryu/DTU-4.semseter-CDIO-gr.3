@@ -21,10 +21,9 @@ import static model.cabal.internals.card.E_CardSuit.*;
 /**
  * This is the model of the entire cabal
  */
-public class Board implements I_BoardModel {
+public class Board extends AbstractBoardUtility implements I_BoardModel {
 
     private PropertyChangeSupport change;
-    private I_SolitaireStacks[] piles;
 
     //can start here
     public Board(Map<String, I_CardModel> imgData) { //TODO board should take imgData to initialize self
@@ -76,7 +75,7 @@ public class Board implements I_BoardModel {
      * @param imgData
      * @param drawStack
      */
-    public Board(Map<String, I_CardModel> imgData,ArrayList<I_CardModel> drawStack) {
+    public Board(Map<String, I_CardModel> imgData, ArrayList<I_CardModel> drawStack) {
         this(imgData);
         get(DRAWSTACK).clear();
         drawStack.add(extractImgData(imgData,DRAWSTACK));
@@ -104,76 +103,10 @@ public class Board implements I_BoardModel {
         return List.copyOf(get(pile));
     }
 
-    private I_SolitaireStacks get(E_PileID pile){
-        return piles[pile.ordinal()];
-    }
-
+    @Override
     public I_SolitaireStacks[] getPiles(){
         return piles;
     };
-
-    /**
-     * checks if state is equal to physical board
-     * @param imgData state to validate against
-     * @throws IllegalStateException if state is out of sync
-     */
-    private void validateState(Map<String, I_CardModel> imgData) throws IllegalStateException {
-        for (E_PileID pileID : E_PileID.values()) {
-            var pile = piles[pileID.ordinal()];
-            validateCardState(pileID, pile.getCard(pile.size() - 1), extractImgData(imgData, pileID));
-        }
-    }
-
-    /**
-     * Query the map for the relevant data and return it.
-     * @param imgData The map of data to check extract the data from
-     * @param key The pile to which the data should correspond
-     * @return The data the map contains about the given pile
-     */
-    private I_CardModel extractImgData(Map<String, I_CardModel> imgData, E_PileID key) {
-        return imgData.getOrDefault(key.name(), null); //This assumes a strict naming scheme and will return null if not found
-    }
-
-    /**
-     * Method for generating an IllegalStateException with an appropriate error message
-     * @param pos The pile where state is out of sync
-     * @param physCard The value of the physical card
-     * @param virtCard The card represented in the virtual representation of the board (this class)
-     * @param info Extra information that might be helpful
-     * @return An exception with a nicely formatted message
-     */
-    private IllegalStateException
-    makeStateException(E_PileID pos, I_CardModel physCard, I_CardModel virtCard, String info) {
-        return new IllegalStateException(
-                "The virtual board and the physical board is out of sync\n" +
-                "\tPosition:\t" + pos + "\n" +
-                "\tVirtual:\t" + virtCard + "\n" +
-                "\tPhysical:\t" + physCard + "\n" +
-                "\tMethod:\t" +  Thread.currentThread().getStackTrace()[2] + "\n" +
-                "\tInfo:\t" + info
-        );
-    }
-
-    /**
-     * Checks if the state of a card is compatible with the card gotten from the external model.
-     * If the card is face down, the method will try to reveal it with the correct values.
-     * @param origin the pile the card is from.
-     * @param cardModel the card to validate.
-     * @param imgCard the card being validated against
-     */
-    private void
-    validateCardState(E_PileID origin, I_CardModel cardModel, I_CardModel imgCard) throws IllegalStateException {
-        if ( cardModel != null && !cardModel.isFacedUp()) {
-            if (GameCardDeck.getInstance().remove(imgCard)) { //if the card was in deck and now removed
-                cardModel.reveal(imgCard.getSuit(), imgCard.getRank());
-            } else {
-                throw new IllegalStateException("Trying to reveal card but card is already in play.\ncard: " + imgCard);
-            }
-        } else {
-            if (!Objects.equals(cardModel, imgCard))
-                throw makeStateException(origin, imgCard, cardModel, "no info");
-        }
-    }
 
 //---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
 
@@ -241,7 +174,11 @@ public class Board implements I_BoardModel {
         I_SolitaireStacks to = get(destination);
 
         boolean a = isValidMove(origin, originPos, destination);
+        if(!a)
+            return false;
         boolean b = from.canMoveFrom(originPos);
+        if(!b)
+            return false;
         boolean c = to.canMoveTo(from.getSubset(originPos));
 
         return a && b && c;
@@ -254,46 +191,7 @@ public class Board implements I_BoardModel {
         return from.canMoveFrom(range);
     }
 
-    private boolean isValidMove(E_PileID from, int originPos, E_PileID to) {
 
-        // if you try to move to the same stack
-        if(from == to)
-            return false;
-
-        // If you try to move to the turn pile
-        if (to.equals(DRAWSTACK))
-            return false;
-
-        var fromPile = get(from);
-
-        I_CardModel c = fromPile.getCard(fromPile.size() - originPos);
-        if ( !c.isFacedUp() )
-            return false;
-
-        //var cardSuits = fromPile.getSubset(originPos).stream().map(I_CardModel::getSuit);
-
-        switch (to) {
-            case SUITSTACKHEARTS:
-                if(c.getSuit() != HEARTS)
-                    return false;
-                break;
-            case SUITSTACKDIAMONDS:
-                if(c.getSuit() != DIAMONDS)
-                    return false;
-                break;
-            case SUITSTACKSPADES:
-                if(c.getSuit() != SPADES)
-                    return false;
-                break;
-            case SUITSTACKCLUBS:
-                if(c.getSuit() != CLUBS)
-                    return false;
-                break;
-        }
-
-
-        return true;
-    }
 //-----------------------------------PropertyEditor methods-------------------------------------------------------------
 
     @Override
@@ -317,4 +215,8 @@ public class Board implements I_BoardModel {
         );
 
     }
+
+
+
+
 }

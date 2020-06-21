@@ -4,7 +4,6 @@ import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.I_SolitaireStacks;
-import model.cabal.internals.StackBase;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
@@ -20,7 +19,6 @@ import java.util.Map;
  */
 public class MockBoard implements I_BoardModel {
     I_BoardModel boardImplementation;
-
 
     public MockBoard() {
         boardImplementation = new Board(Map.of());
