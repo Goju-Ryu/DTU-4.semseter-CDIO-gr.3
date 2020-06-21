@@ -16,21 +16,27 @@ class DrawStackTest {
     void popSubset() {
         DrawStack drawStack = createDrawstack(4,E_CardSuit.CLUBS);
         I_CardModel card = new Card(E_CardSuit.CLUBS,1,true);
+        I_CardModel card2 = null;
 
         // You need to turn a Card before you can pop it from the pile
         drawStack.turnCard();
 
         if (drawStack.canMoveFrom(1)){
-            Collection<I_CardModel> drawStack1 = drawStack.popSubset();
+            System.out.println("passed");
+            Collection<I_CardModel> drawStack1 = drawStack.popSubset(1);
 
-            System.out.println("Card in that is popped from the drawstack: "+drawStack1);
+            for (I_CardModel inCard : drawStack1) {
+                card2 = inCard;
+            }
+
+            System.out.println("Card in that is popped from the drawstack: "+card2);
             System.out.println("Card to compare with: "+card);
 
-            assertEquals(card,drawStack1.iterator().next());
+            assertEquals(card,card2);
 
             // If you try to pop more than 1 element from the draw stack, an IllegalMoveException will be thrown
             assertThrows(IllegalMoveException.class,
-                    ()-> drawStack.popSubset(1),
+                    ()-> drawStack.popSubset(2),
                     "You cannot pop more than 1 card at a time, so range should be 0");
         }else {
             fail();
