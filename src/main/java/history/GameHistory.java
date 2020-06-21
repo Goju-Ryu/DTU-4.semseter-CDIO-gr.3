@@ -131,24 +131,18 @@ public class GameHistory implements I_GameHistory {
         if ( !isNewValueTypeCorrect(event) ) return;
 
 
-        if (!matchesPreviousEvents(event)) {
+        if (!completesMove(event)) {
             addGameState();
             numNonDrawEvents = 0;
         }
 
-        var newValue = event.getNewValue();
-        if (newValue instanceof Collection)
-            if (((Collection) newValue).isEmpty()) {
-                currentState.put(pileID, List.of());
-            } else {
-                if (((Collection<Object>) newValue).stream().anyMatch(e -> !(e instanceof  I_CardModel))) {
-                    log.warning("An event caught by this class did not conform to type: Collection<I_CardModel>." +
-                            "\n\tEvent: " + event);
-                } else {
-                    currentState.put(pileID, (List<I_CardModel>)newValue);
-                }
+        try {
+            Collection<I_CardModel> newValue = ((Collection<I_CardModel>)event.getNewValue());
+            currentState.put(pileID, List.copyOf((List<I_CardModel>)newValue));
+        } catch (ClassCastException e) {
+            log.warning("Failed to change state on event:\n\t" + event);
+        }
 
-            }
 
     }
 
@@ -221,7 +215,7 @@ public class GameHistory implements I_GameHistory {
      * @param event the incoming event
      * @return true if the two events are part of the same move operation, false otherwise.
      */
-    private boolean matchesPreviousEvents(PropertyChangeEvent event) {
+    private boolean completesMove(PropertyChangeEvent event) {
         E_PileID pileID = getEventSourcePile(event);
         if (pileID.equals(DRAWSTACK)) return true;
 
@@ -241,9 +235,19 @@ public class GameHistory implements I_GameHistory {
             );
             return false;
         }
-        List<?>  newValue = List.of(event.getNewValue());
 
-        if ( newValue.size() > 0 && !(newValue.get(0) instanceof I_CardModel) ) {
+        List<Object>  newValue;
+        try {
+            newValue = List.copyOf((Collection<Object>) event.getNewValue());
+        } catch (ClassCastException e) {
+            log.warning("Trying to cast new value in event to Collection<Object> but failed:\n\t" + event);
+            return false;
+        }
+
+        if (newValue.size() < 1)
+            return true;
+
+        if (newValue.stream().anyMatch(e -> !(e instanceof I_CardModel))) {
             log.warning(
                     "New value does not conform to constraints. " +
                     "New value is a Collection not containing I_CardModel."
