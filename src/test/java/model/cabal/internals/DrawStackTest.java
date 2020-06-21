@@ -23,7 +23,7 @@ class DrawStackTest {
 
         if (drawStack.canMoveFrom(1)){
             System.out.println("passed");
-            Collection<I_CardModel> drawStack1 = drawStack.popSubset(1);
+            Collection<I_CardModel> drawStack1 = drawStack.popSubset();
 
             for (I_CardModel inCard : drawStack1) {
                 card2 = inCard;

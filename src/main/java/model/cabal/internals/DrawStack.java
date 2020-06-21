@@ -30,7 +30,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
 //-----------  Implementation ----------------------------------------------------------------
 
     public Collection<I_CardModel> popSubset() throws IllegalMoveException {
-        return popSubset(0);
+        return popSubset(1);
     }
 
     @Override
