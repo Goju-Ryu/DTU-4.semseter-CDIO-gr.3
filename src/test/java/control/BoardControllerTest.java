@@ -27,10 +27,21 @@ class BoardControllerTest {
         protected I_BoardModel refBoardModel;
         public testBoardCont(I_BoardModel refBoard) {
             refBoardModel = refBoard;
-            inputDTO = new InputSimDTO(refBoardModel);
+            inputDTO = new InputSimDTO(new TestGameCardDeck(refBoard));
             boardModel = refBoard;
         }
 
+    }
+    private class TestGameCardDeck extends GameCardDeck{
+        public TestGameCardDeck(I_BoardModel m){
+            super();
+            for (I_SolitaireStacks s : m.getPiles()) {
+                for (I_CardModel c: s) {
+                    if(c.isFacedUp())
+                        super.remove(c);
+                }
+            }
+        }
     }
 
     @Test
@@ -54,7 +65,6 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         I_BoardModel board = new testBoard(map,list);
-        GameCardDeck a = GameCardDeck.getInstance();
         BoardController boardCnt = new testBoardCont(board);
 
 
@@ -88,7 +98,6 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         I_BoardModel board = new testBoard(map,list);
-        GameCardDeck a = GameCardDeck.getInstance();
         BoardController boardCnt = new testBoardCont(board);
 
         List<Move> result = boardCnt.possibleMoves();
@@ -110,7 +119,6 @@ class BoardControllerTest {
 
 
         I_BoardModel board = new testBoard(map);
-        GameCardDeck a = GameCardDeck.getInstance();
         BoardController boardCnt = new testBoardCont(board);
 
         List<Move> result = boardCnt.possibleMoves();
@@ -130,7 +138,6 @@ class BoardControllerTest {
 
 
         I_BoardModel board = new testBoard(map);
-        GameCardDeck a = GameCardDeck.getInstance();
         BoardController boardCnt = new testBoardCont(board);
 
         List<Move> result = boardCnt.possibleMoves();
@@ -150,7 +157,6 @@ class BoardControllerTest {
 
 
         I_BoardModel board = new testBoard(map);
-        GameCardDeck a = GameCardDeck.getInstance();
         BoardController boardCnt = new testBoardCont(board);
 
         List<Move> result = boardCnt.possibleMoves();
@@ -171,7 +177,6 @@ class BoardControllerTest {
 
 
         I_BoardModel board = new testBoard(map);
-        GameCardDeck a = GameCardDeck.getInstance();
         BoardController boardCnt = new testBoardCont(board);
 
         List<Move> result = boardCnt.possibleMoves();
