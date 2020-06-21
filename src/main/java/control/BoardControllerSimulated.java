@@ -17,7 +17,7 @@ import model.cabal.RefBoard;
  */
 public class BoardControllerSimulated extends BoardController {
 
-    private I_BoardModel refBoardModel;
+    protected I_BoardModel refBoardModel;
 
     public BoardControllerSimulated() {
         this(new RefBoard());
