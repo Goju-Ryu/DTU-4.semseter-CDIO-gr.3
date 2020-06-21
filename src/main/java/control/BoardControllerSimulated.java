@@ -20,10 +20,27 @@ public class BoardControllerSimulated extends BoardController {
 
     protected I_BoardModel refBoardModel;
 
+
+    /**
+     * Creates a standard simulation with a set game layout.
+     * Use this if you don't care about changing the layout of the board
+     * but just want to simulate a pre determined game.
+     */
     public BoardControllerSimulated() {
         this(new RefBoard(), new GameCardDeck());
     }
 
+    public BoardControllerSimulated(GameCardDeck cardDeck) {
+        super(new InputSimDTO(cardDeck));
+    }
+
+
+    /**
+     * Make a new test game with full control over it's starting conditions.
+     *
+     * @param refBoard The board simulating the physical board. this is the judge of what the board should look like.
+     * @param cardDeck The deck that keeps track of which cards are known by the simulated board.
+     */
     public BoardControllerSimulated(I_BoardModel refBoard, GameCardDeck cardDeck) {
         super(new InputSimDTO(refBoard, cardDeck));
         refBoardModel = refBoard;
@@ -33,7 +50,8 @@ public class BoardControllerSimulated extends BoardController {
 
     @Override
     public void makeMove(Move move) {
-        refBoardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
+        if (refBoardModel != null)
+            refBoardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
         super.makeMove(move);
     }
 

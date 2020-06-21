@@ -13,7 +13,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 import static model.cabal.E_PileID.*;
-import static model.cabal.internals.card.E_CardSuit.*;
+import static model.cabal.internals.card.E_CardSuit.HEARTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
