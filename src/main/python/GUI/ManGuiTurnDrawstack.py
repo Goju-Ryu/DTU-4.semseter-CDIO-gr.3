@@ -124,7 +124,7 @@ class ManGUI(AbstractUI):
         # should be comented out when not developing
         def myMove():
             inp = json.dumps(
-                {"DRAWSTACK": {"suit": "SPADES", "rank": 4, "isFacedUp": "true"},
+                {"DRAWSTACK": {"suit": "DIAMONDS", "rank": 4, "isFacedUp": "true"},
                  "SUITSTACKHEARTS": None,
                  "SUITSTACKCLUBS": None,
                  "SUITSTACKDIAMONDS": None,
