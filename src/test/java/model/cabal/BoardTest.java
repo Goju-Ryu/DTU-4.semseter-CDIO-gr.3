@@ -1,6 +1,7 @@
 package model.cabal;
 
 import control.BoardController;
+import data.I_InputDTO;
 import data.InputDTO;
 import data.InputSimDTO;
 import data.MockBoard;
@@ -46,7 +47,7 @@ class BoardTest {
     }
 
     @Test
-    void isStackComplete2() { //TODO Actually test the method it says it does
+    void isStackComplete() { //TODO Actually test the method it says it does
 
         Map<String, I_CardModel> map = new HashMap<>();
 
@@ -132,29 +133,6 @@ class BoardTest {
 
 
         System.out.println("hej");
-    }
-
-    @Test
-    void isStackComplete() { //TODO Actually test the method it says it does
-        Map<String, I_CardModel> map = new HashMap<>();
-        for (int i = 0; i <= 7; i++) {
-            map.put("BUILDSTACK" + i, new Card(E_CardSuit.SPADES, i+1));
-        }
-        map.put("BUILDSTACK1", new Card(E_CardSuit.SPADES, 1));
-
-        I_BoardModel board = new Board(map);
-        InputDTO inputSim = new InputDTO("hej");
-        //Todo: the error is probably here, try and figure out why it does not print
-        System.out.println("sflvknsflvk"+map);
-        board.turnCard(inputSim.getUsrInput());
-
-        if (board.canMove(E_PileID.BUILDSTACK1, E_PileID.SUITSTACKSPADES)) {
-            System.out.println("The move is legal");
-        }
-        var testData = inputSim.getUsrInput();
-        board.move(E_PileID.BUILDSTACK1, E_PileID.SUITSTACKSPADES, testData);
-
-        System.out.println(board.getPile(E_PileID.BUILDSTACK1));
     }
 
     @Test

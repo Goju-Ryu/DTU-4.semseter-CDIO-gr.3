@@ -68,15 +68,9 @@ public class BoardController implements I_BoardController {
         for(E_PileID from: E_PileID.values()){
             for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
                 for (E_PileID to: E_PileID.values()) {
-                    boolean aceTo = false;
-                    if((to == SUITSTACKCLUBS || to == SUITSTACKHEARTS || to == SUITSTACKDIAMONDS || to==SUITSTACKSPADES))
-                        aceTo=true;
 
-                    int a = boardModel.getPile(from).size() - depth;
-                    I_CardModel c = boardModel.getPile(from).get(a);
                     if(from == to)
                         continue;
-
 
                     // now we need to check if the move is even possible at this index.
                     if (!boardModel.canMoveFrom(from, depth)) {
@@ -121,7 +115,18 @@ public class BoardController implements I_BoardController {
     @Override
     public void makeMove(Move move) {
         //todo: make it so that inputDTO promts for ui every time
-        boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
+        if( move.moveFromStack() == DRAWSTACK ){
+            // draw stack has a unique rule set, that makes.
+            for (int i = 0; i < move.moveFromRange()-1 ; i++) {
+                boardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
+            }
+            // now when it has turned all the necesary cards in the drawstack we give it an input.
+            boardModel.turnCard(inputDTO.getUsrInput());
+            boardModel.move(move.moveFromStack(), 1, move.moveToStack(), inputDTO.getUsrInput());
+        }else {
+            boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
+        }
+
     }
 
     // so we want to sort the moves by two values
