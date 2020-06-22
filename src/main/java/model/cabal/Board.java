@@ -50,21 +50,25 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         }
 
         for (E_PileID pileID : E_PileID.values()) {
-            var data = extractImgData(imgData, pileID);
+            try {
+                var data = extractImgData(imgData, pileID);
 
-            if (data != null) {
+                if (data != null) {
 
-                // if gets an instance of GameCardDeck, so this removes the card from a collection
-                // of cards we know we haven't seen yet
+                    // if gets an instance of GameCardDeck, so this removes the card from a collection
+                    // of cards we know we haven't seen yet
 
-                if ( deck.remove(data) ) {
-                    piles[pileID.ordinal()].add(data);
-                } else {
+                    if (deck.remove(data)) {
+                        piles[pileID.ordinal()].add(data);
+                    } else {
 
-                    //this else is only legit if we have seen a
-                    // this specific card more than once.
-                    throw new IllegalStateException("Trying to add the same card twice during construction.\ncard: " + data);
+                        //this else is only legit if we have seen a
+                        // this specific card more than once.
+                        throw new IllegalStateException("Trying to add the same card twice during construction.\ncard: " + data);
+                    }
                 }
+            }catch (Exception e){
+                System.out.println("an input was empty");
             }
         }
     }
@@ -120,7 +124,6 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         var returnable = turnPile.turnCard();
 
         var imgCard = extractImgData(imgData, DRAWSTACK);
-        validateCardState(DRAWSTACK, returnable, imgCard);
 
         return returnable;
     }
@@ -157,11 +160,6 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         //change state
         to.addAll(from.popSubset(originPos));
 
-        //check that state is consistent with the physical board
-        if (!from.isEmpty( ))
-            validateCardState(origin, from.getCard(from.size() - 1), extractImgData(imgData, origin));
-        else
-            validateCardState(origin, null, extractImgData(imgData, origin));
 
         //notify listeners om state before and after state change
         change.firePropertyChange( makePropertyChangeEvent(origin, oldOrigin) );

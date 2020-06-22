@@ -102,12 +102,13 @@ public class BoardController implements I_BoardController {
             for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
                 for (E_PileID to: E_PileID.values()) {
                     // out kommented commands used for easy debugging
-                    /*boolean aceTo = false;
+                    boolean aceTo = false;
                     if((to == SUITSTACKCLUBS || to == SUITSTACKHEARTS || to == SUITSTACKDIAMONDS || to==SUITSTACKSPADES))
                         aceTo=true;
 
                     int a = boardModel.getPile(from).size() - depth;
-                    I_CardModel c = boardModel.getPile(from).get(a);*/
+                    I_CardModel c = boardModel.getPile(from).get(a);
+
                     if(from == to)
                         continue;
 
@@ -131,7 +132,7 @@ public class BoardController implements I_BoardController {
                         improveAce = true;
                     }
 
-                    Move move = new Move( from,to, depth, improveAce, improveCardReveal, "Move Desc");
+                    Move move = new Move( to,from, depth, improveAce, improveCardReveal, "Move Desc");
                     moves.add(move);
 
                 }
@@ -161,12 +162,12 @@ public class BoardController implements I_BoardController {
                 boardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
             }
             // now when it has turned all the necesary cards in the drawstack we give it an input.
-            boardModel.turnCard(inputDTO.getUsrInput());
+            Map<String , I_CardModel> a = inputDTO.getUsrInput();
+            boardModel.turnCard(a);
             boardModel.move(move.moveFromStack(), 1, move.moveToStack(), inputDTO.getUsrInput());
         }else {
             boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
         }
-
     }
 
     // so we want to sort the moves by two values
