@@ -77,7 +77,15 @@ public class InputDTO implements I_InputDTO {
         gsonBuilder.serializeNulls();
         Gson gson = gsonBuilder.setPrettyPrinting().create();
         Type mapType = new TypeToken<Map<String, Card>>(){}.getType();
-        return gson.fromJson(jsonString, mapType);
+        try {
+            return gson.fromJson(jsonString, mapType);
+
+        } catch (Exception e ) {
+            System.out.println(jsonString);
+            System.out.println(mapType);
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
