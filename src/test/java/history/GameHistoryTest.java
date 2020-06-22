@@ -139,9 +139,9 @@ class GameHistoryTest {
 
         board.addPropertyChangeListener(hist);
 
-        assertThrows(NoSuchElementException.class, () -> hist.next());
+        assertThrows(NoSuchElementException.class, hist::next);
         board.move(BUILDSTACK1, SUITSTACKHEARTS, input.getUsrInput());
         assertEquals(I_GameState.class, hist.next().getClass());
-        assertThrows(NoSuchElementException.class, () -> hist.next());
+        assertThrows(NoSuchElementException.class, hist::next);
     }
 }
