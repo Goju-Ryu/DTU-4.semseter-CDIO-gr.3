@@ -66,41 +66,41 @@ public class BoardController implements I_BoardController {
 
         //This is intended for testing purposes and should not be used for the usual "cam" or "gui"
 //        if (!uiChoice.equals("test")) {
-//            for(int i = 0; i < 24; i++) {
-//                I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
-//                //drawCard.
-//                drawCards.add(drawCard);
-//                System.out.println("currDrawCard: " + drawCard.toString());
+            for(int i = 0; i < 24; i++) {
+                I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
+                //drawCard.
+                drawCards.add(drawCard);
+                System.out.println("currDrawCard: " + drawCard.toString());
 //
 //                if(uiChoice.equals("cam")) {
-//                    ScanSingleton.getScanner().next();
+                    ScanSingleton.getScanner().next();
 //                }
-//            }
+            }
 
-            drawCards.add(new Card(E_CardSuit.HEARTS , 6, true));
-            drawCards.add(new Card(E_CardSuit.HEARTS , 7, true));
-            drawCards.add(new Card(E_CardSuit.CLUBS , 6, true));
-            drawCards.add(new Card(E_CardSuit.DIAMONDS , 7, true));
-            drawCards.add(new Card(E_CardSuit.SPADES , 2, true));
-            drawCards.add(new Card(E_CardSuit.SPADES , 7, true));
-            drawCards.add(new Card(E_CardSuit.CLUBS , 4, true));
-            drawCards.add(new Card(E_CardSuit.SPADES , 6, true));
-            drawCards.add(new Card(E_CardSuit.HEARTS , 5, true));
-            drawCards.add(new Card(E_CardSuit.CLUBS , 3, true));
-            drawCards.add(new Card(E_CardSuit.DIAMONDS , 5, true));
-            drawCards.add(new Card(E_CardSuit.DIAMONDS , 4, true));
-            drawCards.add(new Card(E_CardSuit.CLUBS , 5, true));
-            drawCards.add(new Card(E_CardSuit.SPADES , 4, true));
-            drawCards.add(new Card(E_CardSuit.CLUBS , 2, true));
-            drawCards.add(new Card(E_CardSuit.HEARTS , 8, true));
-            drawCards.add(new Card(E_CardSuit.SPADES , 11, true));
-            drawCards.add(new Card(E_CardSuit.HEARTS , 11, true));
-            drawCards.add(new Card(E_CardSuit.DIAMONDS , 9, true));
-            drawCards.add(new Card(E_CardSuit.HEARTS , 2, true));
-            drawCards.add(new Card(E_CardSuit.HEARTS , 3, true));
-            drawCards.add(new Card(E_CardSuit.DIAMONDS , 3, true));
-            drawCards.add(new Card(E_CardSuit.CLUBS , 7, true));
-            drawCards.add(new Card(E_CardSuit.SPADES , 8, true));
+//            drawCards.add(new Card(E_CardSuit.HEARTS , 6, true));
+//            drawCards.add(new Card(E_CardSuit.HEARTS , 7, true));
+//            drawCards.add(new Card(E_CardSuit.CLUBS , 6, true));
+//            drawCards.add(new Card(E_CardSuit.DIAMONDS , 7, true));
+//            drawCards.add(new Card(E_CardSuit.SPADES , 2, true));
+//            drawCards.add(new Card(E_CardSuit.SPADES , 7, true));
+//            drawCards.add(new Card(E_CardSuit.CLUBS , 4, true));
+//            drawCards.add(new Card(E_CardSuit.SPADES , 6, true));
+//            drawCards.add(new Card(E_CardSuit.HEARTS , 5, true));
+//            drawCards.add(new Card(E_CardSuit.CLUBS , 3, true));
+//            drawCards.add(new Card(E_CardSuit.DIAMONDS , 5, true));
+//            drawCards.add(new Card(E_CardSuit.DIAMONDS , 4, true));
+//            drawCards.add(new Card(E_CardSuit.CLUBS , 5, true));
+//            drawCards.add(new Card(E_CardSuit.SPADES , 4, true));
+//            drawCards.add(new Card(E_CardSuit.CLUBS , 2, true));
+//            drawCards.add(new Card(E_CardSuit.HEARTS , 8, true));
+//            drawCards.add(new Card(E_CardSuit.SPADES , 11, true));
+//            drawCards.add(new Card(E_CardSuit.HEARTS , 11, true));
+//            drawCards.add(new Card(E_CardSuit.DIAMONDS , 9, true));
+//            drawCards.add(new Card(E_CardSuit.HEARTS , 2, true));
+//            drawCards.add(new Card(E_CardSuit.HEARTS , 3, true));
+//            drawCards.add(new Card(E_CardSuit.DIAMONDS , 3, true));
+//            drawCards.add(new Card(E_CardSuit.CLUBS , 7, true));
+//            drawCards.add(new Card(E_CardSuit.SPADES , 8, true));
 
 
 

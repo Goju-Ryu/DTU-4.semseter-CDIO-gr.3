@@ -36,7 +36,7 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         piles[SUITSTACKCLUBS.ordinal()]   = new SuitStack();
         piles[SUITSTACKSPADES.ordinal()]  = new SuitStack();
 
-        for (int i = 0; i < 24; i++) {
+        for (int i = 0; i < 23; i++) {
             piles[DRAWSTACK.ordinal()].add(new Card());
         }
 

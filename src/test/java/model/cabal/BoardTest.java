@@ -91,7 +91,7 @@ class BoardTest {
         for (E_PileID e: E_PileID.values()) {
             switch(e){
                 case DRAWSTACK:
-                    assertEquals(25,board.getPile(e).size());
+                    assertEquals(25,board.getPile(e).size());   //TODO there should only be 24 ??? this results in a total of 53 cards, when there should be 52
                     break;
                 case SUITSTACKCLUBS:
                     assertEquals(0,board.getPile(e).size());
