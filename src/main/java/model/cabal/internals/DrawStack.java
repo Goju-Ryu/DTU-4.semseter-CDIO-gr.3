@@ -34,7 +34,8 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
     }
 
     @Override
-    public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
+    public Collection<I_CardModel> getSubset(int range) {
+        int tempDrawIndex = drawIndex;
         if (!canMoveFrom()) {
             throw new IllegalMoveException();//todo msg
         }
@@ -42,7 +43,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
         if (range > 1)
             throw new IllegalMoveException("drawstack can only move one card at a time.");
 
-        int rangeIndex = drawIndex + range ;
+        int rangeIndex = tempDrawIndex + range ;
         if(!stack.get(rangeIndex % size()).isFacedUp()){
             throw new IllegalMoveException("Card at this range: "+range+" has not been turned yet");
         }
@@ -50,7 +51,13 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
         if (range == 0)
             return List.of();
 
-        var returnable = List.of( stack.get(drawIndex) );
+        List<I_CardModel> returnable = List.of( stack.get(tempDrawIndex) );
+        return returnable;
+    }
+
+    @Override
+    public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
+        Collection<I_CardModel> returnable = getSubset(range);
         stack.remove(drawIndex--); //remove the card and lower index to point to the new card that can be drawn
         return returnable;
     }
@@ -69,8 +76,6 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
 
         return stack.get(rangeIndex % size()).isFacedUp();
     }
-
-
 
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
