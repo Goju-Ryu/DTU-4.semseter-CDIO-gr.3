@@ -1,8 +1,6 @@
 package control;
 
 import model.Move;
-import model.cabal.Board;
-import model.cabal.I_BoardModel;
 
 import java.util.List;
 import java.util.Scanner;

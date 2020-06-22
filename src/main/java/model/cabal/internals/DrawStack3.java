@@ -1,3 +1,4 @@
+/*
 package model.cabal.internals;
 
 import model.cabal.internals.card.I_CardModel;
@@ -8,23 +9,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class DrawStack extends StackBase implements I_SolitaireStacks {
+public class DrawStack3 extends StackBase implements I_SolitaireStacks {
 
-    /**
-     * This variable describes which cards have been drawn and which haven't
-     * every index higher than this value has not yet ben drawn and the lower ones has.
-     * This means that the index always points at the card that is able to be drawn out on the board.
-     */
-    protected int drawIndex;
-
-
+    int drawIndex;
     public DrawStack() {
         this(new ArrayList<>());
     }
 
     public DrawStack(List<I_CardModel> list) {
         super(list);
-        drawIndex = -1;
+        drawIndex = size()-1;
     }
 
 //-----------  Implementation ----------------------------------------------------------------
@@ -39,19 +33,15 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
             throw new IllegalMoveException();//todo msg
         }
 
-        if (range > 1)
-            throw new IllegalMoveException("drawstack can only move one card at a time.");
-
-        int rangeIndex = drawIndex + range ;
-        if(!stack.get(rangeIndex % size()).isFacedUp()){
+        if(!stack.get(currentTopConvertRange(range)).isFacedUp()){
             throw new IllegalMoveException("Card at this range: "+range+" has not been turned yet");
         }
 
         if (range == 0)
             return List.of();
 
-        var returnable = List.of( stack.get(drawIndex) );
-        stack.remove(drawIndex--); //remove the card and lower index to point to the new card that can be drawn
+        var returnable = List.of( stack.get(currentTopConvertRange(range)) );
+        stack.remove(currentTopConvertRange(range)); //remove the card and lower index to point to the new card that can be drawn
         return returnable;
     }
 
@@ -65,12 +55,8 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
             );
         }
 
-        int rangeIndex = drawIndex + range ;
-
-        return stack.get(rangeIndex % size()).isFacedUp();
+        return stack.get(currentTopConvertRange(range)).isFacedUp();
     }
-
-
 
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
@@ -79,8 +65,18 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
 
 //-------------------  DrawStack specific methods  ----------------------------------------------------------
 
+    private int currentTopConvertRange(int range){
+
+
+        int f = drawIndex - ( range  );
+        if(drawIndex < 0)
+            drawIndex += (size() );
+        return drawIndex;
+    }
+
     public I_CardModel turnCard() {
-        return getCard(++drawIndex);
+        currentTopConvertRange(1);
+        return getCard(drawIndex);
     }
 
     public I_CardModel getTopCard() {
@@ -88,3 +84,4 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
     }
 
 }
+*/

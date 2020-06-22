@@ -110,39 +110,34 @@ class SuitStackTest {
         BuildStack buildStack5 = new BuildStack();
         buildStack5.add(new Card(E_CardSuit.HEARTS,9,false));
 
-        if (buildStack.canMoveFrom(1)){
-            System.out.println("1st pass");
-            if (!buildStack1.canMoveFrom(2)){
-                System.out.println("2nd pass");
-                if (buildStack2.canMoveFrom(1)){
-                    System.out.println("3th pass");
-                    if (buildStack3.canMoveFrom(1)){
-                        System.out.println("4th pass");
-                        if (buildStack4.canMoveFrom(1)){
-                            System.out.println("5th pass");
-                            if (!buildStack5.canMoveFrom(1)){
-                                System.out.println("6th pass");
-
-                                assertTrue(receivingStackEmpty.canMoveTo(aceStack));
-                                assertTrue(receivingStack.canMoveTo(buildStack));
-                                assertFalse(receivingStack.canMoveTo(buildStack2));
-                                assertFalse(receivingStack.canMoveTo(buildStack3));
-                                assertFalse(receivingStack.canMoveTo(buildStack4));
-                                assertFalse(receivingStack.canMoveTo(buildStack5));
-
-                            }
-                        }else {
-                            fail();
-                        }
-                    }else {
-                        fail();
-                    }
-                }else {
-                    fail();
-                }
-            }else {
-                fail();
-            }
+        if (buildStack.canMoveFrom(1)) {
+            assertTrue(receivingStackEmpty.canMoveTo(aceStack));
+            assertTrue(receivingStack.canMoveTo(buildStack));
+        }else {
+            fail();
+        }
+        if (!buildStack1.canMoveFrom(2)) {
+            assertFalse(receivingStack.canMoveTo(buildStack1));
+        }else {
+            fail();
+        }
+        if (buildStack2.canMoveFrom(1)) {
+            assertFalse(receivingStack.canMoveTo(buildStack2));
+        }else {
+            fail();
+        }
+        if (buildStack3.canMoveFrom(1)) {
+            assertFalse(receivingStack.canMoveTo(buildStack3));
+        }else {
+            fail();
+        }
+        if (buildStack4.canMoveFrom(1)) {
+            assertFalse(receivingStack.canMoveTo(buildStack4));
+        }else {
+            fail();
+        }
+        if (!buildStack5.canMoveFrom(1)) {
+            assertFalse(receivingStack.canMoveTo(buildStack5));
         }else {
             fail();
         }
@@ -176,28 +171,33 @@ class SuitStackTest {
         drawStack5.add(new Card(E_CardSuit.HEARTS,9,false));
         drawStack5.turnCard();
 
-        if (drawStack.canMoveFrom(1)){
-            if (drawStack2.canMoveFrom(1)){
-                if (drawStack3.canMoveFrom(1)){
-                    if (drawStack4.canMoveFrom(1)){
-                        if (drawStack5.canMoveFrom(1)){
-                            System.out.println("all canMoveFrom tests passed");
-
-                            assertTrue(receivingStack.canMoveTo(drawStack));
-                            assertThrows(IndexOutOfBoundsException.class, drawStack1::turnCard,
-                                    "The drawstack is empty, so you cant turn a card");
-                            assertFalse(receivingStack.canMoveTo(drawStack2));
-                            assertFalse(receivingStack.canMoveTo(drawStack3));
-                            assertFalse(receivingStack.canMoveTo(drawStack4));
-                            assertFalse(receivingStack.canMoveTo(drawStack5));
-
-                        }
-                    }
-                }
-            }
-        } else {
+        if (drawStack.canMoveFrom(1)) {
+            assertTrue(receivingStack.canMoveTo(drawStack));
+        }else {
             fail();
         }
+        if (drawStack2.canMoveFrom(1)) {
+            assertFalse(receivingStack.canMoveTo(drawStack2));
+        }else {
+            fail();
+        }
+        if (drawStack3.canMoveFrom(1)) {
+            assertFalse(receivingStack.canMoveTo(drawStack3));
+        }else {
+            fail();
+        }
+        if (drawStack4.canMoveFrom(1)) {
+            assertFalse(receivingStack.canMoveTo(drawStack4));
+        }else {
+            fail();
+        }
+        if (!drawStack5.canMoveFrom(1)) {
+            assertFalse(receivingStack.canMoveTo(drawStack5));
+        }else {
+            fail();
+        }
+        assertThrows(IndexOutOfBoundsException.class, drawStack1::turnCard,
+                "The drawstack is empty, so you cant turn a card");
     }
 
     private SuitStack createSuitStack(int elements, boolean isFaceUp){

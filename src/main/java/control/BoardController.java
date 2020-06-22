@@ -2,6 +2,7 @@ package control;
 
 import data.I_InputDTO;
 import data.InputDTO;
+import model.GameCardDeck;
 import model.Move;
 import model.cabal.Board;
 import model.cabal.E_PileID;
@@ -10,7 +11,11 @@ import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
 
 import static model.cabal.E_PileID.*;
 
@@ -25,33 +30,36 @@ import static model.cabal.E_PileID.*;
 */
 public class BoardController implements I_BoardController {
 
-    private I_BoardModel boardModel;
+    protected I_BoardModel boardModel;
     protected I_InputDTO inputDTO;
     protected String uiChoice;
+    protected GameCardDeck deck;
     private ArrayList<I_CardModel> listOfDrawpileCards = new ArrayList<I_CardModel>();
 
+    public BoardController(boolean testBoolean){
 
+    }
 
-    public BoardController() {
+    public BoardController(){
+        this("cam");
     }
 
     public BoardController(String uiChoice) {
-      init(uiChoice);
+        this(new InputDTO(uiChoice));
     }
 
-    @Override
-    public void init(String uiChoice){
-        this.uiChoice = uiChoice;
-        inputDTO = new InputDTO(uiChoice);
+    public BoardController(I_InputDTO inputDTO) {
+        this.inputDTO = inputDTO;
+        deck = new GameCardDeck();
         //turn the draw stack through.
-        ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
+//        ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
 
         //TODO: refactor this as a tes(but not a unit test)
         //This is for testing purposes in regards to drawstack in simulation.
         //used in conjunction with "test" see below ...
         for (int i = 1; i <= 12; i++) {
-                I_CardModel simDrawCard = new Card(E_CardSuit.HEARTS,12, true);
-                I_CardModel simDrawCard2 = new Card(E_CardSuit.CLUBS, 9, true);
+            I_CardModel simDrawCard = new Card(E_CardSuit.HEARTS,12, true);
+            I_CardModel simDrawCard2 = new Card(E_CardSuit.CLUBS, 9, true);
             listOfDrawpileCards.add(simDrawCard);
             listOfDrawpileCards.add(simDrawCard2);
         }
@@ -105,9 +113,7 @@ public class BoardController implements I_BoardController {
                 " continuing on from intializing the drawstack to actualy start the game");
         ScanSingleton.getScanner().next();
 
-//        this.boardModel = new Board(getCards(uiChoice), drawCards);
-        this.boardModel = new Board(inputDTO.getUsrInput(), drawCards);
-//        this.boardModel = new Board(getCards(uiChoice), drawCards);
+        this.boardModel = new Board(inputDTO.getUsrInput(), deck);//, drawCards);
 
     }
 
@@ -130,12 +136,14 @@ public class BoardController implements I_BoardController {
         for(E_PileID from: E_PileID.values()){
             for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
                 for (E_PileID to: E_PileID.values()) {
+                    // out kommented commands used for easy debugging
                     boolean aceTo = false;
                     if((to == SUITSTACKCLUBS || to == SUITSTACKHEARTS || to == SUITSTACKDIAMONDS || to==SUITSTACKSPADES))
                         aceTo=true;
 
                     int a = boardModel.getPile(from).size() - depth;
                     I_CardModel c = boardModel.getPile(from).get(a);
+
                     if(from == to)
                         continue;
 
@@ -159,7 +167,7 @@ public class BoardController implements I_BoardController {
                         improveAce = true;
                     }
 
-                    Move move = new Move(to, from, depth, improveAce, improveCardReveal, "Move Desc");
+                    Move move = new Move( to,from, depth, improveAce, improveCardReveal, "Move Desc");
                     moves.add(move);
 
                 }
@@ -183,9 +191,19 @@ public class BoardController implements I_BoardController {
     @Override
     public void makeMove(Move move) {
         //todo: make it so that inputDTO promts for ui every time
-        boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
+        if( move.moveFromStack() == DRAWSTACK ){
+            // draw stack has a unique rule set, that makes.
+            for (int i = 0; i < move.moveFromRange()-1 ; i++) {
+                boardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
+            }
+            // now when it has turned all the necesary cards in the drawstack we give it an input.
+            Map<String , I_CardModel> a = inputDTO.getUsrInput();
+            boardModel.turnCard(a);
+            boardModel.move(move.moveFromStack(), 1, move.moveToStack(), inputDTO.getUsrInput());
+        }else {
+            boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
+        }
     }
-
 
     // so we want to sort the moves by two values
     // 1st priority : does it move something into the ace pile
