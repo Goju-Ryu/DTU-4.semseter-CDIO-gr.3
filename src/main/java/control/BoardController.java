@@ -66,7 +66,7 @@ public class BoardController implements I_BoardController {
 
         //This is intended for testing purposes and should not be used for the usual "cam" or "gui"
 //        if (!uiChoice.equals("test")) {
-            for(int i = 0; i < 24; i++) {
+            for(int i = 0; i < 1; i++) {
                 I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
                 //drawCard.
                 drawCards.add(drawCard);
