@@ -6,6 +6,7 @@ import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class DrawStack extends StackBase implements I_SolitaireStacks {
@@ -33,9 +34,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
         return popSubset(1);
     }
 
-    @Override
-    public Collection<I_CardModel> getSubset(int range) {
-        int tempDrawIndex = drawIndex;
+    public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
         if (!canMoveFrom()) {
             throw new IllegalMoveException();//todo msg
         }
@@ -43,7 +42,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
         if (range > 1)
             throw new IllegalMoveException("drawstack can only move one card at a time.");
 
-        int rangeIndex = tempDrawIndex + range ;
+        int rangeIndex = drawIndex + range ;
         if(!stack.get(rangeIndex % size()).isFacedUp()){
             throw new IllegalMoveException("Card at this range: "+range+" has not been turned yet");
         }
@@ -51,14 +50,24 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
         if (range == 0)
             return List.of();
 
-        List<I_CardModel> returnable = List.of( stack.get(tempDrawIndex) );
+        var returnable = List.of( stack.get(drawIndex) );  //getSubset(drawIndex)
+        stack.remove(drawIndex--); //remove the card and lower index to point to the new card that can be drawn
         return returnable;
     }
 
     @Override
-    public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
-        Collection<I_CardModel> returnable = getSubset(range);
-        stack.remove(drawIndex--); //remove the card and lower index to point to the new card that can be drawn
+    public Collection<I_CardModel> getSubset(int range) {
+        Collection<I_CardModel> returnable;
+        var startIndex = Math.max(drawIndex, 0); //if drawIndex is negative set this index to 0 else use drawIndex.
+
+        if (drawIndex + range < stack.size())
+            returnable = stack.subList(startIndex, startIndex + range);
+        else {
+            int rangeIndex = (startIndex + range) % stack.size();
+            returnable = stack.subList(startIndex, stack.size());
+            returnable.addAll(stack.subList(0, rangeIndex));
+        }
+
         return returnable;
     }
 
@@ -76,6 +85,8 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
 
         return stack.get(rangeIndex % size()).isFacedUp();
     }
+
+
 
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
