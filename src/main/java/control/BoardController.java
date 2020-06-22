@@ -162,12 +162,12 @@ public class BoardController implements I_BoardController {
                 boardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
             }
             // now when it has turned all the necesary cards in the drawstack we give it an input.
-            boardModel.turnCard(inputDTO.getUsrInput());
+            Map<String , I_CardModel> a = inputDTO.getUsrInput();
+            boardModel.turnCard(a);
             boardModel.move(move.moveFromStack(), 1, move.moveToStack(), inputDTO.getUsrInput());
         }else {
             boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
         }
-
     }
 
     // so we want to sort the moves by two values

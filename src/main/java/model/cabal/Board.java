@@ -120,7 +120,6 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         var returnable = turnPile.turnCard();
 
         var imgCard = extractImgData(imgData, DRAWSTACK);
-        validateCardState(DRAWSTACK, returnable, imgCard);
 
         return returnable;
     }
@@ -157,11 +156,6 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         //change state
         to.addAll(from.popSubset(originPos));
 
-        //check that state is consistent with the physical board
-        if (!from.isEmpty( ))
-            validateCardState(origin, from.getCard(from.size() - 1), extractImgData(imgData, origin));
-        else
-            validateCardState(origin, null, extractImgData(imgData, origin));
 
         //notify listeners om state before and after state change
         change.firePropertyChange( makePropertyChangeEvent(origin, oldOrigin) );

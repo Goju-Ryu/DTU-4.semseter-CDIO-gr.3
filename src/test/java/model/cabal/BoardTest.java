@@ -157,11 +157,11 @@ class BoardTest {
 
         //Move Queue
         Queue<Move> moves = new LinkedList<>();
-        moves.add( new Move(DRAWSTACK, BUILDSTACK6, 1, false , false,"") );
-        moves.add( new Move(DRAWSTACK, BUILDSTACK4, 1, false , false,"") );
-        moves.add( new Move(DRAWSTACK, BUILDSTACK5, 1, false , false,"") );
-        moves.add( new Move(DRAWSTACK, BUILDSTACK3, 1, false , false,"") );
-        //moves.add( new Move(DRAWSTACK, BUILDSTACK4, 2, false , false,"") );
+        moves.add( new Move( BUILDSTACK5,DRAWSTACK, 1, false , false,"") );
+        moves.add( new Move( BUILDSTACK4,DRAWSTACK, 1, false , false,"") );
+        moves.add( new Move( BUILDSTACK5,DRAWSTACK, 1, false , false,"") );
+        moves.add( new Move( BUILDSTACK3,DRAWSTACK, 1, false , false,"") );
+        moves.add( new Move( BUILDSTACK4,DRAWSTACK, 2, false , false,"") );
 
 
         GameCardDeck deck = new GameCardDeck();
@@ -254,7 +254,6 @@ class BoardTest {
             deck.removeAll(map.values());
         }
 
-
         private I_CardModel extractIMGData(Map<E_PileID, I_CardModel> imgData, E_PileID key) {
             return imgData.getOrDefault(key, null); //This assumes a strict naming scheme and will return null if not found
         }
@@ -297,7 +296,6 @@ class BoardTest {
             var returnable = turnPile.turnCard();
 
             var imgCard = extractImgData(imgData, DRAWSTACK);
-            validateCardState(DRAWSTACK, returnable, imgCard);
 
             return returnable;
         }
@@ -313,13 +311,7 @@ class BoardTest {
             I_SolitaireStacks to = get(destination);
 
             //change state
-            to.addAll(from.popSubset(originPos));
-
-            //check that state is consistent with the physical board
-            if (!from.isEmpty())
-                validateCardState(origin, from.getCard(from.size() - 1), extractImgData(imgData, origin));
-            else
-                validateCardState(origin, null, extractImgData(imgData, origin));
+            to.addAll( from.popSubset(originPos) );
         }
 
         @Override

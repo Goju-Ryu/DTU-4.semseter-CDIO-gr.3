@@ -74,7 +74,6 @@ class BoardControllerTest {
         I_BoardModel board = new testBoard(map,list,deck);
         BoardController boardCnt = new testBoardController(board,deck);
 
-
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(3,result.size());
 
@@ -194,8 +193,6 @@ class BoardControllerTest {
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(5, result.size());
     }
-
-
 
     /*@Test
     void make_a_move(){
@@ -346,7 +343,7 @@ class BoardControllerTest {
             var returnable = turnPile.turnCard();
 
             var imgCard = extractImgData(imgData, DRAWSTACK);
-            validateCardState(DRAWSTACK, returnable, imgCard);
+
 
             return returnable;
         }
@@ -364,11 +361,6 @@ class BoardControllerTest {
             //change state
             to.addAll(from.popSubset(originPos));
 
-            //check that state is consistent with the physical board
-            if (!from.isEmpty())
-                validateCardState(origin, from.getCard(from.size() - 1), extractImgData(imgData, origin));
-            else
-                validateCardState(origin, null, extractImgData(imgData, origin));
         }
 
         @Override

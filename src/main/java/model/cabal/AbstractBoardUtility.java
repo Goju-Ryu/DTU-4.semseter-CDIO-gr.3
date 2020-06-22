@@ -30,60 +30,6 @@ public abstract class AbstractBoardUtility {
         return piles[pile.ordinal()];
     }
 
-
-    /**
-     * checks if state is equal to physical board
-     * @param imgData state to validate against
-     * @throws IllegalStateException if state is out of sync
-     */
-    protected void validateState(Map<String, I_CardModel> imgData) throws IllegalStateException {
-        for (E_PileID pileID : E_PileID.values()) {
-            var pile = piles[pileID.ordinal()];
-            validateCardState(pileID, pile.getCard(pile.size() - 1), extractImgData(imgData, pileID));
-        }
-    }
-
-    /**
-     * Method for generating an IllegalStateException with an appropriate error message
-     * @param pos The pile where state is out of sync
-     * @param physCard The value of the physical card
-     * @param virtCard The card represented in the virtual representation of the board (this class)
-     * @param info Extra information that might be helpful
-     * @return An exception with a nicely formatted message
-     */
-    protected IllegalStateException
-    makeStateException(E_PileID pos, I_CardModel physCard, I_CardModel virtCard, String info) {
-        return new IllegalStateException(
-                "The virtual board and the physical board is out of sync\n" +
-                        "\tPosition:\t" + pos + "\n" +
-                        "\tVirtual:\t" + virtCard + "\n" +
-                        "\tPhysical:\t" + physCard + "\n" +
-                        "\tMethod:\t" +  Thread.currentThread().getStackTrace()[2] + "\n" +
-                        "\tInfo:\t" + info
-        );
-    }
-
-    /**
-     * Checks if the state of a card is compatible with the card gotten from the external model.
-     * If the card is face down, the method will try to reveal it with the correct values.
-     * @param origin the pile the card is from.
-     * @param cardModel the card to validate.
-     * @param imgCard the card being validated against
-     */
-    protected void
-    validateCardState(E_PileID origin, I_CardModel cardModel, I_CardModel imgCard) throws IllegalStateException {
-        if ( cardModel != null && !cardModel.isFacedUp()) {
-            if ( !deck.remove(imgCard) ) { //if the card was in deck and now removed
-                cardModel.reveal(imgCard.getSuit(), imgCard.getRank());
-            } else {
-                throw new IllegalStateException("Trying to reveal card but card is already in play.\ncard: " + imgCard);
-            }
-        } else {
-            if (!Objects.equals(cardModel, imgCard))
-                throw makeStateException(origin, imgCard, cardModel, "no info");
-        }
-    }
-
     protected boolean isValidMove(E_PileID from, int originPos, E_PileID to) {
 
         // if you try to move to the same stack
