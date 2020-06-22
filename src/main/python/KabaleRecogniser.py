@@ -126,7 +126,7 @@ class KabaleRecogniser:
     def recogniseCards(self):
         # looping throuch all cards found in the isolater.
         i = 0
-        gotCards = False;
+        gotCards = False
         self.cardImagesStack = []
         for c in self.cards:
             if c.exists:
@@ -143,6 +143,6 @@ class KabaleRecogniser:
                     cv2.putText(cardImage,str( rank ) , (0, 70), self.font, 0.5, (0, 0, 255), 2, cv2.LINE_AA)
                     cv2.putText(cardImage, str(suit[0]), (25, 70), self.font, 0.5, (255, 0, 0), 2, cv2.LINE_AA)
                     self.cardImagesStack.append(cardImage)
-                    gotCards = True;
+                    gotCards = True
             i += 1
-        self.gotCardImageStack = gotCards;
+        self.gotCardImageStack = gotCards
