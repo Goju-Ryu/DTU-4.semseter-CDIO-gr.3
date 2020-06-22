@@ -64,10 +64,10 @@ class KabaleRecogniser:
                 # looping throuch all cards found in the isolater.
                 self.recogniseCards()
 
-
-            if len(self.cardImagesStack) > 1:
-                cardImageStacked = Operator.stackImages(self.cardImagesStack[0], self.cardImagesStack)
-                cv2.imshow("cardStacked", cardImageStacked)
+            if self.gotCardImageStack:
+                if len(self.cardImagesStack) > 1:
+                    cardImageStacked = Operator.stackImages(self.cardImagesStack[0], self.cardImagesStack)
+                    cv2.imshow("cardStacked", cardImageStacked)
 
         # when the loop is done it is necesary to close all windows if any are open, otherwise the programs becomes
         # unresponsive, this is not necesary in the final version, but when testing it becomes an issue.
@@ -87,25 +87,46 @@ class KabaleRecogniser:
         # get. The corresponding elements in the cards list for this class starts with 0th element at the buttom right
         # corner of a game board, you imagine in from of you
 
+        for stack in stackTop:
+            if stack.rank == None:
+                stack.exists = False
+
+            if len(stack.rank) == 0:
+                stack.exists = False
+
+            if stack.suit.upper() == None:
+                stack.exists = False
+
+        for stack in stackBottom:
+            if stack.rank == None:
+                stack.exists = False
+
+            if len(stack.rank) == 0:
+                stack.exists = False
+
+            if stack.suit.upper() == None:
+                stack.exists = False
+
         results = json.dumps({
-            "DRAWSTACK": None if not stackTop[5].exists else {"suit": stackTop[5].suit.upper(), "rank": int(stackTop[5].rank), "isFacedUp": "true"},
-            "SUITSTACKHEARTS": None if not stackTop[0].exists else  {"suit": stackTop[0].suit.upper(), "rank": int(stackTop[0].rank), "isFacedUp": "true"},
-            "SUITSTACKCLUBS": None if not stackTop[1].exists else {"suit": stackTop[1].suit.upper(), "rank": int(stackTop[1].rank), "isFacedUp": "true"},
-            "SUITSTACKDIAMONDS": None if not stackTop[2].exists else {"suit": stackTop[2].suit.upper(), "rank": int(stackTop[2].rank), "isFacedUp": "true"},
-            "SUITSTACKSPADES": None if not stackTop[3].exists else {"suit": stackTop[3].suit.upper(), "rank": int(stackTop[3].rank), "isFacedUp": "true"},
-            "BUILDSTACK1": None if not stackBottom[6].exists else {"suit": stackBottom[6].suit.upper(), "rank": int(stackBottom[6].rank), "isFacedUp": "true"},
-            "BUILDSTACK2": None if not stackBottom[5].exists else {"suit": stackBottom[5].suit.upper(), "rank": int(stackBottom[5].rank), "isFacedUp": "true"},
-            "BUILDSTACK3": None if not stackBottom[4].exists else {"suit": stackBottom[4].suit.upper(), "rank": int(stackBottom[4].rank), "isFacedUp": "true"},
-            "BUILDSTACK4": None if not stackBottom[3].exists else {"suit": stackBottom[3].suit.upper(), "rank": int(stackBottom[3].rank), "isFacedUp": "true"},
-            "BUILDSTACK5": None if not stackBottom[2].exists else {"suit": stackBottom[2].suit.upper(), "rank": int(stackBottom[2].rank), "isFacedUp": "true"},
-            "BUILDSTACK6": None if not stackBottom[1].exists else {"suit": stackBottom[1].suit.upper(), "rank": int(stackBottom[1].rank), "isFacedUp": "true"},
-            "BUILDSTACK7": None if not stackBottom[0].exists else {"suit": stackBottom[0].suit.upper(), "rank": int(stackBottom[0].rank), "isFacedUp": "true"},
+            "DRAWSTACK":        None if not stackTop[5].exists else     {"suit": stackTop[5].suit.upper()   , "rank": int(stackTop[5].rank)     , "isFacedUp": "true"},
+            "SUITSTACKHEARTS":  None if not stackTop[0].exists else     {"suit": stackTop[0].suit.upper()   , "rank": int(stackTop[0].rank)     , "isFacedUp": "true"},
+            "SUITSTACKCLUBS":   None if not stackTop[1].exists else     {"suit": stackTop[1].suit.upper()   , "rank": int(stackTop[1].rank)     , "isFacedUp": "true"},
+            "SUITSTACKDIAMONDS":None if not stackTop[2].exists else     {"suit": stackTop[2].suit.upper()   , "rank": int(stackTop[2].rank)     , "isFacedUp": "true"},
+            "SUITSTACKSPADES":  None if not stackTop[3].exists else     {"suit": stackTop[3].suit.upper()   , "rank": int(stackTop[3].rank)     , "isFacedUp": "true"},
+            "BUILDSTACK1":      None if not stackBottom[6].exists else  {"suit": stackBottom[6].suit.upper(), "rank": int(stackBottom[6].rank)  , "isFacedUp": "true"},
+            "BUILDSTACK2":      None if not stackBottom[5].exists else  {"suit": stackBottom[5].suit.upper(), "rank": int(stackBottom[5].rank)  , "isFacedUp": "true"},
+            "BUILDSTACK3":      None if not stackBottom[4].exists else  {"suit": stackBottom[4].suit.upper(), "rank": int(stackBottom[4].rank)  , "isFacedUp": "true"},
+            "BUILDSTACK4":      None if not stackBottom[3].exists else  {"suit": stackBottom[3].suit.upper(), "rank": int(stackBottom[3].rank)  , "isFacedUp": "true"},
+            "BUILDSTACK5":      None if not stackBottom[2].exists else  {"suit": stackBottom[2].suit.upper(), "rank": int(stackBottom[2].rank)  , "isFacedUp": "true"},
+            "BUILDSTACK6":      None if not stackBottom[1].exists else  {"suit": stackBottom[1].suit.upper(), "rank": int(stackBottom[1].rank)  , "isFacedUp": "true"},
+            "BUILDSTACK7":      None if not stackBottom[0].exists else  {"suit": stackBottom[0].suit.upper(), "rank": int(stackBottom[0].rank)  , "isFacedUp": "true"},
         })
         return results
 
     def recogniseCards(self):
         # looping throuch all cards found in the isolater.
         i = 0
+        gotCards = False;
         self.cardImagesStack = []
         for c in self.cards:
             if c.exists:
@@ -122,5 +143,6 @@ class KabaleRecogniser:
                     cv2.putText(cardImage,str( rank ) , (0, 70), self.font, 0.5, (0, 0, 255), 2, cv2.LINE_AA)
                     cv2.putText(cardImage, str(suit[0]), (25, 70), self.font, 0.5, (255, 0, 0), 2, cv2.LINE_AA)
                     self.cardImagesStack.append(cardImage)
-
+                    gotCards = True;
             i += 1
+        self.gotCardImageStack = gotCards;
