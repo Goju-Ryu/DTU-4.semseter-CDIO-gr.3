@@ -24,15 +24,15 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
      * @return true if the current game state is equal to an earlier encountered state
      */
     default boolean isRepeatState() {
-        return isRepeatState(List.of(IDENTITY_EQUAL, PILE_SIZE_EQUAL, PILE_CONTENT_EQUAL));
+        return isRepeatState(FULL_EQUAL);
     }
 
     /**
      * Checks if the current state has been encountered before using a list of predicates to compare states with
-     * @param predicates a list of predicates testing some relation between two states.
+     * @param predicate a predicate testing some relation between two states.
      * @return true if the current game state is equal to an earlier encountered state
      */
-    boolean isRepeatState(final List<BiPredicate<I_GameState, I_GameState>> predicates);
+    boolean isRepeatState(final BiPredicate<I_GameState, I_GameState> predicate);
 
     /**
      * Checks if the current state has been encountered before.
@@ -41,17 +41,17 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
      * @return true if the current game state is equal to an earlier encountered state
      */
     default Collection<I_GameState> getRepeatStates() {
-        return getRepeatStates(List.of(IDENTITY_EQUAL, PILE_SIZE_EQUAL, PILE_CONTENT_EQUAL));
+        return getRepeatStates(FULL_EQUAL);
     }
 
     /**
-     * Checks if the current state has been encountered before using a list of predicates to compare states with.
+     * Checks if the current state has been encountered before using a list of predicate to compare states with.
      * All states that returns true given the predicate being applied to it as well as the current state are
      * being returned as a collection.
-     * @param predicates a list of predicates testing some relation between two states.
+     * @param predicate a predicate testing some relation between two states.
      * @return true if the current game state is equal to an earlier encountered state
      */
-    Collection<I_GameState> getRepeatStates(final List<BiPredicate<I_GameState, I_GameState>> predicates);
+    Collection<I_GameState> getRepeatStates(final BiPredicate<I_GameState, I_GameState> predicate);
 
 
     /**
@@ -71,6 +71,13 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
      */
     BiPredicate<I_GameState, I_GameState> PILE_CONTENT_EQUAL = I_GameHistory::contentEqual;
 
+    /**
+     * This predicate tests all of the other standard predicates in this interface.
+     * They are tried in a prioritized manor with the least expensive first.
+     * It returns as soon as it can be sure of the result.
+     */
+    BiPredicate<I_GameState, I_GameState> FULL_EQUAL = IDENTITY_EQUAL.or(PILE_SIZE_EQUAL.and(PILE_CONTENT_EQUAL));
+
 
     /**
      * Returns true only if the two states are actually both referencing the same object.
@@ -80,7 +87,20 @@ public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameSt
      * @return true if the contents of one state all equals the contents of the other state
      */
     private static boolean identityEqual(final I_GameState state1, final I_GameState state2) {
-        return state1 == state2;
+        if (state1 == state2)
+            return true;
+
+        return Stream.of(new SimpleEntry<>(state1, state2))
+                .flatMap( // transform the elements by making a new stream with the transformation to be used
+                        pair -> Arrays.stream(E_PileID.values()) // stream the pileIDs
+                                // make new pair of the elements of that pile from each state
+                                .map(pileID -> new SimpleEntry<>(
+                                                pair.getKey().get(pileID),
+                                                pair.getValue().get(pileID)
+                                        )
+                                )
+                )
+                .allMatch(pair -> pair.getKey() == pair.getValue());
     }
 
     /**

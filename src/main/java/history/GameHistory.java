@@ -70,8 +70,8 @@ public class GameHistory implements I_GameHistory {
      * @return
      */
     @Override
-    public boolean isRepeatState(List<BiPredicate<I_GameState, I_GameState>> predicates) {
-        return getRepeatStates(predicates).size() > 0;
+    public boolean isRepeatState(BiPredicate<I_GameState, I_GameState> predicate) {
+        return getRepeatStates(predicate).size() > 0;
     }
 
 
@@ -81,31 +81,14 @@ public class GameHistory implements I_GameHistory {
      * @return
      */
     @Override
-    public Collection<I_GameState> getRepeatStates(List<BiPredicate<I_GameState, I_GameState>> predicates) {
-        // A stream is used to apply all predicates in order. The laziness of streams should prevent any condition
-        // to be checked more than once and to make sure that the number of computations are reduced.
-
-        // I stream the BiPredicates
-        return predicates.stream()
-                // I transform them to normal Predicates with a helper function from I_GameHistory
-                .map(p -> partiallyApplyPredicate(p, currentState))
-                // I declare that i Intend to transform the data again and start a stream of the history
-                .map(p -> history.stream()
-                        // I wrap each history element in state and cast it to I_GameState
-                        .map(State::new)
-                        .map(e -> (I_GameState) e)
-                        // remove all elements, not fulfilling the predicate
-                        .filter(p)
-                        // make a list of them
-                        .collect(Collectors.toList())
-                )
+    public Collection<I_GameState> getRepeatStates(BiPredicate<I_GameState, I_GameState> predicate) {
+        // start a stream of the history
+        return history.stream()
+                .map(e -> (I_GameState) e)
+                // remove all elements, not fulfilling the predicate
+                .filter(e -> predicate.test(currentState, e))
                 // reduce all elements down to one by removing all elements not shared by all collections
-                .reduce( (l1, l2) -> {l1.retainAll(l2); return l1;} )
-                // return result or throw an exception
-                .orElseThrow(
-                        () -> new UnknownError("No lists to return, not even an empty one. " +
-                                               "Perhaps the lists were not reduced properly?")
-                );
+                .collect(Collectors.toList());
     }
 
     /**
