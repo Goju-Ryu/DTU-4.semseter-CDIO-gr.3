@@ -52,7 +52,7 @@ public class BoardController implements I_BoardController {
         this.inputDTO = inputDTO;
         deck = new GameCardDeck();
         //turn the draw stack through.
-//        ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
+        ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
 
         //TODO: refactor this as a tes(but not a unit test)
         //This is for testing purposes in regards to drawstack in simulation.
@@ -65,7 +65,7 @@ public class BoardController implements I_BoardController {
         }
 
         //This is intended for testing purposes and should not be used for the usual "cam" or "gui"
-        if (!uiChoice.equals("test")) {
+//        if (!uiChoice.equals("test")) {
 //            for(int i = 0; i < 24; i++) {
 //                I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
 //                //drawCard.
@@ -104,10 +104,10 @@ public class BoardController implements I_BoardController {
 
 
 
-        } else {
-            drawCards.addAll(this.listOfDrawpileCards);
-            System.out.println("List of sim drawstack: " + drawCards.toString());
-        }
+//        } else {
+//            drawCards.addAll(this.listOfDrawpileCards);
+//            System.out.println("List of sim drawstack: " + drawCards.toString());
+//        }
 
         System.out.println("Type anything followed by a whitespace char, to confirm" +
                 " continuing on from intializing the drawstack to actualy start the game");
@@ -117,11 +117,11 @@ public class BoardController implements I_BoardController {
 
     }
 
-    @Override
-    public Map getCards(String uiChoice){
-        inputDTO = new InputDTO(uiChoice);
-        return inputDTO.getUsrInput();
-    }
+//    @Override
+//    public Map getCards(String uiChoice){
+//        inputDTO = new InputDTO(uiChoice);
+//        return inputDTO.getUsrInput();
+//    }
 
 
     @Override
