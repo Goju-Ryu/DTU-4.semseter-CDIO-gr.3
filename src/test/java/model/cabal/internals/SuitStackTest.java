@@ -7,6 +7,7 @@ import model.error.IllegalMoveException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -143,8 +144,8 @@ class SuitStackTest {
         }
 
         //the draw stack that should be able to be added to receive stack
-        DrawStack drawStack = new DrawStack();
-        drawStack.add(new Card(E_CardSuit.HEARTS,9,true));
+        Drlist.of(E_CardSuit.HEARTS,9,true));
+        drawStack.add();
         drawStack.turnCard();
 
         //the draw stack that is empty

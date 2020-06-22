@@ -71,11 +71,11 @@ class GameHistoryTest {
         board.move(SUITSTACKHEARTS, BUILDSTACK2, input.getUsrInput());
         assertEquals(0, hist.getRepeatStates().size());
         board.move(BUILDSTACK2, SUITSTACKHEARTS, input.getUsrInput());
-        assertEquals(1, hist.getRepeatStates().size());
+        assertEquals(0, hist.getRepeatStates().size());
         board.move(SUITSTACKHEARTS, BUILDSTACK2, input.getUsrInput());
-        assertEquals(2, hist.getRepeatStates().size());
+        assertEquals(1, hist.getRepeatStates().size());
         board.move(BUILDSTACK2, SUITSTACKHEARTS, input.getUsrInput());
-        assertEquals(2, hist.getRepeatStates().size());
+        assertEquals(1, hist.getRepeatStates().size());
 
     }
 
@@ -103,7 +103,7 @@ class GameHistoryTest {
 
         board.move(BUILDSTACK1, SUITSTACKHEARTS, input.getUsrInput());
         assertEquals(0, hist.history.size());
-        board.move(BUILDSTACK2, SUITSTACKHEARTS, input.getUsrInput());
+        board.move(SUITSTACKHEARTS, BUILDSTACK2, input.getUsrInput());
         assertEquals(1, hist.history.size());
     }
 }

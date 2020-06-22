@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  * It facilitates checking if a specific states have been encountered before as well
  * as giving a way to represent all actions taken in a game
  */
-public interface I_GameHistory extends PropertyChangeListener, Iterator<I_GameState> {
+public interface I_GameHistory extends PropertyChangeListener {
 
     /**
      * Checks if the current state has been encountered before

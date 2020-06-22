@@ -7,6 +7,8 @@ import model.error.IllegalMoveException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -97,7 +99,7 @@ class DrawStackTest {
         I_CardModel card = new Card(E_CardSuit.DIAMONDS,1);
 
         // When no card have been turned an Index out of bounds Exception will be thrown.
-        assertThrows(IndexOutOfBoundsException.class, () -> drawStack.getTopCard(),"No card have been turned yet");
+        assertNull(drawStack.getTopCard(), "No card have been turned yet");
 
         drawStack.turnCard();
 
@@ -112,13 +114,13 @@ class DrawStackTest {
     }
 
     private DrawStack createDrawstack(int elements, E_CardSuit suit) {
-        DrawStack drawStack = new DrawStack();
+        List<I_CardModel> cards = new LinkedList<>();
 
         for (int i = 0; i < elements; i++) {
             I_CardModel card = new Card(suit,i + 1,true);
-            drawStack.add(card);
+            cards.add(card);
         }
 
-        return drawStack;
+        return new DrawStack(cards);
     }
 }

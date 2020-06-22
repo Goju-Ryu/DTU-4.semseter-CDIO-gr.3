@@ -46,6 +46,16 @@ public interface I_SolitaireStacks extends Collection<I_CardModel> {
 
 
     /**
+     * Returns the card on top of the stack. That is, it returns the only card in that stack
+     * that can be moved without any other cards.
+     * @return returns the card in a stack that lays on top.
+     */
+    default I_CardModel getTopCard() {
+        return isEmpty() ? null : getCard(size() - 1);
+    }
+
+
+    /**
      * Checks if you can move a Stack of the CardStack from that position in the card stack
      *
      * - If some of the cards in the Stack are face down then you cant move the stack

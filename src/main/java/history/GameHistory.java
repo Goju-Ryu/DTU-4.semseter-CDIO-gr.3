@@ -27,17 +27,11 @@ public class GameHistory implements I_GameHistory {
      * The list must have a concept of sequence and random access is not important
      * The lists in the sequential list must be copy on write to ensure no changes to the past ever occurs.
      */
-    //protected AbstractSequentialList<Map<E_PileID, List<I_CardModel>>> history;
     protected AbstractSequentialList<I_GameState> history;
     /**
      * A variable holding an  up to date image of the game state.
      */
     private I_GameState currentState;
-
-    /**
-     * An iterator to do the heavy work of implementing the Iterator Interface
-     */
-    protected Iterator<I_GameState> iterator;
 
     private Logger log ;
     private int numNonDrawEvents;
@@ -57,7 +51,6 @@ public class GameHistory implements I_GameHistory {
 
     public GameHistory(Map<E_PileID, List<I_CardModel>> boardAsMap) {
         history = new LinkedList<>();
-        iterator = history.iterator();
         log = Logger.getLogger(getClass().getName());
         currentState = new State(boardAsMap);
         numNonDrawEvents = 0;
@@ -114,40 +107,20 @@ public class GameHistory implements I_GameHistory {
         if ( !isNewValueTypeCorrect(event) ) return;
 
 
-        if (!completesMove(event)) {
+
+        if (isNewMove(event)) {
             addGameState();
             numNonDrawEvents = 0;
         }
 
+
         try {
             Collection<I_CardModel> newValue = ((Collection<I_CardModel>)event.getNewValue());
-            currentState.put(pileID, List.copyOf((List<I_CardModel>)newValue));
+            currentState.put(pileID, List.copyOf((Collection<? extends I_CardModel>) newValue));
         } catch (ClassCastException e) {
             log.warning("Failed to change state on event:\n\t" + event);
         }
 
-
-    }
-
-
-    //------------------  Iterator Functions  ------------------------------------------
-
-    /**
-     * {@inheritDoc}
-     * @return
-     */
-    @Override
-    public boolean hasNext() {
-        return iterator.hasNext();
-    }
-
-    /**
-     * {@inheritDoc}
-     * @return
-     */
-    @Override
-    public I_GameState next() {
-        return new State( iterator.next() );
     }
 
 
@@ -193,17 +166,19 @@ public class GameHistory implements I_GameHistory {
     //------------------  private propertyChange helper functions  ------------------------------------------
 
     /**
-     * Checks if the event that is coming in is the a continuation of previous events
+     * Checks if the event that is coming in is the a continuation of previous events or starts a new one
      *
      * @param event the incoming event
-     * @return true if the two events are part of the same move operation, false otherwise.
+     * @return true if the event is part of a new move, false otherwise.
      */
-    private boolean completesMove(PropertyChangeEvent event) {
+    private boolean isNewMove(PropertyChangeEvent event) {
         E_PileID pileID = getEventSourcePile(event);
-        if (pileID.equals(DRAWSTACK)) return true;
 
-        numNonDrawEvents++;
-        return numNonDrawEvents < 2;
+        // A draw event is part of a move until two non-draw events have been fired
+        if (!pileID.equals(DRAWSTACK)) numNonDrawEvents++;
+
+        // A non-draw event is part of a move if it is the first or second non-draw event since the last state was added
+        return numNonDrawEvents > 2;
     }
 
     /**

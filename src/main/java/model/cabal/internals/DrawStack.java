@@ -4,10 +4,7 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class DrawStack extends StackBase implements I_SolitaireStacks {
 
@@ -18,13 +15,18 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
      */
     protected int drawIndex;
 
-
     public DrawStack() {
-        this(new ArrayList<>());
+        this(new LinkedList<>());
     }
 
     public DrawStack(List<I_CardModel> list) {
-        super(list);
+        super();
+
+        if (list instanceof LinkedList)
+            stack = list;
+        else
+            stack = new LinkedList<>(list);
+
         drawIndex = -1;
     }
 
@@ -86,21 +88,33 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
         return stack.get(rangeIndex % size()).isFacedUp();
     }
 
+    @Override
+    public boolean add(I_CardModel o) {
+        drawIndex = Math.max(drawIndex, 0); //if drawIndex is negative set this index to 0 else use drawIndex.
+        stack.add(drawIndex, o);
+        return true;
+    }
 
+    @NonNullType
+    @Override
+    public Iterator<I_CardModel> iterator() {
+        return stack.listIterator();
+    }
 
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
         return false;
     }
 
+    @Override
+    public I_CardModel getTopCard() {
+        return drawIndex < 0 ? null : super.getCard(drawIndex);
+    }
+
 //-------------------  DrawStack specific methods  ----------------------------------------------------------
 
     public I_CardModel turnCard() {
         return getCard(++drawIndex);
-    }
-
-    public I_CardModel getTopCard() {
-        return super.getCard(drawIndex);
     }
 
 }
