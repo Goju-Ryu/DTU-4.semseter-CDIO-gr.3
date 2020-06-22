@@ -91,7 +91,7 @@ class KabaleRecogniser:
             if stack.rank == None:
                 stack.exists = False
 
-            if len(stack.rank) == 0:
+            if len(str(stack.rank)) == 0:
                 stack.exists = False
 
             if stack.suit.upper() == None:
@@ -101,7 +101,7 @@ class KabaleRecogniser:
             if stack.rank == None:
                 stack.exists = False
 
-            if len(stack.rank) == 0:
+            if len(str(stack.rank)) == 0:
                 stack.exists = False
 
             if stack.suit.upper() == None:
