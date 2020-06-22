@@ -81,6 +81,8 @@ public class GameCardDeck implements Iterable<I_CardModel> {
     public boolean removeAll(Collection<I_CardModel> c) {
         boolean a = false;
         for (I_CardModel card: c ) {
+            if(!card.isFacedUp())
+                continue;
             a = remove(card);
         }
         return a;
