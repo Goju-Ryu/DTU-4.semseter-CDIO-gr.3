@@ -42,12 +42,13 @@ class KabaleRecogniser:
         # filming Loop.
         while True:
 
-            if succesCounter > SUCCES_TIMER :
+            if succesCounter > SUCCES_TIMER:
                 if self.reEnableLoop():
                     self.statestics = None
                     self.statestics = statistics()
                     succesCounter = 0
-                break
+                else:
+                    break
             # this is openCV code, get the image, and then it gives an error if the keypressed isent there.
             # or rather it refuses to return an image, so it is necesary for it to be here.
             img = rec.getFrame()
