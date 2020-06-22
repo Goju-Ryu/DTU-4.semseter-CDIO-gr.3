@@ -37,12 +37,15 @@ class GameHistoryTest {
 
         board.addPropertyChangeListener(hist);
 
+        assertFalse(hist.isRepeatState());
         board.move(BUILDSTACK1, SUITSTACKHEARTS, input.getUsrInput());
         assertFalse(hist.isRepeatState());
         board.move(SUITSTACKHEARTS, BUILDSTACK2, input.getUsrInput());
+        assertFalse(hist.isRepeatState());
         board.move(BUILDSTACK2, SUITSTACKHEARTS, input.getUsrInput());
         assertTrue(hist.isRepeatState());
         board.move(SUITSTACKHEARTS, BUILDSTACK2, input.getUsrInput());
+        assertTrue( hist.isRepeatState());
         board.move(BUILDSTACK2, SUITSTACKHEARTS, input.getUsrInput());
         assertTrue( hist.isRepeatState());
     }
@@ -66,9 +69,11 @@ class GameHistoryTest {
         board.move(BUILDSTACK1, SUITSTACKHEARTS, input.getUsrInput());
         assertEquals(0, hist.getRepeatStates().size());
         board.move(SUITSTACKHEARTS, BUILDSTACK2, input.getUsrInput());
+        assertEquals(0, hist.getRepeatStates().size());
         board.move(BUILDSTACK2, SUITSTACKHEARTS, input.getUsrInput());
         assertEquals(1, hist.getRepeatStates().size());
         board.move(SUITSTACKHEARTS, BUILDSTACK2, input.getUsrInput());
+        assertEquals(2, hist.getRepeatStates().size());
         board.move(BUILDSTACK2, SUITSTACKHEARTS, input.getUsrInput());
         assertEquals(2, hist.getRepeatStates().size());
 
@@ -97,51 +102,8 @@ class GameHistoryTest {
         assertEquals(0, hist.history.size());
 
         board.move(BUILDSTACK1, SUITSTACKHEARTS, input.getUsrInput());
-
+        assertEquals(0, hist.history.size());
+        board.move(BUILDSTACK2, SUITSTACKHEARTS, input.getUsrInput());
         assertEquals(1, hist.history.size());
-    }
-
-    @Test
-    void hasNext() {
-        I_BoardModel board;
-        InputSimDTO input;
-        GameHistory hist;
-        GameCardDeck deck = new GameCardDeck();
-        board = new Board(Map.of(
-                BUILDSTACK1.name(), new Card(HEARTS, 1),
-                BUILDSTACK2.name(), new Card(CLUBS, 2)
-        ), deck);
-
-        input = new InputSimDTO(board, deck);
-        hist = new GameHistory();
-
-        board.addPropertyChangeListener(hist);
-
-        assertFalse(hist.hasNext());
-        board.move(BUILDSTACK1, SUITSTACKHEARTS, input.getUsrInput());
-//        board.move(SUITSTACKHEARTS, BUILDSTACK2, input.getUsrInput());
-        assertTrue(hist.hasNext());
-    }
-
-    @Test
-    void next() {
-        I_BoardModel board;
-        InputSimDTO input;
-        GameHistory hist;
-        GameCardDeck deck = new GameCardDeck();
-        board = new Board(Map.of(
-                BUILDSTACK1.name(), new Card(HEARTS, 1),
-                BUILDSTACK2.name(), new Card(CLUBS, 2)
-        ), deck);
-
-        input = new InputSimDTO(board, deck);
-        hist = new GameHistory();
-
-        board.addPropertyChangeListener(hist);
-
-        assertThrows(NoSuchElementException.class, hist::next);
-        board.move(BUILDSTACK1, SUITSTACKHEARTS, input.getUsrInput());
-        assertEquals(I_GameState.class, hist.next().getClass());
-        assertThrows(NoSuchElementException.class, hist::next);
     }
 }
