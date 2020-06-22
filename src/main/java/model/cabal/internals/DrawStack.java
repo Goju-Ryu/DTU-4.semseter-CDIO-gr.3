@@ -35,28 +35,6 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
     }
 
     @Override
-    public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
-        if (!canMoveFrom()) {
-            throw new IllegalMoveException();//todo msg
-        }
-
-        if (range > 1)
-            throw new IllegalMoveException("drawstack can only move one card at a time.");
-
-        int rangeIndex = drawIndex + range ;
-        if(!stack.get(rangeIndex % size()).isFacedUp()){
-            throw new IllegalMoveException("Card at this range: "+range+" has not been turned yet");
-        }
-
-        if (range == 0)
-            return List.of();
-
-        var returnable = List.of( stack.get(drawIndex) );  //getSubset(drawIndex)
-        stack.remove(drawIndex--); //remove the card and lower index to point to the new card that can be drawn
-        return returnable;
-    }
-
-    @Override
     public Collection<I_CardModel> getSubset(int range) {
         Collection<I_CardModel> returnable;
         var startIndex = Math.max(drawIndex, 0); //if drawIndex is negative set this index to 0 else use drawIndex.

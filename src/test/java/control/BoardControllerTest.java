@@ -240,7 +240,6 @@ class BoardControllerTest {
         list.add(new Card( E_CardSuit.CLUBS      ,  3 ));
         list.add(new Card( E_CardSuit.CLUBS      ,  2 ));
 
-
         // the Board and Getting Results.
         GameCardDeck deck = new GameCardDeck();
         I_BoardModel board = new testBoard(map,list,deck);
