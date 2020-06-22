@@ -6,6 +6,7 @@ import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class DrawStack extends StackBase implements I_SolitaireStacks {
@@ -50,8 +51,24 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
         if (range == 0)
             return List.of();
 
-        var returnable = List.of( stack.get(drawIndex) );
+        var returnable = List.of( stack.get(drawIndex) );  //getSubset(drawIndex)
         stack.remove(drawIndex--); //remove the card and lower index to point to the new card that can be drawn
+        return returnable;
+    }
+
+    @Override
+    public Collection<I_CardModel> getSubset(int range) {
+        Collection<I_CardModel> returnable;
+        var startIndex = Math.max(drawIndex, 0); //if drawIndex is negative set this index to 0 else use drawIndex.
+
+        if (drawIndex + range < stack.size())
+            returnable = stack.subList(startIndex, startIndex + range);
+        else {
+            int rangeIndex = (startIndex + range) % stack.size();
+            returnable = stack.subList(startIndex, stack.size());
+            returnable.addAll(stack.subList(0, rangeIndex));
+        }
+
         return returnable;
     }
 
