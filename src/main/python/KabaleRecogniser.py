@@ -12,7 +12,7 @@ cardAnal = CardAnalyser()
 cardVal = CardValidator()
 
 
-SUCCESCRITERIA = 30
+SUCCES_TIMER = 30
 
 # kabale recogniser is a class that recognises our kabale syntax, and returns a string of what cards, the program
 # can see on the board.
@@ -42,7 +42,11 @@ class KabaleRecogniser:
         # filming Loop.
         while True:
 
-            if succesCounter > SUCCESCRITERIA :
+            if succesCounter > SUCCES_TIMER :
+                if self.reEnableLoop():
+                    self.statestics = None
+                    self.statestics = statistics()
+                    succesCounter = 0
                 break
             # this is openCV code, get the image, and then it gives an error if the keypressed isent there.
             # or rather it refuses to return an image, so it is necesary for it to be here.
@@ -87,25 +91,7 @@ class KabaleRecogniser:
         # get. The corresponding elements in the cards list for this class starts with 0th element at the buttom right
         # corner of a game board, you imagine in from of you
 
-        for stack in stackTop:
-            if stack.rank == None:
-                stack.exists = False
 
-            if len(str(stack.rank)) == 0:
-                stack.exists = False
-
-            if stack.suit.upper() == None:
-                stack.exists = False
-
-        for stack in stackBottom:
-            if stack.rank == None:
-                stack.exists = False
-
-            if len(str(stack.rank)) == 0:
-                stack.exists = False
-
-            if stack.suit.upper() == None:
-                stack.exists = False
 
         results = json.dumps({
             "DRAWSTACK":        None if not stackTop[5].exists else     {"suit": stackTop[5].suit.upper()   , "rank": int(stackTop[5].rank)     , "isFacedUp": "true"},
@@ -146,3 +132,18 @@ class KabaleRecogniser:
                     gotCards = True
             i += 1
         self.gotCardImageStack = gotCards
+
+    def reEnableLoop(self):
+        for stack in self.cards:
+            if stack != None:
+                if stack.rank == None:
+                    #stack.exists = False
+                    return True
+
+                if len(str(stack.rank)) == 0:
+                    #stack.exists = False
+                    return True
+                if stack.suit.upper() == None:
+                    #stack.exists = False
+                    return True
+        return False
