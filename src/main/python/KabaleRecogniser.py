@@ -18,13 +18,13 @@ SUCCES_TIMER = 30
 # can see on the board.
 class KabaleRecogniser:
 
-
     def __init__(self):
         self.cards = []
         self.font = cv2.FONT_HERSHEY_SIMPLEX
 
     # a method to take a video, and then for each image get a result,  and then make statisk analasys
     # ( for each card, whats the best result for that card ( by counting most votes) ). to then give a result.
+
     def run(self, Settings):
 
         Operator = imageOperator()
@@ -42,15 +42,22 @@ class KabaleRecogniser:
         # filming Loop.
         while True:
 
+            # This if ends the video recording, however it contains another if, that resets the loop.
+            # If the recording was errored. it is errored if it has half initiated cards.
+            # a card with a rank, but no suit. or reversed.
+
             if succesCounter > SUCCES_TIMER:
                 if self.reEnableLoop():
+                    #todo check while runing that this self.statestics = None actualy resets the statestics.
                     self.statestics = None
                     self.statestics = statistics()
                     succesCounter = 0
                 else:
                     break
+
             # this is openCV code, get the image, and then it gives an error if the keypressed isent there.
             # or rather it refuses to return an image, so it is necesary for it to be here.
+
             img = rec.getFrame()
             keyPressed = cv2.waitKey(1) & 0xFF
             if keyPressed == ord('q'):
@@ -60,6 +67,7 @@ class KabaleRecogniser:
             # isolater, isolates the board, and all potential cards on this board, it
             # uses the HSV settings passed in the settings object for its thresholding.
             # the boolean paramters are : showBoard, ShowBoardMask, ShowCards, showCardsMask;
+
             isolator = Isolator(False,True,False,False)
             self.cards, succes = isolator.isolateCards(img, Settings)
 
@@ -76,6 +84,7 @@ class KabaleRecogniser:
 
         # when the loop is done it is necesary to close all windows if any are open, otherwise the programs becomes
         # unresponsive, this is not necesary in the final version, but when testing it becomes an issue.
+
         cv2.destroyAllWindows()
 
         # evaluate results
@@ -91,8 +100,6 @@ class KabaleRecogniser:
         # The decided positions for the card placement on the board. This is the placement the java program expects to
         # get. The corresponding elements in the cards list for this class starts with 0th element at the buttom right
         # corner of a game board, you imagine in from of you
-
-
 
         results = json.dumps({
             "DRAWSTACK":        None if not stackTop[5].exists else     {"suit": stackTop[5].suit.upper()   , "rank": int(stackTop[5].rank)     , "isFacedUp": "true"},
