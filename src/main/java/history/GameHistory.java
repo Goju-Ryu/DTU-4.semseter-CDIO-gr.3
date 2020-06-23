@@ -31,7 +31,7 @@ public class GameHistory implements I_GameHistory {
      */
     private I_GameState currentState;
 
-    private Logger log ;
+    private Logger log;
     private int numNonDrawEvents;
 
     public GameHistory() {
@@ -178,17 +178,6 @@ public class GameHistory implements I_GameHistory {
         // No cards were moved so this cannot be part of a move
         if (oldValue.size() == newValue.size()) return numNonDrawEvents > 1;
 
-//        Collection<I_CardModel> changedCards;
-//        if (oldValue.size() > newValue.size()) {
-//            oldValue.removeAll(newValue);
-//            changedCards = oldValue;
-//        } else if (oldValue.size() < newValue.size()) {
-//            newValue.removeAll(oldValue);
-//            changedCards = newValue;
-//        }
-
-//        // Count only moves, not
-//        if (!pileID.equals(DRAWSTACK)) numNonDrawEvents++;
         numNonDrawEvents++;
         // A non-draw event is part of a move if it is the first or second non-draw event since the last state was added
         return numNonDrawEvents > 1;
