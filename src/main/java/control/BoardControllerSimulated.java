@@ -1,5 +1,6 @@
 package control;
 
+import data.I_InputDTO;
 import data.InputSimDTO;
 import model.GameCardDeck;
 import model.Move;
@@ -26,16 +27,30 @@ public class BoardControllerSimulated extends BoardController {
 
 
     /**
-     * Creates a standard simulation with a set game layout.
-     * Use this if you don't care about changing the layout of the board
-     * but just want to simulate a pre determined game.
+     * Creates a standard simulation with a random game layout.
+     * Use this if you don't care about the layout of the board
+     * but just want to simulate a game with no guaranties.
      */
     public BoardControllerSimulated() {
         this(new RefBoard(), new GameCardDeck());
     }
 
-    public BoardControllerSimulated(GameCardDeck cardDeck) {
-        super(new InputSimDTO(cardDeck));
+    /**
+     * This takes a board and an inputDTO. The board is the virtual board.
+     * The inputDTO is the source of data when moves are made. It should
+     * almost always be an {@link InputSimDTO}, unexpected results may
+     * occur otherwise.
+     *
+     * This constructor can be used to simulate a predetermined game or a random one
+     * depending on the relation between the board and inputDTO.
+     *
+     * @param boardModel The board being controlled by this class
+     * @param inputDTO An InputDTO to provide data to board
+     */
+    public BoardControllerSimulated(I_BoardModel boardModel, I_InputDTO inputDTO) {
+        super(true);
+        this.boardModel = boardModel;
+        this.inputDTO = inputDTO;
     }
 
 
