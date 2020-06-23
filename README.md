@@ -14,9 +14,13 @@ Simulating a lot of games: Coming Soon.
 - Download or clone the code from git
 - (if your IDE requires, set it up as a maven project.)
 - Run the server.py file(the python side of the server)
-- at the moment what UI you want to use is decided by writing code in main,
-so write the UI you want to use in main
-- run main.java (the java side of the server)
+- To choose the desired run type you have to give a single argument when running the program
+    * No argument starts the program using the camera
+    * "cam" starts program using the camera
+    * "gui" will use the gui in the python client instead of the camera
+    * "sim" will simulate a game on the java side and not use the server at all
+
+- run Main.java (the java side of the server)
 
 now you should be good to go
 

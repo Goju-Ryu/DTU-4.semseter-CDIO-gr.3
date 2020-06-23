@@ -1,6 +1,8 @@
 package control;
 
+import model.GameCardDeck;
 import model.Move;
+import model.cabal.RefBoard;
 
 import java.util.List;
 import java.util.Scanner;
@@ -24,7 +26,7 @@ public class GameController implements I_GameController{
     @Override
     public void startGame(String uiChoice){
         if (uiChoice.equalsIgnoreCase("sim"))
-            boardCtrl = new BoardControllerSimulated();
+            boardCtrl = new BoardControllerSimulated(new RefBoard(), new GameCardDeck());
         else
             boardCtrl = new BoardController(uiChoice);
         gameLoop();

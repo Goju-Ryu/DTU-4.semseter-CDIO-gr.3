@@ -9,9 +9,12 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
 import java.beans.PropertyChangeListener;
-import java.util.List;
-import java.util.Map;
+import java.beans.PropertyChangeSupport;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import static java.util.AbstractMap.SimpleEntry;
 import static model.cabal.E_PileID.*;
 import static model.cabal.internals.card.E_CardSuit.*;
 
@@ -23,10 +26,17 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         this(stdBoard);
     }
 
+    public RefBoard(I_BoardModel boardModel) {
+        this(Arrays.stream(E_PileID.values())
+                .map(pileID -> new SimpleEntry<>(pileID.name(), boardModel.getPile(pileID)))
+                .collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue))
+        );
+    }
 
     //Constructors
     public RefBoard(Map<String, List<I_CardModel>> boardData) { //TODO board should take imgData to initialize self
         piles = new I_SolitaireStacks[E_PileID.values().length];
+        change = new PropertyChangeSupport(this);
 
         piles[DRAWSTACK.ordinal()] = new DrawStack();
         piles[SUITSTACKHEARTS.ordinal()]  = new SuitStack();
@@ -38,6 +48,11 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
             if (pileID.isBuildStack())
                 piles[pileID.ordinal()] = new BuildStack();
             piles[pileID.ordinal()].addAll(boardData.get(pileID.name()));
+        }
+
+        //Make the constructor alert history of it's initial state
+        for (E_PileID pileID : E_PileID.values()) {
+            change.firePropertyChange( makePropertyChangeEvent(pileID, List.of()) );
         }
     }
 
@@ -71,18 +86,21 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
     @Override
     public I_CardModel turnCard(Map<String, I_CardModel> imgData) {
         DrawStack turnPile = (DrawStack) get(DRAWSTACK);
+        var oldVal = List.copyOf(get(DRAWSTACK));
 
         if (turnPile.isEmpty())
             throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
 
-        var returnable = turnPile.turnCard();
+        var turnCard = turnPile.turnCard();
 
-        return returnable;
+        change.firePropertyChange(makePropertyChangeEvent(DRAWSTACK, oldVal));
+
+        return turnCard;
     }
 
     @Override
     public I_CardModel getTurnedCard() {
-        return null;
+        return piles[DRAWSTACK.ordinal()].getTopCard();
     }
 
 
@@ -91,9 +109,14 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
+        var oldFrom = List.copyOf(from);
+        var oldTo = List.copyOf(to);
+
         //change state
         to.addAll(from.popSubset(originPos));
 
+        change.firePropertyChange(makePropertyChangeEvent(origin, oldFrom));
+        change.firePropertyChange(makePropertyChangeEvent(destination, oldTo));
       }
 
     @Override

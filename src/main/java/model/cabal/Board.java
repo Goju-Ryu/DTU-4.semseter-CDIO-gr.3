@@ -22,8 +22,6 @@ import static model.cabal.E_PileID.*;
  */
 public class Board extends AbstractBoardUtility implements I_BoardModel {
 
-    private PropertyChangeSupport change;
-
 
     public Board(Map<String, I_CardModel> imgData, GameCardDeck cardDeck) { //TODO board should take imgData to initialize self
         deck = cardDeck;
@@ -58,7 +56,6 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
 
                     // if gets an instance of GameCardDeck, so this removes the card from a collection
                     // of cards we know we haven't seen yet
-
                     if (deck.remove(data)) {
                         piles[pileID.ordinal()].add(data);
                     } else {
@@ -72,15 +69,23 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
                 System.out.println("an input was empty");
             }
         }
+
+        //Validate that state is still consistent
+        validateState(imgData);
+
+        //Make the constructor alert history of it's initial state
+        for (E_PileID pileID : values()) {
+            change.firePropertyChange( makePropertyChangeEvent(pileID, List.of()) );
+        }
     }
 
     /**
      * Use this to play the instantiate a board with a draw stack
      *
-     * @param imgData
-     * @param drawStack
+     * @param imgData the initializing data, often taken from the camera
+     * @param drawStack A list of alll cards in the draw stack in the physical board / simulated board.
      */
-    public Board(Map<String, I_CardModel> imgData, GameCardDeck cardDeck, ArrayList<I_CardModel> drawStack) {
+    public Board(Map<String, I_CardModel> imgData, GameCardDeck cardDeck, List<I_CardModel> drawStack) {
         this(imgData, cardDeck);
         get(DRAWSTACK).clear();
         drawStack.add(extractImgData(imgData,DRAWSTACK));
@@ -111,7 +116,73 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
     @Override
     public I_SolitaireStacks[] getPiles(){
         return piles;
-    };
+    }
+
+    /**
+     * checks if state is equal to physical board
+     * @param imgData state to validate against
+     * @throws IllegalStateException if state is out of sync
+     */
+    private void validateState(Map<String, I_CardModel> imgData) throws IllegalStateException {
+        for (E_PileID pileID : E_PileID.values()) {
+            var pile = piles[pileID.ordinal()];
+            var imgCard = extractImgData(imgData, pileID);
+
+//            if (pile.size() == 0) {
+//                if (imgCard != null)
+//                    throw makeStateException(pileID, imgCard, null);
+//            }
+
+            validatePileState(pileID, pile.getTopCard(), imgCard);
+        }
+    }
+
+    /**
+     * Checks if the state of a card is compatible with the card gotten from the external model.
+     * If the card is face down, the method will try to reveal it with the correct values.
+     * @param origin the pile the card is from.
+     * @param cardModel the card to validate.
+     * @param imgCard the card being validated against
+     */
+    private void
+    validatePileState(E_PileID origin, I_CardModel cardModel, I_CardModel imgCard) throws IllegalStateException {
+        if (cardModel == imgCard)
+            return;
+        if (imgCard == null)
+            return; // If there is no data for a field ignore it TODO is this what we want
+
+        if (cardModel == null)
+            throw makeStateException(origin, imgCard, null);
+
+        if (!cardModel.isFacedUp()) {
+            if (deck.remove(imgCard)) { //if the card was in deck and now removed
+                cardModel.reveal(imgCard.getSuit(), imgCard.getRank());
+            } else {
+                throw new IllegalStateException("Trying to reveal card but card is already in play.\ncard: " + imgCard);
+            }
+        } else {
+            if (!cardModel.equals(imgCard))
+                throw makeStateException(origin, imgCard, cardModel);
+        }
+    }
+
+    /**
+     * Method for generating an IllegalStateException with an appropriate error message
+     * @param pos The pile where state is out of sync
+     * @param physCard The value of the physical card
+     * @param virtCard The card represented in the virtual representation of the board (this class)
+     * @return An exception with a nicely formatted message
+     */
+    private IllegalStateException
+    makeStateException(E_PileID pos, I_CardModel physCard, I_CardModel virtCard) {
+        return new IllegalStateException(
+                "The virtual board and the physical board is out of sync\n" +
+                "\tPosition:\t" + pos + "\n" +
+                "\tVirtual:\t" + virtCard + "\n" +
+                "\tPhysical:\t" + physCard + "\n" +
+                "\tMethod:\t" +  Thread.currentThread().getStackTrace()[2] + "\n"
+        );
+    }
 
 //---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
 
@@ -122,17 +193,21 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         if (turnPile.isEmpty())
                 throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
 
+        var oldVal = List.copyOf(turnPile);
         var returnable = turnPile.turnCard();
 
-        var imgCard = extractImgData(imgData, DRAWSTACK);
+        //Validate that state is still consistent with the physical board
+        validatePileState(DRAWSTACK, returnable, extractImgData(imgData, DRAWSTACK));
+
+        //notify history
+        change.firePropertyChange(makePropertyChangeEvent(DRAWSTACK, oldVal));
 
         return returnable;
     }
 
     @Override
     public I_CardModel getTurnedCard() {
-        var turnPile = (DrawStack) get(DRAWSTACK);
-        return turnPile.getTopCard();
+        return get(DRAWSTACK).getTopCard();
     }
 
 //----------  Move card methods  -----------------------------------------------------------------------------
@@ -161,6 +236,17 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         //change state
         to.addAll(from.popSubset(originPos));
 
+        //Validate that state is still consistent
+        validatePileState(
+                origin,
+                from.isEmpty() ? null : from.getCard(0),
+                extractImgData(imgData, origin)
+        );
+        validatePileState(
+                destination,
+                to.isEmpty() ? null : to.getCard(0),
+                extractImgData(imgData, destination)
+        );
 
         //notify listeners om state before and after state change
         change.firePropertyChange( makePropertyChangeEvent(origin, oldOrigin) );
@@ -172,15 +258,14 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
-        boolean a = isValidMove(origin, originPos, destination);
-        if(!a)
+        if (!isValidMove(origin, originPos, destination))
             return false;
-        boolean b = from.canMoveFrom(originPos);
-        if(!b)
+        if (!from.canMoveFrom(originPos))
             return false;
-        boolean c = to.canMoveTo(from.getSubset(originPos));
+        if (!to.canMoveTo(from.getSubset(originPos)))
+            return false;
 
-        return a && b && c;
+        return true;
 
     }
 
@@ -189,33 +274,5 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         I_SolitaireStacks from = get(origin);
         return from.canMoveFrom(range);
     }
-
-
-//-----------------------------------PropertyEditor methods-------------------------------------------------------------
-
-    @Override
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        change.addPropertyChangeListener(listener);
-    }
-
-
-    @Override
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        change.removePropertyChangeListener(listener);
-    }
-
-    private PropertyChangeEvent makePropertyChangeEvent(E_PileID pile, Collection<I_CardModel> oldVal) {
-        int pileIndex = pile.ordinal();
-        return new PropertyChangeEvent(
-                piles[pileIndex],
-                pile.getDescription(),
-                oldVal,
-                Collections.unmodifiableCollection(piles[pileIndex])
-        );
-
-    }
-
-
-
 
 }

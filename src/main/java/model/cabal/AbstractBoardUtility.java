@@ -4,17 +4,20 @@ import model.GameCardDeck;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.I_CardModel;
 
-import java.util.Map;
-import java.util.Objects;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.*;
 
 import static model.cabal.E_PileID.DRAWSTACK;
 import static model.cabal.internals.card.E_CardSuit.*;
 import static model.cabal.internals.card.E_CardSuit.CLUBS;
 
-public abstract class AbstractBoardUtility {
+public abstract class AbstractBoardUtility  {
 
     protected I_SolitaireStacks[] piles;
     protected GameCardDeck deck;
+    protected PropertyChangeSupport change;
 
     /**
      * Query the map for the relevant data and return it.
@@ -71,5 +74,22 @@ public abstract class AbstractBoardUtility {
         return true;
     }
 
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        change.addPropertyChangeListener(listener);
+    }
 
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        change.removePropertyChangeListener(listener);
+    }
+
+    protected PropertyChangeEvent makePropertyChangeEvent(E_PileID pile, Collection<I_CardModel> oldVal) {
+        int pileIndex = pile.ordinal();
+        return new PropertyChangeEvent(
+                piles[pileIndex],
+                pile.name(),
+                oldVal,
+                List.copyOf(piles[pileIndex])
+        );
+
+    }
 }
