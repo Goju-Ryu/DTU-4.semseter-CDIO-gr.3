@@ -7,6 +7,9 @@ import model.Move;
 import model.cabal.Board;
 import model.cabal.I_BoardModel;
 import model.cabal.RefBoard;
+import model.cabal.internals.card.I_CardModel;
+
+import java.util.ArrayList;
 
 /**
  * This class is for the individual controlls of each Board,
@@ -61,10 +64,21 @@ public class BoardControllerSimulated extends BoardController {
      * @param cardDeck The deck that keeps track of which cards are known by the simulated board.
      */
     public BoardControllerSimulated(I_BoardModel refBoard, GameCardDeck cardDeck) {
-        super(new InputSimDTO(refBoard, cardDeck));
+        super(true);
+        inputDTO = new InputSimDTO(refBoard, cardDeck);
         refBoardModel = refBoard;
-        boardModel = new Board(inputDTO.getUsrInput(), cardDeck);
-        deck = cardDeck;
+
+        ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
+        int drawStackCardCount = 24;
+        for(int i = 0; i < drawStackCardCount; i++) {
+            I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
+            drawCards.add(drawCard);
+
+            System.out.println("currDrawCard: " + drawCard);
+            System.out.println("Turning the next card in the draw stack...");
+        }
+
+        boardModel = new Board(inputDTO.getUsrInput(), cardDeck, drawCards);
     }
 
     @Override
