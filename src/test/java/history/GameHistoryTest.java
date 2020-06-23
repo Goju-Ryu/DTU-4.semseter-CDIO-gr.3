@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
-
+import static util.TestUtil.getTestReadyBoard;
 import static model.cabal.E_PileID.BUILDSTACK1;
 import static model.cabal.E_PileID.BUILDSTACK2;
 import static model.cabal.E_PileID.SUITSTACKHEARTS;
@@ -22,18 +22,16 @@ class GameHistoryTest {
 
     @Test
     void isRepeatState() {
-        I_BoardModel board;
-        InputSimDTO input;
-        GameHistory hist;
+        var game = getTestReadyBoard(
+                Map.of(
+                        BUILDSTACK1.name(), new Card(HEARTS, 1),
+                        BUILDSTACK2.name(), new Card(CLUBS, 2)
+                )
+        );
 
-        GameCardDeck deck = new GameCardDeck();
-        board = new Board(Map.of(
-                BUILDSTACK1.name(), new Card(HEARTS, 1),
-                BUILDSTACK2.name(), new Card(CLUBS, 2)
-        ), deck);
-
-        input = new InputSimDTO(board, deck);
-        hist = new GameHistory();
+        var board = game.getKey();
+        var input = game.getValue();
+        var hist = new GameHistory();
 
         board.addPropertyChangeListener(hist);
 
@@ -52,17 +50,16 @@ class GameHistoryTest {
 
     @Test
     void getRepeatStates() {
-        I_BoardModel board;
-        InputSimDTO input;
-        GameHistory hist;
-        GameCardDeck deck = new GameCardDeck();
-        board = new Board(Map.of(
-                BUILDSTACK1.name(), new Card(HEARTS, 1),
-                BUILDSTACK2.name(), new Card(CLUBS, 2)
-        ), deck);
+        var game = getTestReadyBoard(
+                Map.of(
+                        BUILDSTACK1.name(), new Card(HEARTS, 1),
+                        BUILDSTACK2.name(), new Card(CLUBS, 2)
+                )
+        );
 
-        input = new InputSimDTO(board, deck);
-        hist = new GameHistory();
+        var board = game.getKey();
+        var input = game.getValue();
+        var hist = new GameHistory();
 
         board.addPropertyChangeListener(hist);
 
@@ -84,17 +81,16 @@ class GameHistoryTest {
      */
     @Test
     void propertyChange(){
-        I_BoardModel board;
-        InputSimDTO input;
-        GameHistory hist;
-        GameCardDeck deck = new GameCardDeck();
-        board = new Board(Map.of(
-                BUILDSTACK1.name(), new Card(HEARTS, 1),
-                BUILDSTACK2.name(), new Card(CLUBS, 2)
-        ), deck);
+        var game = getTestReadyBoard(
+                Map.of(
+                        BUILDSTACK1.name(), new Card(HEARTS, 1),
+                        BUILDSTACK2.name(), new Card(CLUBS, 2)
+                )
+        );
 
-        input = new InputSimDTO(board, deck);
-        hist = new GameHistory();
+        var board = game.getKey();
+        var input = game.getValue();
+        var hist = new GameHistory();
 
         board.addPropertyChangeListener(hist);
 
