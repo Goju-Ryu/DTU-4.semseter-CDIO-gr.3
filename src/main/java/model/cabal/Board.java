@@ -234,12 +234,12 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         //Validate that state is still consistent
         validatePileState(
                 origin,
-                from.isEmpty() ? null : from.getCard(0),
+                from.isEmpty() ? null : from.getTopCard(),
                 extractImgData(imgData, origin)
         );
         validatePileState(
                 destination,
-                to.isEmpty() ? null : to.getCard(0),
+                to.isEmpty() ? null : to.getTopCard(),
                 extractImgData(imgData, destination)
         );
 
