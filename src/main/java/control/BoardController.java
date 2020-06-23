@@ -2,6 +2,8 @@ package control;
 
 import data.I_InputDTO;
 import data.InputDTO;
+import history.GameHistory;
+import history.I_GameHistory;
 import model.GameCardDeck;
 import model.Move;
 import model.cabal.Board;
@@ -32,6 +34,7 @@ public class BoardController implements I_BoardController {
 
     protected I_BoardModel boardModel;
     protected I_InputDTO inputDTO;
+    protected I_GameHistory history;
 //    private ArrayList<I_CardModel> listOfDrawpileCards = new ArrayList<I_CardModel>();
 
     public BoardController(boolean testBoolean){
@@ -50,7 +53,7 @@ public class BoardController implements I_BoardController {
         this.inputDTO = inputDTO;
         var deck = new GameCardDeck();
         //turn the draw stack through.
-        ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
+        ArrayList<I_CardModel> drawCards = new ArrayList<>();
 
 //        //TODO: refactor this as a tes(but not a unit test)
 //        //This is for testing purposes in regards to drawstack in simulation.
@@ -80,7 +83,9 @@ public class BoardController implements I_BoardController {
                 " continuing on from intializing the drawstack to actualy start the game");
         ScanSingleton.getScanner().next();
 
-        this.boardModel = new Board(inputDTO.getUsrInput(), deck, drawCards);//, drawCards);
+        boardModel = new Board(inputDTO.getUsrInput(), deck, drawCards);//, drawCards);
+        history = new GameHistory();
+        boardModel.addPropertyChangeListener(history);
 
     }
 

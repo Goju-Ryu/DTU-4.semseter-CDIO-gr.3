@@ -2,6 +2,7 @@ package control;
 
 import data.I_InputDTO;
 import data.InputSimDTO;
+import history.GameHistory;
 import model.GameCardDeck;
 import model.Move;
 import model.cabal.Board;
@@ -68,7 +69,7 @@ public class BoardControllerSimulated extends BoardController {
         inputDTO = new InputSimDTO(refBoard, cardDeck);
         refBoardModel = refBoard;
 
-        ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
+        ArrayList<I_CardModel> drawCards = new ArrayList<>();
         int drawStackCardCount = 24;
         for(int i = 0; i < drawStackCardCount; i++) {
             I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
@@ -79,6 +80,8 @@ public class BoardControllerSimulated extends BoardController {
         }
 
         boardModel = new Board(inputDTO.getUsrInput(), cardDeck, drawCards);
+        history = new GameHistory();
+        boardModel.addPropertyChangeListener(history);
     }
 
     @Override
