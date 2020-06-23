@@ -138,6 +138,7 @@ public class BoardController implements I_BoardController {
         return moves;
     }
 
+    @Override
     public Move pickMove(List<Move> moves) {
 
         if(moves.size() == 0){
