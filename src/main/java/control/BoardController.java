@@ -65,13 +65,13 @@ public class BoardController implements I_BoardController {
         }
 
         //TODO drawstackCardCount should be 24 in the real case scenario. also change drawstackCardCount in Board (use ctrl+f)
-        int drawstackCardCount = 5;
+        int drawstackCardCount = 3;
             for(int i = 0; i < drawstackCardCount; i++) {
 
                 I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
                 drawCards.add(drawCard);
 
-                System.out.println("currDrawCard: " + drawCard.toString());
+                System.out.println("currDrawCard: " + drawCard);
                 System.out.println("Please turn the next card in the drawstack and prompt ...");
 
                 ScanSingleton.getScanner().next();

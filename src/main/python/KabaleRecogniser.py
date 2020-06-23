@@ -143,15 +143,18 @@ class KabaleRecogniser:
 
     def reEnableLoop(self):
         for stackCard in self.cards:
-            if stackCard != None:
+            if stackCard is not None:
                 if stackCard.exists:
-                    if stackCard.rank == None:
-                        #stack.exists = False
+                    if stackCard.rank is None:
+                        return True
+
+                    if stackCard.suit is None:
                         return True
 
                     if stackCard.rank:
                         return True
 
-                    if stackCard.suit == None:
+                    if stackCard.suit:
                         return True
+
         return False
