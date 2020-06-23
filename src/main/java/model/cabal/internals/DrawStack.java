@@ -128,7 +128,8 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
 //-------------------  DrawStack specific methods  ----------------------------------------------------------
 
     public I_CardModel turnCard() {
-        return getCard(++drawIndex);
+        drawIndex = (drawIndex + 1) % size();
+        return getCard(0);
     }
 
 }

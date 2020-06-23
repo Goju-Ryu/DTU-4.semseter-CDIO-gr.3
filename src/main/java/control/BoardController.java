@@ -158,7 +158,7 @@ public class BoardController implements I_BoardController {
             for (int i = 0; i < move.moveFromRange()-1 ; i++) {
                 boardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
             }
-            // now when it has turned all the necesary cards in the drawstack we give it an input.
+            // now when it has turned all the necessary cards in the drawstack we give it an input.
             boardModel.turnCard(inputDTO.getUsrInput());
             boardModel.move(move.moveFromStack(),  move.moveToStack(), inputDTO.getUsrInput());
         }else {

@@ -87,8 +87,8 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
     public Board(Map<String, I_CardModel> imgData, GameCardDeck cardDeck, List<I_CardModel> drawStack) {
         this(imgData, cardDeck);
         get(DRAWSTACK).clear();
-        if (imgData != null)
-            drawStack.add(extractImgData(imgData,DRAWSTACK));
+        drawStack.remove(null);
+
         get(DRAWSTACK).addAll(drawStack);
     }
 
