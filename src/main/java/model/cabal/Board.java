@@ -34,8 +34,7 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         piles[SUITSTACKCLUBS.ordinal()]   = new SuitStack();
         piles[SUITSTACKSPADES.ordinal()]  = new SuitStack();
 
-        int drawstackCardCount = 3;
-        for (int i = 0; i < drawstackCardCount; i++) {
+        for (int i = 0; i < 24; i++) {
             piles[DRAWSTACK.ordinal()].add(new Card());
         }
 
@@ -99,13 +98,13 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         var pile = get(pileID);
 
         if (pileID.isBuildStack())
-            return pile.getCard(0).getRank() == 1; // true if ace on top
+            return pile.getCard(pile.size() - 1).getRank() == 1; // true if ace on top
 
         if (pileID == DRAWSTACK)
             return pile.isEmpty();
 
         //Now we know only suit stacks are left
-        return pile.getCard(0).getRank() == 13; // true if suitStack has a king on top
+        return pile.getCard(pile.size() - 1).getRank() == 13; // true if suitStack has a king on top
     }
 
     @Override
@@ -128,10 +127,6 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
             var pile = piles[pileID.ordinal()];
             var imgCard = extractImgData(imgData, pileID);
 
-//            if (pile.size() == 0) {
-//                if (imgCard != null)
-//                    throw makeStateException(pileID, imgCard, null);
-//            }
 
             validatePileState(pileID, pile.getTopCard(), imgCard);
         }
