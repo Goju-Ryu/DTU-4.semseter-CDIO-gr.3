@@ -26,7 +26,7 @@ public class GameController implements I_GameController{
     @Override
     public void startGame(String uiChoice){
         if (uiChoice.equalsIgnoreCase("sim"))
-            boardCtrl = new BoardControllerSimulated(new RefBoard(), new GameCardDeck());
+            boardCtrl = new BoardControllerSimulated();
         else
             boardCtrl = new BoardController(uiChoice);
         gameLoop();
