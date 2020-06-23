@@ -25,11 +25,14 @@ public class GameController implements I_GameController{
 
     @Override
     public void startGame(String uiChoice){
-        if (uiChoice.equalsIgnoreCase("sim"))
+        if (uiChoice.equalsIgnoreCase("sim")) {
             boardCtrl = new BoardControllerSimulated();
-        else
+            testGameLoop();
+        } else {
             boardCtrl = new BoardController(uiChoice);
-        gameLoop();
+            gameLoop();
+        }
+
     }
 
     private void gameLoop() {
@@ -40,6 +43,18 @@ public class GameController implements I_GameController{
             Move move = boardCtrl.pickMove(moves);
             log.info("Chose move: " + move);
             promptPlayer(move);
+            if (move != null)
+                boardCtrl.makeMove(move);
+        } while (moves.size() > 0);
+    }
+
+    private void testGameLoop() {
+        List<Move> moves;
+        do {
+            moves = boardCtrl.possibleMoves();
+            log.info("Found "+ moves.size() + " possible moves: " + moves);
+            Move move = boardCtrl.pickMove(moves);
+            log.info("Chose move: " + move);
             if (move != null)
                 boardCtrl.makeMove(move);
         } while (moves.size() > 0);
