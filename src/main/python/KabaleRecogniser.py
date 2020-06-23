@@ -142,17 +142,16 @@ class KabaleRecogniser:
         self.gotCardImageStack = gotCards
 
     def reEnableLoop(self):
-        for stack in self.cards:
-            if stack != None:
-                if stack.rank == None:
-                    #stack.exists = False
-                    return True
+        for stackCard in self.cards:
+            if stackCard != None:
+                if stackCard.exists:
+                    if stackCard.rank == None:
+                        #stack.exists = False
+                        return True
 
-                #if len(str(stack.rank)) == 0:
-                #stack.exists = False
-                #return True
+                    if stackCard.rank:
+                        return True
 
-                if stack.suit.upper() == None:
-                    #stack.exists = False
-                    return True
+                    if stackCard.suit == None:
+                        return True
         return False
