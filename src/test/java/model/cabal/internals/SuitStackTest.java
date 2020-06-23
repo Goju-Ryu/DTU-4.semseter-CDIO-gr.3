@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static model.cabal.internals.card.E_CardSuit.HEARTS;
 import static org.junit.jupiter.api.Assertions.*;
@@ -114,33 +115,33 @@ class SuitStackTest {
         buildStack5.add(new Card(HEARTS,9,false));
 
         if (buildStack.canMoveFrom(1)) {
-            assertTrue(receivingStackEmpty.canMoveTo(aceStack));
-            assertTrue(receivingStack.canMoveTo(buildStack));
+            assertTrue(receivingStackEmpty.canMoveTo(aceStack.getSubset(1)));
+            assertTrue(receivingStack.canMoveTo(buildStack.getSubset(1)));
         }else {
             fail();
         }
-        if (!buildStack1.canMoveFrom(2)) {
+        if (!buildStack1.canMoveFrom(1)) {
             assertFalse(receivingStack.canMoveTo(buildStack1));
         }else {
             fail();
         }
         if (buildStack2.canMoveFrom(1)) {
-            assertFalse(receivingStack.canMoveTo(buildStack2));
+            assertFalse(receivingStack.canMoveTo(buildStack2.getSubset(1)));
         }else {
             fail();
         }
         if (buildStack3.canMoveFrom(1)) {
-            assertFalse(receivingStack.canMoveTo(buildStack3));
+            assertFalse(receivingStack.canMoveTo(buildStack3.getSubset(1)));
         }else {
             fail();
         }
         if (buildStack4.canMoveFrom(1)) {
-            assertFalse(receivingStack.canMoveTo(buildStack4));
+            assertFalse(receivingStack.canMoveTo(buildStack4.getSubset(1)));
         }else {
             fail();
         }
         if (!buildStack5.canMoveFrom(1)) {
-            assertFalse(receivingStack.canMoveTo(buildStack5));
+            assertFalse(receivingStack.canMoveTo(buildStack5.getSubset(1)));
         }else {
             fail();
         }
@@ -181,31 +182,26 @@ class SuitStackTest {
         drawStack5.turnCard();
 
         if (drawStack.canMoveFrom(1)) {
-            assertTrue(receivingStack.canMoveTo(drawStack));
+            assertTrue(receivingStack.canMoveTo(drawStack.getSubset(1)));
         }else {
             fail();
         }
         if (drawStack2.canMoveFrom(1)) {
-            assertFalse(receivingStack.canMoveTo(drawStack2));
-        }else {
-            fail();
-        }
-        if (drawStack3.canMoveFrom(1)) {
-            assertFalse(receivingStack.canMoveTo(drawStack3));
+            assertFalse(receivingStack.canMoveTo(drawStack2.getSubset(1)));
         }else {
             fail();
         }
         if (drawStack4.canMoveFrom(1)) {
-            assertFalse(receivingStack.canMoveTo(drawStack4));
+            assertFalse(receivingStack.canMoveTo(drawStack4.getSubset(1)));
         }else {
             fail();
         }
         if (!drawStack5.canMoveFrom(1)) {
-            assertFalse(receivingStack.canMoveTo(drawStack5));
+            assertFalse(receivingStack.canMoveTo(drawStack5.getSubset(1)));
         }else {
             fail();
         }
-        assertThrows(IndexOutOfBoundsException.class, drawStack1::turnCard,
+        assertThrows(NoSuchElementException.class, drawStack1::turnCard,
                 "The drawstack is empty, so you cant turn a card");
     }
 
@@ -213,7 +209,7 @@ class SuitStackTest {
         SuitStack suitStack = new SuitStack();
 
         for (int i = 0; i < elements; i++) {
-            I_CardModel card = new Card(HEARTS, i + 1,isFaceUp);
+            I_CardModel card = new Card(HEARTS, i + 1, isFaceUp);
             suitStack.add(card);
         }
 
