@@ -86,7 +86,7 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
      * @param imgData the initializing data, often taken from the camera
      * @param drawStack A list of alll cards in the draw stack in the physical board / simulated board.
      */
-    public Board(Map<String, I_CardModel> imgData, GameCardDeck cardDeck, ArrayList<I_CardModel> drawStack) {
+    public Board(Map<String, I_CardModel> imgData, GameCardDeck cardDeck, List<I_CardModel> drawStack) {
         this(imgData, cardDeck);
         get(DRAWSTACK).clear();
         drawStack.add(extractImgData(imgData,DRAWSTACK));
@@ -245,7 +245,7 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         );
         validatePileState(
                 destination,
-                to.isEmpty() ? null : from.getCard(0),
+                to.isEmpty() ? null : to.getCard(0),
                 extractImgData(imgData, destination)
         );
 
