@@ -32,9 +32,7 @@ public class BoardController implements I_BoardController {
 
     protected I_BoardModel boardModel;
     protected I_InputDTO inputDTO;
-    protected String uiChoice;
-    protected GameCardDeck deck;
-    private ArrayList<I_CardModel> listOfDrawpileCards = new ArrayList<I_CardModel>();
+//    private ArrayList<I_CardModel> listOfDrawpileCards = new ArrayList<I_CardModel>();
 
     public BoardController(boolean testBoolean){
 
@@ -50,32 +48,32 @@ public class BoardController implements I_BoardController {
 
     public BoardController(I_InputDTO inputDTO) {
         this.inputDTO = inputDTO;
-        deck = new GameCardDeck();
+        var deck = new GameCardDeck();
         //turn the draw stack through.
         ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
 
-        //TODO: refactor this as a tes(but not a unit test)
-        //This is for testing purposes in regards to drawstack in simulation.
-        //used in conjunction with "test" see below ...
-        for (int i = 1; i <= 12; i++) {
-            I_CardModel simDrawCard = new Card(E_CardSuit.HEARTS,12, true);
-            I_CardModel simDrawCard2 = new Card(E_CardSuit.CLUBS, 9, true);
-            listOfDrawpileCards.add(simDrawCard);
-            listOfDrawpileCards.add(simDrawCard2);
-        }
+//        //TODO: refactor this as a tes(but not a unit test)
+//        //This is for testing purposes in regards to drawstack in simulation.
+//        //used in conjunction with "test" see below ...
+//        for (int i = 1; i <= 12; i++) {
+//            I_CardModel simDrawCard = new Card(E_CardSuit.HEARTS,12, true);
+//            I_CardModel simDrawCard2 = new Card(E_CardSuit.CLUBS, 9, true);
+//            listOfDrawpileCards.add(simDrawCard);
+//            listOfDrawpileCards.add(simDrawCard2);
+//        }
 
         //TODO drawstackCardCount should be 24 in the real case scenario. also change drawstackCardCount in Board (use ctrl+f)
-        int drawstackCardCount = 3;
-            for(int i = 0; i < drawstackCardCount; i++) {
+        int drawstackCardCount = 24;//3;
+        for(int i = 0; i < drawstackCardCount; i++) {
 
-                I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
-                drawCards.add(drawCard);
+            I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
+            drawCards.add(drawCard);
 
-                System.out.println("currDrawCard: " + drawCard);
-                System.out.println("Please turn the next card in the drawstack and prompt ...");
+            System.out.println("currDrawCard: " + drawCard);
+            System.out.println("Please turn the next card in the drawstack and prompt ...");
 
-                ScanSingleton.getScanner().next();
-            }
+            ScanSingleton.getScanner().next();
+        }
 
 
         System.out.println("Type anything followed by a whitespace char, to confirm" +
