@@ -21,6 +21,7 @@ public class GameController implements I_GameController{
     Logger log = Logger.getLogger(getClass().getName());
     Scanner scan = new Scanner(System.in).useDelimiter("(\\b|\\B)");
 
+    @Override
     public void startGame(String uiChoice){
         if (uiChoice.equalsIgnoreCase("sim"))
             boardCtrl = new BoardControllerSimulated();

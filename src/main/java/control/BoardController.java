@@ -52,7 +52,7 @@ public class BoardController implements I_BoardController {
         this.inputDTO = inputDTO;
         deck = new GameCardDeck();
         //turn the draw stack through.
-//        ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
+        ArrayList<I_CardModel> drawCards = new ArrayList<I_CardModel>();
 
         //TODO: refactor this as a tes(but not a unit test)
         //This is for testing purposes in regards to drawstack in simulation.
@@ -64,28 +64,25 @@ public class BoardController implements I_BoardController {
             listOfDrawpileCards.add(simDrawCard2);
         }
 
-        //This is intended for testing purposes and should not be used for the usual "cam" or "gui"
-//        if (!uiChoice.equals("test")) {
-//            for(int i = 0; i < 24; i++) {
-//                I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
-//                //drawCard.
-//                drawCards.add(drawCard);
-//                System.out.println("currDrawCard: " + drawCard.toString());
-//
-//                if(uiChoice.equals("cam")) {
-//                    ScanSingleton.getScanner().next();
-//                }
-//            }
-//        } else {
-//            drawCards.addAll(this.listOfDrawpileCards);
-//            System.out.println("List of sim drawstack: " + drawCards.toString());
-//        }
+        //TODO drawstackCardCount should be 24 in the real case scenario. also change drawstackCardCount in Board (use ctrl+f)
+        int drawstackCardCount = 5;
+            for(int i = 0; i < drawstackCardCount; i++) {
 
-//        System.out.println("Type anything followed by a whitespace char, to confirm" +
-//                " continuing on from intializing the drawstack to actualy start the game");
-//        ScanSingleton.getScanner().next();
+                I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
+                drawCards.add(drawCard);
 
-        this.boardModel = new Board(inputDTO.getUsrInput(), deck);//, drawCards);
+                System.out.println("currDrawCard: " + drawCard.toString());
+                System.out.println("Please turn the next card in the drawstack and prompt ...");
+
+                ScanSingleton.getScanner().next();
+            }
+
+
+        System.out.println("Type anything followed by a whitespace char, to confirm" +
+                " continuing on from intializing the drawstack to actualy start the game");
+        ScanSingleton.getScanner().next();
+
+        this.boardModel = new Board(inputDTO.getUsrInput(), deck, drawCards);//, drawCards);
 
     }
 
