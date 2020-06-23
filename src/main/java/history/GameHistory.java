@@ -1,7 +1,5 @@
 package history;
 
-import static model.cabal.E_PileID.*;
-
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.card.I_CardModel;
@@ -77,7 +75,7 @@ public class GameHistory implements I_GameHistory {
     public Collection<I_GameState> getRepeatStates(BiPredicate<I_GameState, I_GameState> predicate) {
         // start a stream of the history
         return history.stream()
-                .map(e -> (I_GameState) e)
+                .skip(1)
                 // remove all elements, not fulfilling the predicate
                 .filter(e -> predicate.test(currentState, e))
                 // reduce all elements down to one by removing all elements not shared by all collections
@@ -108,7 +106,7 @@ public class GameHistory implements I_GameHistory {
 
 
 
-        if (isNewMove(event)) {
+        if (endsMove(event)) {
             addGameState();
             numNonDrawEvents = 0;
         }
@@ -171,14 +169,29 @@ public class GameHistory implements I_GameHistory {
      * @param event the incoming event
      * @return true if the event is part of a new move, false otherwise.
      */
-    private boolean isNewMove(PropertyChangeEvent event) {
+    private boolean endsMove(PropertyChangeEvent event) {
         E_PileID pileID = getEventSourcePile(event);
 
-        // A draw event is part of a move until two non-draw events have been fired
-        if (!pileID.equals(DRAWSTACK)) numNonDrawEvents++;
+        Collection<I_CardModel> oldValue = ((Collection<I_CardModel>)event.getOldValue());
+        Collection<I_CardModel> newValue = ((Collection<I_CardModel>)event.getNewValue());
 
+        // No cards were moved so this cannot be part of a move
+        if (oldValue.size() == newValue.size()) return numNonDrawEvents > 1;
+
+//        Collection<I_CardModel> changedCards;
+//        if (oldValue.size() > newValue.size()) {
+//            oldValue.removeAll(newValue);
+//            changedCards = oldValue;
+//        } else if (oldValue.size() < newValue.size()) {
+//            newValue.removeAll(oldValue);
+//            changedCards = newValue;
+//        }
+
+//        // Count only moves, not
+//        if (!pileID.equals(DRAWSTACK)) numNonDrawEvents++;
+        numNonDrawEvents++;
         // A non-draw event is part of a move if it is the first or second non-draw event since the last state was added
-        return numNonDrawEvents > 2;
+        return numNonDrawEvents > 1;
     }
 
     /**
