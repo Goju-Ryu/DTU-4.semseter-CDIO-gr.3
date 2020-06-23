@@ -29,15 +29,9 @@ class BoardControllerTest {
 
   
     public static class testBoardController extends BoardControllerSimulated {
-
-        protected I_BoardModel refBoardModel;
         public testBoardController(AbstractMap.SimpleImmutableEntry<I_BoardModel, I_InputDTO> util) {
-            super(true);
-            refBoardModel = util.getKey();
-            inputDTO = util.getValue();
-            boardModel = util.getKey();
+            super(util.getKey(), util.getValue());
         }
-
     }
 
     @Test
@@ -66,7 +60,7 @@ class BoardControllerTest {
         BoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
-        assertEquals(3,result.size());
+        assertEquals(3, result.size());
     }
 
     @Test
@@ -125,7 +119,7 @@ class BoardControllerTest {
         BoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
-        assertEquals(7,result.size());
+        assertEquals(7, result.size());
 
     }
     
@@ -256,7 +250,7 @@ class BoardControllerTest {
         Map<String, I_CardModel> map = new HashMap<>();
         map.put( BUILDSTACK1.name(),new Card( SPADES    , 3  ));
         map.put( BUILDSTACK2.name(),new Card( HEARTS    , 3  ));
-        map.put( BUILDSTACK3.name(),new Card( CLUBS     , 10 ));
+        map.put( BUILDSTACK3.name(),new Card( DIAMONDS     , 10 ));
         map.put( BUILDSTACK4.name(),new Card( HEARTS    , 10 ));
         map.put( BUILDSTACK5.name(),new Card( SPADES    , 10 ));
         map.put( BUILDSTACK6.name(),new Card( CLUBS     , 10 ));
