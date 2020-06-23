@@ -28,9 +28,8 @@ class DrawStackTest {
             System.out.println("passed");
             Collection<I_CardModel> drawStack1 = drawStack.popSubset();
 
-            for (I_CardModel inCard : drawStack1) {
-                card2 = inCard;
-            }
+
+            card2 = drawStack1.iterator().next();
 
             System.out.println("Card in that is popped from the drawstack: "+card2);
             System.out.println("Card to compare with: "+card);
@@ -137,9 +136,8 @@ class DrawStackTest {
 
         // -1  0  1  2  3  4
         //  /  1  2  3  4  5
-        assertNotEquals(3, stack.getCard(3).getRank());
-        assertEquals(4, stack.getCard(0).getRank());
-        assertEquals(3, stack.getCard(stack.size()-1).getRank());
+        assertEquals(3, stack.getCard(0).getRank());
+        assertEquals(2, stack.getCard(stack.size()-1).getRank());
 
         stackIterator = stack.iterator();
         for (int i = 0; i < 5; i++) {
