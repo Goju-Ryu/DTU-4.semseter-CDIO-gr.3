@@ -56,7 +56,7 @@ class BoardTest {
                 continue;
             }
 
-            map.put( e.toString() , new Card(E_CardSuit.SPADES, i++) );
+            map.put( e.name() , new Card(E_CardSuit.SPADES, i++) );
         }
         var deck = new GameCardDeck();
         I_BoardModel board = new Board(map, deck);
@@ -81,8 +81,8 @@ class BoardTest {
                 continue;
             }
 
-            I_CardModel c = board.getPile(e).get(size-1);
-            assertEquals(map.get(e.toString()).getRank(),c.getRank());
+            I_CardModel c = board.getPiles()[e.ordinal()].getTopCard();
+            assertEquals(map.get(e.name()).getRank(),c.getRank());
             String mapsSuit = map.get(e.toString()).getSuit().toString();
             boolean SuitMatches = mapsSuit.equals( c.getSuit().toString() );
             assertTrue(SuitMatches);

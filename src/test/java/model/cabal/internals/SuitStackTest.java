@@ -6,9 +6,11 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static model.cabal.internals.card.E_CardSuit.HEARTS;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SuitStackTest {
@@ -22,7 +24,7 @@ class SuitStackTest {
             System.out.println("The old suit stack: "+card);
         }
 
-        I_CardModel card = new Card(E_CardSuit.HEARTS,4,true);
+        I_CardModel card = new Card(HEARTS,4,true);
 
         if (suitStack.canMoveFrom(1)){
 
@@ -85,11 +87,11 @@ class SuitStackTest {
 
         //The  build stack that should be able to be merged into receivingStack
         BuildStack buildStack = new BuildStack();
-        buildStack.add(new Card(E_CardSuit.HEARTS,9,true));
+        buildStack.add(new Card(HEARTS,9,true));
 
         //A build stack with an ace
         BuildStack aceStack = new BuildStack();
-        aceStack.add(new Card(E_CardSuit.HEARTS,1));
+        aceStack.add(new Card(HEARTS,1));
 
         //The build stack that is empty and cant be merged
         BuildStack buildStack1 = new BuildStack();
@@ -100,16 +102,16 @@ class SuitStackTest {
 
         //The build stack that is not able to be merged into the suitstack because the size is greater than 1
         BuildStack buildStack3 = new BuildStack();
-        buildStack3.add(new Card(E_CardSuit.HEARTS,9,true));
-        buildStack3.add(new Card(E_CardSuit.HEARTS,10,true));
+        buildStack3.add(new Card(HEARTS,9,true));
+        buildStack3.add(new Card(HEARTS,10,true));
 
         //The build stack where the rank is not 1 less
         BuildStack buildStack4 = new BuildStack();
-        buildStack4.add(new Card(E_CardSuit.HEARTS,10,true));
+        buildStack4.add(new Card(HEARTS,10,true));
 
         //The build stack where the card is not face up
         BuildStack buildStack5 = new BuildStack();
-        buildStack5.add(new Card(E_CardSuit.HEARTS,9,false));
+        buildStack5.add(new Card(HEARTS,9,false));
 
         if (buildStack.canMoveFrom(1)) {
             assertTrue(receivingStackEmpty.canMoveTo(aceStack));
@@ -144,32 +146,38 @@ class SuitStackTest {
         }
 
         //the draw stack that should be able to be added to receive stack
-        Drlist.of(E_CardSuit.HEARTS,9,true));
-        drawStack.add();
+        var drawCards = new ArrayList<I_CardModel>();
+        drawCards.add(new Card(HEARTS,9,true));
+        DrawStack drawStack = new DrawStack(drawCards);
         drawStack.turnCard();
 
         //the draw stack that is empty
         DrawStack drawStack1 = new DrawStack();
 
         //the draw stack that is not the same suit
-        DrawStack drawStack2 = new DrawStack();
-        drawStack2.add(new Card(E_CardSuit.CLUBS,9,true));
+        var drawCards2 = new ArrayList<I_CardModel>();
+        drawCards2.add(new Card(E_CardSuit.CLUBS,9,true));
+        DrawStack drawStack2 = new DrawStack(drawCards2);
         drawStack2.turnCard();
 
         // the draw stack where there are to many cards in it
-        DrawStack drawStack3 = new DrawStack();
-        drawStack3.add(new Card(E_CardSuit.HEARTS,9,true));
-        drawStack3.add(new Card(E_CardSuit.HEARTS,10,true));
+        var drawCards3 = new ArrayList<I_CardModel>();
+        drawCards3.add(new Card(HEARTS,9,true));
+        drawCards3.add(new Card(HEARTS,9,true));
+        drawCards3.add(new Card(HEARTS,10,true));
+        DrawStack drawStack3 = new DrawStack(drawCards3);
         drawStack3.turnCard();
 
         // the draw stack where the rank of the card is not 1 less
-        DrawStack drawStack4 = new DrawStack();
-        drawStack4.add(new Card(E_CardSuit.HEARTS,10,true));
+        var drawCards4 = new ArrayList<I_CardModel>();
+        drawCards4.add(new Card(HEARTS,10,true));
+        DrawStack drawStack4 = new DrawStack(drawCards4);
         drawStack4.turnCard();
 
         // the draw stack where the card is face down
-        DrawStack drawStack5 = new DrawStack();
-        drawStack5.add(new Card(E_CardSuit.HEARTS,9,false));
+        var drawCards5 = new ArrayList<I_CardModel>();
+        drawCards5.add(new Card(HEARTS,9,false));
+        DrawStack drawStack5 = new DrawStack(drawCards5);
         drawStack5.turnCard();
 
         if (drawStack.canMoveFrom(1)) {
@@ -205,7 +213,7 @@ class SuitStackTest {
         SuitStack suitStack = new SuitStack();
 
         for (int i = 0; i < elements; i++) {
-            I_CardModel card = new Card(E_CardSuit.HEARTS,i+1,isFaceUp);
+            I_CardModel card = new Card(HEARTS, i + 1,isFaceUp);
             suitStack.add(card);
         }
 
