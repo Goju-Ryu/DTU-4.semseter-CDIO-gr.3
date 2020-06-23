@@ -137,14 +137,6 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         return from.canMoveFrom(range);
     }
 
-    @Override
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-    }
-
-    @Override
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-    }
-
     private static Map<String, List<I_CardModel>> stdBoard = Map.of(
             DRAWSTACK.name(), List.of( //24 cards
                     new Card(HEARTS,2 ),
