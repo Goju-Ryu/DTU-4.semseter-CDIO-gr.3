@@ -6,6 +6,7 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -113,6 +114,39 @@ class DrawStackTest {
 
     }
 
+    @Test
+    void getCard() {
+        List<I_CardModel> list = new ArrayList<>(5);
+        for (int i = 0; i < 5; i++) {
+            list.add(new Card(E_CardSuit.HEARTS, i+1));
+        }
+
+        DrawStack stack = new DrawStack(list);
+
+        var stackIterator = stack.iterator();
+        for (int i = 0; i < 5; i++) {
+            assertEquals(i+1, stackIterator.next().getRank());
+        }
+
+        assertEquals(1, stack.getCard(0).getRank());
+        assertEquals(3, stack.getCard(2).getRank());
+
+        for (int i = 0; i < 3; i++) {
+            stack.turnCard(); //DrawIndex is moved from -1 to 2
+        }
+
+        // -1  0  1  2  3  4
+        //  /  1  2  3  4  5
+        assertNotEquals(3, stack.getCard(3).getRank());
+        assertEquals(4, stack.getCard(0).getRank());
+        assertEquals(3, stack.getCard(stack.size()-1).getRank());
+
+        stackIterator = stack.iterator();
+        for (int i = 0; i < 5; i++) {
+            assertEquals(stack.getCard(i), stackIterator.next());
+        }
+    }
+
     private DrawStack createDrawstack(int elements, E_CardSuit suit) {
         List<I_CardModel> cards = new LinkedList<>();
 
@@ -123,4 +157,6 @@ class DrawStackTest {
 
         return new DrawStack(cards);
     }
+
+
 }
