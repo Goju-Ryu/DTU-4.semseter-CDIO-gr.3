@@ -128,10 +128,8 @@ public class BoardController implements I_BoardController {
                     } catch (Exception ignored) {}
 
 
-
                     Move move = new Move( to,from, depth, improveAce, improveCardReveal, "Move Desc");
                     moves.add(move);
-
                 }
             }
         }
