@@ -20,7 +20,7 @@ class Video:
 
     def __init__(self):
         # finals
-        self.VidName = 0
+        self.VidName = 1
         self.FRAME_NAME = " video recording Frame "
 
         # Video Stats
