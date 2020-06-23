@@ -54,7 +54,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
         if (range == 0)
             return List.of();
 
-        var returnable = List.of( getCard(drawIndex) );  //getSubset(drawIndex)
+        var returnable = List.of( getCard(Math.max(0, drawIndex)) );
         stack.remove(drawIndex--); //remove the card and lower index to point to the new card that can be drawn
         return returnable;
     }
