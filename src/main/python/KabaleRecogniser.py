@@ -148,9 +148,10 @@ class KabaleRecogniser:
                     #stack.exists = False
                     return True
 
-                if len(str(stack.rank)) == 0:
-                    #stack.exists = False
-                    return True
+                #if len(str(stack.rank)) == 0:
+                #stack.exists = False
+                #return True
+
                 if stack.suit.upper() == None:
                     #stack.exists = False
                     return True
