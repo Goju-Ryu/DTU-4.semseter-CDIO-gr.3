@@ -101,15 +101,16 @@ public class BoardController implements I_BoardController {
                 if(from == to)
                     continue;
 
+                boolean improveAce = false;
+                if (to == SUITSTACKSPADES ||to == SUITSTACKCLUBS || to == SUITSTACKDIAMONDS ||to == SUITSTACKHEARTS ){
+                    improveAce = true;
+                }
+
                 for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
 
-                    // out kommented commands used for easy debugging
-                    boolean aceTo = false;
-                    if((to == SUITSTACKCLUBS || to == SUITSTACKHEARTS || to == SUITSTACKDIAMONDS || to==SUITSTACKSPADES))
-                        aceTo=true;
-
-                    int a = boardModel.getPile(from).size() - depth;
-                    I_CardModel c = boardModel.getPile(from).get(a);
+                    // data for easy debugging
+                    // int a = boardModel.getPile(from).size() - depth;
+                    // I_CardModel c = boardModel.getPile(from).get(a);
 
 
                     // now we need to check if the move is even possible at this index.
@@ -126,10 +127,7 @@ public class BoardController implements I_BoardController {
                         improveCardReveal = !boardModel.getPile(from).get(depth).isFacedUp();
                     } catch (Exception ignored) {}
 
-                    boolean improveAce = false;
-                    if (to == SUITSTACKSPADES ||to == SUITSTACKCLUBS || to == SUITSTACKDIAMONDS ||to == SUITSTACKHEARTS ){
-                        improveAce = true;
-                    }
+
 
                     Move move = new Move( to,from, depth, improveAce, improveCardReveal, "Move Desc");
                     moves.add(move);
