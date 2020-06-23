@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class InputAccesPoint {
-    //TODO: move this to data layer and refactor its name
+
     private static final Logger logger = Logger.getLogger(InputAccesPoint.class.getName());
 
     private final GreeterGrpc.GreeterBlockingStub blockingStub;
