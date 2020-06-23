@@ -9,9 +9,11 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
 import java.beans.PropertyChangeListener;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import static java.util.AbstractMap.SimpleEntry;
 import static model.cabal.E_PileID.*;
 import static model.cabal.internals.card.E_CardSuit.*;
 
@@ -23,6 +25,12 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         this(stdBoard);
     }
 
+    public RefBoard(I_BoardModel boardModel) {
+        this(Arrays.stream(E_PileID.values())
+                .map(pileID -> new SimpleEntry<>(pileID.name(), boardModel.getPile(pileID)))
+                .collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue))
+        );
+    }
 
     //Constructors
     public RefBoard(Map<String, List<I_CardModel>> boardData) { //TODO board should take imgData to initialize self
@@ -75,14 +83,12 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         if (turnPile.isEmpty())
             throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
 
-        var returnable = turnPile.turnCard();
-
-        return returnable;
+        return turnPile.turnCard();
     }
 
     @Override
     public I_CardModel getTurnedCard() {
-        return null;
+        return piles[DRAWSTACK.ordinal()].getTopCard();
     }
 
 
