@@ -99,8 +99,13 @@ public class BoardController implements I_BoardController {
         // and i do a for each card in this pile.
 
         for(E_PileID from: E_PileID.values()){
-            for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
-                for (E_PileID to: E_PileID.values()) {
+            for (E_PileID to: E_PileID.values()) {
+
+                if(from == to)
+                    continue;
+
+                for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
+
                     // out kommented commands used for easy debugging
                     boolean aceTo = false;
                     if((to == SUITSTACKCLUBS || to == SUITSTACKHEARTS || to == SUITSTACKDIAMONDS || to==SUITSTACKSPADES))
@@ -108,9 +113,6 @@ public class BoardController implements I_BoardController {
 
                     int a = boardModel.getPile(from).size() - depth;
                     I_CardModel c = boardModel.getPile(from).get(a);
-
-                    if(from == to)
-                        continue;
 
 
                     // now we need to check if the move is even possible at this index.

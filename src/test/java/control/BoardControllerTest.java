@@ -333,6 +333,35 @@ class BoardControllerTest {
     }
 
     @Test
+    void PossibleMoves_testFromError(){
+
+        Map<E_PileID, I_CardModel> map = new HashMap<>();
+        map.put(BUILDSTACK1,new Card( SPADES    , 9   ));
+        map.put(BUILDSTACK3,new Card( SPADES    , 8   ));
+        map.put(BUILDSTACK5,new Card( DIAMONDS  , 13  ));
+        map.put(BUILDSTACK2,new Card( DIAMONDS  , 4   ));
+        map.put(BUILDSTACK4,new Card( HEARTS    , 13  ));
+        map.put(BUILDSTACK6,new Card( SPADES    , 11  ));
+        map.put(BUILDSTACK7,new Card( DIAMONDS  , 6   ));
+
+        // the drawStack.
+        ArrayList<I_CardModel> list = new ArrayList<>();
+        list.add(new Card( DIAMONDS  ,  7 ));
+        list.add(new Card( CLUBS     ,  8 ));
+        list.add(new Card( CLUBS     ,  10));
+        list.add(new Card( HEARTS    ,  1 ));
+        list.add(new Card( CLUBS     ,  1 ));
+        list.add(new Card( DIAMONDS  ,  7 ));
+
+        GameCardDeck deck = new GameCardDeck();
+        I_BoardModel board = new testBoard(map, list,deck);
+        BoardController boardCnt = new testBoardController(board,deck);
+
+        List<Move> result = boardCnt.possibleMoves();
+        assertEquals(6, result.size());
+    }
+
+    @Test
     void make_a_move(){
 
         // What is the top cards of the rows, anything undeclared is empty list.
