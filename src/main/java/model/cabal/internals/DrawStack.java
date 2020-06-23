@@ -98,12 +98,20 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
     @NonNullType
     @Override
     public Iterator<I_CardModel> iterator() {
-        return stack.listIterator();
+        var startIndex = (drawIndex + 1) % size();
+        var returnable = stack.subList(startIndex, stack.size());
+        returnable.addAll(stack.subList(0, startIndex));
+        return returnable.iterator();
     }
 
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
         return false;
+    }
+
+    @Override
+    public I_CardModel getCard(int position) {
+        return stack.get((drawIndex + 1 + position) % size());
     }
 
     @Override
