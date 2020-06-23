@@ -54,7 +54,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
         if (range == 0)
             return List.of();
 
-        var returnable = List.of( getCard(Math.max(0, drawIndex)) );
+        var returnable = List.of( getCard(getSafeDrawIndex()) );
         stack.remove(drawIndex--); //remove the card and lower index to point to the new card that can be drawn
         return returnable;
     }
@@ -62,7 +62,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
     @Override
     public List<I_CardModel> getSubset(int range) {
         List<I_CardModel> returnable;
-        var startIndex = Math.max(drawIndex, 0); //if drawIndex is negative set this index to 0 else use drawIndex.
+        var startIndex = getSafeDrawIndex(); //if drawIndex is negative set this index to 0 else use drawIndex.
 
         if (drawIndex + range < stack.size())
             returnable = stack.subList(startIndex, startIndex + range);
@@ -86,15 +86,15 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
             );
         }
 
-        if (range - 1 < 1)
+        if (range < 1)
             return true;
 
-        return getCard(range - 1).isFacedUp();
+        return getCard(range).isFacedUp();
     }
 
     @Override
     public boolean add(I_CardModel o) {
-        drawIndex = Math.max(drawIndex, 0); //if drawIndex is negative set this index to 0 else use drawIndex.
+        drawIndex = getSafeDrawIndex(); //if drawIndex is negative set this index to 0 else use drawIndex.
         stack.add(drawIndex, o);
         return true;
     }
@@ -102,7 +102,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
     @NonNullType
     @Override
     public Iterator<I_CardModel> iterator() {
-        var startIndex = (drawIndex + 1) % size();
+        var startIndex = getSafeDrawIndex();
         var returnable = stack.subList(startIndex, stack.size());
         returnable.addAll(stack.subList(0, startIndex));
         return returnable.iterator();
@@ -117,7 +117,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
     public I_CardModel getCard(int position) {
         if (size() == 0)
             return stack.get(position);
-        return stack.get((drawIndex + 1 + position) % size());
+        return stack.get((getSafeDrawIndex()+ position) % size());
     }
 
     @Override
@@ -128,8 +128,14 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
 //-------------------  DrawStack specific methods  ----------------------------------------------------------
 
     public I_CardModel turnCard() {
+        if (isEmpty())
+            throw new NoSuchElementException("Can't turn a card in an empty stack");
         drawIndex = (drawIndex + 1) % size();
         return getCard(0);
+    }
+    
+    private int getSafeDrawIndex() {
+        return Math.max(0, drawIndex);
     }
 
 }
