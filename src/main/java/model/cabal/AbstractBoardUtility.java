@@ -45,7 +45,7 @@ public abstract class AbstractBoardUtility  {
 
         var fromPile = get(from);
 
-        I_CardModel c = fromPile.getCard(fromPile.size() - originPos);
+        I_CardModel c = fromPile.getCard(fromPile.size() - originPos);//might throw null pointer
         if ( !c.isFacedUp() )
             return false;
 
@@ -53,19 +53,19 @@ public abstract class AbstractBoardUtility  {
 
         switch (to) {
             case SUITSTACKHEARTS:
-                if(c.getSuit() != HEARTS)
+                if(!c.getSuit().equals(HEARTS))
                     return false;
                 break;
             case SUITSTACKDIAMONDS:
-                if(c.getSuit() != DIAMONDS)
+                if(!c.getSuit().equals(DIAMONDS))
                     return false;
                 break;
             case SUITSTACKSPADES:
-                if(c.getSuit() != SPADES)
+                if(!c.getSuit().equals(SPADES))
                     return false;
                 break;
             case SUITSTACKCLUBS:
-                if(c.getSuit() != CLUBS)
+                if(!c.getSuit().equals(CLUBS))
                     return false;
                 break;
         }

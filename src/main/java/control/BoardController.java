@@ -124,7 +124,8 @@ public class BoardController implements I_BoardController {
 
                     boolean improveCardReveal = false;
                     try {
-                        improveCardReveal = !boardModel.getPile(from).get(depth).isFacedUp();
+                        var pile = boardModel.getPile(from);
+                        improveCardReveal = !pile.get(depth).isFacedUp();
                     } catch (Exception ignored) {}
 
 

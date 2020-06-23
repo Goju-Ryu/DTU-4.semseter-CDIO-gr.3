@@ -36,7 +36,7 @@ public class GameController implements I_GameController{
         List<Move> moves;
         do {
             moves = boardCtrl.possibleMoves();
-            log.info("Possible moves: " + moves.size());
+            log.info("Found "+ moves.size() + " possible moves: " + moves);
             Move move = boardCtrl.pickMove(moves);
             log.info("Chose move: " + move);
             promptPlayer(move);

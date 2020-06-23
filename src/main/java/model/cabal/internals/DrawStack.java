@@ -4,10 +4,8 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.LinkedList;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class DrawStack extends StackBase implements I_SolitaireStacks {
 
@@ -62,8 +60,8 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
     }
 
     @Override
-    public Collection<I_CardModel> getSubset(int range) {
-        Collection<I_CardModel> returnable;
+    public List<I_CardModel> getSubset(int range) {
+        List<I_CardModel> returnable;
         var startIndex = Math.max(drawIndex, 0); //if drawIndex is negative set this index to 0 else use drawIndex.
 
         if (drawIndex + range < stack.size())
@@ -74,6 +72,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
             returnable.addAll(stack.subList(0, rangeIndex));
         }
 
+        Collections.reverse(returnable);
         return returnable;
     }
 
@@ -87,9 +86,10 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
             );
         }
 
-        int rangeIndex = drawIndex + range ;
+        if (range - 1 < 1)
+            return true;
 
-        return stack.get(rangeIndex % size()).isFacedUp();
+        return getCard(range - 1).isFacedUp();
     }
 
     @Override
