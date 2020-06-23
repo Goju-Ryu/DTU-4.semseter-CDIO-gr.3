@@ -26,7 +26,6 @@ class KabaleRecogniser:
     # ( for each card, whats the best result for that card ( by counting most votes) ). to then give a result.
 
     def run(self, Settings):
-
         Operator = imageOperator()
 
         # start a counter to know when to end the loop.
@@ -45,15 +44,9 @@ class KabaleRecogniser:
             # This if ends the video recording, however it contains another if, that resets the loop.
             # If the recording was errored. it is errored if it has half initiated cards.
             # a card with a rank, but no suit. or reversed.
-
             if succesCounter > SUCCES_TIMER:
-                if self.reEnableLoop():
-                    #todo check while runing that this self.statestics = None actualy resets the statestics.
-                    self.statestics = None
-                    self.statestics = statistics()
-                    succesCounter = 0
-                else:
-                    break
+
+                break
 
             # this is openCV code, get the image, and then it gives an error if the keypressed isent there.
             # or rather it refuses to return an image, so it is necesary for it to be here.
@@ -82,6 +75,7 @@ class KabaleRecogniser:
                     cardImageStacked = Operator.stackImages(self.cardImagesStack[0], self.cardImagesStack)
                     cv2.imshow("cardStacked", cardImageStacked)
 
+
         # when the loop is done it is necesary to close all windows if any are open, otherwise the programs becomes
         # unresponsive, this is not necesary in the final version, but when testing it becomes an issue.
 
@@ -89,7 +83,7 @@ class KabaleRecogniser:
 
         # evaluate results
         self.cards = self.statestics.evalListOfCards(self.cards)
-
+        self.cards = self.reEvalCardsExists(self.cards)
         return self.interpreteResults()
 
     def interpreteResults(self):
@@ -141,20 +135,12 @@ class KabaleRecogniser:
             i += 1
         self.gotCardImageStack = gotCards
 
-    def reEnableLoop(self):
-        for stackCard in self.cards:
-            if stackCard is not None:
-                if stackCard.exists:
-                    if stackCard.rank is None:
-                        return True
-
-                    if stackCard.suit is None:
-                        return True
-
-                    if stackCard.rank:
-                        return True
-
-                    if stackCard.suit:
-                        return True
-
-        return False
+    def reEvalCardsExists(self, evalCards):
+        cards = []
+        for stackCard in evalCards:
+            if stackCard.rank and stackCard.suit:
+                stackCard.exists = True
+            else:
+                stackCard.exists = False
+            cards.append(stackCard)
+        return cards
