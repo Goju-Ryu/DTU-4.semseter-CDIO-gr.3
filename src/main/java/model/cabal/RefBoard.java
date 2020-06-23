@@ -47,7 +47,7 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         for (E_PileID pileID : E_PileID.values()) {
             if (pileID.isBuildStack())
                 piles[pileID.ordinal()] = new BuildStack();
-            piles[pileID.ordinal()].addAll(boardData.get(pileID.name()));
+            piles[pileID.ordinal()].addAll(boardData.getOrDefault(pileID.name(), List.of()));
         }
 
         //Make the constructor alert history of it's initial state
