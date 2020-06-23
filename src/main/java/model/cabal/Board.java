@@ -22,8 +22,6 @@ import static model.cabal.E_PileID.*;
  */
 public class Board extends AbstractBoardUtility implements I_BoardModel {
 
-    private PropertyChangeSupport change;
-
 
     public Board(Map<String, I_CardModel> imgData, GameCardDeck cardDeck) { //TODO board should take imgData to initialize self
         deck = cardDeck;
@@ -275,33 +273,5 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         I_SolitaireStacks from = get(origin);
         return from.canMoveFrom(range);
     }
-
-
-//-----------------------------------PropertyEditor methods-------------------------------------------------------------
-
-    @Override
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        change.addPropertyChangeListener(listener);
-    }
-
-
-    @Override
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        change.removePropertyChangeListener(listener);
-    }
-
-    private PropertyChangeEvent makePropertyChangeEvent(E_PileID pile, Collection<I_CardModel> oldVal) {
-        int pileIndex = pile.ordinal();
-        return new PropertyChangeEvent(
-                piles[pileIndex],
-                pile.name(),
-                oldVal,
-                Collections.unmodifiableCollection(piles[pileIndex])
-        );
-
-    }
-
-
-
 
 }
