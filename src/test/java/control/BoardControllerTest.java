@@ -316,7 +316,6 @@ class BoardControllerTest {
 
     }
 
-
     @Test
     void RepeatState_impl_test(){
 
@@ -356,4 +355,6 @@ class BoardControllerTest {
             boardCnt.makeMove(move);
         });
     }
+
+
 }

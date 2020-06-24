@@ -55,8 +55,8 @@ public class BoardController extends AbstractBoardController {
         }
 
 
-        System.out.println("Type anything followed by a whitespace char, to confirm" +
-                " continuing on from intializing the drawstack to actualy start the game");
+        System.out.println("Type anything followed by a whitespace char, to confirm " +
+        "continuing on from intializing the drawstack to actualy start the game");
         ScanSingleton.getScanner().next();
 
         this.boardModel = new Board(inputDTO.getUsrInput(), deck, drawCards);//, drawCards);

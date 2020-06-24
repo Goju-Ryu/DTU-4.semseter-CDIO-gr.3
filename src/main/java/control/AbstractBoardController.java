@@ -4,6 +4,7 @@ import data.I_InputDTO;
 import history.GameHistory;
 import history.I_GameHistory;
 import history.I_GameState;
+import history.State;
 import model.Move;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
@@ -94,7 +95,10 @@ public abstract class AbstractBoardController implements I_BoardController {
             throw new UnendingGameException("Game state is repeated, and possible moves size = 1");
 
         // now that the list is sorted. we return the best element, the first one.
+
         moves.sort(comp);
+        Move a = pickMove_repeatCheck( moves , 0);
+
         return moves.get(0);
 
     }
@@ -147,4 +151,20 @@ public abstract class AbstractBoardController implements I_BoardController {
             return 1;
         }
     };
+
+    private Move pickMove_repeatCheck(List<Move> moves, int i){
+
+        if(i > (moves.size()-1)) {
+            Map<E_PileID, List<I_CardModel>> map = boardModel.makeMoveStateMap(moves.get(i));
+            State s = new State(map);
+            if (history.isRepeatState(s)) {
+                return pickMove_repeatCheck(moves, ++i);
+            } else {
+                return moves.get(i);
+            }
+        }else{
+            throw new UnendingGameException("Game Entered Unending loop\n every move would lead to a repeated game state");
+        }
+
+    }
 }

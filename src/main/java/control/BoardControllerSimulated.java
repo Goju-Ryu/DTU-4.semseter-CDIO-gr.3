@@ -51,7 +51,6 @@ public class BoardControllerSimulated extends AbstractBoardController {
         super(boardModel, inputDTO);
     }
 
-
     /**
      * Make a new test game with full control over it's starting conditions.
      *

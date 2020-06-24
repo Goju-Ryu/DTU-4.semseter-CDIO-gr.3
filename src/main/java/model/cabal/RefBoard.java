@@ -1,6 +1,7 @@
 package model.cabal;
 
 import model.GameCardDeck;
+import model.Move;
 import model.cabal.internals.BuildStack;
 import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
@@ -254,4 +255,34 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
                     new Card(CLUBS,11)
             )
     );
+
+    @Override
+    public Map<E_PileID, List<I_CardModel>> makeMoveStateMap(Move m) {
+
+        I_SolitaireStacks from = get(m.moveFromStack());
+        I_SolitaireStacks to = get(m.moveToStack());
+
+        //change state
+        to.addAll(from.popSubset(m.moveFromRange()));
+
+        Map<E_PileID, List<I_CardModel>> map = new HashMap<>();
+        Collection<I_CardModel> col;
+        for (E_PileID e : E_PileID.values()) {
+
+            if (e == m.moveFromStack()) {
+
+                col = from;
+
+            } else if (e == m.moveToStack()) {
+
+                col = to;
+
+            } else {
+
+                col = this.getPile(e);
+            }
+            map.put(e, new ArrayList<>(col) );
+        }
+        return map;
+    }
 }
