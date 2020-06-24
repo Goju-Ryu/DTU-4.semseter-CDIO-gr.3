@@ -50,7 +50,7 @@ public abstract class AbstractBoardController implements I_BoardController {
                     improveAce = true;
                 }
 
-                for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
+                for( int depth = 0 ; depth < boardModel.getPile(from).size() ; depth++ ){
 
                     // data for easy debugging
                     I_SolitaireStacks s = boardModel.getPiles()[from.ordinal()];
