@@ -114,8 +114,9 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
     }
     @Override
     public I_CardModel getTopCard() {
-        int d = getSafeDrawIndex();
-        return getPCard(d);
+        if (drawIndex < 0)
+            return null;
+        return getPCard(drawIndex);
     }
     public I_CardModel turnCard() {
         if (isEmpty())
