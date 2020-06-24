@@ -1,5 +1,6 @@
 package history;
 
+import com.google.inject.internal.util.StackTraceElements;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.card.I_CardModel;
@@ -52,12 +53,13 @@ public class GameHistory implements I_GameHistory {
     }
 
     public GameHistory(Map<E_PileID, List<I_CardModel>> boardAsMap) {
-        log = Logger.getLogger(getClass().getName());
+        var name = (new Exception().getStackTrace()[2].getClassName()) + "." + getClass().getSimpleName();
+        log = Logger.getLogger(name);
         try {
             final String programDir = System.getProperty("user.dir");
-            var logFile = new File(programDir + "/log/history.log");
+            var logFile = new File(programDir + "/log/history/"+log.getName()+".log");
             logFile.delete();
-            logFile.getParentFile().mkdir();
+            logFile.getParentFile().mkdirs();
             log.addHandler(new FileHandler(logFile.getAbsolutePath()));
         } catch (IOException e) {
             e.printStackTrace();

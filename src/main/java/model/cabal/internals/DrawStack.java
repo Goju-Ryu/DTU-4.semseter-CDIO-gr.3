@@ -71,29 +71,10 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
         //TODO This implementation is fundamentally incorrect it should be fixed later.
         // it is however not a priority, as it does make the rest of the program work, though
         // it is pretty hacky, it would take too long to fix.
-        int index = (getSafeDrawIndex() + (range - 1)) % size();
+        int b = (size()) - (range);
+        int index = (getSafeDrawIndex() + b) % size();
         return List.of(stack.get(index));
 
-//        int index = getSafeDrawIndex() + this.size() - range;
-//        if (index > this.size()-1)
-//            index = index % (this.size()-1);
-//
-//        List<I_CardModel> cards = new ArrayList<>();
-//        cards.add(stack.get(index));
-//        return cards;
-
-        /*List<I_CardModel> returnable;
-        var startIndex = getSafeDrawIndex(); //if drawIndex is negative set this index to 0 else use drawIndex.
-
-        if (drawIndex + range < stack.size())
-            returnable = stack.subList(startIndex, startIndex + range);
-        else {
-            int rangeIndex = (startIndex + range) % stack.size();
-            returnable = stack.subList(startIndex, stack.size());
-            returnable.addAll(stack.subList(0, rangeIndex));
-        }
-        Collections.reverse(returnable);
-        return returnable;*/
     }
 
     @Override
@@ -134,7 +115,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
 
     @Override
     public I_CardModel getCard(int position) {
-        return getSubset(position + 1).get(0);
+        return getSubset(position).get(0);
     }
 
     @Override
