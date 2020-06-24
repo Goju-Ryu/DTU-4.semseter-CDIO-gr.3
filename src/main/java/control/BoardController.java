@@ -110,6 +110,7 @@ public class BoardController implements I_BoardController {
 
                 for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
 
+
                     // data for easy debugging
                       int b =  boardModel.getPile(from).size();
                       int a = b - depth;
