@@ -64,7 +64,7 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
                         throw new IllegalStateException("Trying to add the same card twice during construction.\ncard: " + data);
                     }
                 }
-            } catch (Exception e) {
+            } catch (IllegalArgumentException e) {
                 System.out.println("an input was empty");
             }
         }
@@ -229,7 +229,7 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
             throw new IllegalMoveException(destination + " Cannot receive cards: " + moveCards);
 
         //save state before operation
-        Collection<I_CardModel> oldOrigin = Collections.unmodifiableCollection(get(origin));
+        Collection<I_CardModel> oldOrigin = Collections.unmodifiableCollection(get(origin)); //todo try list of
         Collection<I_CardModel> oldDest = Collections.unmodifiableCollection(get(destination));
 
         //change state

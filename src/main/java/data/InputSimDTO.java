@@ -70,8 +70,8 @@ public class InputSimDTO implements I_InputDTO {
      */
     private Map<String, I_CardModel> getImgData(I_BoardModel board) {
         var excluded = new ArrayList<Integer>();
-        return Stream.of(E_PileID.values())
-                .filter(pile -> board.getPile(pile).size() > 1)
+        var data = Stream.of(E_PileID.values())
+                .filter(pile -> !board.getPile(pile).isEmpty())
                 .map( // transforms elements of the stream to mapEntries
                         pile -> {
                             var pileList = board.getPile(pile);
@@ -88,6 +88,7 @@ public class InputSimDTO implements I_InputDTO {
                         AbstractMap.SimpleEntry::getKey,
                         AbstractMap.SimpleEntry::getValue
                 )); // converts result to a map
+        return data;
 
     }
 

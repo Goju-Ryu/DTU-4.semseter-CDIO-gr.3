@@ -31,10 +31,6 @@ import static model.cabal.E_PileID.*;
 */
 public class BoardController extends AbstractBoardController {
 
-    protected I_BoardModel boardModel;
-    protected I_InputDTO inputDTO;
-    protected I_GameHistory history;
-
     public BoardController(String uiChoice) {
         this(new InputDTO(uiChoice));
     }
