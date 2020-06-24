@@ -202,7 +202,7 @@ class StackBaseTest {
 
         //DrawStack
         DrawStack drawStack = createDrawStack(13);
-        assertEquals(2,drawStack.getSubset(2).size());
+        assertEquals(1,drawStack.getSubset(2).size());
     }
 
     @Test

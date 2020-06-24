@@ -106,6 +106,9 @@ class InputDTOTest {
             List<I_CardModel> listC = board.getPile(e);
             I_CardModel boardsCard = getTopCard(listC);
 
+            if(e == E_PileID.DRAWSTACK)
+                boardsCard = board.getPile(e).get(0);
+
             assertEquals(mapsCard.getRank(), boardsCard.getRank());
             assertEquals(mapsCard.getSuit(), boardsCard.getSuit());
         }
