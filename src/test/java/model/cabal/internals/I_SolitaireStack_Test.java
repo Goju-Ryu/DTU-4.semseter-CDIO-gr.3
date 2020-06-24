@@ -219,6 +219,21 @@ public class I_SolitaireStack_Test {
             }
         }
     }
+
+
+    @Test
+    void getCardMatchTopCard() {
+        Map<String, List<I_CardModel>> map = createMap();
+        I_BoardModel board = new RefBoard( map);
+
+        for (E_PileID e: E_PileID.values()) {
+            I_SolitaireStacks[] s = board.getPiles();
+            I_SolitaireStacks s2 = s[e.ordinal()];
+            I_CardModel getCard = s2.getCard( s2.size() - 1 );
+            I_CardModel topCard = s2.getTopCard();
+            assertEquals(getCard, topCard);
+        }
+    }
 }
 
 

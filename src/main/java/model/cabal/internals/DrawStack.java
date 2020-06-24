@@ -40,13 +40,12 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
     }
     @Override
     public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
-        range = positionReversed(range);
         if (!canMoveFrom()) {
             throw new IllegalMoveException();//todo msg
         }
 
         if (range > 1)
-            throw new IllegalMoveException("drawstack can only move one card at a time.");
+            throw new IllegalMoveException("drawstack can only move one card at a time. range: " + range);
 
 //        int rangeIndex = drawIndex + range ;
 //        if(!stack.get(rangeIndex % size()).isFacedUp()){
@@ -69,8 +68,8 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
     }
     @Override
     public List<I_CardModel> getSubset(int range) {
-        int range2 = positionReversed(range);
-        return getPSubset(range2);
+//        int range2 = positionReversed(range);
+        return getPSubset(range);
     }
     @Override
     public boolean add(I_CardModel o) {
@@ -88,7 +87,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
     // Board Game specifics
     @Override
     public boolean canMoveFrom(int range) {
-        range = positionReversed(range);
+//        range = positionReversed(range);
         if( range > stack.size() ){
             throw new IllegalArgumentException(
                     "Range was larger than the stack size",
