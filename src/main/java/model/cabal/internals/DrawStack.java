@@ -5,10 +5,8 @@ import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class DrawStack extends StackBase implements I_SolitaireStacks {
-
+public class DrawStack extends StackBase implements I_SolitaireStacks  {
     /**
      * This variable describes which cards have been drawn and which haven't
      * every index higher than this value has not yet ben drawn and the lower ones has.
@@ -19,7 +17,6 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
     public DrawStack() {
         this(new LinkedList<>());
     }
-
     public DrawStack(List<I_CardModel> list) {
         super();
 
@@ -33,12 +30,16 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
 
 //-----------  Implementation ----------------------------------------------------------------
 
-    public Collection<I_CardModel> popSubset() throws IllegalMoveException {
-        return popSubset(1);
+    private List<I_CardModel> getPSubset(int range){
+        int index = (getSafeDrawIndex() + range) % size();
+        return List.of(stack.get(index));
     }
-
+    public Collection<I_CardModel> popSubset() throws IllegalMoveException {
+        return popSubset(getSafeDrawIndex());
+    }
     @Override
     public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
+        range = positionReversed(range);
         if (!canMoveFrom()) {
             throw new IllegalMoveException();//todo msg
         }
@@ -65,21 +66,21 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
         drawIndex = index - 1; //lower index to point to the new card that can be drawn
         return returnable;
     }
-
     @Override
     public List<I_CardModel> getSubset(int range) {
-        //TODO This implementation is fundamentally incorrect it should be fixed later.
-        // it is however not a priority, as it does make the rest of the program work, though
-        // it is pretty hacky, it would take too long to fix.
-        int b = (size()) - (range);
-        int index = (getSafeDrawIndex() + b) % size();
-        return List.of(stack.get(index));
-
+        int range2 = positionReversed(range);
+        return getPSubset(range2);
+    }
+    @Override
+    public boolean add(I_CardModel o) {
+        stack.add(getSafeDrawIndex(), o);
+        return true;
     }
 
+    // Board Game specifics
     @Override
     public boolean canMoveFrom(int range) {
-
+        range = positionReversed(range);
         if( range > stack.size() ){
             throw new IllegalArgumentException(
                     "Range was larger than the stack size",
@@ -92,12 +93,28 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
 
         return getCard(range).isFacedUp();
     }
-
     @Override
-    public boolean add(I_CardModel o) {
-        stack.add(getSafeDrawIndex(), o);
-        return true;
+    public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
+        return false;
     }
+    @Override
+    public I_CardModel getCard(int position) {
+        position = positionReversed(position);
+        return getPSubset(position).get(0);
+    }
+    @Override
+    public I_CardModel getTopCard() {
+        return getCard(getSafeDrawIndex());
+    }
+    public I_CardModel turnCard() {
+        if (isEmpty())
+            throw new NoSuchElementException("Can't turn a card in an empty stack");
+        drawIndex = (drawIndex + 1) % size();
+        return getCard(0);
+    }
+
+// --- // --- // --- // --- // --- // --- // -  DrawStack specific methods  ----------------------------------------------------------
+
 
     @NonNullType
     @Override
@@ -107,33 +124,15 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
         returnable.addAll(stack.subList(0, startIndex));
         return returnable.iterator();
     }
-
-    @Override
-    public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
-        return false;
-    }
-
-    @Override
-    public I_CardModel getCard(int position) {
-        return getSubset(position).get(0);
-    }
-
-    @Override
-    public I_CardModel getTopCard() {
-        return getCard(getSafeDrawIndex());
-    }
-
-//-------------------  DrawStack specific methods  ----------------------------------------------------------
-
-    public I_CardModel turnCard() {
-        if (isEmpty())
-            throw new NoSuchElementException("Can't turn a card in an empty stack");
-        drawIndex = (drawIndex + 1) % size();
-        return getCard(0);
-    }
-    
     private int getSafeDrawIndex() {
         return Math.max(0, drawIndex);
+    }
+    private int positionReversed(int a){
+        int b = ((size() - 1) - a);
+        if (b < 0){
+            b = b + ((size() - 1));
+        }
+        return b;
     }
 
 }

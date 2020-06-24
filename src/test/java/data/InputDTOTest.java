@@ -112,7 +112,6 @@ class InputDTOTest {
             assertEquals(mapsCard.getRank(), boardsCard.getRank());
             assertEquals(mapsCard.getSuit(), boardsCard.getSuit());
         }
-
     }
     private I_CardModel getTopCard(List<I_CardModel> list){
         int top = list.size()-1;

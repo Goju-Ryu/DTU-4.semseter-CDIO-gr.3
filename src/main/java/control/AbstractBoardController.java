@@ -5,11 +5,10 @@ import history.GameHistory;
 import history.I_GameHistory;
 import history.I_GameState;
 import history.State;
-import model.GameCardDeck;
 import model.Move;
-import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
+import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.I_CardModel;
 import model.error.UnendingGameException;
 
@@ -25,8 +24,6 @@ public abstract class AbstractBoardController implements I_BoardController {
 
     public AbstractBoardController(){
     }
-
-
     public AbstractBoardController(I_BoardModel boardModel, I_InputDTO inputDTO) {
         this.boardModel = boardModel;
         this.inputDTO = inputDTO;
@@ -56,10 +53,8 @@ public abstract class AbstractBoardController implements I_BoardController {
                 for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
 
                     // data for easy debugging
-                    int b =  boardModel.getPile(from).size();
-                    int a = b - depth;
-                    List<I_CardModel> s = boardModel.getPile(from);
-                    I_CardModel c = s.get(a);
+                    I_SolitaireStacks s = boardModel.getPiles()[from.ordinal()];
+                    I_CardModel c = s.getCard(s.size() - depth);
 
                     // now we need to check if the move is even possible at this index.
                     if (!boardModel.canMoveFrom(from, depth)) {

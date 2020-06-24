@@ -44,11 +44,7 @@ public abstract class AbstractBoardUtility  {
             return false;
 
         var fromPile = get(from);
-
         I_CardModel c = fromPile.getCard(fromPile.size() - originPos);
-        if ( from == DRAWSTACK )
-            c = fromPile.getCard(originPos);//might throw null pointer
-
         if (!c.isFacedUp())
             return false;
 

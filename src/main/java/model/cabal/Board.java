@@ -10,8 +10,6 @@ import model.cabal.internals.card.Card;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
 

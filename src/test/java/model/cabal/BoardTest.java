@@ -1,27 +1,13 @@
 package model.cabal;
 
-import control.BoardController;
-import control.BoardControllerSimulated;
-import data.I_InputDTO;
-import data.InputSimDTO;
 import model.GameCardDeck;
-import model.Move;
-import model.cabal.internals.BuildStack;
-import model.cabal.internals.DrawStack;
-import model.cabal.internals.I_SolitaireStacks;
-import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
-import model.error.IllegalMoveException;
 import org.junit.jupiter.api.Test;
 
-import java.beans.PropertyChangeListener;
-import java.lang.reflect.Field;
 import java.util.*;
 
-import static model.cabal.E_PileID.*;
-import static model.cabal.internals.card.E_CardSuit.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
