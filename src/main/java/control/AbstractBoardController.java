@@ -98,8 +98,7 @@ public abstract class AbstractBoardController implements I_BoardController {
 
         moves.sort(comp);
         Move a = pickMove_repeatCheck( moves , 0);
-
-        return moves.get(0);
+        return a;
 
     }
 
@@ -154,9 +153,11 @@ public abstract class AbstractBoardController implements I_BoardController {
 
     private Move pickMove_repeatCheck(List<Move> moves, int i){
 
-        if(i > (moves.size()-1)) {
+        if( (moves.size()-1) >= i) {
+
             Map<E_PileID, List<I_CardModel>> map = boardModel.makeMoveStateMap(moves.get(i));
             State s = new State(map);
+
             if (history.isRepeatState(s)) {
                 return pickMove_repeatCheck(moves, ++i);
             } else {
