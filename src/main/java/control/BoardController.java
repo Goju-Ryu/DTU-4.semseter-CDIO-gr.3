@@ -60,9 +60,7 @@ public class BoardController extends AbstractBoardController {
         ScanSingleton.getScanner().next();
 
         this.boardModel = new Board(inputDTO.getUsrInput(), deck, drawCards);//, drawCards);
-        this.history = new GameHistory();
-        this.boardModel.addPropertyChangeListener(history);
-
+        this.history = new GameHistory(boardModel);
     }
 
 
