@@ -4,6 +4,7 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 public class DrawStack extends StackBase implements I_SolitaireStacks  {
@@ -74,6 +75,13 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
     @Override
     public boolean add(I_CardModel o) {
         stack.add(getSafeDrawIndex(), o);
+        return true;
+    }
+
+
+    @Override
+    public boolean addAll(@Nonnull Collection<? extends I_CardModel> c) throws IllegalMoveException {
+        c.forEach(this::add);
         return true;
     }
 
