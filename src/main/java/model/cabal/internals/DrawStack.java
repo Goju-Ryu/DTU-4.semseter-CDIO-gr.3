@@ -131,7 +131,6 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
         return Math.max(0, drawIndex);
     }
     private int positionReversed(int a){
-        a += 1;
         int b = (size() - a);
         if (b < 0){
             b = b + ((size() - 1));

@@ -177,7 +177,7 @@ public class I_SolitaireStack_Test {
             I_CardModel card;
             switch (e){
                 case DRAWSTACK:
-                    card = new Card( HEARTS     , 13 );
+                    card = new Card( HEARTS,13 );
                     assertEquals(card, thisCard);
                     break;
                 case SUITSTACKHEARTS:
@@ -219,10 +219,6 @@ public class I_SolitaireStack_Test {
                     assertEquals(card, thisCard); break;
             }
         }
-
-
-
-
     }
 }
 
