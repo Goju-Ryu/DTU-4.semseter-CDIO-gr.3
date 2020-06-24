@@ -33,7 +33,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
 
     private List<I_CardModel> getPSubset(int range){
         int index = (getSafeDrawIndex() + range) % size();
-        return List.of(stack.get(index));
+        return List.of(stack.get(index - 1));
     }
     public Collection<I_CardModel> popSubset() throws IllegalMoveException {
         return popSubset(getSafeDrawIndex());
