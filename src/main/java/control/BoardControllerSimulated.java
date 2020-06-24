@@ -35,6 +35,9 @@ public class BoardControllerSimulated extends AbstractBoardController {
         this(new RefBoard(), new GameCardDeck());
     }
 
+
+
+
     /**
      * This takes a board and an inputDTO. The board is the virtual board.
      * The inputDTO is the source of data when moves are made. It should
@@ -58,8 +61,8 @@ public class BoardControllerSimulated extends AbstractBoardController {
      * @param cardDeck The deck that keeps track of which cards are known by the simulated board.
      */
     public BoardControllerSimulated(I_BoardModel refBoard, GameCardDeck cardDeck) {
-        super(refBoard,new InputSimDTO(refBoard, cardDeck));
         refBoardModel = refBoard;
+        inputDTO = new InputSimDTO(refBoard, cardDeck);
 
         ArrayList<I_CardModel> drawCards = new ArrayList<>();
         int drawStackCardCount = 24;
