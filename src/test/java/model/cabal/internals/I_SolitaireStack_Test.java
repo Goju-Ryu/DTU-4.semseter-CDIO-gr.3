@@ -101,9 +101,9 @@ public class I_SolitaireStack_Test {
         map.put(BUILDSTACK7.name(), list);
 
         list = new ArrayList<>();
-        list.add(new Card( HEARTS     , 13 ));
         list.add(new Card( SPADES     , 13 ));
         list.add(new Card( CLUBS      , 13 ));
+        list.add(new Card( HEARTS     , 13 ));
         map.put(DRAWSTACK.name(), list);
         return map;
     }
