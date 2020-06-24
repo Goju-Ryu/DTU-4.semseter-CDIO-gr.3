@@ -118,4 +118,5 @@ class GameHistoryTest {
         board.move(SUITSTACKHEARTS, BUILDSTACK2, input.getUsrInput());
         assertEquals(2, hist.history.size());
     }
+
 }

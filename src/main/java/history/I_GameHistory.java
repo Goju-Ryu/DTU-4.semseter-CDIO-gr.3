@@ -78,7 +78,6 @@ public interface I_GameHistory extends PropertyChangeListener {
      */
     BiPredicate<I_GameState, I_GameState> FULL_EQUAL = IDENTITY_EQUAL.or(PILE_SIZE_EQUAL.and(PILE_CONTENT_EQUAL));
 
-
     /**
      * Returns true only if the two states are actually both referencing the same object.
      *
@@ -181,7 +180,6 @@ public interface I_GameHistory extends PropertyChangeListener {
     default <t extends I_GameState> Predicate<t> partiallyApplyPredicate(BiPredicate<t, t> biPred, t arg) {
         return test -> biPred.test(arg, test);
     }
-
 
     /**
      * A convenient to get an optional card from a list that might throw index out of bounds
