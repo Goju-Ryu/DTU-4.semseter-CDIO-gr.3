@@ -5,8 +5,11 @@ import model.cabal.I_BoardModel;
 import model.cabal.internals.card.I_CardModel;
 
 import java.beans.PropertyChangeEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.function.BiPredicate;
+import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -49,8 +52,18 @@ public class GameHistory implements I_GameHistory {
     }
 
     public GameHistory(Map<E_PileID, List<I_CardModel>> boardAsMap) {
-        history = new LinkedList<>();
         log = Logger.getLogger(getClass().getName());
+        try {
+            final String programDir = System.getProperty("user.dir");
+            var logFile = new File(programDir + "/log/history.log");
+            logFile.delete();
+            logFile.getParentFile().mkdir();
+            log.addHandler(new FileHandler(logFile.getAbsolutePath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        history = new LinkedList<>();
         currentState = new State(boardAsMap);
         addGameState();
         numNonDrawEvents = 0;
@@ -99,7 +112,6 @@ public class GameHistory implements I_GameHistory {
      */
     @Override
     public void propertyChange(PropertyChangeEvent event) {
-        log.info("Received event :\n\t" + event);
 
         E_PileID pileID;
         try {
