@@ -1,26 +1,17 @@
 package model.cabal.internals;
 
 import control.AbstractBoardController;
-import control.BoardControllerTest;
 import data.I_InputDTO;
-import model.Move;
-import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
 import model.cabal.RefBoard;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
-import model.error.UnendingGameException;
 import org.junit.jupiter.api.Test;
-import util.TestUtil;
 
-import java.awt.*;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 import static model.cabal.E_PileID.*;
 import static model.cabal.internals.card.E_CardSuit.*;
@@ -153,7 +144,7 @@ public class I_SolitaireStack_Test {
                      card =new Card( SPADES     , 6 );
                     assertEquals(card, thisTopCard); break;
                 case BUILDSTACK4:
-                     card = new Card( CLUBS     , 4 );
+                     card = new Card( CLUBS     , 6 );
                     assertEquals(card, thisTopCard); break;
                 case BUILDSTACK5:
                      card = new Card( DIAMONDS     , 9 );
@@ -164,7 +155,6 @@ public class I_SolitaireStack_Test {
                 case BUILDSTACK7:
                      card = new Card( SPADES     , 9 );
                     assertEquals(card, thisTopCard); break;
-
             }
         }
 
@@ -173,7 +163,8 @@ public class I_SolitaireStack_Test {
 
     }
 
-
-
-
 }
+
+
+
+
