@@ -46,29 +46,38 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
         if (range > 1)
             throw new IllegalMoveException("drawstack can only move one card at a time.");
 
-        int rangeIndex = drawIndex + range ;
-        if(!stack.get(rangeIndex % size()).isFacedUp()){
-            throw new IllegalMoveException("Card at this range: "+range+" has not been turned yet");
-        }
+//        int rangeIndex = drawIndex + range ;
+//        if(!stack.get(rangeIndex % size()).isFacedUp()){
+//            throw new IllegalMoveException("Card at this range: "+range+" has not been turned yet");
+//        }
 
         if (range == 0)
             return List.of();
 
-        var returnable = List.of( getCard(getSafeDrawIndex()) );
-        stack.remove(drawIndex--); //remove the card and lower index to point to the new card that can be drawn
+        var index = getSafeDrawIndex();
+        var returnCard = getCard(index);
+
+        if ( !returnCard.isFacedUp() )
+            throw new IllegalMoveException("Card at this range: "+range+" has not been turned yet");
+
+        var returnable = List.of( returnCard );
+        stack.remove( returnCard ); //remove the card
+        drawIndex = index - 1; //lower index to point to the new card that can be drawn
         return returnable;
     }
 
     @Override
     public List<I_CardModel> getSubset(int range) {
+        int index = getSafeDrawIndex() + (range - 1) % size();
+        return List.of(stack.get(index));
 
-        int index = getSafeDrawIndex() + this.size() - range;
-        if (index > this.size()-1)
-            index = index % (this.size()-1);
-
-        List<I_CardModel> cards = new ArrayList<>();
-        cards.add(stack.get(index));
-        return cards;
+//        int index = getSafeDrawIndex() + this.size() - range;
+//        if (index > this.size()-1)
+//            index = index % (this.size()-1);
+//
+//        List<I_CardModel> cards = new ArrayList<>();
+//        cards.add(stack.get(index));
+//        return cards;
 
         /*List<I_CardModel> returnable;
         var startIndex = getSafeDrawIndex(); //if drawIndex is negative set this index to 0 else use drawIndex.
