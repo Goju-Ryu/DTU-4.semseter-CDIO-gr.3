@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BoardControllerTest {
 
   
-    public static class testBoardController extends BoardControllerSimulated {
+    public static class testBoardController extends AbstractBoardController {
         public testBoardController(AbstractMap.SimpleImmutableEntry<I_BoardModel, I_InputDTO> util) {
             super(util.getKey(), util.getValue());
         }
@@ -57,7 +57,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(3, result.size());
@@ -87,7 +87,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(7,result.size());
@@ -116,7 +116,7 @@ class BoardControllerTest {
         
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(3, result.size());
@@ -140,7 +140,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(0, result.size());
@@ -163,7 +163,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(1, result.size());
@@ -185,7 +185,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(6, result.size());
@@ -208,7 +208,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(5, result.size());
@@ -237,7 +237,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(3, result.size());
@@ -309,7 +309,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
         for (Move m: moves) {
             boardCnt.makeMove(m);
         }
@@ -341,14 +341,13 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> moves = boardCnt.possibleMoves();
         Move m = boardCnt.pickMove(moves);
         System.out.println(m);
 
     }
-
 
     @Test
     void RepeatState_impl_test(){
@@ -369,7 +368,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         assertDoesNotThrow(() -> {
             List<Move> moves = boardCnt.possibleMoves();
@@ -389,4 +388,6 @@ class BoardControllerTest {
             boardCnt.makeMove(move);
         });
     }
+
+
 }

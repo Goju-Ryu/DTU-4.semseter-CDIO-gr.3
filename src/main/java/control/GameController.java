@@ -3,6 +3,7 @@ package control;
 import model.GameCardDeck;
 import model.Move;
 import model.cabal.RefBoard;
+import model.error.UnendingGameException;
 
 import java.util.List;
 import java.util.Scanner;
@@ -37,17 +38,21 @@ public class GameController implements I_GameController{
 
     private void gameLoop() {
 
-        List<Move> moves;
-        do {
-            moves = boardCtrl.possibleMoves();
-            log.info("Found "+ moves.size() + " possible moves: " + moves);
-            Move move = boardCtrl.pickMove(moves);
-            log.info("Chose move: " + move);
-            promptPlayer(move);
-            if (move != null)
-                boardCtrl.makeMove(move);
-        } while (moves.size() > 0);
+        try {
+            List<Move> moves;
+            do {
+                moves = boardCtrl.possibleMoves();
+                log.info("Found " + moves.size() + " possible moves: " + moves);
+                Move move = boardCtrl.pickMove(moves);
+                log.info("Chose move: " + move);
+                promptPlayer(move);
+                if (move != null)
+                    boardCtrl.makeMove(move);
+            } while (moves.size() > 0);
 
+        }catch (UnendingGameException e){
+            System.out.println("Game has entered an Unending Loop. So the game has ended.");
+        }
 
     }
 

@@ -155,6 +155,4 @@ class DrawStackTest {
 
         return new DrawStack(cards);
     }
-
-
 }
