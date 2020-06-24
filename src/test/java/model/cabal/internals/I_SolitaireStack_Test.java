@@ -163,7 +163,6 @@ public class I_SolitaireStack_Test {
 
     }
 
-
     @Test
     void testAllStacks_getCard(){
 

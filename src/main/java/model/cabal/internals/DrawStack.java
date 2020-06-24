@@ -103,7 +103,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
         return getPCard(position);
     }
     private I_CardModel getPCard(int position){
-        return getPSubset(position).get(0);
+        return stack.get(position);
     }
     @Override
     public I_CardModel getTopCard() {
@@ -131,11 +131,11 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
         return Math.max(0, drawIndex);
     }
     private int positionReversed(int a){
-        int b = (size() - a);
-        if (b < 0){
-            b = b + ((size() - 1));
+        int c = (size() -1) - a;
+        if (c < 0){
+            c = c + ((size() - 1));
         }
-        return a;
+        return c;
     }
 
 }
