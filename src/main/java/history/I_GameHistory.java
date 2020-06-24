@@ -27,6 +27,10 @@ public interface I_GameHistory extends PropertyChangeListener {
         return isRepeatState(FULL_EQUAL);
     }
 
+    default boolean isRepeatState(I_GameState state) {
+        return isRepeatState(FULL_EQUAL, state);
+    }
+
     /**
      * Checks if the current state has been encountered before using a list of predicates to compare states with
      * @param predicate a predicate testing some relation between two states.
@@ -34,6 +38,7 @@ public interface I_GameHistory extends PropertyChangeListener {
      */
     boolean isRepeatState(final BiPredicate<I_GameState, I_GameState> predicate);
 
+    boolean isRepeatState(final BiPredicate<I_GameState, I_GameState> predicate, I_GameState state);
     /**
      * Checks if the current state has been encountered before.
      * All states that returns true given the predicate being aplied to it as well as the current state are
@@ -42,6 +47,10 @@ public interface I_GameHistory extends PropertyChangeListener {
      */
     default Collection<I_GameState> getRepeatStates() {
         return getRepeatStates(FULL_EQUAL);
+    }
+
+    default Collection<I_GameState> getRepeatStates(I_GameState state) {
+        return getRepeatStates(FULL_EQUAL, state);
     }
 
     /**
@@ -53,6 +62,7 @@ public interface I_GameHistory extends PropertyChangeListener {
      */
     Collection<I_GameState> getRepeatStates(final BiPredicate<I_GameState, I_GameState> predicate);
 
+    Collection<I_GameState> getRepeatStates(final BiPredicate<I_GameState, I_GameState> predicate, I_GameState state);
 
     /**
      * This predicate returns true only if the two states are actually both referencing the same object.
