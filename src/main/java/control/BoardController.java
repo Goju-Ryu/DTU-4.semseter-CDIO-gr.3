@@ -171,8 +171,8 @@ public class BoardController implements I_BoardController {
         }else {
             boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
         }
-        boolean a = history.isRepeatState();
-        if ( a ){
+
+        if (  history.isRepeatState() ){
             Collection<I_GameState> s = history.getRepeatStates();
             throw new UnendingGameException("I have been in this state before...");
         }

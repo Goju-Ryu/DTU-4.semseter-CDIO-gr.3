@@ -266,8 +266,6 @@ class BoardControllerTest {
         list.add(new Card( CLUBS      , 9 ));
         list.add(new Card( HEARTS     , 9 ));
 
-
-
         //Move Queue
         Queue<Move> moves = new LinkedList<>();
         moves.add( new Move(  BUILDSTACK5,DRAWSTACK, 1, false , false,"") );
@@ -287,6 +285,7 @@ class BoardControllerTest {
 
     @Test
     void PickAMove_NoCircle_ifOtherChoice() {
+
         // What is the top cards of the rows, anything undeclared is empty list.
         Map<String, I_CardModel> map = new HashMap<>();
         map.put( BUILDSTACK1.name(), new Card(SPADES, 1));
@@ -307,7 +306,6 @@ class BoardControllerTest {
         list.add(new Card());
         list.add(new Card());
 
-
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
         BoardController boardCnt = new testBoardController(util);
@@ -321,6 +319,7 @@ class BoardControllerTest {
 
     @Test
     void RepeatState_impl_test(){
+
         // What is the top cards of the rows, anything undeclared is empty list.
         Map<String, I_CardModel> map = new HashMap<>();
         map.put( BUILDSTACK1.name(),new Card( HEARTS     , 4  ));
@@ -339,58 +338,22 @@ class BoardControllerTest {
         var util = TestUtil.getTestReadyBoard(map,list);
         BoardController boardCnt = new testBoardController(util);
 
-
-        assertDoesNotThrow(() -> {
-            List<Move> moves = boardCnt.possibleMoves();
-            Move move = boardCnt.pickMove(moves);
-            boardCnt.makeMove(move);
-        });
-//
-//        // no exception
-//        try{
-//            List<Move> moves = boardCnt.possibleMoves();
-//            Move move = boardCnt.pickMove(moves);
-//            boardCnt.makeMove(move);
-//            assertTrue(true);
-//        }catch (UnendingGameException e){
-//            assertTrue(false);
-//        }
-
-
         assertDoesNotThrow(() -> {
             List<Move> moves = boardCnt.possibleMoves();
             Move move = boardCnt.pickMove(moves);
             boardCnt.makeMove(move);
         });
 
-//        // no Exception
-//        try{
-//            List<Move> moves = boardCnt.possibleMoves();
-//            Move move = boardCnt.pickMove(moves);
-//            boardCnt.makeMove(move);
-//            assertTrue(true);
-//        }catch (UnendingGameException e){
-//            assertTrue(false);
-//        }
-
+        assertDoesNotThrow(() -> {
+            List<Move> moves = boardCnt.possibleMoves();
+            Move move = boardCnt.pickMove(moves);
+            boardCnt.makeMove(move);
+        });
 
         assertThrows(UnendingGameException.class, () -> {
             List<Move> moves = boardCnt.possibleMoves();
             Move move = boardCnt.pickMove(moves);
             boardCnt.makeMove(move);
         });
-
-//        // 1 exception.
-//        try{
-//            List<Move> moves = boardCnt.possibleMoves();
-//            Move move = boardCnt.pickMove(moves);
-//            boardCnt.makeMove(move);
-//            assertTrue(false);
-//        }catch (UnendingGameException e){
-//            assertTrue(true);
-//        }
-
-
     }
-
 }

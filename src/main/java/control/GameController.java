@@ -36,6 +36,7 @@ public class GameController implements I_GameController{
     }
 
     private void gameLoop() {
+
         List<Move> moves;
         do {
             moves = boardCtrl.possibleMoves();
@@ -46,6 +47,8 @@ public class GameController implements I_GameController{
             if (move != null)
                 boardCtrl.makeMove(move);
         } while (moves.size() > 0);
+
+
     }
 
     private void testGameLoop() {
