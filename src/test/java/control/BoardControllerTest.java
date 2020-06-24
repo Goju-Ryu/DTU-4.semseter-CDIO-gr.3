@@ -15,15 +15,17 @@ import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
+import model.error.UnendingGameException;
 import org.junit.jupiter.api.Test;
 import util.TestUtil;
 
 import java.beans.PropertyChangeListener;
+import java.rmi.UnexpectedException;
 import java.util.*;
 
 import static model.cabal.E_PileID.*;
 import static model.cabal.internals.card.E_CardSuit.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class BoardControllerTest {
 
@@ -297,8 +299,6 @@ class BoardControllerTest {
         list.add(new Card( CLUBS      , 9 ));
         list.add(new Card( HEARTS     , 9 ));
 
-
-
         //Move Queue
         Queue<Move> moves = new LinkedList<>();
         moves.add( new Move(  BUILDSTACK5,DRAWSTACK, 1, false , false,"") );
@@ -318,6 +318,7 @@ class BoardControllerTest {
 
     @Test
     void PickAMove_NoCircle_ifOtherChoice() {
+
         // What is the top cards of the rows, anything undeclared is empty list.
         Map<String, I_CardModel> map = new HashMap<>();
         map.put( BUILDSTACK1.name(), new Card(SPADES, 1));
@@ -338,7 +339,6 @@ class BoardControllerTest {
         list.add(new Card());
         list.add(new Card());
 
-
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
         BoardController boardCnt = new testBoardController(util);
@@ -347,5 +347,46 @@ class BoardControllerTest {
         Move m = boardCnt.pickMove(moves);
         System.out.println(m);
 
+    }
+
+
+    @Test
+    void RepeatState_impl_test(){
+
+        // What is the top cards of the rows, anything undeclared is empty list.
+        Map<String, I_CardModel> map = new HashMap<>();
+        map.put( BUILDSTACK1.name(),new Card( HEARTS     , 4  ));
+        map.put( BUILDSTACK2.name(),new Card( SPADES     , 11 ));
+        map.put( BUILDSTACK3.name(),new Card( SPADES     , 9  ));
+        map.put( BUILDSTACK4.name(),new Card( SPADES     , 4  ));
+        map.put( BUILDSTACK5.name(),new Card( SPADES     , 6  ));
+        map.put( BUILDSTACK6.name(),new Card( SPADES     , 8  ));
+        map.put( BUILDSTACK7.name(),new Card( DIAMONDS   , 4  ));
+
+        // the drawStack.
+        ArrayList<I_CardModel> list = new ArrayList<>();
+        list.add(new Card( CLUBS     , 3 ));
+
+        // the Board and Getting Results.
+        var util = TestUtil.getTestReadyBoard(map,list);
+        BoardController boardCnt = new testBoardController(util);
+
+        assertDoesNotThrow(() -> {
+            List<Move> moves = boardCnt.possibleMoves();
+            Move move = boardCnt.pickMove(moves);
+            boardCnt.makeMove(move);
+        });
+
+        assertDoesNotThrow(() -> {
+            List<Move> moves = boardCnt.possibleMoves();
+            Move move = boardCnt.pickMove(moves);
+            boardCnt.makeMove(move);
+        });
+
+        assertThrows(UnendingGameException.class, () -> {
+            List<Move> moves = boardCnt.possibleMoves();
+            Move move = boardCnt.pickMove(moves);
+            boardCnt.makeMove(move);
+        });
     }
 }

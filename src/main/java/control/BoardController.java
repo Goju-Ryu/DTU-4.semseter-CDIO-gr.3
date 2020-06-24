@@ -4,6 +4,7 @@ import data.I_InputDTO;
 import data.InputDTO;
 import history.GameHistory;
 import history.I_GameHistory;
+import history.I_GameState;
 import model.GameCardDeck;
 import model.Move;
 import model.cabal.Board;
@@ -13,12 +14,9 @@ import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
+import model.error.UnendingGameException;
 
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
+import java.util.*;
 
 import static model.cabal.E_PileID.*;
 
@@ -39,7 +37,7 @@ public class BoardController implements I_BoardController {
 //    private ArrayList<I_CardModel> listOfDrawpileCards = new ArrayList<I_CardModel>();
 
     public BoardController(boolean testBoolean){
-
+        history = new GameHistory();
     }
 
     public BoardController(){
@@ -143,11 +141,15 @@ public class BoardController implements I_BoardController {
     }
 
     @Override
-    public Move pickMove(List<Move> moves) {
+    public Move pickMove(List<Move> moves) throws UnendingGameException {
 
         if(moves.size() == 0){
             return null;
         }
+
+        // before sorting we want to know if we have been in this same state before.
+        if( history.isRepeatState())
+            throw new UnendingGameException("Game state is repeated, and possible moves size = 1");
 
         // now that the list is sorted. we return the best element, the first one.
         moves.sort(comp);
@@ -156,7 +158,12 @@ public class BoardController implements I_BoardController {
     }
 
     @Override
-    public void makeMove(Move move) {
+    public void makeMove(Move move) throws UnendingGameException {
+        var from = boardModel.getPile(move.moveFromStack());
+        var to = boardModel.getPile(move.moveToStack());
+        System.out.println(
+                "Moving " + move.moveFromStack() + " " + from.subList(from.size() - move.moveFromRange(), from.size()) +
+                        "\nTo " + move.moveToStack() + " " + (to.size() - 1 < 0 ? "empty" : to.get(to.size() - 1)) );
         //todo: make it so that inputDTO promts for ui every time
         if( move.moveFromStack() == DRAWSTACK ){
             // draw stack has a unique rule set, that makes.
@@ -164,10 +171,15 @@ public class BoardController implements I_BoardController {
                 boardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
             }
             // now when it has turned all the necessary cards in the drawstack we give it an input.
-            boardModel.turnCard(inputDTO.getUsrInput());
+            boardModel.turnCard(Map.of());
             boardModel.move(move.moveFromStack(),  move.moveToStack(), inputDTO.getUsrInput());
         }else {
             boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
+        }
+
+        if (  history.isRepeatState() ){
+            Collection<I_GameState> s = history.getRepeatStates();
+            throw new UnendingGameException("I have been in this state before...");
         }
     }
 
