@@ -29,7 +29,7 @@ public class GameHistory implements I_GameHistory {
     /**
      * A variable holding an  up to date image of the game state.
      */
-    private I_GameState currentState;
+    protected I_GameState currentState;
 
     private Logger log;
     private int numNonDrawEvents;
@@ -41,16 +41,18 @@ public class GameHistory implements I_GameHistory {
     public GameHistory(I_BoardModel board) {
         this(
                 Stream.of(E_PileID.values())
-                        .filter(pile -> board.getPile(pile) == null)
+                        .filter(pile -> board.getPile(pile) != null)
                         .map(pile -> new SimpleEntry<>(pile, board.getPile(pile)))
                         .collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue))
         );
+        board.addPropertyChangeListener(this);
     }
 
     public GameHistory(Map<E_PileID, List<I_CardModel>> boardAsMap) {
         history = new LinkedList<>();
         log = Logger.getLogger(getClass().getName());
         currentState = new State(boardAsMap);
+        addGameState();
         numNonDrawEvents = 0;
     }
 
@@ -105,18 +107,16 @@ public class GameHistory implements I_GameHistory {
         if ( !isNewValueTypeCorrect(event) ) return;
 
 
-
-        if (endsMove(event)) {
-            addGameState();
-            numNonDrawEvents = 0;
-        }
-
-
         try {
             Collection<I_CardModel> newValue = ((Collection<I_CardModel>)event.getNewValue());
             currentState.put(pileID, List.copyOf((Collection<? extends I_CardModel>) newValue));
         } catch (ClassCastException e) {
             log.warning("Failed to change state on event:\n\t" + event);
+        }
+
+        if (endsMove(event)) {
+            addGameState();
+            numNonDrawEvents = 0;
         }
 
     }
@@ -127,7 +127,7 @@ public class GameHistory implements I_GameHistory {
     /**
      * Makes a copy of the current state of the game and adds it to the history list
      */
-    private void addGameState() {
+    protected void addGameState() {
         history.add(0, currentState.clone());
         log.info("State added to history:\n\t" + currentState);
     }
