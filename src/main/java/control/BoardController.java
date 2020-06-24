@@ -146,8 +146,9 @@ public class BoardController implements I_BoardController {
         if(moves.size() == 0){
             return null;
         }
+
         // before sorting we want to know if we have been in this same state before.
-        if( history.isRepeatState() && moves.size() == 1)
+        if( history.isRepeatState())
             throw new UnendingGameException("Game state is repeated, and possible moves size = 1");
 
         // now that the list is sorted. we return the best element, the first one.
@@ -170,7 +171,8 @@ public class BoardController implements I_BoardController {
         }else {
             boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
         }
-        if ( history.isRepeatState() ){
+        boolean a = history.isRepeatState();
+        if ( a ){
             Collection<I_GameState> s = history.getRepeatStates();
             System.out.println("bub");
         }

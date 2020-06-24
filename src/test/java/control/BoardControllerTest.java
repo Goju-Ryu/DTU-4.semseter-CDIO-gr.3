@@ -325,7 +325,7 @@ class BoardControllerTest {
         map.put( BUILDSTACK1.name(),new Card( HEARTS     , 4  ));
         map.put( BUILDSTACK2.name(),new Card( SPADES     , 11 ));
         map.put( BUILDSTACK3.name(),new Card( SPADES     , 4  ));
-        map.put( BUILDSTACK4.name(),new Card( SPADES     , 5  ));
+        map.put( BUILDSTACK4.name(),new Card( SPADES     , 7  ));
         map.put( BUILDSTACK5.name(),new Card( SPADES     , 6  ));
         map.put( BUILDSTACK6.name(),new Card( SPADES     , 8  ));
         map.put( BUILDSTACK7.name(),new Card( DIAMONDS   , 4  ));
@@ -350,6 +350,16 @@ class BoardControllerTest {
         }
 
         // no Exception
+        try{
+            List<Move> moves = boardCnt.possibleMoves();
+            Move move = boardCnt.pickMove(moves);
+            boardCnt.makeMove(move);
+            assertTrue(true);
+        }catch (UnendingGameException e){
+            assertTrue(false);
+        }
+
+       // no Exception
         try{
             List<Move> moves = boardCnt.possibleMoves();
             Move move = boardCnt.pickMove(moves);
