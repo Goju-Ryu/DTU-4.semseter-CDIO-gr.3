@@ -14,13 +14,9 @@ Simulating a lot of games: Coming Soon.
 - Download or clone the code from git
 - (if your IDE requires, set it up as a maven project.)
 - Run the server.py file(the python side of the server)
-- To choose the desired run type you have to give a single argument when running the program
-    * No argument starts the program using the camera
-    * "cam" starts program using the camera
-    * "gui" will use the gui in the python client instead of the camera
-    * "sim" will simulate a game on the java side and not use the server at all
-
-- run Main.java (the java side of the server)
+- at the moment what UI you want to use is decided by writing code in main,
+so write the UI you want to use in main
+- run main.java (the java side of the server)
 
 now you should be good to go
 
@@ -72,5 +68,11 @@ if this is not working and you are on a windows computer you can try
 - installed maven in you bash terminal
 
 # Future improvement and possible refactoring
-We would like to change the use of collection to a use of Arraylist, however this refactoring is not within our scope.
+there is 2 things we sould like to change should we do the project over again or compleatly refactor the code
+- We would like to change the use of collection to a use of Arraylist, however this refactoring is not within our scope.
 Are you planning to make a project simmilar to this(in java) we would advise you to use Arraylist, as the implentation is faster and easier and we found no mesurable advantage in terms of run time. 
+
+- We are using GRPC, but because we still pars json formattet string, we are not gaining any advantage by using it. Ideally we would send things in bytecode.
+
+and one speculation that we did not make, but new people might make:
+- We might consider using the YOLO libary for the computer vision.
