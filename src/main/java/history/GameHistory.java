@@ -64,9 +64,13 @@ public class GameHistory implements I_GameHistory {
      */
     @Override
     public boolean isRepeatState(BiPredicate<I_GameState, I_GameState> predicate) {
-        return getRepeatStates(predicate).size() > 0;
+        return isRepeatState(predicate, currentState);
     }
 
+    @Override
+    public boolean isRepeatState(BiPredicate<I_GameState, I_GameState> predicate, I_GameState state) {
+        return getRepeatStates(predicate, state).size() > 0;
+    }
 
 
     /**
@@ -75,11 +79,16 @@ public class GameHistory implements I_GameHistory {
      */
     @Override
     public Collection<I_GameState> getRepeatStates(BiPredicate<I_GameState, I_GameState> predicate) {
+        return getRepeatStates(predicate, currentState);
+    }
+
+    @Override
+    public Collection<I_GameState> getRepeatStates(BiPredicate<I_GameState, I_GameState> predicate, I_GameState state) {
         // start a stream of the history
         return history.stream()
                 .skip(1)
                 // remove all elements, not fulfilling the predicate
-                .filter(e -> predicate.test(currentState, e))
+                .filter(e -> predicate.test(state, e))
                 // reduce all elements down to one by removing all elements not shared by all collections
                 .collect(Collectors.toList());
     }
