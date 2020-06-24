@@ -55,7 +55,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
             return List.of();
 
         var index = getSafeDrawIndex();
-        var returnCard = getCard(index);
+        var returnCard = getSubset(index + 1).get(0);
 
         if ( !returnCard.isFacedUp() )
             throw new IllegalMoveException("Card at this range: "+range+" has not been turned yet");
@@ -71,7 +71,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
         //TODO This implementation is fundamentally incorrect it should be fixed later.
         // it is however not a priority, as it does make the rest of the program work, though
         // it is pretty hacky, it would take too long to fix.
-        int index = getSafeDrawIndex() + (range - 1) % size();
+        int index = (getSafeDrawIndex() + (range - 1)) % size();
         return List.of(stack.get(index));
 
 //        int index = getSafeDrawIndex() + this.size() - range;
@@ -114,8 +114,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
 
     @Override
     public boolean add(I_CardModel o) {
-        drawIndex = getSafeDrawIndex(); //if drawIndex is negative set this index to 0 else use drawIndex.
-        stack.add(drawIndex, o);
+        stack.add(getSafeDrawIndex(), o);
         return true;
     }
 
@@ -135,14 +134,12 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
 
     @Override
     public I_CardModel getCard(int position) {
-        if (size() == 0)
-            return stack.get(position);
-        return stack.get((getSafeDrawIndex()+ position) % size());
+        return getSubset(position + 1).get(0);
     }
 
     @Override
     public I_CardModel getTopCard() {
-        return drawIndex < 0 ? null : super.getCard(drawIndex);
+        return getCard(getSafeDrawIndex());
     }
 
 //-------------------  DrawStack specific methods  ----------------------------------------------------------
