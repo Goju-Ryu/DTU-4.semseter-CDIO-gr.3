@@ -242,6 +242,39 @@ class BoardControllerTest {
     }
 
     @Test
+    void PossibleMoves_testFromError_2(){
+
+        Map<String, I_CardModel> map = new HashMap<>();
+        map.put( BUILDSTACK1.name(),new Card( SPADES    , 6   ));
+        map.put( BUILDSTACK3.name(),new Card( DIAMONDS  , 12   ));
+        map.put( BUILDSTACK5.name(),new Card( HEARTS    , 13  ));
+        map.put( BUILDSTACK2.name(),new Card( DIAMONDS  , 4   ));
+        map.put( BUILDSTACK4.name(),new Card( HEARTS    , 12  ));
+        map.put( BUILDSTACK6.name(),new Card( DIAMONDS  , 2  ));
+        map.put( BUILDSTACK7.name(),new Card( SPADES    , 8   ));
+
+        // the drawStack.
+        ArrayList<I_CardModel> list = new ArrayList<>();
+        list.add(new Card( CLUBS    ,  1 ));
+        list.add(new Card( CLUBS    ,  2 ));
+        list.add(new Card( CLUBS    ,  3 ));
+        list.add(new Card( CLUBS    ,  8 ));
+        list.add(new Card( HEARTS   ,  2 ));
+
+        // the Board and Getting Results.
+        var util = TestUtil.getTestReadyBoard(map,list);
+        BoardController boardCnt = new testBoardController(util);
+
+        List<Move> result = boardCnt.possibleMoves();
+        Move m = boardCnt.pickMove(result);
+
+        assertEquals(SUITSTACKCLUBS, m.moveToStack());
+        assertEquals(DRAWSTACK, m.moveFromStack());
+        assertEquals(5,m.moveFromRange());
+    }
+
+
+    @Test
     void make_a_move(){
 
         // What is the top cards of the rows, anything undeclared is empty list.
