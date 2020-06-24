@@ -120,10 +120,12 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
 
     @Override
     public boolean canMove(E_PileID origin, int originPos, E_PileID destination) {
+
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
-        Collection<I_CardModel> d = from.getSubset(originPos);
+        Collection<I_CardModel> d = from.getSubset( originPos);
+      // I_CardModel w = d.iterator().next();
         boolean a = isValidMove(origin, originPos, destination);
         boolean b = from.canMoveFrom(originPos);
         boolean c = to.canMoveTo(d);
