@@ -15,7 +15,7 @@ import java.util.List;
 
 import static model.cabal.E_PileID.*;
 import static model.cabal.internals.card.E_CardSuit.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class I_SolitaireStack_Test {
     public static class testBoardController extends AbstractBoardController {
@@ -121,7 +121,10 @@ public class I_SolitaireStack_Test {
             switch (e){
                 case DRAWSTACK:
                     card = new Card( HEARTS,13 );
-                    assertEquals(card, thisTopCard); break;
+                    assertNull(thisTopCard);
+                    ((DrawStack)s2).turnCard();
+                    assertEquals(card, s2.getTopCard());
+                    break;
                 case SUITSTACKHEARTS:
                     card = new Card( HEARTS,3 );
                     assertEquals(card, thisTopCard); break;
@@ -177,7 +180,8 @@ public class I_SolitaireStack_Test {
             switch (e){
                 case DRAWSTACK:
                     card = new Card( HEARTS,13 );
-                    assertEquals(card, thisCard);
+                    ((DrawStack)s2).turnCard();
+                    assertEquals(card, s2.getTopCard());
                     break;
                 case SUITSTACKHEARTS:
                     card = new Card( HEARTS,3 );
@@ -229,6 +233,8 @@ public class I_SolitaireStack_Test {
         for (E_PileID e: E_PileID.values()) {
             I_SolitaireStacks[] s = board.getPiles();
             I_SolitaireStacks s2 = s[e.ordinal()];
+            if (e.equals(DRAWSTACK))
+                ((DrawStack)s2).turnCard();
             I_CardModel getCard = s2.getCard( s2.size() - 1 );
             I_CardModel topCard = s2.getTopCard();
             assertEquals(getCard, topCard);
