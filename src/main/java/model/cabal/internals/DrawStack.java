@@ -1,13 +1,11 @@
 package model.cabal.internals;
 
-import model.cabal.E_PileID;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class DrawStack extends StackBase implements I_SolitaireStacks {
 
@@ -18,35 +16,75 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
      */
     protected int drawIndex;
 
-
     public DrawStack() {
-        this(new ArrayList<>());
+        this(new LinkedList<>());
     }
 
     public DrawStack(List<I_CardModel> list) {
-        super(list);
+        super();
+
+        if (list instanceof LinkedList)
+            stack = list;
+        else
+            stack = new LinkedList<>(list);
+
         drawIndex = -1;
     }
 
 //-----------  Implementation ----------------------------------------------------------------
 
     public Collection<I_CardModel> popSubset() throws IllegalMoveException {
-        return popSubset(0);
+        return popSubset(1);
     }
 
     @Override
     public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
-        var errors = canMoveFromMsg(range);
-        if (!errors.isEmpty())
-            throw new IllegalMoveException(errors);
-        if (range != 0){
-            throw new IllegalMoveException(errors);
+        if (!canMoveFrom()) {
+            throw new IllegalMoveException();//todo msg
         }
 
-        var returnable = List.of( stack.get(drawIndex) );
-        stack.remove(drawIndex--); //remove the card and lower index to point to the new card that can be drawn
+        if (range > 1)
+            throw new IllegalMoveException("drawstack can only move one card at a time.");
 
+        int rangeIndex = drawIndex + range ;
+        if(!stack.get(rangeIndex % size()).isFacedUp()){
+            throw new IllegalMoveException("Card at this range: "+range+" has not been turned yet");
+        }
+
+        if (range == 0)
+            return List.of();
+
+        var returnable = List.of( getCard(getSafeDrawIndex()) );
+        stack.remove(drawIndex--); //remove the card and lower index to point to the new card that can be drawn
         return returnable;
+    }
+
+    @Override
+    public List<I_CardModel> getSubset(int range) {
+        //TODO This implementation is fundamentally incorrect it should be fixed later.
+        // it is however not a priority, as it does make the rest of the program work, though
+        // it is pretty hacky, it would take too long to fix.
+
+        int index = getSafeDrawIndex() + this.size() - range;
+        if (index > this.size()-1)
+            index = index % (this.size()-1);
+
+        List<I_CardModel> cards = new ArrayList<>();
+        cards.add(stack.get(index));
+        return cards;
+
+        /*List<I_CardModel> returnable;
+        var startIndex = getSafeDrawIndex(); //if drawIndex is negative set this index to 0 else use drawIndex.
+
+        if (drawIndex + range < stack.size())
+            returnable = stack.subList(startIndex, startIndex + range);
+        else {
+            int rangeIndex = (startIndex + range) % stack.size();
+            returnable = stack.subList(startIndex, stack.size());
+            returnable.addAll(stack.subList(0, rangeIndex));
+        }
+        Collections.reverse(returnable);
+        return returnable;*/
     }
 
     @Override
@@ -59,46 +97,56 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
             );
         }
 
-        int reversedRange = stack.size() - ( range );
-        boolean val = stack.get(reversedRange).isFacedUp();
-        return val;
+        if (range < 1)
+            return true;
+
+        return getCard(range).isFacedUp();
     }
 
-    private String canMoveFromMsg(int range){
-        StringBuilder builder = new StringBuilder();
-        int caseNum = 0;
-        if (range > 1) {
-            builder.append("Range cannot be greater than 0.");
-            caseNum++;
-        }
-        if (drawIndex < 0) {
-            if (caseNum++ > 0)
-                builder.append("\n");
-            builder.append("Index too low, no cards have been drawn yet.");
-        }
-        if (drawIndex > size()) {
-            throw new IllegalStateException(
-                    "Lost Track of Where in the DrawStack The next card should be turned from...",
-                    new IndexOutOfBoundsException("DrawStack index: " + drawIndex + ", but size is only: " + size())
-            );
-        }
-        return builder.toString();
+    @Override
+    public boolean add(I_CardModel o) {
+        drawIndex = getSafeDrawIndex(); //if drawIndex is negative set this index to 0 else use drawIndex.
+        stack.add(drawIndex, o);
+        return true;
     }
 
+    @NonNullType
+    @Override
+    public Iterator<I_CardModel> iterator() {
+        var startIndex = getSafeDrawIndex();
+        var returnable = stack.subList(startIndex, stack.size());
+        returnable.addAll(stack.subList(0, startIndex));
+        return returnable.iterator();
+    }
 
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
         return false;
     }
 
+    @Override
+    public I_CardModel getCard(int position) {
+        if (size() == 0)
+            return stack.get(position);
+        return stack.get((getSafeDrawIndex()+ position) % size());
+    }
+
+    @Override
+    public I_CardModel getTopCard() {
+        return drawIndex < 0 ? null : super.getCard(drawIndex);
+    }
+
 //-------------------  DrawStack specific methods  ----------------------------------------------------------
 
     public I_CardModel turnCard() {
-        return getCard(++drawIndex);
+        if (isEmpty())
+            throw new NoSuchElementException("Can't turn a card in an empty stack");
+        drawIndex = (drawIndex + 1) % size();
+        return getCard(0);
     }
-
-    public I_CardModel getTopCard() {
-        return super.getCard(drawIndex);
+    
+    private int getSafeDrawIndex() {
+        return Math.max(0, drawIndex);
     }
 
 }

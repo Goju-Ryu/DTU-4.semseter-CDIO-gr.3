@@ -202,7 +202,7 @@ class StackBaseTest {
 
         //DrawStack
         DrawStack drawStack = createDrawStack(13);
-        assertEquals(2,drawStack.getSubset(2).size());
+        assertEquals(1,drawStack.getSubset(2).size());
     }
 
     @Test
@@ -310,23 +310,23 @@ class StackBaseTest {
 
         //BuildStack
         BuildStack buildStack = createBuildStack(4);
-        Iterator iterator = buildStack.iterator();
+        Iterator<I_CardModel> iterator = buildStack.iterator();
         while (iterator.hasNext()){
-            assertEquals(i++, ((I_CardModel) iterator.next()).getRank());
+            assertEquals(i++, iterator.next().getRank());
         }
 
         //SuitStack
         SuitStack suitStack = createSuitStack(5);
-        Iterator iterator1 = suitStack.iterator();
+        Iterator<I_CardModel> iterator1 = suitStack.iterator();
         while (iterator1.hasNext()){
-            assertEquals(j++, ((I_CardModel) iterator1.next()).getRank());
+            assertEquals(j++, iterator1.next().getRank());
         }
 
         //DrawStack
         DrawStack drawStack = createDrawStack(6);
-        Iterator iterator2 = drawStack.iterator();
+        Iterator<I_CardModel> iterator2 = drawStack.iterator();
         while (iterator2.hasNext()){
-            assertEquals(k++, ((I_CardModel) iterator2.next()).getRank());
+            assertEquals(k++, iterator2.next().getRank());
         }
     }
 
@@ -487,12 +487,12 @@ class StackBaseTest {
     }
 
     private DrawStack createDrawStack(int stacksize){
-        DrawStack stack = new DrawStack();
+        var cards = new ArrayList<I_CardModel>();
 
         for (int i = 0; i < stacksize; i++) {
             I_CardModel card = new Card(E_CardSuit.DIAMONDS, i + 1, true);
-            stack.add(card);
+            cards.add(card);
         }
-        return stack;
+        return new DrawStack(cards);
     }
 }

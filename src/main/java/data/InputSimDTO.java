@@ -6,10 +6,7 @@ import model.cabal.I_BoardModel;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.I_CardModel;
 
-import java.util.AbstractMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,12 +16,21 @@ import java.util.stream.Stream;
 public class InputSimDTO implements I_InputDTO {
 
     private I_BoardModel boardModel;
+    private GameCardDeck deck;
 
     /**
      * A constructor taking no arguments. This will make the class return random unused card in each position.
      */
     public InputSimDTO() {
-        this(null);
+        this(null, new GameCardDeck());
+    }
+
+    /**
+     * An inputSimDTO that is given a deck, possibly to share it with a Board.
+     * @param cardDeck
+     */
+    public InputSimDTO(GameCardDeck cardDeck) {
+        this(null, cardDeck);
     }
 
     /**
@@ -39,14 +45,14 @@ public class InputSimDTO implements I_InputDTO {
      *  move method with the same parameters in both boards.
      * @param simulatedBoard The board used as reference for which cards should be returned.
      */
-    public InputSimDTO(I_BoardModel simulatedBoard){
-       boardModel = simulatedBoard;
+    public InputSimDTO(I_BoardModel simulatedBoard, GameCardDeck cardDeck){
+        deck = cardDeck;
+        boardModel = simulatedBoard;
     }
 
     public void setSimulatedBoard(I_BoardModel simulatedBoard) {
         boardModel = simulatedBoard;
     }
-
 
     @Override
     public Map<String, I_CardModel> getUsrInput(){
@@ -63,6 +69,7 @@ public class InputSimDTO implements I_InputDTO {
      * @return a map representing imgData as in the actual system
      */
     private Map<String, I_CardModel> getImgData(I_BoardModel board) {
+        var excluded = new ArrayList<Integer>();
         return Stream.of(E_PileID.values())
                 .filter(pile -> board.getPile(pile).size() > 1)
                 .map( // transforms elements of the stream to mapEntries
@@ -74,13 +81,14 @@ public class InputSimDTO implements I_InputDTO {
                 .peek(entry -> { if (entry.getValue() == null) entry.setValue(new Card());} )
                 .peek(entry -> { // replaces face down cards with a randomly generated card
                             if (!entry.getValue().isFacedUp())
-                                entry.setValue(getRandCard());
+                                entry.setValue(getRandCard(excluded));
                         }
                 )
                 .collect(Collectors.toMap(
                         AbstractMap.SimpleEntry::getKey,
                         AbstractMap.SimpleEntry::getValue
                 )); // converts result to a map
+
     }
 
     /**
@@ -88,20 +96,36 @@ public class InputSimDTO implements I_InputDTO {
      * @return a map representing imgData as in the actual system
      */
     private Map<String, I_CardModel> getImgData() {
+        var excluded = new ArrayList<Integer>();
         return Stream.of(E_PileID.values())
-                .map(pile -> new AbstractMap.SimpleEntry<>(pile.name(), getRandCard()))
+                .map(pile -> new AbstractMap.SimpleEntry<>(pile.name(), getRandCard(excluded)))
                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
     }
 
+
     /**
-     * @return a random face up card within the confines of legal suit and rank values
+     * @param excluded the indices that are not valid options.
+     * @return a random face up card within the confines of legal suit and rank values excluding the indexes in excluded
      */
-    private I_CardModel getRandCard() {
-        var deck = GameCardDeck.getInstance();
+    private I_CardModel getRandCard(List<Integer> excluded) {
         var deckIterator = deck.iterator();
         var rand = new Random();
         var randIndex = rand.nextInt(deck.size());
-        I_CardModel card = deckIterator.next();
+        var cointoss = rand.nextInt(2);
+
+        while (excluded.contains(randIndex)) {
+            if(deck.size() - excluded.size() == 0)
+                throw new NoSuchElementException("I cannot find another card, all cards are taken");
+
+            if (cointoss == 0)
+                randIndex = --randIndex < 0 ? deck.size() - 1 : randIndex;
+            else if (cointoss == 1)
+                randIndex = ++randIndex % deck.size();
+            else
+                throw new IllegalArgumentException("coin can either be 1 or 0 but was found to be " + cointoss);
+        }
+
+        I_CardModel card = deckIterator.next(); //Todo be wary of this, might be an error but i'm not sure
         for (int i = 0; i < randIndex; i++) {
             card = deckIterator.next();
         }
@@ -109,6 +133,7 @@ public class InputSimDTO implements I_InputDTO {
         if (card == null)
             throw new NoSuchElementException();
 
+        excluded.add(randIndex);
         return card;
     }
 

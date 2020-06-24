@@ -73,7 +73,7 @@ class CardValidator:
                         out = thresh.copy()
                         out = cv2.cvtColor(out,cv2.COLOR_GRAY2BGR)
 
-                        cv2.imshow(mSymbol.symbolName, imageTrans)
+                        #cv2.imshow(mSymbol.symbolName, imageTrans)
 
                         cv2.putText(out, mSymbol.symbolName, (0, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2, cv2.LINE_AA)
                         self.MASK = out
@@ -82,7 +82,7 @@ class CardValidator:
                         cv2.drawContours(image, contour, -1, (0, 255, 0), 1)
                         cv2.rectangle(image, p1, p3, (255, 0, 0), 2)
 
-            cv2.imshow("cornor profile contours and boundingRects", image)
+            #cv2.imshow("cornor profile contours and boundingRects", image)
             # sorts the list of symbol results from smallest differense value to greatest
             #cv2.imshow("cornor profile contours and boundingRects", image)
             sortedList = sorted(results, key=attrgetter('bestMatchDiff'))

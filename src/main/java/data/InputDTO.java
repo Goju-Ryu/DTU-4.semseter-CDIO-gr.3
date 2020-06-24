@@ -13,6 +13,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * This class is intented to translate the input string we get to a json object.
@@ -20,6 +21,7 @@ import java.util.Map;
 public class InputDTO implements I_InputDTO {
     private String uiType;
     private String uiChoice;
+    private Logger log = Logger.getLogger(getClass().getName());
 
     private boolean usedOnce = false;
     int drawIterator = 24;
@@ -30,8 +32,7 @@ public class InputDTO implements I_InputDTO {
     }
 
 
-
-    //TODO Modify to take just one card when uiType == RevealCardGUI with camera
+    //TODO Modify to take just one card when uiType == RevealCardGUI
     @Override
     public Map<String, I_CardModel> getUsrInput(){
 
@@ -78,6 +79,7 @@ public class InputDTO implements I_InputDTO {
         gsonBuilder.serializeNulls();
         Gson gson = gsonBuilder.setPrettyPrinting().create();
         Type mapType = new TypeToken<Map<String, Card>>(){}.getType();
+        log.info("Deserialising: " + jsonString);
         return gson.fromJson(jsonString, mapType);
     }
 

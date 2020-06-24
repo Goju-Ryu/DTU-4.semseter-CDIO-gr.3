@@ -68,23 +68,13 @@ public class SuitStack extends StackBase {
 
         if (stack.isEmpty()){
             assert card != null;
-            if (card.getRank() == 1 ){
-                return true;
-            }else {
-                return false;
-            }
+            return card.getRank() == 1;
         }
 
+        // get last card
         I_CardModel card2 = null;
-
         for (I_CardModel element : stack){
             card2 = element;
-        }
-
-
-        // check size of collection
-        if (cards.size() != 1){
-            return false;
         }
 
         // check if the suit is the same

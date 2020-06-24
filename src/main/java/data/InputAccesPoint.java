@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class InputAccesPoint {
-    //TODO: move this to data layer and refactor its name
+
     private static final Logger logger = Logger.getLogger(InputAccesPoint.class.getName());
 
     private final GreeterGrpc.GreeterBlockingStub blockingStub;
@@ -25,7 +25,6 @@ public class InputAccesPoint {
         // Passing Channels to code makes code easier to test and makes it easier to reuse Channels.
         blockingStub = GreeterGrpc.newBlockingStub(channel);
     }
-
 
     /** Say hello to server. */
     public void greet(String name) {
@@ -62,8 +61,6 @@ public class InputAccesPoint {
 
         user = UIChoice;
 
-
-
         // Create a communication channel to the server, known as a Channel. Channels are thread-safe
         // and reusable. It is common to create channels at the beginning of your application and reuse
         // them until the application shuts down.
@@ -84,10 +81,10 @@ public class InputAccesPoint {
         }
     }
 
-    /**
-     * Greet server. If provided, the first element of {@code args} is the name to use in the
-     * greeting. The second argument is the target server.
-     */
+//    /**
+//     * Greet server. If provided, the first element of {@code args} is the name to use in the
+//     * greeting. The second argument is the target server.
+//     */
     /*
     public static void main(String[] args) throws Exception {
         String user = "Java world";

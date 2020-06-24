@@ -1,10 +1,10 @@
 package data;
 
 import com.google.gson.Gson;
+import model.GameCardDeck;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
-import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
@@ -19,11 +19,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class InputDTOTest {
 
     @Test
-    void getUsrInput() {
-    }
+    void getUsrInput(){}
 
     @Test
-    void stringToJson() {
+    void stringToJson(){
         var gson = new Gson();
         InputDTO input = new InputDTO("");
 
@@ -96,7 +95,7 @@ class InputDTOTest {
         System.out.println(map);
 
         // checking the combination of the Board
-        I_BoardModel board = new Board(map);
+        I_BoardModel board = new Board(map, new GameCardDeck());
         System.out.println(board);
 
         for (E_PileID e: E_PileID.values() ) {
@@ -106,6 +105,9 @@ class InputDTOTest {
             I_CardModel mapsCard = map.get(e.toString());
             List<I_CardModel> listC = board.getPile(e);
             I_CardModel boardsCard = getTopCard(listC);
+
+            if(e == E_PileID.DRAWSTACK)
+                boardsCard = board.getPile(e).get(0);
 
             assertEquals(mapsCard.getRank(), boardsCard.getRank());
             assertEquals(mapsCard.getSuit(), boardsCard.getSuit());

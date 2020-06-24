@@ -12,12 +12,11 @@ cardAnal = CardAnalyser()
 cardVal = CardValidator()
 
 
-SUCCESCRITERIA = 30
+SUCCES_TIMER = 30
 
 # kabale recogniser is a class that recognises our kabale syntax, and returns a string of what cards, the program
 # can see on the board.
 class KabaleRecogniser:
-
 
     def __init__(self):
         self.cards = []
@@ -25,8 +24,8 @@ class KabaleRecogniser:
 
     # a method to take a video, and then for each image get a result,  and then make statisk analasys
     # ( for each card, whats the best result for that card ( by counting most votes) ). to then give a result.
-    def run(self, Settings):
 
+    def run(self, Settings):
         Operator = imageOperator()
 
         # start a counter to know when to end the loop.
@@ -42,10 +41,16 @@ class KabaleRecogniser:
         # filming Loop.
         while True:
 
-            if succesCounter > SUCCESCRITERIA :
+            # This if ends the video recording, however it contains another if, that resets the loop.
+            # If the recording was errored. it is errored if it has half initiated cards.
+            # a card with a rank, but no suit. or reversed.
+            if succesCounter > SUCCES_TIMER:
+
                 break
+
             # this is openCV code, get the image, and then it gives an error if the keypressed isent there.
             # or rather it refuses to return an image, so it is necesary for it to be here.
+
             img = rec.getFrame()
             keyPressed = cv2.waitKey(1) & 0xFF
             if keyPressed == ord('q'):
@@ -55,6 +60,7 @@ class KabaleRecogniser:
             # isolater, isolates the board, and all potential cards on this board, it
             # uses the HSV settings passed in the settings object for its thresholding.
             # the boolean paramters are : showBoard, ShowBoardMask, ShowCards, showCardsMask;
+
             isolator = Isolator(False,True,False,False)
             self.cards, succes = isolator.isolateCards(img, Settings)
 
@@ -64,18 +70,20 @@ class KabaleRecogniser:
                 # looping throuch all cards found in the isolater.
                 self.recogniseCards()
 
+            if self.gotCardImageStack:
+                if len(self.cardImagesStack) > 1:
+                    cardImageStacked = Operator.stackImages(self.cardImagesStack[0], self.cardImagesStack)
+                    cv2.imshow("cardStacked", cardImageStacked)
 
-            if len(self.cardImagesStack) > 1:
-                cardImageStacked = Operator.stackImages(self.cardImagesStack[0], self.cardImagesStack)
-                cv2.imshow("cardStacked", cardImageStacked)
 
         # when the loop is done it is necesary to close all windows if any are open, otherwise the programs becomes
         # unresponsive, this is not necesary in the final version, but when testing it becomes an issue.
+
         cv2.destroyAllWindows()
 
         # evaluate results
         self.cards = self.statestics.evalListOfCards(self.cards)
-
+        self.cards = self.reEvalCardsExists(self.cards)
         return self.interpreteResults()
 
     def interpreteResults(self):
@@ -88,24 +96,25 @@ class KabaleRecogniser:
         # corner of a game board, you imagine in from of you
 
         results = json.dumps({
-            "DRAWSTACK": None if not stackTop[5].exists else {"suit": stackTop[5].suit.upper(), "rank": int(stackTop[5].rank), "isFacedUp": "true"},
-            "SUITSTACKHEARTS": None if not stackTop[0].exists else  {"suit": stackTop[0].suit.upper(), "rank": int(stackTop[0].rank), "isFacedUp": "true"},
-            "SUITSTACKCLUBS": None if not stackTop[1].exists else {"suit": stackTop[1].suit.upper(), "rank": int(stackTop[1].rank), "isFacedUp": "true"},
-            "SUITSTACKDIAMONDS": None if not stackTop[2].exists else {"suit": stackTop[2].suit.upper(), "rank": int(stackTop[2].rank), "isFacedUp": "true"},
-            "SUITSTACKSPADES": None if not stackTop[3].exists else {"suit": stackTop[3].suit.upper(), "rank": int(stackTop[3].rank), "isFacedUp": "true"},
-            "BUILDSTACK1": None if not stackBottom[6].exists else {"suit": stackBottom[6].suit.upper(), "rank": int(stackBottom[6].rank), "isFacedUp": "true"},
-            "BUILDSTACK2": None if not stackBottom[5].exists else {"suit": stackBottom[5].suit.upper(), "rank": int(stackBottom[5].rank), "isFacedUp": "true"},
-            "BUILDSTACK3": None if not stackBottom[4].exists else {"suit": stackBottom[4].suit.upper(), "rank": int(stackBottom[4].rank), "isFacedUp": "true"},
-            "BUILDSTACK4": None if not stackBottom[3].exists else {"suit": stackBottom[3].suit.upper(), "rank": int(stackBottom[3].rank), "isFacedUp": "true"},
-            "BUILDSTACK5": None if not stackBottom[2].exists else {"suit": stackBottom[2].suit.upper(), "rank": int(stackBottom[2].rank), "isFacedUp": "true"},
-            "BUILDSTACK6": None if not stackBottom[1].exists else {"suit": stackBottom[1].suit.upper(), "rank": int(stackBottom[1].rank), "isFacedUp": "true"},
-            "BUILDSTACK7": None if not stackBottom[0].exists else {"suit": stackBottom[0].suit.upper(), "rank": int(stackBottom[0].rank), "isFacedUp": "true"},
+            "DRAWSTACK":        None if not stackTop[5].exists else     {"suit": stackTop[5].suit.upper()   , "rank": int(stackTop[5].rank)     , "isFacedUp": "true"},
+            "SUITSTACKHEARTS":  None if not stackTop[0].exists else     {"suit": stackTop[0].suit.upper()   , "rank": int(stackTop[0].rank)     , "isFacedUp": "true"},
+            "SUITSTACKCLUBS":   None if not stackTop[1].exists else     {"suit": stackTop[1].suit.upper()   , "rank": int(stackTop[1].rank)     , "isFacedUp": "true"},
+            "SUITSTACKDIAMONDS":None if not stackTop[2].exists else     {"suit": stackTop[2].suit.upper()   , "rank": int(stackTop[2].rank)     , "isFacedUp": "true"},
+            "SUITSTACKSPADES":  None if not stackTop[3].exists else     {"suit": stackTop[3].suit.upper()   , "rank": int(stackTop[3].rank)     , "isFacedUp": "true"},
+            "BUILDSTACK1":      None if not stackBottom[6].exists else  {"suit": stackBottom[6].suit.upper(), "rank": int(stackBottom[6].rank)  , "isFacedUp": "true"},
+            "BUILDSTACK2":      None if not stackBottom[5].exists else  {"suit": stackBottom[5].suit.upper(), "rank": int(stackBottom[5].rank)  , "isFacedUp": "true"},
+            "BUILDSTACK3":      None if not stackBottom[4].exists else  {"suit": stackBottom[4].suit.upper(), "rank": int(stackBottom[4].rank)  , "isFacedUp": "true"},
+            "BUILDSTACK4":      None if not stackBottom[3].exists else  {"suit": stackBottom[3].suit.upper(), "rank": int(stackBottom[3].rank)  , "isFacedUp": "true"},
+            "BUILDSTACK5":      None if not stackBottom[2].exists else  {"suit": stackBottom[2].suit.upper(), "rank": int(stackBottom[2].rank)  , "isFacedUp": "true"},
+            "BUILDSTACK6":      None if not stackBottom[1].exists else  {"suit": stackBottom[1].suit.upper(), "rank": int(stackBottom[1].rank)  , "isFacedUp": "true"},
+            "BUILDSTACK7":      None if not stackBottom[0].exists else  {"suit": stackBottom[0].suit.upper(), "rank": int(stackBottom[0].rank)  , "isFacedUp": "true"},
         })
         return results
 
     def recogniseCards(self):
         # looping throuch all cards found in the isolater.
         i = 0
+        gotCards = False
         self.cardImagesStack = []
         for c in self.cards:
             if c.exists:
@@ -122,5 +131,16 @@ class KabaleRecogniser:
                     cv2.putText(cardImage,str( rank ) , (0, 70), self.font, 0.5, (0, 0, 255), 2, cv2.LINE_AA)
                     cv2.putText(cardImage, str(suit[0]), (25, 70), self.font, 0.5, (255, 0, 0), 2, cv2.LINE_AA)
                     self.cardImagesStack.append(cardImage)
-
+                    gotCards = True
             i += 1
+        self.gotCardImageStack = gotCards
+
+    def reEvalCardsExists(self, evalCards):
+        cards = []
+        for stackCard in evalCards:
+            if stackCard.rank and stackCard.suit:
+                stackCard.exists = True
+            else:
+                stackCard.exists = False
+            cards.append(stackCard)
+        return cards

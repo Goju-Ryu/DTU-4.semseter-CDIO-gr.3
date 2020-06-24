@@ -1,8 +1,8 @@
 package control;
 
+import model.GameCardDeck;
 import model.Move;
-import model.cabal.Board;
-import model.cabal.I_BoardModel;
+import model.cabal.RefBoard;
 
 import java.util.List;
 import java.util.Scanner;
@@ -23,22 +23,38 @@ public class GameController implements I_GameController{
     Logger log = Logger.getLogger(getClass().getName());
     Scanner scan = new Scanner(System.in).useDelimiter("(\\b|\\B)");
 
+    @Override
     public void startGame(String uiChoice){
-        if (uiChoice.equalsIgnoreCase("sim"))
+        if (uiChoice.equalsIgnoreCase("sim")) {
             boardCtrl = new BoardControllerSimulated();
-        else
+            testGameLoop();
+        } else {
             boardCtrl = new BoardController(uiChoice);
-        gameLoop();
+            gameLoop();
+        }
+
     }
 
     private void gameLoop() {
         List<Move> moves;
         do {
             moves = boardCtrl.possibleMoves();
-            log.info("Possible moves: " + moves.size());
+            log.info("Found "+ moves.size() + " possible moves: " + moves);
             Move move = boardCtrl.pickMove(moves);
             log.info("Chose move: " + move);
             promptPlayer(move);
+            if (move != null)
+                boardCtrl.makeMove(move);
+        } while (moves.size() > 0);
+    }
+
+    private void testGameLoop() {
+        List<Move> moves;
+        do {
+            moves = boardCtrl.possibleMoves();
+            log.info("Found "+ moves.size() + " possible moves: " + moves);
+            Move move = boardCtrl.pickMove(moves);
+            log.info("Chose move: " + move);
             if (move != null)
                 boardCtrl.makeMove(move);
         } while (moves.size() > 0);

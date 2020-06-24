@@ -1,6 +1,6 @@
 import control.GameController;
 
-public class main {
+public class Main {
     public static void main(String[] args) {
         var gameController = new GameController();
         String uiChoice;

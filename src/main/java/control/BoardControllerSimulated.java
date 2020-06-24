@@ -2,21 +2,15 @@ package control;
 
 import data.I_InputDTO;
 import data.InputSimDTO;
-import data.MockBoard;
+import history.GameHistory;
+import model.GameCardDeck;
 import model.Move;
 import model.cabal.Board;
-import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
-import model.cabal.internals.I_SolitaireStacks;
-import model.cabal.internals.card.Card;
+import model.cabal.RefBoard;
 import model.cabal.internals.card.I_CardModel;
-import model.error.IllegalMoveException;
 
-import java.beans.PropertyChangeListener;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * This class is for the individual controlls of each Board,
@@ -29,40 +23,72 @@ import java.util.Map;
  */
 public class BoardControllerSimulated extends BoardController {
 
-    private I_BoardModel refBoardModel;
-    protected I_InputDTO inputDTO;
+    protected I_BoardModel refBoardModel;
 
-     public BoardControllerSimulated() {
-         //this(new MockBoard());
-     }
+    public BoardControllerSimulated(boolean testBoolean){
+        super(testBoolean);
+    }
 
-    public BoardControllerSimulated(I_BoardModel refBoard) {
 
+    /**
+     * Creates a standard simulation with a random game layout.
+     * Use this if you don't care about the layout of the board
+     * but just want to simulate a game with no guaranties.
+     */
+    public BoardControllerSimulated() {
+        this(new RefBoard(), new GameCardDeck());
+    }
+
+    /**
+     * This takes a board and an inputDTO. The board is the virtual board.
+     * The inputDTO is the source of data when moves are made. It should
+     * almost always be an {@link InputSimDTO}, unexpected results may
+     * occur otherwise.
+     *
+     * This constructor can be used to simulate a predetermined game or a random one
+     * depending on the relation between the board and inputDTO.
+     *
+     * @param boardModel The board being controlled by this class
+     * @param inputDTO An InputDTO to provide data to board
+     */
+    public BoardControllerSimulated(I_BoardModel boardModel, I_InputDTO inputDTO) {
+        super(true);
+        this.boardModel = boardModel;
+        this.inputDTO = inputDTO;
+    }
+
+
+    /**
+     * Make a new test game with full control over it's starting conditions.
+     *
+     * @param refBoard The board simulating the physical board. this is the judge of what the board should look like.
+     * @param cardDeck The deck that keeps track of which cards are known by the simulated board.
+     */
+    public BoardControllerSimulated(I_BoardModel refBoard, GameCardDeck cardDeck) {
+        super(true);
+        inputDTO = new InputSimDTO(refBoard, cardDeck);
+        refBoardModel = refBoard;
+
+        ArrayList<I_CardModel> drawCards = new ArrayList<>();
+        int drawStackCardCount = 24;
+        for(int i = 0; i < drawStackCardCount; i++) {
+            I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
+            drawCards.add(drawCard);
+
+            System.out.println("currDrawCard: " + drawCard);
+            System.out.println("Turning the next card in the draw stack...");
+        }
+
+        boardModel = new Board(inputDTO.getUsrInput(), cardDeck, drawCards);
+        history = new GameHistory();
+        boardModel.addPropertyChangeListener(history);
     }
 
     @Override
     public void makeMove(Move move) {
-        refBoardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
+        if (refBoardModel != null)
+            refBoardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
         super.makeMove(move);
-    }
-
-    public I_BoardModel MakeNewBoard(String UiChoice,List<I_CardModel> cardsForBoard){
-
-        Map<String, I_CardModel> usrInputMap = new HashMap<>();
-        usrInputMap.put(E_PileID.DRAWSTACK.name(), cardsForBoard.get(0));
-        usrInputMap.put(E_PileID.SUITSTACKHEARTS.name(), null);
-        usrInputMap.put(E_PileID.SUITSTACKDIAMONDS.name(), null);
-        usrInputMap.put(E_PileID.SUITSTACKSPADES.name(), null);
-        usrInputMap.put(E_PileID.SUITSTACKCLUBS.name(), null);
-        usrInputMap.put(E_PileID.BUILDSTACK1.name(), cardsForBoard.get(5));
-        usrInputMap.put(E_PileID.BUILDSTACK2.name(), cardsForBoard.get(6));
-        usrInputMap.put(E_PileID.BUILDSTACK3.name(), cardsForBoard.get(7));
-        usrInputMap.put(E_PileID.BUILDSTACK4.name(), cardsForBoard.get(8));
-        usrInputMap.put(E_PileID.BUILDSTACK5.name(), cardsForBoard.get(9));
-        usrInputMap.put(E_PileID.BUILDSTACK6.name(), cardsForBoard.get(10));
-        usrInputMap.put(E_PileID.BUILDSTACK7.name(), cardsForBoard.get(11));
-
-        return new Board(usrInputMap);
     }
 
 }
