@@ -262,7 +262,7 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         I_SolitaireStacks from = get( m.moveFromStack() );
         I_SolitaireStacks to   = get( m.moveToStack()   );
 
-        Collection<I_CardModel> subSet = from.getSubset(m.moveFromRange());
+        Collection<I_CardModel> subSet  = from.getSubset(m.moveFromRange());
         Collection<I_CardModel> fromSet = new ArrayList<>(from);
         fromSet.removeAll(subSet);
         Collection<I_CardModel> toSet = new ArrayList<>(to);
