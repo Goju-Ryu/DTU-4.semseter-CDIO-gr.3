@@ -1,4 +1,4 @@
-**NB:** Do to a restructuring, git commits and stats are not representive of who did what. To get a feel for who did what you can see your hour budget in the report attached.
+**NB:** Do to a restructuring, git commits and stats are not representive of who did what. To get a feel for who did what you can see our hour budget in the report attached.
 
 # DTU-4.semseter-CDIO-gr.3
 A program that allows you to play soliatre, you give it a pictute or number representation of the board and it gives you a move. 
