@@ -55,6 +55,7 @@ public class BoardControllerSimulated extends BoardController {
         super(true);
         this.boardModel = boardModel;
         this.inputDTO = inputDTO;
+        history = new GameHistory(boardModel);
     }
 
 

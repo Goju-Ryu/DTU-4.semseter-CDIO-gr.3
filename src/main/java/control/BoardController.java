@@ -172,7 +172,7 @@ public class BoardController implements I_BoardController {
         }
         if ( history.isRepeatState() ){
             Collection<I_GameState> s = history.getRepeatStates();
-            System.out.println("bub");
+            throw new UnendingGameException("I have been in this state before...");
         }
     }
 

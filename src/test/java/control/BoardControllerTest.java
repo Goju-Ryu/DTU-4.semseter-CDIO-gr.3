@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import util.TestUtil;
 
 import java.beans.PropertyChangeListener;
+import java.rmi.UnexpectedException;
 import java.util.*;
 
 import static model.cabal.E_PileID.*;
@@ -324,8 +325,8 @@ class BoardControllerTest {
         Map<String, I_CardModel> map = new HashMap<>();
         map.put( BUILDSTACK1.name(),new Card( HEARTS     , 4  ));
         map.put( BUILDSTACK2.name(),new Card( SPADES     , 11 ));
-        map.put( BUILDSTACK3.name(),new Card( SPADES     , 4  ));
-        map.put( BUILDSTACK4.name(),new Card( SPADES     , 5  ));
+        map.put( BUILDSTACK3.name(),new Card( SPADES     , 9  ));
+        map.put( BUILDSTACK4.name(),new Card( SPADES     , 4  ));
         map.put( BUILDSTACK5.name(),new Card( SPADES     , 6  ));
         map.put( BUILDSTACK6.name(),new Card( SPADES     , 8  ));
         map.put( BUILDSTACK7.name(),new Card( DIAMONDS   , 4  ));
@@ -339,35 +340,55 @@ class BoardControllerTest {
         BoardController boardCnt = new testBoardController(util);
 
 
-        // no exception
-        try{
+        assertDoesNotThrow(() -> {
             List<Move> moves = boardCnt.possibleMoves();
             Move move = boardCnt.pickMove(moves);
             boardCnt.makeMove(move);
-            assertTrue(true);
-        }catch (UnendingGameException e){
-            assertTrue(false);
-        }
+        });
+//
+//        // no exception
+//        try{
+//            List<Move> moves = boardCnt.possibleMoves();
+//            Move move = boardCnt.pickMove(moves);
+//            boardCnt.makeMove(move);
+//            assertTrue(true);
+//        }catch (UnendingGameException e){
+//            assertTrue(false);
+//        }
 
-        // no Exception
-        try{
-            List<Move> moves = boardCnt.possibleMoves();
-            Move move = boardCnt.pickMove(moves);
-            boardCnt.makeMove(move);
-            assertTrue(true);
-        }catch (UnendingGameException e){
-            assertTrue(false);
-        }
 
-        // 1 exception.
-        try{
+        assertDoesNotThrow(() -> {
             List<Move> moves = boardCnt.possibleMoves();
             Move move = boardCnt.pickMove(moves);
             boardCnt.makeMove(move);
-            assertTrue(false);
-        }catch (UnendingGameException e){
-            assertTrue(true);
-        }
+        });
+
+//        // no Exception
+//        try{
+//            List<Move> moves = boardCnt.possibleMoves();
+//            Move move = boardCnt.pickMove(moves);
+//            boardCnt.makeMove(move);
+//            assertTrue(true);
+//        }catch (UnendingGameException e){
+//            assertTrue(false);
+//        }
+
+
+        assertThrows(UnendingGameException.class, () -> {
+            List<Move> moves = boardCnt.possibleMoves();
+            Move move = boardCnt.pickMove(moves);
+            boardCnt.makeMove(move);
+        });
+
+//        // 1 exception.
+//        try{
+//            List<Move> moves = boardCnt.possibleMoves();
+//            Move move = boardCnt.pickMove(moves);
+//            boardCnt.makeMove(move);
+//            assertTrue(false);
+//        }catch (UnendingGameException e){
+//            assertTrue(true);
+//        }
 
 
     }
