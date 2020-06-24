@@ -265,16 +265,15 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        I_BoardController boardCnt = new testBoardController(util);
+        testBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         Move m = boardCnt.pickMove(result);
 
         assertEquals(SUITSTACKCLUBS, m.moveToStack());
         assertEquals(DRAWSTACK, m.moveFromStack());
-        assertEquals(5,m.moveFromRange());
+        assertEquals(1,m.moveFromRange());
     }
-
 
     @Test
     void make_a_move(){

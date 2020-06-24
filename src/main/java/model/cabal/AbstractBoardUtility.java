@@ -45,11 +45,12 @@ public abstract class AbstractBoardUtility  {
 
         var fromPile = get(from);
 
-        I_CardModel c = fromPile.getCard(fromPile.size() - originPos);//might throw null pointer
-        if ( !c.isFacedUp() )
-            return false;
+        I_CardModel c = fromPile.getCard(fromPile.size() - originPos);
+        if ( from == DRAWSTACK )
+            c = fromPile.getCard(originPos);//might throw null pointer
 
-        //var cardSuits = fromPile.getSubset(originPos).stream().map(I_CardModel::getSuit);
+        if (!c.isFacedUp())
+            return false;
 
         switch (to) {
             case SUITSTACKHEARTS:
