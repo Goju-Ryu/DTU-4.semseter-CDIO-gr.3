@@ -102,9 +102,13 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
         position = positionReversed(position);
         return getPSubset(position).get(0);
     }
+    private I_CardModel getPCard(int position){
+        return getPSubset(position).get(0);
+    }
     @Override
     public I_CardModel getTopCard() {
-        return getCard(getSafeDrawIndex());
+        int d = getSafeDrawIndex();
+        return getPCard(d);
     }
     public I_CardModel turnCard() {
         if (isEmpty())

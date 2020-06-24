@@ -124,7 +124,7 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
-        Collection<I_CardModel> d = from.getSubset( originPos);
+        Collection<I_CardModel> d = from.getSubset(originPos);
       // I_CardModel w = d.iterator().next();
         boolean a = isValidMove(origin, originPos, destination);
         boolean b = from.canMoveFrom(originPos);

@@ -15,7 +15,7 @@ import static model.cabal.E_PileID.*;
 import static model.cabal.internals.card.E_CardSuit.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class BoardControllerTest {
+public class BoardControllerTest {
 
   
     public static class testBoardController extends AbstractBoardController {
