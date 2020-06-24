@@ -64,7 +64,7 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
                         throw new IllegalStateException("Trying to add the same card twice during construction.\ncard: " + data);
                     }
                 }
-            } catch (Exception e) {
+            } catch (IllegalArgumentException e) {
                 System.out.println("an input was empty");
             }
         }
