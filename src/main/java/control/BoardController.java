@@ -159,6 +159,11 @@ public class BoardController implements I_BoardController {
 
     @Override
     public void makeMove(Move move) throws UnendingGameException {
+        var from = boardModel.getPile(move.moveFromStack());
+        var to = boardModel.getPile(move.moveToStack());
+        System.out.println(
+                "Moving " + move.moveFromStack() + " " + from.subList(from.size() - move.moveFromRange(), from.size()) +
+                        "\nTo " + move.moveToStack() + " " + (to.size() - 1 < 0 ? "empty" : to.get(to.size() - 1)) );
         //todo: make it so that inputDTO promts for ui every time
         if( move.moveFromStack() == DRAWSTACK ){
             // draw stack has a unique rule set, that makes.
@@ -166,7 +171,7 @@ public class BoardController implements I_BoardController {
                 boardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
             }
             // now when it has turned all the necessary cards in the drawstack we give it an input.
-            boardModel.turnCard(inputDTO.getUsrInput());
+            boardModel.turnCard(Map.of());
             boardModel.move(move.moveFromStack(),  move.moveToStack(), inputDTO.getUsrInput());
         }else {
             boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
