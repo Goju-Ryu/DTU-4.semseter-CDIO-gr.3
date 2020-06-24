@@ -68,6 +68,9 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
 
     @Override
     public List<I_CardModel> getSubset(int range) {
+        //TODO This implementation is fundamentally incorrect it should be fixed later.
+        // it is however not a priority, as it does make the rest of the program work, though
+        // it is pretty hacky, it would take too long to fix.
         int index = getSafeDrawIndex() + (range - 1) % size();
         return List.of(stack.get(index));
 
