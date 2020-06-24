@@ -136,4 +136,5 @@ class GameHistoryTest {
         assertEquals(2, hist.getRepeatStates().size());
 
     }
+
 }

@@ -16,6 +16,8 @@ import java.util.function.IntFunction;
 @Immutable
 public class State extends EnumMap<E_PileID, List<I_CardModel>> implements I_GameState {
 
+    private int repeats = 1;
+
     State() {
         super(E_PileID.class);
     }
@@ -31,5 +33,13 @@ public class State extends EnumMap<E_PileID, List<I_CardModel>> implements I_Gam
     @Override
     public State clone() {
         return (State) super.clone();
+    }
+
+    public int getRepeats() {
+        return repeats;
+    }
+
+    public void addRepeat(int repeats) {
+        this.repeats++;
     }
 }
