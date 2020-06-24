@@ -10,6 +10,7 @@ import model.cabal.I_BoardModel;
 import model.cabal.RefBoard;
 import model.cabal.internals.card.I_CardModel;
 
+import javax.management.AttributeValueExp;
 import java.util.ArrayList;
 
 /**
@@ -21,14 +22,9 @@ import java.util.ArrayList;
  * This controller is one Game controller uses everytime it needs to make
  * a move
  */
-public class BoardControllerSimulated extends BoardController {
+public class BoardControllerSimulated extends AbstractBoardController {
 
     protected I_BoardModel refBoardModel;
-
-    public BoardControllerSimulated(boolean testBoolean){
-        super(testBoolean);
-    }
-
 
     /**
      * Creates a standard simulation with a random game layout.
@@ -52,10 +48,7 @@ public class BoardControllerSimulated extends BoardController {
      * @param inputDTO An InputDTO to provide data to board
      */
     public BoardControllerSimulated(I_BoardModel boardModel, I_InputDTO inputDTO) {
-        super(true);
-        this.boardModel = boardModel;
-        this.inputDTO = inputDTO;
-        history = new GameHistory(boardModel);
+        super(boardModel, inputDTO);
     }
 
 
@@ -66,8 +59,7 @@ public class BoardControllerSimulated extends BoardController {
      * @param cardDeck The deck that keeps track of which cards are known by the simulated board.
      */
     public BoardControllerSimulated(I_BoardModel refBoard, GameCardDeck cardDeck) {
-        super(true);
-        inputDTO = new InputSimDTO(refBoard, cardDeck);
+        super(refBoard,new InputSimDTO(refBoard, cardDeck));
         refBoardModel = refBoard;
 
         ArrayList<I_CardModel> drawCards = new ArrayList<>();
