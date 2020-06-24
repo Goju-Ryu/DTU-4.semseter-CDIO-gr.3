@@ -61,7 +61,16 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
 
     @Override
     public List<I_CardModel> getSubset(int range) {
-        List<I_CardModel> returnable;
+
+        int index = getSafeDrawIndex() + this.size() - range;
+        if (index > this.size()-1)
+            index = index % (this.size()-1);
+
+        List<I_CardModel> cards = new ArrayList<>();
+        cards.add(stack.get(index));
+        return cards;
+
+        /*List<I_CardModel> returnable;
         var startIndex = getSafeDrawIndex(); //if drawIndex is negative set this index to 0 else use drawIndex.
 
         if (drawIndex + range < stack.size())
@@ -71,9 +80,8 @@ public class DrawStack extends StackBase implements I_SolitaireStacks {
             returnable = stack.subList(startIndex, stack.size());
             returnable.addAll(stack.subList(0, rangeIndex));
         }
-
         Collections.reverse(returnable);
-        return returnable;
+        return returnable;*/
     }
 
     @Override

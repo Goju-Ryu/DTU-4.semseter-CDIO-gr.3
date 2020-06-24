@@ -54,8 +54,6 @@ class BoardControllerTest {
         list.add(new Card( CLUBS     , 1 ));
 
         // the Board and Getting Results.
-
-        // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
         BoardController boardCnt = new testBoardController(util);
 
@@ -119,7 +117,7 @@ class BoardControllerTest {
         BoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
-        assertEquals(7, result.size());
+        assertEquals(3, result.size());
 
     }
     
@@ -233,14 +231,14 @@ class BoardControllerTest {
         list.add(new Card( CLUBS     ,  10));
         list.add(new Card( HEARTS    ,  1 ));
         list.add(new Card( CLUBS     ,  1 ));
-        list.add(new Card( DIAMONDS  ,  7 ));
+        list.add(new Card( DIAMONDS  ,  6 ));
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
         BoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
-        assertEquals(6, result.size());
+        assertEquals(3, result.size());
     }
 
     @Test

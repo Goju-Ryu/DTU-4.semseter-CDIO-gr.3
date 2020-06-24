@@ -9,6 +9,7 @@ import model.Move;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
+import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
@@ -112,16 +113,17 @@ public class BoardController implements I_BoardController {
                 for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
 
                     // data for easy debugging
-                    // int a = boardModel.getPile(from).size() - depth;
-                    // I_CardModel c = boardModel.getPile(from).get(a);
-
+                      int b =  boardModel.getPile(from).size();
+                      int a = b - depth;
+                      List<I_CardModel> s = boardModel.getPile(from);
+                      I_CardModel c = s.get(a);
 
                     // now we need to check if the move is even possible at this index.
                     if (!boardModel.canMoveFrom(from, depth)) {
                         break;
                     }
 
-                    if(!boardModel.canMove(from,depth,to)){
+                    if(!boardModel.canMove(from,depth,to)) {
                         continue;
                     }
 
