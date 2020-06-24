@@ -265,7 +265,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        I_BoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         Move m = boardCnt.pickMove(result);
