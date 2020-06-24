@@ -67,14 +67,9 @@ public class Card implements I_CardModel  {
     public String toString() {
         String string = "";
         if (isFacedUp){
-            return "Card{" +
-                    "suit=" + suit +
-                    ", rank=" + rank +
-                    ", isFacedUp=" + isFacedUp +
-                    '}';
-        }else
-            string = "Card is faced down.";
-            return string;
+            return "Card{ suit=" + suit + ", rank=" + rank + '}';
+        } else
+            return "Card{ face down }";
     }
 
     public boolean equals(I_CardModel card) {
