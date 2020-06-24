@@ -78,11 +78,14 @@ public class Card implements I_CardModel  {
     }
 
     public boolean equals(I_CardModel card) {
+        if(!this.isFacedUp || !card.isFacedUp())
+            return false;
         return this.rank.equals(card.getRank()) && this.suit.equals(card.getSuit()) && this.isFacedUp() == card.isFacedUp();
     }
 
     @Override
     public boolean equals(Object obj) {
+
         if (this == obj)
             return true;
         if (this.getClass() != obj.getClass())
