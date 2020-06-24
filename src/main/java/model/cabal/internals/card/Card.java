@@ -80,7 +80,8 @@ public class Card implements I_CardModel  {
 
     @Override
     public boolean equals(Object obj) {
-
+        if (obj == null)
+            return false;
         if (this == obj)
             return true;
         if (this.getClass() != obj.getClass())
