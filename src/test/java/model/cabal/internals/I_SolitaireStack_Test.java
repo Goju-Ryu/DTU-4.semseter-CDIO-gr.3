@@ -163,7 +163,69 @@ public class I_SolitaireStack_Test {
 
     }
 
+
+    @Test
+    void testAllStacks_getCard(){
+
+        Map<String, List<I_CardModel>> map = createMap();
+        I_BoardModel board = new RefBoard( map);
+
+        for (E_PileID e: E_PileID.values()) {
+            I_SolitaireStacks[] s = board.getPiles();
+            I_SolitaireStacks s2 = s[e.ordinal()];
+            I_CardModel thisCard = s2.getCard( s2.size() - 1 );
+            I_CardModel card;
+            switch (e){
+                case DRAWSTACK:
+                    card = new Card( HEARTS     , 13 );
+                    assertEquals(card, thisCard);
+                    break;
+                case SUITSTACKHEARTS:
+                    card = new Card( HEARTS,3 );
+                    assertEquals(card, thisCard);
+                    break;
+                case SUITSTACKCLUBS:
+                    card = new Card( CLUBS,3 );
+                    assertEquals(card, thisCard);
+                    break;
+                case SUITSTACKSPADES:
+                    card = new Card( SPADES,3 );
+                    assertEquals(card, thisCard);
+                    break;
+                case SUITSTACKDIAMONDS:
+                    card = new Card( DIAMONDS,3 );
+                    assertEquals(card, thisCard);
+                    break;
+                case BUILDSTACK1:
+                    card = new Card( DIAMONDS     , 6 );
+                    assertEquals(card, thisCard); break;
+                case BUILDSTACK2:
+                    card = new Card( HEARTS     , 6 );
+                    assertEquals(card, thisCard); break;
+                case BUILDSTACK3:
+                    card =new Card( SPADES     , 6 );
+                    assertEquals(card, thisCard); break;
+                case BUILDSTACK4:
+                    card = new Card( CLUBS     , 6 );
+                    assertEquals(card, thisCard); break;
+                case BUILDSTACK5:
+                    card = new Card( DIAMONDS     , 9 );
+                    assertEquals(card, thisCard); break;
+                case BUILDSTACK6:
+                    card = new Card( HEARTS     , 9 );
+                    assertEquals(card, thisCard); break;
+                case BUILDSTACK7:
+                    card = new Card( SPADES     , 9 );
+                    assertEquals(card, thisCard); break;
+            }
+        }
+
+
+
+
+    }
 }
+
 
 
 
