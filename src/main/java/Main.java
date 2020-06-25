@@ -1,19 +1,30 @@
 import control.GameController;
 
-import java.util.AbstractMap.SimpleEntry;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.function.Function;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
+        Logger log = Logger.getLogger("Main");
+        try {
+            final String programDir = System.getProperty("user.dir");
+            var logFile = new File(programDir + "/log/" + log.getName() + ".xml");
+            logFile.delete();
+            logFile.getParentFile().mkdirs();
+            log.addHandler(new FileHandler(logFile.getAbsolutePath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
         var gameController = new GameController();
         String uiChoice = "";
 
@@ -36,10 +47,10 @@ public class Main {
                 }
 
 
-                System.out.println(futures.parallelStream()
+                var results = futures.parallelStream()
                         .map(CompletableFuture::join)
-                        .collect(Collectors.toList()));
-
+                        .collect(Collectors.toList());
+                log.log(Level.ALL, "Results: \n" + results);
 
                 return;
             }
