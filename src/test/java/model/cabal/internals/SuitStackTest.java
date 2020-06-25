@@ -18,28 +18,37 @@ class SuitStackTest {
 
     @Test
     void canMoveFrom() {
+        canMoveFromSmallList();
+        canMoveFromList();
+    }
 
+    void canMoveFromSmallList() {
+        SuitStack suitStack = createSuitStack(2, true);
+
+        suitStack.popSubset(suitStack.size() - 1);
+        suitStack.popSubset(suitStack.size() - 1);
+        assertThrows(IndexOutOfBoundsException.class, () -> suitStack.popSubset(suitStack.size() - 1));
+    }
+
+    void canMoveFromList() {
         SuitStack suitStack = createSuitStack(10,true);
-        SuitStack suitStack1 = createSuitStack(4,false);
-        SuitStack suitStack2 = new SuitStack();
 
-        //Check that a card can be moved from the top of the stack
-        assertTrue(suitStack.canMoveFrom(1));
-
-        // Check that an exception will be thrown if range is greater than 1
+        //Check that a card cannot be moved from the bottom of the stack
+        assertFalse(suitStack.canMoveFrom(1));
         assertFalse(suitStack.canMoveFrom(2));
 
-        // Check if the function returns false if the card to be moved is face down
-        assertFalse(suitStack1.canMoveFrom(1));
+        // should be able to move top card
+        assertTrue(suitStack.canMoveFrom(suitStack.size() - 1));
 
-        if (suitStack2.isEmpty()){
-            System.out.println("isEmpty test passed");
+        //when moved stack shrinks
+        assertEquals(10, suitStack.size());
+        suitStack.popSubset(suitStack.size() - 1);
+        assertEquals(9, suitStack.size());
+        suitStack.popSubset(suitStack.size() - 1);
+        suitStack.popSubset(suitStack.size() - 1);
+        suitStack.popSubset(suitStack.size() - 1);
+        assertEquals(6, suitStack.size());
 
-            // Check if an exception will be thrown if the suit stack is empty an we want to know if we can move the top card
-            assertFalse(suitStack2.canMoveFrom(1));
-        }else {
-            fail();
-        }
     }
 
     private SuitStack createSuitStack(int elements, boolean isFaceUp){
