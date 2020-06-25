@@ -20,12 +20,9 @@ import java.util.logging.Logger;
 public class GameController implements I_GameController {
 
     I_BoardController boardCtrl;
-    Logger log;
-    //Scanner scan = new Scanner(System.in).useDelimiter("(\\b|\\B)");
     I_Tui tui;
 
     public GameController() {
-//        log = Logger.getLogger(getClass().getName());
     }
 
     @Override

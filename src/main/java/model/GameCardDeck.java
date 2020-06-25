@@ -12,8 +12,6 @@ import java.util.logging.Logger;
 
 public class GameCardDeck extends TreeSet<I_CardModel> {
 
-    private Logger log;
-
     public GameCardDeck() {
         super(comparator);
         for (E_CardSuit suit : E_CardSuit.values()) {

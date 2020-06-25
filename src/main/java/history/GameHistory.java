@@ -35,7 +35,7 @@ public class GameHistory implements I_GameHistory {
      */
     protected I_GameState currentState;
 
-    private Logger log;
+//    private Logger log;
     private int numNonDrawEvents;
 
     public GameHistory() {
@@ -54,16 +54,16 @@ public class GameHistory implements I_GameHistory {
 
     public GameHistory(Map<E_PileID, List<I_CardModel>> boardAsMap) {
         var name = (getClass().getSimpleName() + "-" + Thread.currentThread().getName());
-        log = Logger.getLogger(name);
-        try {
-            final String programDir = System.getProperty("user.dir");
-            var logFile = new File(programDir + "/log/history/"+log.getName()+".log");
-            logFile.delete();
-            logFile.getParentFile().mkdirs();
-            log.addHandler(new FileHandler(logFile.getAbsolutePath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        log = Logger.getLogger(name);
+//        try {
+//            final String programDir = System.getProperty("user.dir");
+//            var logFile = new File(programDir + "/log/history/"+log.getName()+".log");
+//            logFile.delete();
+//            logFile.getParentFile().mkdirs();
+//            log.addHandler(new FileHandler(logFile.getAbsolutePath()));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         history = new LinkedList<>();
         currentState = new State(boardAsMap);
@@ -119,11 +119,11 @@ public class GameHistory implements I_GameHistory {
         try {
             pileID = getEventSourcePile(event, true);
         } catch (Exception e) {
-            log.warning(
-                    "Unknown source. \""
-                    + event.getPropertyName() +
-                    "\" does not correspond to any known source from E_PileID."
-            );
+//            log.warning(
+//                    "Unknown source. \""
+//                    + event.getPropertyName() +
+//                    "\" does not correspond to any known source from E_PileID."
+//            );
             return;
         }
 
@@ -134,7 +134,7 @@ public class GameHistory implements I_GameHistory {
             Collection<I_CardModel> newValue = ((Collection<I_CardModel>)event.getNewValue());
             currentState.put(pileID, List.copyOf((Collection<? extends I_CardModel>) newValue));
         } catch (ClassCastException e) {
-            log.warning("Failed to change state on event:\n\t" + event);
+//            log.warning("Failed to change state on event:\n\t" + event);
         }
 
         if (endsMove(event)) {
@@ -152,7 +152,7 @@ public class GameHistory implements I_GameHistory {
      */
     protected void addGameState() {
         history.add(0, currentState.clone());
-        log.info("State added to history:\n\t" + currentState);
+//        log.info("State added to history:\n\t" + currentState);
     }
 
     /**
@@ -213,9 +213,9 @@ public class GameHistory implements I_GameHistory {
      */
     private boolean isNewValueTypeCorrect(PropertyChangeEvent event) {
         if ( !(event.getNewValue() instanceof Collection) ) {
-            log.warning(
-                    "New value does not conform to constraints. New value is not an instance of Collection."
-            );
+//            log.warning(
+//                    "New value does not conform to constraints. New value is not an instance of Collection."
+//            );
             return false;
         }
 
@@ -223,7 +223,7 @@ public class GameHistory implements I_GameHistory {
         try {
             newValue = List.copyOf((Collection<Object>) event.getNewValue());
         } catch (ClassCastException e) {
-            log.warning("Trying to cast new value in event to Collection<Object> but failed:\n\t" + event);
+//            log.warning("Trying to cast new value in event to Collection<Object> but failed:\n\t" + event);
             return false;
         }
 
@@ -231,10 +231,10 @@ public class GameHistory implements I_GameHistory {
             return true;
 
         if (newValue.stream().anyMatch(e -> !(e instanceof I_CardModel))) {
-            log.warning(
-                    "New value does not conform to constraints. " +
-                    "New value is a Collection not containing I_CardModel."
-            );
+//            log.warning(
+//                    "New value does not conform to constraints. " +
+//                    "New value is a Collection not containing I_CardModel."
+//            );
             return false;
         }
 
