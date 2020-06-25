@@ -12,6 +12,7 @@ import model.error.IllegalMoveException;
 
 import java.beans.PropertyChangeSupport;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static model.cabal.E_PileID.*;
 
@@ -87,7 +88,7 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         get(DRAWSTACK).clear();
         drawStack.remove(null);
         get(DRAWSTACK).addAll(drawStack);
-        deck.removeAll(drawStack);
+        deck.removeAll(drawStack.stream().filter(I_CardModel::isFacedUp).collect(Collectors.toList()));
     }
 
 //---------  Genneral methods  -------------------------------------------------------------------------------------

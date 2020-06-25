@@ -95,10 +95,10 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
             );
         }
 
-        if (range < 1)
-            return true;
+//        if (range < 1)
+//            return true;
 
-        return getCard(range).isFacedUp();
+        return getSubset(range).get(0).isFacedUp();
     }
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
@@ -106,17 +106,15 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
     }
     @Override
     public I_CardModel getCard(int position) {
-        position = positionReversed(position);
-        return getPCard(position);
+
+        return stack.get((getSafeDrawIndex() + position) % size());
     }
-    private I_CardModel getPCard(int position){
-        return stack.get(position);
-    }
+
     @Override
     public I_CardModel getTopCard() {
         if (drawIndex < 0)
             return null;
-        return getPCard(drawIndex);
+        return stack.get(drawIndex);
     }
     public I_CardModel turnCard() {
         if (isEmpty())
@@ -137,13 +135,6 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
     }
     private int getSafeDrawIndex() {
         return Math.max(0, drawIndex);
-    }
-    private int positionReversed(int a){
-        int c = (size() -1) - a;
-        if (c < 0){
-            c = c + ((size() - 1));
-        }
-        return c;
     }
 
 }
