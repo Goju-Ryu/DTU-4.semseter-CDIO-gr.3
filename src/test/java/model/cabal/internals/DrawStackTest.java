@@ -136,8 +136,8 @@ class DrawStackTest {
 
         // -1  0  1  2  3  4
         //  /  1  2  3  4  5
-        assertEquals(3, stack.getCard(0).getRank());
-        assertEquals(2, stack.getCard(stack.size()-1).getRank());
+        assertEquals(1, stack.getCard(0).getRank());
+        assertEquals(5, stack.getCard(stack.size()-1).getRank());
 
         stackIterator = stack.iterator();
         for (int i = 0; i < 5; i++) {

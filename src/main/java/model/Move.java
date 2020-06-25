@@ -7,15 +7,16 @@ public class Move implements I_Move {
 
     E_PileID to;
     E_PileID from;
+    int index;
     int depth;
     boolean improveAce = false;
     boolean improveShow= false;
     String toStr = "";
 
-    public Move( E_PileID to, E_PileID from, int depth, boolean improveAce, boolean improveShow, String toStr) {
+    public Move( E_PileID to, E_PileID from, int index, boolean improveAce, boolean improveShow, String toStr) {
         this.to = to;
         this.from = from;
-        this.depth = depth;
+        this.index = index;
         this.improveAce = improveAce;
         this.improveShow = improveShow;
         this.toStr = toStr;
@@ -43,7 +44,7 @@ public class Move implements I_Move {
 
     @Override
     public int moveFromRange() {
-        return depth;
+        return index;
     }
 
     @Override
@@ -52,8 +53,12 @@ public class Move implements I_Move {
         return null;
     }
 
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
     @Override
     public String toString() {
-        return "from:" + from + ". to:" + to + ". depth:" + depth;
+        return "from:" + from + ". to:" + to + ". turn " + depth + " cards to find the card";
     }
 }

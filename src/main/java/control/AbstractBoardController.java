@@ -50,29 +50,30 @@ public abstract class AbstractBoardController implements I_BoardController {
                     improveAce = true;
                 }
 
-                for( int depth = boardModel.getPile(from).size()-1 ; depth >=0 ; depth-- ){
+                for( int index = boardModel.getPile(from).size()-1 ; index >=0 ; index-- ){
 
                     // data for easy debugging
                     I_SolitaireStacks s = boardModel.getPiles()[from.ordinal()];
-                    I_CardModel c = s.getCard(depth);
+                    I_CardModel c = s.getCard(index);
 
                     // now we need to check if the move is even possible at this index.
-                    if (!boardModel.canMoveFrom(from, depth)) {
+                    if (!boardModel.canMoveFrom(from,index)) {
                         break;
                     }
 
-                    if(!boardModel.canMove(from,depth,to)) {
+                    if(!boardModel.canMove(from,index,to)) {
                         continue;
                     }
 
                     boolean improveCardReveal = false;
                     try {
                         var pile = boardModel.getPile(from);
-                        improveCardReveal = !pile.get(depth).isFacedUp();
+                        improveCardReveal = !pile.get(index).isFacedUp();
                     } catch (Exception ignored) {}
 
 
-                    Move move = new Move( to,from, depth, improveAce, improveCardReveal, "Move Desc");
+                    Move move = new Move( to,from,index, improveAce, improveCardReveal, "Move Desc");
+                    move.setDepth(boardModel.getPile(DRAWSTACK).size() - index);
                     moves.add(move);
                 }
             }
