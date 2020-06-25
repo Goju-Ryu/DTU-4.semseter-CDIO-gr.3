@@ -3,33 +3,32 @@ package control;
 import model.GameCardDeck;
 import model.Move;
 import model.cabal.RefBoard;
-import model.cabal.internals.card.I_CardModel;
 import model.error.UnendingGameException;
 import view.I_Tui;
 import view.Tui;
 
+import java.io.FileWriter;
 import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Logger;
 
 /**
  * This class is for controlling an entire game,
- * trough multiple states of the game
- * <p>
- * the diffrence on this and Board controller, is that this acts in relation
- * to multiple states of the game where as BoardController only does one.
- * However this will use BoardControler when i needs to make a move on the board
+ * through multiple states of the game the difference on this and Board controller,
+ * is that this acts in relation to multiple states of the game where as BoardController
+ * only does one. However this will use BoardController when i needs to make a move on the board
  */
 
 public class GameController implements I_GameController {
 
     I_BoardController boardCtrl;
-    Logger log;
-    //Scanner scan = new Scanner(System.in).useDelimiter("(\\b|\\B)");
     I_Tui tui;
+    StringBuilder builder = null;
 
     public GameController() {
-//        log = Logger.getLogger(getClass().getName());
+    }
+
+    public GameController(StringBuilder builder) {
+        this.builder = builder;
     }
 
     @Override
@@ -49,34 +48,39 @@ public class GameController implements I_GameController {
     }
 
     private boolean gameLoop() {
+        int calcLimit = 800;
+        int counter = 0 ;
+        try {
+            List<Move> moves;
+            do {
+                moves = boardCtrl.possibleMoves();
+                Move move = boardCtrl.pickMove(moves);
 
-        List<Move> moves;
-        do {
-            moves = boardCtrl.possibleMoves();
-
-//            log.info("Found " + moves.size() + " possible moves: " + moves);
-            Move move = boardCtrl.pickMove(moves);
-
-//            log.info("Chose move: " + move);
-            tui.promptPlayer(move);
-
-            if (move != null) {
-                try {
-                    boardCtrl.makeMove(move);
-                } catch (UnendingGameException e) {
-                    tui.promptPlayer("Game has entered an Unending Loop. So the game has ended.");
-                    return false;
+                if (move != null) {
+                        boardCtrl.makeMove(move);
                 }
-            }
 
-            if (boardCtrl.hasWonGame()) {
-                tui.promptPlayer("GAME WON! congratulaztions me!");
-                return true;
-            }
-        } while (moves.size() > 0);
+                if (boardCtrl.hasWonGame()) {
+                    String str = "(Y)GAME WON! congratulaztions me!";
+                    if(builder != null)
+                        builder.append(str + "\n");
+                    tui.promptPlayer(str);
 
+                    return true;
+                }
+                counter++;
+            } while (moves.size() > 0 && counter < calcLimit);
+        } catch (UnendingGameException e) {
+            String str = "(X)Game has entered an Unending Loop. So the game has ended.";
+            if(builder != null)
+                builder.append(str + "\n");
+            tui.promptPlayer(str);
+            return false;
+        }
+        String str = "(Z)Game have used 800 moves, and hasent ended yet";
+        if(builder != null)
+            builder.append(str + "\n");
+        tui.promptPlayer(str);
         return false;
     }
-
-
 }
