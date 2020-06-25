@@ -72,6 +72,7 @@ public class BoardControllerSimulated extends AbstractBoardController {
 
         boardModel = new Board(inputDTO.getUsrInput(), cardDeck, drawCards);
         history = new GameHistory(boardModel);
+
     }
 
     @Override

@@ -2,7 +2,9 @@ package control;
 
 import model.GameCardDeck;
 import model.Move;
+import model.cabal.E_PileID;
 import model.cabal.RefBoard;
+import model.cabal.internals.card.I_CardModel;
 import model.error.GameWonException;
 import model.error.UnendingGameException;
 
@@ -82,9 +84,13 @@ public class GameController implements I_GameController{
             moves = boardCtrl.possibleMoves();
             log.info("Found "+ moves.size() + " possible moves: " + moves);
             Move move = boardCtrl.pickMove(moves);
+            I_CardModel c = boardCtrl.getBoard().getPile(move.moveFromStack()).get(move.moveFromRange());
             log.info("Chose move: " + move);
             if (move != null)
                 boardCtrl.makeMove(move);
+            List<I_CardModel> list = boardCtrl.getBoard().getPile(move.moveToStack());
+            I_CardModel c2 = list.get(list.size() - 1 );
+            System.out.println("roundpassed");
         } while (moves.size() > 0);
     }
 

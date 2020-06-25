@@ -102,6 +102,8 @@ public abstract class AbstractBoardController implements I_BoardController {
 
     @Override
     public void makeMove(final Move move) throws UnendingGameException {
+
+        I_CardModel c = boardModel.getPile(move.moveFromStack()).get(move.moveFromRange());
         if( move.moveFromStack() == DRAWSTACK ){
             drawStackMove(move, boardModel);
         }else {
@@ -122,9 +124,13 @@ public abstract class AbstractBoardController implements I_BoardController {
                     boardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
                 }
                 // now when it has turned all the necessary cards in the drawstack we give it an input.
+
                 boardModel.turnCard(Map.of());
+
+                I_CardModel c = boardModel.getPile(move.moveFromStack()).get(move.moveFromRange());
                 boardModel.move(move.moveFromStack(),  0, move.moveToStack(), inputDTO.getUsrInput());
             }else {
+                I_CardModel c = boardModel.getPile(move.moveFromStack()).get(move.moveFromRange());
                 boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
             }
         }
@@ -184,5 +190,10 @@ public abstract class AbstractBoardController implements I_BoardController {
         boolean diamoCom = (boardModel.getPile(SUITSTACKDIAMONDS).size() == 13);
         boolean spadeCom = (boardModel.getPile(SUITSTACKSPADES).size() == 13);
         return (heartCom && spadeCom && diamoCom && clubsCom);
+    }
+
+    @Override
+    public I_BoardModel getBoard(){
+        return boardModel;
     }
 }
