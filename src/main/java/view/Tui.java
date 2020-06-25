@@ -1,6 +1,5 @@
 package view;
 
-import control.ScanSingleton;
 import model.Move;
 
 import java.util.Scanner;
@@ -18,14 +17,14 @@ public class Tui implements I_Tui {
     public void promptPlayer(Move move) {
         System.out.println("Complete the following move, then press any button to continue:\n\t" + move);
         if (wait)
-            scan.next();//ScanSingleton.getScanner().next();
+            scan.next();
     }
 
     @Override
     public void promptPlayer(String msg) {
         System.out.println(msg);
         if (wait)
-            scan.next();//ScanSingleton.getScanner().next();
+            scan.next();
     }
 
 }

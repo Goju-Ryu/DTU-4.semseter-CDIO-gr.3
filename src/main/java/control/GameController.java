@@ -35,14 +35,14 @@ public class GameController implements I_GameController {
     @Override
     public boolean startGame(String uiChoice) {
         if (uiChoice.equalsIgnoreCase("sim")) {
+            tui = new Tui(false);
             boardCtrl = new BoardControllerSimulated();
-            tui = new Tui(false);
         } else if (uiChoice.equalsIgnoreCase("std")) {
-            boardCtrl = new BoardControllerSimulated(new RefBoard(RefBoard.stdBoard), new GameCardDeck());
-            tui = new Tui(false);
-        } else {
-            boardCtrl = new BoardController(uiChoice);
             tui = new Tui(true);
+            boardCtrl = new BoardControllerSimulated(new RefBoard(RefBoard.stdBoard), new GameCardDeck());
+        } else {
+            tui = new Tui(true);
+            boardCtrl = new BoardController(uiChoice, tui);
         }
 
         return gameLoop();
