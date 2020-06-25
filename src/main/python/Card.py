@@ -12,7 +12,7 @@ class Card():
         self.counter = 1
 
         self.suit = ""
-        self.rank = "0"
+        self.rank = ""
 
     # Author : Hans
     def initiateCard(self, contour, points):

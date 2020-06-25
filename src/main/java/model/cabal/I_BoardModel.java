@@ -1,5 +1,6 @@
 package model.cabal;
 
+import model.Move;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
@@ -30,7 +31,6 @@ public interface I_BoardModel {
      * @param pileID the pile that is to be checked
      */
     boolean isStackComplete(E_PileID pileID);
-
 
 
 //---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
@@ -72,7 +72,7 @@ public interface I_BoardModel {
      * @throws IllegalMoveException If one of the piles cannot do the operation due to rules constraints.
      */
     default void move(E_PileID origin, E_PileID destination, Map<String, I_CardModel> imgData) throws IllegalMoveException {
-        move(origin, 0, destination, imgData);
+        move(origin, getPile(origin).size() - 1, destination, imgData);
     }
 
     /**
@@ -98,14 +98,15 @@ public interface I_BoardModel {
      * @return true if legal or false if illegal
      */
     default boolean canMove(E_PileID origin, E_PileID destination) {
-        return canMove(origin,0,destination);
+        return canMove(origin,getPile(origin).size() - 1, destination);
     }
 
 
 //-----------  PropertyListener Support   ----------------------------------------
 
-    /**
-     * Add a listener to the board. This subscribes it to all piles on the board.
+    boolean canMoveFrom(E_PileID origin, int range);
+
+    /** Adds a listener to the board. This subscribes it to all piles on the board.
      * @param listener the listener to be attached.
      */
     void addPropertyChangeListener(PropertyChangeListener listener);
@@ -116,4 +117,11 @@ public interface I_BoardModel {
      */
     void removePropertyChangeListener(PropertyChangeListener listener);
 
+    /**
+     * is used to copy a Hashmap of the boards piles and values, to use in a state object.
+     *
+     */
+    Map<E_PileID, List<I_CardModel>> makeMoveStateMap(Move m);
+
+    void turnCardsToIndex( int index );
 }

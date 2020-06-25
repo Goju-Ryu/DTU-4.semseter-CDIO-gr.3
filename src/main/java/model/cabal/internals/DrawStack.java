@@ -4,90 +4,129 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.*;
+import java.util.function.BiFunction;
 
-public class DrawStack extends StackBase {
-
+public class DrawStack extends StackBase implements I_SolitaireStacks  {
     /**
      * This variable describes which cards have been drawn and which haven't
      * every index higher than this value has not yet ben drawn and the lower ones has.
      * This means that the index always points at the card that is able to be drawn out on the board.
      */
-    protected int drawIndex;
 
     public DrawStack() {
-        this(new ArrayList<>());
+        this(new LinkedList<>());
     }
-
+    public DrawStack(LinkedList<I_CardModel> list) {
+        super();
+        if (list instanceof LinkedList)
+            stack = list;
+        else
+            stack = new LinkedList<>(list);
+    }
     public DrawStack(List<I_CardModel> list) {
-        super(list);
-        drawIndex = -1;
+        super();
+        if (list instanceof LinkedList)
+            stack = list;
+        else
+            stack = new LinkedList<>(list);
     }
 
-
-//-----------  Implementation ----------------------------------------------------------------
-
-    public Collection<I_CardModel> popSubset() throws IllegalMoveException {
-        return popSubset(0);
-    }
-
+    //-----------  Implementation ----------------------------------------------------------------
     @Override
-    public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
-        var errors = canMoveFromMsg(range);
-        if (!errors.isEmpty())
-            throw new IllegalMoveException(errors);
+    public Collection<I_CardModel> popSubset(final int index) throws IllegalMoveException {
+        if (!canMoveFrom()) {
+            throw new IllegalMoveException("Can't move cards out of drawStack");
+        }
 
-        var returnable = List.of( stack.get(drawIndex) );
-        stack.remove(drawIndex--); //remove the card and lower index to point to the new card that can be drawn
+        var returnCards = getSubset(index);
 
-        return returnable;
+        if (returnCards.size() > 1)
+            throw new IllegalMoveException("A drawstack can only pop one card. You tried to pop from "+index);
+
+        if ( !returnCards.isEmpty() && !returnCards.get(0).isFacedUp() )
+            throw new IllegalMoveException("Card at this index: "+index+" has not been turned yet");
+
+        stack.removeAll( returnCards ); //remove the card
+        return returnCards;
     }
-
     @Override
-    public boolean canMoveFrom(int range) {
-        try {
-            return canMoveFromMsg(range).isEmpty();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public List<I_CardModel> getSubset(final int index) {
+        var r = List.of(getCard(index));
+        return r;
+    }
+    @Override
+    public boolean add(I_CardModel o) {
+        ((LinkedList) stack).addLast(o);
+        return true;
     }
 
-    private String canMoveFromMsg(int range){
-        StringBuilder builder = new StringBuilder();
-        int cases = 0;
-        if (range > 0) {
-            builder.append("Range cannot be greater than 0.");
-            cases++;
-        }
-        if (drawIndex < 0) {
-            if (cases++ > 0)
-                builder.append("\n");
-            builder.append("Index too low, no cards have been drawn yet.");
-        }
-        if (drawIndex > size()) {
-            throw new IllegalStateException(
-                    "Lost Track of Where in the DrawStack The next card should be turned from...",
-                    new IndexOutOfBoundsException("DrawStack index: " + drawIndex + ", but size is only: " + size())
+
+    // Board Game specifics
+    @Override
+    public boolean canMoveFrom(final int range) {
+        if( range > stack.size() ){
+            throw new IllegalArgumentException(
+                    "Range was larger than the stack size",
+                    new IndexOutOfBoundsException("range: " + range + ", but size is only: " + size())
             );
         }
-        return builder.toString();
+        return getSubset(range).get(0).isFacedUp();
     }
-
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
         return false;
     }
-
-//-------------------  DrawStack specific methods  ----------------------------------------------------------
-    public I_CardModel turnCard() {
-        return getCard(++drawIndex);
+    @Override
+    public I_CardModel getCard(final int position) {
+        var r = stack.get( position % size());
+        return r;
     }
 
+    @Override
     public I_CardModel getTopCard() {
-        return super.getCard(drawIndex);
+        return stack.get(this.size() - 1 );
+    }
+    public I_CardModel turnCard() {
+
+        int top = size() -1;
+        I_CardModel card = stack.get(top);
+        stack.remove(top);
+        ((LinkedList) stack).addFirst(card);
+
+        return getCard(0);
+    }
+
+
+
+    // --- // --- // --- // --- // --- // --- // ---  DrawStack specific methods  ----------------------------------------------------------
+    @NonNullType
+    @Override
+    public Iterator<I_CardModel> iterator() {
+        var startIndex = 0;
+        var returnable = stack.subList(startIndex, stack.size());
+        returnable.addAll(stack.subList(0, startIndex));
+        return returnable.iterator();
+    }
+
+    private BiFunction<Integer, Integer, String> mySupplier = (inp, drw) -> {
+//        var trace = Thread.currentThread().getStackTrace();
+        StringWriter sw = new StringWriter();
+        new Exception().printStackTrace(new PrintWriter(sw));
+        String trace = sw.toString();
+
+        return "Method: " + getClass().getEnclosingMethod() + "\n" +
+                "\tinput: " + inp + "\n" +
+                "\tdrawIndex: " + drw + "\n" +
+                "\n" +
+                "StackTrace:\n" + trace;
+
+    };
+
+    @Override
+    public int size() {
+        return stack.size();
     }
 }

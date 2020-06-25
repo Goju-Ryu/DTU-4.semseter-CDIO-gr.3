@@ -67,22 +67,21 @@ public class Card implements I_CardModel  {
     public String toString() {
         String string = "";
         if (isFacedUp){
-            return "Card{" +
-                    "suit=" + suit +
-                    ", rank=" + rank +
-                    ", isFacedUp=" + isFacedUp +
-                    '}';
-        }else
-            string = "Card is faced down.";
-            return string;
+            return "Card{ suit=" + suit + ", rank=" + rank + '}';
+        } else
+            return "Card{ face down }";
     }
 
     public boolean equals(I_CardModel card) {
+        if(!this.isFacedUp || !card.isFacedUp())
+            return false;
         return this.rank.equals(card.getRank()) && this.suit.equals(card.getSuit()) && this.isFacedUp() == card.isFacedUp();
     }
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
         if (this == obj)
             return true;
         if (this.getClass() != obj.getClass())

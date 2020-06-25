@@ -1,34 +1,87 @@
 package control;
 
-import data.InputDTO;
-import model.cabal.Board;
-import model.cabal.I_BoardModel;
-import model.cabal.internals.card.Card;
-import model.cabal.internals.card.E_CardSuit;
+import model.GameCardDeck;
+import model.Move;
+import model.cabal.RefBoard;
+import model.error.UnendingGameException;
+import view.I_Tui;
+import view.Tui;
 
-import java.util.ArrayList;
+import java.io.FileWriter;
+import java.util.List;
+import java.util.logging.Logger;
+
 /**
  * This class is for controlling an entire game,
- * trough multiple states of the game
- *
- * the diffrence on this and Board controller, is that this acts in relation
- * to multiple states of the game where as BoardController only does one.
- * However this will use BoardControler when i needs to make a move on the board
+ * through multiple states of the game the difference on this and Board controller,
+ * is that this acts in relation to multiple states of the game where as BoardController
+ * only does one. However this will use BoardController when i needs to make a move on the board
  */
 
-public class GameController implements I_GameController{
+public class GameController implements I_GameController {
 
-    //Todo implement this so that it returns I_BoardModel here
-    public void startGame(String UiChoice){
-        I_BoardController boardCtrl = new BoardController();
-        I_BoardModel boardMod = null;
-        if(UiChoice =="simulation"){
-            //TODO: implement that it can iniate a simulated board here
-        }else{
-            boardMod = boardCtrl.MakeNewBoard(UiChoice);
-        }
-        boardCtrl.possibleMoves(boardMod);
+    I_BoardController boardCtrl;
+    I_Tui tui;
+    StringBuilder builder = null;
 
+    public GameController() {
+//        log = Logger.getLogger(getClass().getName());
+    }
+    public GameController(StringBuilder builder) {
+        this.builder = builder;
     }
 
+    @Override
+    public boolean startGame(String uiChoice) {
+        if (uiChoice.equalsIgnoreCase("sim")) {
+            tui = new Tui(false);
+            boardCtrl = new BoardControllerSimulated();
+        } else if (uiChoice.equalsIgnoreCase("std")) {
+            tui = new Tui(true);
+            boardCtrl = new BoardControllerSimulated(new RefBoard(RefBoard.stdBoard), new GameCardDeck());
+        } else {
+            tui = new Tui(true);
+            boardCtrl = new BoardController(uiChoice, tui);
+        }
+
+        return gameLoop();
+    }
+
+    private boolean gameLoop() {
+        int calcLimit = 800;
+        int counter = 0 ;
+        try {
+            List<Move> moves;
+            do {
+                moves = boardCtrl.possibleMoves();
+                Move move = boardCtrl.pickMove(moves);
+
+                tui.promptPlayer(move);
+                if (move != null) {
+                        boardCtrl.makeMove(move);
+                }
+
+                if (boardCtrl.hasWonGame()) {
+                    String str = "(Y)GAME WON! congratulaztions me!";
+                    if(builder != null)
+                        builder.append(str + "\n");
+                    tui.promptPlayer(str);
+
+                    return true;
+                }
+                counter++;
+            } while (moves.size() > 0 && counter < calcLimit);
+        } catch (UnendingGameException e) {
+            String str = "(X)Game has entered an Unending Loop. So the game has ended.";
+            if(builder != null)
+                builder.append(str + "\n");
+            tui.promptPlayer(str);
+            return false;
+        }
+        String str = "(Z)Game have used 800 moves, and hasent ended yet";
+        if(builder != null)
+            builder.append(str + "\n");
+        tui.promptPlayer(str);
+        return false;
+    }
 }
