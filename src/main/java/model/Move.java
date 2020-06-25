@@ -3,6 +3,8 @@ package model;
 import model.cabal.Board;
 import model.cabal.E_PileID;
 
+import static model.cabal.E_PileID.DRAWSTACK;
+
 public class Move implements I_Move {
 
     E_PileID to;
@@ -56,10 +58,16 @@ public class Move implements I_Move {
     public void setDepth(int depth) {
         this.depth = depth;
     }
-    public int getDepth() {return depth;}
 
     @Override
     public String toString() {
+        String Cards =" cards";
+        String firstpart = "";
+        if(from == DRAWSTACK)
+            if(depth == 1)
+                Cards = " card";
+            firstpart = "from the drawstack turn " + depth + Cards + " to get to the card.";
+
         return "from:" + from + ". to:" + to + ". turn " + depth + " cards to find the card";
     }
 }
