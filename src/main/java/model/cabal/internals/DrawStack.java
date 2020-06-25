@@ -37,7 +37,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
             throw new IllegalMoveException("Can't move cards out of drawStack");
         }
 
-        var returnCards = getSubset(getSafeDrawIndex() +index);
+        var returnCards = getSubset(getSafeDrawIndex() + index);
 
         if (returnCards.size() > 1)
             throw new IllegalMoveException("A drawstack can only pop one card. You tried to pop from "+index);
@@ -59,12 +59,6 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
         return true;
     }
 
-
-    @Override
-    public boolean addAll(@Nonnull Collection<? extends I_CardModel> c) throws IllegalMoveException {
-        c.forEach(this::add);
-        return true;
-    }
 
     // Board Game specifics
     @Override
