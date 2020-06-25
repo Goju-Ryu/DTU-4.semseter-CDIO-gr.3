@@ -23,7 +23,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
      * This means that the index always points at the card that is able to be drawn out on the board.
      */
     protected int drawIndex;
-    private  Logger log;
+    //private  Logger log;
 
     public DrawStack() {
         this(new LinkedList<>());
@@ -39,16 +39,16 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
         drawIndex = -1;
 
         var name = getClass().getSimpleName();
-        log = Logger.getLogger(name);
-        try {
-            final String programDir = System.getProperty("user.dir");
-            var logFile = new File(programDir + "/log/drawStack/"+log.getName()+".log");
-            logFile.delete();
-            logFile.getParentFile().mkdirs();
-            log.addHandler(new FileHandler(logFile.getAbsolutePath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //log = Logger.getLogger(name);
+//        try {
+//            final String programDir = System.getProperty("user.dir");
+//            var logFile = new File(programDir + "/log/drawStack/"+log.getName()+".log");
+//            logFile.delete();
+//            logFile.getParentFile().mkdirs();
+////            log.addHandler(new FileHandler(logFile.getAbsolutePath()));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
 //-----------  Implementation ----------------------------------------------------------------
@@ -56,7 +56,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
     @Override
     public Collection<I_CardModel> popSubset(final int index) throws IllegalMoveException {
         //log.info("popSubset("+index+")");
-        log.info(() -> mySupplier.apply(index, drawIndex));
+//        log.info(() -> mySupplier.apply(index, drawIndex));
         if (!canMoveFrom()) {
             throw new IllegalMoveException("Can't move cards out of drawStack");
         }
@@ -72,15 +72,15 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
         stack.removeAll( returnCards ); //remove the card
         drawIndex--; //lower index to point to the new card that can be drawn
 //        log.info("popSubset(index:"+index+", drawIndex:"+drawIndex+") --D " + returnCards);
-        log.info(() ->  mySupplier.apply(index, drawIndex) + "result " + returnCards);
+//        log.info(() ->  mySupplier.apply(index, drawIndex) + "result " + returnCards);
         return returnCards;
     }
     @Override
     public List<I_CardModel> getSubset(final int index) {
 //        log.info("getSubset("+index+")");
-        log.info(() ->  mySupplier.apply(index, drawIndex));
+//        log.info(() ->  mySupplier.apply(index, drawIndex));
         var r = List.of(getCard(index));
-        log.info(() ->  mySupplier.apply(index, drawIndex) + "result " + r);
+//        log.info(() ->  mySupplier.apply(index, drawIndex) + "result " + r);
 //        log.info("getSubset(index:"+index+", drawIndex:"+drawIndex+") --D " + r);
         return r;
     }
@@ -109,10 +109,10 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
     @Override
     public I_CardModel getCard(final int position) {
 //        log.info("getCard(index:"+position+", drawIndex:"+drawIndex+")");
-        log.info(() ->  mySupplier.apply(position, drawIndex));
+//        log.info(() ->  mySupplier.apply(position, drawIndex));
          var r = stack.get((getSafeDrawIndex() + position  ) % size());
 //        log.info("getCard(index:"+position+", drawIndex:"+drawIndex+") --D " + r);
-        log.info(() ->  mySupplier.apply(position, drawIndex) + "result " + r);
+//        log.info(() ->  mySupplier.apply(position, drawIndex) + "result " + r);
         return r;
     }
 

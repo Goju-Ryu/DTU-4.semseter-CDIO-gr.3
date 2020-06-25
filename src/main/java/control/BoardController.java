@@ -40,7 +40,7 @@ public class BoardController extends AbstractBoardController {
         var deck = new GameCardDeck();
         ArrayList<I_CardModel> drawCards = new ArrayList<>();
 
-        int drawstackCardCount = 24;
+        int drawstackCardCount = 4;
         for(int i = 0; i < drawstackCardCount; i++) {
             I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
             drawCards.add(drawCard);
