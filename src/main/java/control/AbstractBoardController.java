@@ -10,7 +10,6 @@ import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.I_CardModel;
-import model.error.GameWonException;
 import model.error.UnendingGameException;
 
 import java.util.*;
