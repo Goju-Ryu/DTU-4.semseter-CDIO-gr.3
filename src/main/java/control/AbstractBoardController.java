@@ -101,13 +101,10 @@ public abstract class AbstractBoardController implements I_BoardController {
     @Override
     public void makeMove(Move move) throws UnendingGameException {
         if( move.moveFromStack() == DRAWSTACK ){
-            // draw stack has a unique rule set, that makes.
-            for (int i = 0; i < move.moveFromRange() ; i++) {
-                boardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
-            }
+
             // now when it has turned all the necessary cards in the drawstack we give it an input.
             boardModel.turnCard(Map.of());
-            boardModel.move(move.moveFromStack(),  move.moveToStack(), inputDTO.getUsrInput());
+            boardModel.move(move.moveFromStack(),move.moveFromRange(),  move.moveToStack(), inputDTO.getUsrInput());
         }else {
             boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
         }
