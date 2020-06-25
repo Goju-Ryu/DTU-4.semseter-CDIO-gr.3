@@ -245,11 +245,10 @@ public class BoardControllerTest {
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
-        list.add(new Card( CLUBS    ,  1 ));
-        list.add(new Card( CLUBS    ,  2 ));
+        list.add(new Card( SPADES    ,  13 ));
+        list.add(new Card( DIAMONDS    ,  2 ));
         list.add(new Card( CLUBS    ,  3 ));
-        list.add(new Card( CLUBS    ,  8 ));
-        list.add(new Card( HEARTS   ,  2 ));
+        list.add(new Card( HEARTS   ,  1 ));
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
@@ -258,9 +257,9 @@ public class BoardControllerTest {
         List<Move> result = boardCnt.possibleMoves();
         Move m = boardCnt.pickMove(result);
 
-        assertEquals(SUITSTACKCLUBS, m.moveToStack());
+        assertEquals(SUITSTACKHEARTS, m.moveToStack());
         assertEquals(DRAWSTACK, m.moveFromStack());
-        assertEquals(1,m.moveFromRange());
+        assertEquals(4,m.moveFromRange());
     }
 
     @Test
@@ -375,6 +374,5 @@ public class BoardControllerTest {
             boardCnt.makeMove(move);
         });
     }
-
 
 }
