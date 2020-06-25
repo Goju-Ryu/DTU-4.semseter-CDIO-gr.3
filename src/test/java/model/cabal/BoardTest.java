@@ -5,6 +5,7 @@ import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
+import util.TestUtil;
 
 import java.util.*;
 
@@ -45,7 +46,8 @@ class BoardTest {
             map.put( e.name() , new Card(E_CardSuit.SPADES, i++) );
         }
         var deck = new GameCardDeck();
-        I_BoardModel board = new Board(map, deck);
+        var test = TestUtil.getTestReadyBoard(map);
+        I_BoardModel board = test.getKey();
 
         for (E_PileID e: E_PileID.values()) {
             List<I_CardModel> stack = board.getPile(e);
