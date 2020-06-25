@@ -121,8 +121,6 @@ public class I_SolitaireStack_Test {
             switch (e){
                 case DRAWSTACK:
                     card = new Card( HEARTS,13 );
-                    assertNull(thisTopCard);
-                    ((DrawStack)s2).turnCard();
                     assertEquals(card, s2.getTopCard());
                     break;
                 case SUITSTACKHEARTS:
@@ -186,7 +184,7 @@ public class I_SolitaireStack_Test {
                 case DRAWSTACK:
                     card = new Card( HEARTS,13 );
                     ((DrawStack)s2).turnCard();
-                    assertEquals(card, s2.getTopCard());
+                    assertEquals(card, thisCard);
                     break;
                 case SUITSTACKHEARTS:
                     card = new Card( HEARTS,3 );
