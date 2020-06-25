@@ -30,9 +30,9 @@ public class Main {
                 List<CompletableFuture<Boolean>> futures = new ArrayList<>(simNum);
 
                 for (int i = 0; i < simNum; i++) {
-                    futures.set(i,
-                            CompletableFuture
-                            .supplyAsync(() -> (new GameController()).startGame("sim")));
+                    futures.add(
+                            CompletableFuture.supplyAsync(() -> (new GameController()).startGame("sim"))
+                    );
                 }
 
 
