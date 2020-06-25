@@ -245,11 +245,11 @@ public class BoardControllerTest {
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
-        list.add(new Card( CLUBS    ,  1 ));
+        list.add(new Card( CLUBS    ,  13 ));
         list.add(new Card( CLUBS    ,  2 ));
         list.add(new Card( CLUBS    ,  3 ));
         list.add(new Card( CLUBS    ,  8 ));
-        list.add(new Card( HEARTS   ,  2 ));
+        list.add(new Card( HEARTS   ,  1 ));
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
