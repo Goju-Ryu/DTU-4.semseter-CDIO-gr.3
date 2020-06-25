@@ -67,9 +67,9 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
         return returnable;
     }
     @Override
-    public List<I_CardModel> getSubset(int range) {
+    public List<I_CardModel> getSubset(int index) {
 //        int range2 = positionReversed(range);
-        return getPSubset(range);
+        return getPSubset(index);
     }
     @Override
     public boolean add(I_CardModel o) {
@@ -107,7 +107,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
     @Override
     public I_CardModel getCard(int position) {
 
-        return stack.get((getSafeDrawIndex() + position) % size());
+        return stack.get((getSafeDrawIndex() + position + 1) % size());
     }
 
     @Override

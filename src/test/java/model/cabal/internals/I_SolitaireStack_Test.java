@@ -168,6 +168,11 @@ public class I_SolitaireStack_Test {
 
     @Test
     void testAllStacks_getCard(){
+//       list = new ArrayList<>();
+//        list.add(new Card( SPADES     , 13 ));
+//        list.add(new Card( CLUBS      , 13 ));
+//        list.add(new Card( HEARTS     , 13 ));
+//        map.put(DRAWSTACK.name(), list);
 
         Map<String, List<I_CardModel>> map = createMap();
         I_BoardModel board = new RefBoard( map);
