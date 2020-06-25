@@ -42,31 +42,31 @@ public class GameController implements I_GameController {
     }
 
     private boolean gameLoop() {
+        try {
+            List<Move> moves;
+            do {
+                moves = boardCtrl.possibleMoves();
 
-        List<Move> moves;
-        do {
-            moves = boardCtrl.possibleMoves();
+    //            log.info("Found " + moves.size() + " possible moves: " + moves);
+                Move move = boardCtrl.pickMove(moves);
 
-//            log.info("Found " + moves.size() + " possible moves: " + moves);
-            Move move = boardCtrl.pickMove(moves);
+    //            log.info("Chose move: " + move);
+                //tui.promptPlayer(move);
 
-//            log.info("Chose move: " + move);
-            tui.promptPlayer(move);
-
-            if (move != null) {
-                try {
-                    boardCtrl.makeMove(move);
-                } catch (UnendingGameException e) {
-                    tui.promptPlayer("Game has entered an Unending Loop. So the game has ended.");
-                    return false;
+                if (move != null) {
+                        boardCtrl.makeMove(move);
                 }
-            }
 
-            if (boardCtrl.hasWonGame()) {
-                tui.promptPlayer("GAME WON! congratulaztions me!");
-                return true;
-            }
-        } while (moves.size() > 0);
+                if (boardCtrl.hasWonGame()) {
+                    tui.promptPlayer("(Y)GAME WON! congratulaztions me!");
+                    return true;
+                }
+
+            } while (moves.size() > 0);
+        } catch (UnendingGameException e) {
+            tui.promptPlayer("(X)Game has entered an Unending Loop. So the game has ended.");
+            return false;
+        }
 
         return false;
     }
