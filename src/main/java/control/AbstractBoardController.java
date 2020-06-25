@@ -10,6 +10,7 @@ import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.I_CardModel;
+import model.error.GameWonException;
 import model.error.UnendingGameException;
 
 import java.util.*;
@@ -78,6 +79,7 @@ public abstract class AbstractBoardController implements I_BoardController {
                 }
             }
         }
+
         return moves;
     }
 
@@ -100,20 +102,10 @@ public abstract class AbstractBoardController implements I_BoardController {
 
     @Override
     public void makeMove(final Move move) throws UnendingGameException {
+
+        I_CardModel c = boardModel.getPile(move.moveFromStack()).get(move.moveFromRange());
         if( move.moveFromStack() == DRAWSTACK ){
-            if (boardModel != null) {
-                if( move.moveFromStack() == DRAWSTACK ){
-                    // draw stack has a unique rule set, that makes.
-                    for (int i = 0; i < move.moveFromRange(); i++) {
-                        boardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
-                    }
-                    // now when it has turned all the necessary cards in the drawstack we give it an input.
-                    boardModel.turnCard(Map.of());
-                    boardModel.move(move.moveFromStack(),  0, move.moveToStack(), inputDTO.getUsrInput());
-                }else {
-                    boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
-                }
-            }
+            drawStackMove(move, boardModel);
         }else {
             boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
         }
@@ -121,6 +113,26 @@ public abstract class AbstractBoardController implements I_BoardController {
         if (  history.isRepeatState() ){
             Collection<I_GameState> s = history.getRepeatStates();
             throw new UnendingGameException("I have been in this state before...");
+        }
+    }
+
+    protected void drawStackMove(Move move, I_BoardModel boardModel) {
+        if (boardModel != null) {
+            if( move.moveFromStack() == DRAWSTACK ){
+                // draw stack has a unique rule set, that makes.
+                for (int i = 0; i < move.moveFromRange(); i++) {
+                    boardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
+                }
+                // now when it has turned all the necessary cards in the drawstack we give it an input.
+
+                boardModel.turnCard(Map.of());
+
+                I_CardModel c = boardModel.getPile(move.moveFromStack()).get(move.moveFromRange());
+                boardModel.move(move.moveFromStack(),  0, move.moveToStack(), inputDTO.getUsrInput());
+            }else {
+                I_CardModel c = boardModel.getPile(move.moveFromStack()).get(move.moveFromRange());
+                boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
+            }
         }
     }
 
@@ -168,5 +180,20 @@ public abstract class AbstractBoardController implements I_BoardController {
             throw new UnendingGameException("Game Entered Unending loop\n every move would lead to a repeated game state");
         }
 
+    }
+
+    @Override
+    public boolean hasWonGame(){
+        // if GAME has been won
+        boolean heartCom = (boardModel.getPile(SUITSTACKHEARTS).size() == 13);
+        boolean clubsCom = (boardModel.getPile(SUITSTACKCLUBS).size() == 13);
+        boolean diamoCom = (boardModel.getPile(SUITSTACKDIAMONDS).size() == 13);
+        boolean spadeCom = (boardModel.getPile(SUITSTACKSPADES).size() == 13);
+        return (heartCom && spadeCom && diamoCom && clubsCom);
+    }
+
+    @Override
+    public I_BoardModel getBoard(){
+        return boardModel;
     }
 }

@@ -53,7 +53,7 @@ public class GameHistory implements I_GameHistory {
     }
 
     public GameHistory(Map<E_PileID, List<I_CardModel>> boardAsMap) {
-        var name = (new Exception().getStackTrace()[2].getClassName()) + "." + getClass().getSimpleName();
+        var name = (getClass().getSimpleName() + "-" + Thread.currentThread().getName());
         log = Logger.getLogger(name);
         try {
             final String programDir = System.getProperty("user.dir");

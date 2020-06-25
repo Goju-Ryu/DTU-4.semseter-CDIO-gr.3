@@ -2,7 +2,10 @@ package control;
 
 import model.GameCardDeck;
 import model.Move;
+import model.cabal.E_PileID;
 import model.cabal.RefBoard;
+import model.cabal.internals.card.I_CardModel;
+import model.error.GameWonException;
 import model.error.UnendingGameException;
 
 import java.util.List;
@@ -40,11 +43,22 @@ public class GameController implements I_GameController{
     }
 
     private void gameLoop() {
+        boolean wonGame = false;
+        String GAMEWONMSG = "GAME WON! congratulaztions me! ";
 
         try {
             List<Move> moves;
             do {
                 moves = boardCtrl.possibleMoves();
+
+                // tjecking if the game has been won.
+                if (moves.size() == 0) {
+                    if (boardCtrl.hasWonGame()) {
+                        wonGame = true;
+                        break;
+                    }
+                }
+
                 log.info("Found " + moves.size() + " possible moves: " + moves);
                 Move move = boardCtrl.pickMove(moves);
                 log.info("Chose move: " + move);
@@ -55,6 +69,11 @@ public class GameController implements I_GameController{
 
         }catch (UnendingGameException e){
             System.out.println("Game has entered an Unending Loop. So the game has ended.");
+        }catch (GameWonException e){
+            System.out.println(" Game Won! . Congratulations me! ");
+        }
+        if(wonGame){
+            System.out.println(GAMEWONMSG);
         }
 
     }
@@ -65,9 +84,13 @@ public class GameController implements I_GameController{
             moves = boardCtrl.possibleMoves();
             log.info("Found "+ moves.size() + " possible moves: " + moves);
             Move move = boardCtrl.pickMove(moves);
+            I_CardModel c = boardCtrl.getBoard().getPile(move.moveFromStack()).get(move.moveFromRange());
             log.info("Chose move: " + move);
             if (move != null)
                 boardCtrl.makeMove(move);
+            List<I_CardModel> list = boardCtrl.getBoard().getPile(move.moveToStack());
+            I_CardModel c2 = list.get(list.size() - 1 );
+            System.out.println("roundpassed");
         } while (moves.size() > 0);
     }
 
