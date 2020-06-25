@@ -2,10 +2,8 @@ package control;
 
 import model.GameCardDeck;
 import model.Move;
-import model.cabal.E_PileID;
 import model.cabal.RefBoard;
 import model.cabal.internals.card.I_CardModel;
-import model.error.GameWonException;
 import model.error.UnendingGameException;
 
 import java.util.List;
@@ -69,8 +67,6 @@ public class GameController implements I_GameController{
 
         }catch (UnendingGameException e){
             System.out.println("Game has entered an Unending Loop. So the game has ended.");
-        }catch (GameWonException e){
-            System.out.println(" Game Won! . Congratulations me! ");
         }
         if(wonGame){
             System.out.println(GAMEWONMSG);
@@ -88,7 +84,7 @@ public class GameController implements I_GameController{
             log.info("Chose move: " + move);
             if (move != null)
                 boardCtrl.makeMove(move);
-            List<I_CardModel> list = boardCtrl.getBoard().getPile(move.moveToStack());
+            List <I_CardModel> list = boardCtrl.getBoard().getPile(move.moveToStack());
             I_CardModel c2 = list.get(list.size() - 1 );
             System.out.println("roundpassed");
         } while (moves.size() > 0);
