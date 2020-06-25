@@ -61,13 +61,118 @@ public class Move implements I_Move {
 
     @Override
     public String toString() {
+        String time = " times";
         String Cards =" cards";
         String firstpart = "";
-        if(from == DRAWSTACK)
-            if(depth == 1)
+        String secondPart= "";
+        if(from == DRAWSTACK) {
+            if (depth == 1) {
                 Cards = " card";
-            firstpart = "from the drawstack turn " + depth + Cards + " to get to the card.";
+                time = " time";
+            }
+            firstpart = "from the drawstack turn " + depth + Cards +"\n" ;
+            secondPart = "";
+        }
+        else {
+            boolean acePile = false;
+            String name = "";
+            switch (from) {
+                case SUITSTACKHEARTS:
+                    acePile = true;
+                    name = "the Heart Ace pile";
+                    break;
+                case SUITSTACKCLUBS:
+                    acePile = true;
+                    name = "the Clubs Ace pile";
+                    break;
+                case SUITSTACKSPADES:
+                    acePile = true;
+                    name = "the Spades Ace pile";
+                    break;
+                case SUITSTACKDIAMONDS:
+                    acePile = true;
+                    name = "the Diamond Ace pile";
+                    break;
+                case BUILDSTACK1:
+                    name = "the first building stack from the left";
+                    break;
+                case BUILDSTACK2:
+                    name = "the second building stack from the left";
+                    break;
+                case BUILDSTACK3:
+                    name = "the third building stack from the left";
+                    break;
+                case BUILDSTACK4:
+                    name = "the fourth building stack from the left";
+                    break;
+                case BUILDSTACK5:
+                    name = "the fith building stack from the left";
+                    break;
+                case BUILDSTACK6:
+                    name = "the sixth building stack from the left";
+                    break;
+                case BUILDSTACK7:
+                    name = "the seventh building stack from the left";
+                    break;
+            }
+            firstpart = "draw from " + name + "\n";
+            if (acePile)
+                secondPart = "draw the top card from here\n";
+            else {
+                secondPart = "draw the stack of cards from card number " + depth +"\n" ;
+                if(depth == 1)
+                    secondPart = "draw the first card\n";
 
-        return "from:" + from + ". to:" + to + ". turn " + depth + " cards to find the card";
+            }
+        }
+
+        // TO stacks
+        boolean acePile = false;
+        String name ="";
+        String thirdPart = "";
+        switch (to) {
+            case SUITSTACKHEARTS:
+                acePile = true;
+                name = "the Heart Ace pile";
+                break;
+            case SUITSTACKCLUBS:
+                acePile = true;
+                name = "the Clubs Ace pile";
+                break;
+            case SUITSTACKSPADES:
+                acePile = true;
+                name = "the Spades Ace pile";
+                break;
+            case SUITSTACKDIAMONDS:
+                acePile = true;
+                name = "the Diamond Ace pile";
+                break;
+            case BUILDSTACK1:
+                name = "the first building stack from the left";
+                break;
+            case BUILDSTACK2:
+                name = "the second building stack from the left";
+                break;
+            case BUILDSTACK3:
+                name = "the third building stack from the left";
+                break;
+            case BUILDSTACK4:
+                name = "the fourth building stack from the left";
+                break;
+            case BUILDSTACK5:
+                name = "the fith building stack from the left";
+                break;
+            case BUILDSTACK6:
+                name = "the sixth building stack from the left";
+                break;
+            case BUILDSTACK7:
+                name = "the seventh building stack from the left";
+                break;
+        }
+        thirdPart = "and move to "+ name +"\n";
+
+        String a = firstpart + secondPart  + thirdPart;
+        //return "from:" + from + ". to:" + to + ". turn " + depth + " cards to find the card";
+        return a;
     }
 }
