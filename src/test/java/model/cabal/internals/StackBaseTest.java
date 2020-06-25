@@ -90,7 +90,7 @@ class StackBaseTest {
         assertEquals(11, drawStack.size());
 
         for (int i = 5; i < drawStack.size() ; i++) {
-            assertSame(drawStack.getCard(i), drawStack1.getCard(i - 5));
+            assertEquals(drawStack.getCard(i), drawStack1.getCard(i - 5));
         }
     }
 
