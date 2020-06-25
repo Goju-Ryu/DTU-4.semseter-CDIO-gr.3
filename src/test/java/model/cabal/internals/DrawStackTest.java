@@ -15,35 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DrawStackTest {
 
-    @Test
-    void popSubset() {
-        DrawStack drawStack = createDrawstack(4,E_CardSuit.CLUBS);
-        I_CardModel card = new Card(E_CardSuit.CLUBS,1,true);
-        I_CardModel card2 = null;
-
-        // You need to turn a Card before you can pop it from the pile
-        drawStack.turnCard();
-
-        if (drawStack.canMoveFrom(1)){
-            System.out.println("passed");
-            Collection<I_CardModel> drawStack1 = drawStack.popSubset(drawStack.size() - 1);
-
-
-            card2 = drawStack1.iterator().next();
-
-            System.out.println("Card in that is popped from the drawstack: "+card2);
-            System.out.println("Card to compare with: "+card);
-
-            assertEquals(card,card2);
-
-            // If you try to pop more than 1 element from the draw stack, an IllegalMoveException will be thrown
-            assertThrows(IllegalMoveException.class,
-                    ()-> drawStack.popSubset(2),
-                    "You cannot pop more than 1 card at a time, so range should be 0");
-        }else {
-            fail();
-        }
-    }
 
     @Test
     void canMoveFrom() {
@@ -136,8 +107,8 @@ class DrawStackTest {
 
         // -1  0  1  2  3  4
         //  /  1  2  3  4  5
-        assertEquals(3, stack.getCard(0).getRank());
-        assertEquals(2, stack.getCard(stack.size()-1).getRank());
+        assertEquals(1, stack.getCard(0).getRank());
+        assertEquals(5, stack.getCard(stack.size()-1).getRank());
 
         stackIterator = stack.iterator();
         for (int i = 0; i < 5; i++) {

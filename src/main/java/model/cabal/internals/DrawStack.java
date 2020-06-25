@@ -105,7 +105,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
         return getCard(0);
     }
 
-// --- // --- // --- // --- // --- // --- // -  DrawStack specific methods  ----------------------------------------------------------
+// --- // --- // --- // --- // --- // --- // ---  DrawStack specific methods  ----------------------------------------------------------
 
     @NonNullType
     @Override
@@ -118,5 +118,4 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
     private int getSafeDrawIndex() {
         return Math.max(0, drawIndex);
     }
-
 }

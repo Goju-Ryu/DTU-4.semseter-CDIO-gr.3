@@ -89,8 +89,8 @@ class StackBaseTest {
 
         assertEquals(11, drawStack.size());
 
-        for (int i = 5; i < drawStack.size() ; i++) {
-            assertEquals(drawStack.getCard(i), drawStack1.getCard(i - 5));
+        for (int i = (drawStack1.size()-1); i >= 0 ; i--) {
+            assertEquals(drawStack.getCard(i+5), drawStack1.getCard(i));
         }
     }
 
@@ -172,19 +172,19 @@ class StackBaseTest {
 
         //BuildStack
         BuildStack buildStack = createBuildStack(10);
-        I_CardModel buildCard = new Card(E_CardSuit.HEARTS,6,true);
+        I_CardModel buildCard = new Card(E_CardSuit.HEARTS,5,true);
         assertTrue(buildCard.equals(buildStack.getCard(5)));
         assertEquals(buildCard,buildStack.getCard(5));
 
         //SuitStack
         SuitStack suitStack = createSuitStack(10);
-        I_CardModel suitCard = new Card(E_CardSuit.HEARTS,6,true);
+        I_CardModel suitCard = new Card(E_CardSuit.HEARTS,5,true);
         assertTrue(suitCard.equals(suitStack.getCard(5)));
         assertEquals(suitCard,suitStack.getCard(5));
 
         //DrawStack
         DrawStack drawStack = createDrawStack(10);
-        I_CardModel drawCard = new Card(E_CardSuit.DIAMONDS,6,true);
+        I_CardModel drawCard = new Card(E_CardSuit.DIAMONDS,5,true);
         assertTrue(drawCard.equals(drawStack.getCard(5)));
         assertEquals(drawCard,drawStack.getCard(5));
     }
@@ -194,15 +194,15 @@ class StackBaseTest {
 
         //BuildStack
         BuildStack buildStack = createBuildStack(13);
-        assertEquals(10,buildStack.getSubset(10).size());
+        assertEquals(10,buildStack.getSubset(3).size());
 
         //SuitStack
         SuitStack suitStack = createSuitStack(13);
-        assertEquals(8,suitStack.getSubset(8).size());
+        assertEquals(8,suitStack.getSubset(5).size());
 
         //DrawStack
         DrawStack drawStack = createDrawStack(13);
-        assertEquals(1,drawStack.getSubset(2).size());
+        assertEquals(1,drawStack.getSubset(12).size());
     }
 
     @Test
@@ -304,29 +304,29 @@ class StackBaseTest {
     @Test
     void iterator() {
 
-        int i = 1;
-        int j = 1;
-        int k = 1;
+        int i = 4;
+        int j = 5;
+        int k = 6;
 
         //BuildStack
         BuildStack buildStack = createBuildStack(4);
         Iterator<I_CardModel> iterator = buildStack.iterator();
         while (iterator.hasNext()){
-            assertEquals(i++, iterator.next().getRank());
+            assertEquals(i--, iterator.next().getRank());
         }
 
         //SuitStack
         SuitStack suitStack = createSuitStack(5);
         Iterator<I_CardModel> iterator1 = suitStack.iterator();
         while (iterator1.hasNext()){
-            assertEquals(j++, iterator1.next().getRank());
+            assertEquals(j--, iterator1.next().getRank());
         }
 
         //DrawStack
         DrawStack drawStack = createDrawStack(6);
         Iterator<I_CardModel> iterator2 = drawStack.iterator();
         while (iterator2.hasNext()){
-            assertEquals(k++, iterator2.next().getRank());
+            assertEquals(k--, iterator2.next().getRank());
         }
     }
 
@@ -469,8 +469,8 @@ class StackBaseTest {
     private BuildStack createBuildStack(int stacksize){
         BuildStack stack = new BuildStack();
 
-        for (int i = 0; i < stacksize; i++) {
-            I_CardModel card = new Card(E_CardSuit.HEARTS,i + 1,true);
+        for (int i = stacksize; i > 0 ; i--) {
+            I_CardModel card = new Card(E_CardSuit.HEARTS,i,true);
             stack.add(card);
         }
         return stack;
@@ -479,8 +479,8 @@ class StackBaseTest {
     private SuitStack createSuitStack(int stacksize) {
         SuitStack stack = new SuitStack();
 
-        for (int i = 0; i < stacksize; i++) {
-            I_CardModel card = new Card(E_CardSuit.HEARTS, i + 1, true);
+        for (int i = stacksize; i > 0 ; i--) {
+            I_CardModel card = new Card(E_CardSuit.HEARTS, i, true);
             stack.add(card);
         }
         return stack;
@@ -489,8 +489,8 @@ class StackBaseTest {
     private DrawStack createDrawStack(int stacksize){
         var cards = new ArrayList<I_CardModel>();
 
-        for (int i = 0; i < stacksize; i++) {
-            I_CardModel card = new Card(E_CardSuit.DIAMONDS, i + 1, true);
+        for (int i = stacksize; i > 0 ; i--) {
+            I_CardModel card = new Card(E_CardSuit.DIAMONDS, i, true);
             cards.add(card);
         }
         return new DrawStack(cards);

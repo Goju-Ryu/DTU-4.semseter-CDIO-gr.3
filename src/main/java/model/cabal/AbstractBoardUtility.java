@@ -1,6 +1,7 @@
 package model.cabal;
 
 import model.GameCardDeck;
+import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.I_CardModel;
 
