@@ -181,15 +181,15 @@ class BuildStackTest {
             assertTrue(suitStack.canMoveTo(heartCard)); // TODO this do not work because our stacks do not have an id
         }
 
-        if (incomingStack.canMoveFrom(3)){
+        if (incomingStack.canMoveFrom(2)){
             System.out.println("first passed");
-            if (incomingStack1.canMoveFrom(3)){
+            if (incomingStack1.canMoveFrom(2)){
                 System.out.println("second passed");
-                if (incomingStack2.canMoveFrom(3)){
+                if (incomingStack2.canMoveFrom(2)){
                     System.out.println("third passed");
-                    if (incomingStack3.canMoveFrom(3)){
+                    if (incomingStack3.canMoveFrom(2)){
                         System.out.println("fourth passed");
-                        if (incomingStack4.canMoveFrom(3)){
+                        if (incomingStack4.canMoveFrom(2)){
                             System.out.println("fifth passed");
                             if (!incomingStack5.canMoveFrom()){
                                 System.out.println("sixth passed");

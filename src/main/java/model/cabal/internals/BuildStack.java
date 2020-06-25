@@ -50,10 +50,8 @@ public class BuildStack extends StackBase {
             card = element;
         }
 
-        I_CardModel cardIn = null; // Getting the last card "the top card"
-        for (I_CardModel element : cards){
-            cardIn = element;
-        }
+        I_CardModel cardIn = cards.iterator().next(); // Getting the last card "the top card"
+
 
         assert (card != null);
         if (!(cardIn.isFacedUp() && card.isFacedUp())){
