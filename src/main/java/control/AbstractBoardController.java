@@ -99,6 +99,13 @@ public abstract class AbstractBoardController implements I_BoardController {
 
     }
 
+    public Move ranpickMove(List<Move> moves) throws UnendingGameException {
+
+        int ran = ( (int)( Math.random() * ((moves.size() -1)) + 1));
+        return moves.get(ran);
+
+    }
+
     @Override
     public void makeMove(final Move move) throws UnendingGameException {
 
@@ -188,6 +195,4 @@ public abstract class AbstractBoardController implements I_BoardController {
     public I_BoardModel getBoard(){
         return boardModel;
     }
-
-
 }
