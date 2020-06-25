@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DrawStackTest {
 
-
     @Test
     void canMoveFrom() {
 

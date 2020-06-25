@@ -217,9 +217,11 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
 
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
-
+        I_CardModel card = from.getCard(originPos);
+        /*
+        boolean a =isValidMove(origin, originPos, destination);
         if (!isValidMove(origin, originPos, destination))
-            throw new IllegalMoveException("Cards cannot be moved between " + origin + " and " + destination);
+            throw new IllegalMoveException("Cards cannot be moved between " + origin + " with card "+card+" and " + destination);
 
         if (!from.canMoveFrom(originPos))
             throw new IllegalMoveException(origin + " Cannot move cards at position " + originPos);
@@ -227,7 +229,7 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         Collection<I_CardModel> moveCards = from.getSubset(originPos);
         if (!to.canMoveTo(moveCards))
             throw new IllegalMoveException(destination + " Cannot receive cards: " + moveCards);
-
+            */
         //save state before operation
         Collection<I_CardModel> oldOrigin = List.copyOf(get(origin));
         Collection<I_CardModel> oldDest = List.copyOf(get(destination));
