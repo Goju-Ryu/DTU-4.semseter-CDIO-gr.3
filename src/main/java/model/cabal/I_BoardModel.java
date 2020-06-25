@@ -123,4 +123,6 @@ public interface I_BoardModel {
      *
      */
     Map<E_PileID, List<I_CardModel>> makeMoveStateMap(Move m);
+
+    void turnCardsToIndex( int index );
 }

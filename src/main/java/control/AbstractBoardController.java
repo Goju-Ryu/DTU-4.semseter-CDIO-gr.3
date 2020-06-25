@@ -118,18 +118,11 @@ public abstract class AbstractBoardController implements I_BoardController {
     protected void drawStackMove(Move move, I_BoardModel boardModel) {
         if (boardModel != null) {
             if( move.moveFromStack() == DRAWSTACK ){
-                // draw stack has a unique rule set, that makes.
-                for (int i = 0; i < move.moveFromRange(); i++) {
-                    boardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
-                }
-                // now when it has turned all the necessary cards in the drawstack we give it an input.
 
-                boardModel.turnCard(Map.of());
-
-                I_CardModel c = boardModel.getPile(move.moveFromStack()).get(move.moveFromRange());
-                boardModel.move(move.moveFromStack(),  0, move.moveToStack(), inputDTO.getUsrInput());
+                boardModel.turnCardsToIndex(move.moveFromRange());
+                int index = boardModel.getPile(DRAWSTACK).size() -1;
+                boardModel.move(move.moveFromStack(),  index, move.moveToStack(), inputDTO.getUsrInput());
             }else {
-                I_CardModel c = boardModel.getPile(move.moveFromStack()).get(move.moveFromRange());
                 boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
             }
         }
@@ -195,4 +188,6 @@ public abstract class AbstractBoardController implements I_BoardController {
     public I_BoardModel getBoard(){
         return boardModel;
     }
+
+
 }

@@ -4,17 +4,10 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
-import javax.annotation.Nonnull;
-import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
 
 public class DrawStack extends StackBase implements I_SolitaireStacks  {
     /**
@@ -22,41 +15,28 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
      * every index higher than this value has not yet ben drawn and the lower ones has.
      * This means that the index always points at the card that is able to be drawn out on the board.
      */
-    protected int drawIndex;
-    //private  Logger log;
 
     public DrawStack() {
-        this(new LinkedList<>());
+        this(new LinkedList<I_CardModel>());
     }
-    public DrawStack(List<I_CardModel> list) {
+    public DrawStack(LinkedList<I_CardModel> list) {
         super();
-
         if (list instanceof LinkedList)
             stack = list;
         else
             stack = new LinkedList<>(list);
-
-        drawIndex = -1;
-
-        var name = getClass().getSimpleName();
-        //log = Logger.getLogger(name);
-//        try {
-//            final String programDir = System.getProperty("user.dir");
-//            var logFile = new File(programDir + "/log/drawStack/"+log.getName()+".log");
-//            logFile.delete();
-//            logFile.getParentFile().mkdirs();
-////            log.addHandler(new FileHandler(logFile.getAbsolutePath()));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+    }
+    public DrawStack(List<I_CardModel> list) {
+        super();
+        if (list instanceof LinkedList)
+            stack = (LinkedList<I_CardModel>) list;
+        else
+            stack = new LinkedList<>(list);
     }
 
-//-----------  Implementation ----------------------------------------------------------------
-
+    //-----------  Implementation ----------------------------------------------------------------
     @Override
     public Collection<I_CardModel> popSubset(final int index) throws IllegalMoveException {
-        //log.info("popSubset("+index+")");
-//        log.info(() -> mySupplier.apply(index, drawIndex));
         if (!canMoveFrom()) {
             throw new IllegalMoveException("Can't move cards out of drawStack");
         }
@@ -70,23 +50,16 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
             throw new IllegalMoveException("Card at this index: "+index+" has not been turned yet");
 
         stack.removeAll( returnCards ); //remove the card
-        drawIndex--; //lower index to point to the new card that can be drawn
-//        log.info("popSubset(index:"+index+", drawIndex:"+drawIndex+") --D " + returnCards);
-//        log.info(() ->  mySupplier.apply(index, drawIndex) + "result " + returnCards);
         return returnCards;
     }
     @Override
     public List<I_CardModel> getSubset(final int index) {
-//        log.info("getSubset("+index+")");
-//        log.info(() ->  mySupplier.apply(index, drawIndex));
         var r = List.of(getCard(index));
-//        log.info(() ->  mySupplier.apply(index, drawIndex) + "result " + r);
-//        log.info("getSubset(index:"+index+", drawIndex:"+drawIndex+") --D " + r);
         return r;
     }
     @Override
     public boolean add(I_CardModel o) {
-        stack.add(getSafeDrawIndex(), o);
+        ((LinkedList) stack).addLast(o);
         return true;
     }
 
@@ -108,39 +81,34 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
     }
     @Override
     public I_CardModel getCard(final int position) {
-//        log.info("getCard(index:"+position+", drawIndex:"+drawIndex+")");
-//        log.info(() ->  mySupplier.apply(position, drawIndex));
-         var r = stack.get((getSafeDrawIndex() + position  ) % size());
-//        log.info("getCard(index:"+position+", drawIndex:"+drawIndex+") --D " + r);
-//        log.info(() ->  mySupplier.apply(position, drawIndex) + "result " + r);
+        var r = stack.get( position % size());
         return r;
     }
 
     @Override
     public I_CardModel getTopCard() {
-        if (drawIndex < 0)
-            return null;
-        return stack.get(drawIndex);
+        return stack.get(this.size() - 1 );
     }
     public I_CardModel turnCard() {
-        if (isEmpty())
-            throw new NoSuchElementException("Can't turn a card in an empty stack");
-        drawIndex = (drawIndex + 1) % size();
+
+        int top = size() -1;
+        I_CardModel card = stack.get(top);
+        stack.remove(top);
+        ((LinkedList) stack).addFirst(card);
+
         return getCard(0);
     }
 
-// --- // --- // --- // --- // --- // --- // ---  DrawStack specific methods  ----------------------------------------------------------
 
+
+    // --- // --- // --- // --- // --- // --- // ---  DrawStack specific methods  ----------------------------------------------------------
     @NonNullType
     @Override
     public Iterator<I_CardModel> iterator() {
-        var startIndex = getSafeDrawIndex();
+        var startIndex = 0;
         var returnable = stack.subList(startIndex, stack.size());
         returnable.addAll(stack.subList(0, startIndex));
         return returnable.iterator();
-    }
-    private int getSafeDrawIndex() {
-        return Math.max(0, drawIndex);
     }
 
     private BiFunction<Integer, Integer, String> mySupplier = (inp, drw) -> {
@@ -156,4 +124,9 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
                 "StackTrace:\n" + trace;
 
     };
+
+    @Override
+    public int size() {
+        return stack.size();
+    }
 }
