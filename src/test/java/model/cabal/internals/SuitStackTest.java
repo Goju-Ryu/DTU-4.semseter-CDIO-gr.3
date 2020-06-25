@@ -114,33 +114,33 @@ class SuitStackTest {
         BuildStack buildStack5 = new BuildStack();
         buildStack5.add(new Card(HEARTS,9,false));
 
-        if (buildStack.canMoveFrom(1)) {
+        if ( buildStack.canMoveFrom(0) ) {
             assertTrue(receivingStackEmpty.canMoveTo(aceStack.getSubset(1)));
             assertTrue(receivingStack.canMoveTo(buildStack.getSubset(1)));
         }else {
             fail();
         }
-        if (!buildStack1.canMoveFrom(1)) {
+        if (!buildStack1.canMoveFrom(0)) {
             assertFalse(receivingStack.canMoveTo(buildStack1));
         }else {
             fail();
         }
-        if (buildStack2.canMoveFrom(1)) {
+        if (buildStack2.canMoveFrom(0)) {
             assertFalse(receivingStack.canMoveTo(buildStack2.getSubset(1)));
         }else {
             fail();
         }
-        if (buildStack3.canMoveFrom(1)) {
+        if (buildStack3.canMoveFrom(0)) {
             assertFalse(receivingStack.canMoveTo(buildStack3.getSubset(1)));
         }else {
             fail();
         }
-        if (buildStack4.canMoveFrom(1)) {
+        if (buildStack4.canMoveFrom(0)) {
             assertFalse(receivingStack.canMoveTo(buildStack4.getSubset(1)));
         }else {
             fail();
         }
-        if (!buildStack5.canMoveFrom(1)) {
+        if (!buildStack5.canMoveFrom(0)) {
             assertFalse(receivingStack.canMoveTo(buildStack5.getSubset(1)));
         }else {
             fail();
@@ -181,22 +181,22 @@ class SuitStackTest {
         DrawStack drawStack5 = new DrawStack(drawCards5);
         drawStack5.turnCard();
 
-        if (drawStack.canMoveFrom(1)) {
+        if (drawStack.canMoveFrom(0)) {
             assertTrue(receivingStack.canMoveTo(drawStack.getSubset(1)));
         }else {
             fail();
         }
-        if (drawStack2.canMoveFrom(1)) {
+        if (drawStack2.canMoveFrom(0)) {
             assertFalse(receivingStack.canMoveTo(drawStack2.getSubset(1)));
         }else {
             fail();
         }
-        if (drawStack4.canMoveFrom(1)) {
+        if (drawStack4.canMoveFrom(0)) {
             assertFalse(receivingStack.canMoveTo(drawStack4.getSubset(1)));
         }else {
             fail();
         }
-        if (!drawStack5.canMoveFrom(1)) {
+        if (!drawStack5.canMoveFrom(0)) {
             assertFalse(receivingStack.canMoveTo(drawStack5.getSubset(1)));
         }else {
             fail();

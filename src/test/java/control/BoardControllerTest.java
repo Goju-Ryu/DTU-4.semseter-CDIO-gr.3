@@ -245,7 +245,7 @@ public class BoardControllerTest {
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
-        list.add(new Card( CLUBS    ,  13 ));
+        list.add(new Card( CLUBS    ,  13));
         list.add(new Card( CLUBS    ,  2 ));
         list.add(new Card( CLUBS    ,  3 ));
         list.add(new Card( CLUBS    ,  8 ));
@@ -375,5 +375,4 @@ public class BoardControllerTest {
             boardCnt.makeMove(move);
         });
     }
-
 }
