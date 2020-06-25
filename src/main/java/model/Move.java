@@ -56,6 +56,7 @@ public class Move implements I_Move {
     public void setDepth(int depth) {
         this.depth = depth;
     }
+    public int getDepth() {return depth;}
 
     @Override
     public String toString() {

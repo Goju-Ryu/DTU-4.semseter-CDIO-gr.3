@@ -88,7 +88,7 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         this(imgData, cardDeck);
         get(DRAWSTACK).clear();
         var filteredDrawStack = drawStack.stream().filter(Objects::nonNull).collect(Collectors.toList());
-        get(DRAWSTACK).addAll(filteredDrawStack);
+        get(DRAWSTACK).addAll(List.copyOf(filteredDrawStack));
         deck.removeAll(filteredDrawStack.stream().filter(I_CardModel::isFacedUp).collect(Collectors.toList()));
     }
 
