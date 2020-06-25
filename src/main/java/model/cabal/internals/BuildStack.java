@@ -18,17 +18,6 @@ public class BuildStack extends StackBase {
         stack = new ArrayList<>();
     }
 
-    @Override
-    public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException { // TODO i'm pretty sure this does the opposite of the expected
-
-        int toIndex = stack.size();
-        int frIndex = toIndex - range;
-
-        List<I_CardModel> sublist = stack.subList(frIndex, toIndex);
-
-        this.stack = stack.subList(0,frIndex);
-        return new BuildStack(sublist);
-    }
 
     @Override
     public boolean canMoveFrom(int range) {

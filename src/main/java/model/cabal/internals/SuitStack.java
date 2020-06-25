@@ -18,25 +18,6 @@ public class SuitStack extends StackBase {
         stack = new ArrayList<>();
     }
 
-    /**
-     * this method must only be used from one of the extending classes that overides this method
-     * */
-    @Override
-    @NonNullType
-    public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
-
-        int toIndex = stack.size();
-        int fromIndex = toIndex - range;
-
-        if (range > 1){
-            throw new IllegalMoveException("You can only take the top card!");
-        }else {
-            List<I_CardModel> subList = stack.subList(fromIndex,toIndex);
-            this.stack = stack.subList(0,fromIndex);
-
-            return new SuitStack(subList);
-        }
-    }
 
     @Override
     public boolean canMoveFrom(int range) {
