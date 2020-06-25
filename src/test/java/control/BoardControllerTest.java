@@ -260,7 +260,7 @@ public class BoardControllerTest {
 
         assertEquals(SUITSTACKCLUBS, m.moveToStack());
         assertEquals(DRAWSTACK, m.moveFromStack());
-        assertEquals(1,m.moveFromRange());
+        assertEquals(1, m.moveFromRange());
     }
 
     @Test
