@@ -88,14 +88,12 @@ public abstract class AbstractBoardController implements I_BoardController {
         }
 
         // before sorting we want to know if we have been in this same state before.
-        if( history.isRepeatState())
+        if( possibleMoves().size() < 2 && history.isRepeatState() )
             throw new UnendingGameException("Game state is repeated, and possible moves size = 1");
 
         // now that the list is sorted. we return the best element, the first one.
-
         moves.sort(comp);
-        Move a = pickMove_repeatCheck( moves , 0);
-        return a;
+        return pickMove_repeatCheck( moves , 0);
 
     }
 

@@ -29,6 +29,9 @@ public class GameController implements I_GameController{
         if (uiChoice.equalsIgnoreCase("sim")) {
             boardCtrl = new BoardControllerSimulated();
             testGameLoop();
+        } else if (uiChoice.equalsIgnoreCase("std")) {
+            boardCtrl = new BoardControllerSimulated(new RefBoard(RefBoard.stdBoard), new GameCardDeck());
+            testGameLoop();
         } else {
             boardCtrl = new BoardController(uiChoice);
             gameLoop();

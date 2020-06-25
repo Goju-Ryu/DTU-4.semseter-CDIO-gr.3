@@ -21,15 +21,10 @@ public class GameCardDeck extends TreeSet<I_CardModel> {
                 add(new Card(suit, i + 1));
             }
         }
-
-        log = Logger.getLogger(getClass().getName());
-        log.info("Created deck of cards: " + Arrays.toString(toArray()));
     }
 
     @Override
     public boolean remove(Object o) {
-        log.info("cardDeck.Remove: " + o);
-        log.info("is contained: " + contains(o));
         return super.remove(o);
     }
 

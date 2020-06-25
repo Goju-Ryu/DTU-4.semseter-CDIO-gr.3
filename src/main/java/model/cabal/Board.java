@@ -228,8 +228,8 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
             throw new IllegalMoveException(destination + " Cannot receive cards: " + moveCards);
 
         //save state before operation
-        Collection<I_CardModel> oldOrigin = Collections.unmodifiableCollection(get(origin)); //todo try list of
-        Collection<I_CardModel> oldDest = Collections.unmodifiableCollection(get(destination));
+        Collection<I_CardModel> oldOrigin = List.copyOf(get(origin));
+        Collection<I_CardModel> oldDest = List.copyOf(get(destination));
 
         //change state
         to.addAll(from.popSubset(originPos));

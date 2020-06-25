@@ -188,73 +188,73 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
 
     public static Map<String, List<I_CardModel>> stdBoard = Map.of(
             DRAWSTACK.name(), List.of( //24 cards
-                    new Card(HEARTS,2 ),
-                    new Card(SPADES, 1),
-                    new Card(CLUBS, 6),
-                    new Card(HEARTS,5 ),
-                    new Card(DIAMONDS, 4),
-                    new Card(HEARTS, 11),
+                    new Card(CLUBS,5),
+                    new Card(SPADES, 3),
+                    new Card(SPADES, 9),
+                    new Card(CLUBS,8),
                     new Card(CLUBS, 7),
-                    new Card(CLUBS, 1),
-                    new Card(HEARTS, 12),
-                    new Card(DIAMONDS, 10),
-                    new Card(HEARTS, 3),
-                    new Card(SPADES,4 ),
+                    new Card(DIAMONDS, 12),
+                    new Card(HEARTS, 11),
+                    new Card(HEARTS, 2),
+                    new Card(CLUBS, 10),
+                    new Card(CLUBS, 13),
                     new Card(SPADES, 7),
+                    new Card(SPADES,11),
+                    new Card(HEARTS, 5),
                     new Card(CLUBS, 2),
                     new Card(HEARTS, 4),
+                    new Card(DIAMONDS, 10),
+                    new Card(DIAMONDS, 7),
                     new Card(CLUBS, 9),
-                    new Card(DIAMONDS, 11),
-                    new Card(HEARTS, 13),
-                    new Card(DIAMONDS, 5),
-                    new Card(HEARTS,10 ),
+                    new Card(HEARTS, 10),
+                    new Card(DIAMONDS,11),
+                    new Card(HEARTS, 3),
                     new Card(SPADES, 6),
-                    new Card(CLUBS, 8),
-                    new Card(HEARTS,9 ),
-                    new Card(SPADES, 5)
+                    new Card(SPADES,5),
+                    new Card(DIAMONDS, 1)
 
             ),
             BUILDSTACK1.name(), List.of( // 1 card
-                    new Card(DIAMONDS,6)
+                    new Card(CLUBS,11)
             ),
             BUILDSTACK2.name(), List.of( // 2 cards
-                    new Card(CLUBS,3),
-                    new Card(SPADES,8)
+                    new Card(SPADES,8),
+                    new Card(SPADES,1)
             ),
             BUILDSTACK3.name(), List.of( // 3 cards
+                    new Card(SPADES,13),
                     new Card(DIAMONDS,13),
-                    new Card(DIAMONDS,7),
-                    new Card(SPADES,9)
+                    new Card(SPADES,4)
             ),
             BUILDSTACK4.name(), List.of( // 4 cards
-                    new Card(SPADES,13),
-                    new Card(DIAMONDS,12),
-                    new Card(DIAMONDS,9),
-                    new Card(CLUBS,10)
+                    new Card(CLUBS,3),
+                    new Card(DIAMONDS,4),
+                    new Card(SPADES,10),
+                    new Card(HEARTS,8)
             ),
             BUILDSTACK5.name(), List.of( // 5 cards
-                    new Card(SPADES,11),
-                    new Card(CLUBS,13),
-                    new Card(SPADES,3),
-                    new Card(CLUBS,12),
-                    new Card(HEARTS,6)
+                    new Card(DIAMONDS,8),
+                    new Card(CLUBS,4),
+                    new Card(DIAMONDS,3),
+                    new Card(HEARTS,7),
+                    new Card(DIAMONDS,2)
             ),
             BUILDSTACK6.name(), List.of( // 6 cards
+                    new Card(CLUBS,1),
+                    new Card(HEARTS,13),
+                    new Card(DIAMONDS,6),
                     new Card(SPADES,12),
-                    new Card(HEARTS,8),
-                    new Card(SPADES,2),
-                    new Card(CLUBS,4),
-                    new Card(DIAMONDS,8),
-                    new Card(HEARTS,7)
+                    new Card(HEARTS,6),
+                    new Card(CLUBS,6)
             ),
             BUILDSTACK7.name(), List.of( // 7 cards
-                    new Card(DIAMONDS,2),
-                    new Card(SPADES,10),
-                    new Card(CLUBS,5),
-                    new Card(DIAMONDS,3),
-                    new Card(DIAMONDS,1),
+                    new Card(HEARTS,9),
+                    new Card(CLUBS,12),
+                    new Card(SPADES,2),
+                    new Card(DIAMONDS,5),
                     new Card(HEARTS,1),
-                    new Card(CLUBS,11)
+                    new Card(HEARTS,12),
+                    new Card(DIAMONDS,9)
             )
     );
 
