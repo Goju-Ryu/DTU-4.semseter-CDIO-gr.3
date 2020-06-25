@@ -25,8 +25,8 @@ public class GameController implements I_GameController {
     StringBuilder builder = null;
 
     public GameController() {
+//        log = Logger.getLogger(getClass().getName());
     }
-
     public GameController(StringBuilder builder) {
         this.builder = builder;
     }
@@ -56,6 +56,7 @@ public class GameController implements I_GameController {
                 moves = boardCtrl.possibleMoves();
                 Move move = boardCtrl.pickMove(moves);
 
+                tui.promptPlayer(move);
                 if (move != null) {
                         boardCtrl.makeMove(move);
                 }
