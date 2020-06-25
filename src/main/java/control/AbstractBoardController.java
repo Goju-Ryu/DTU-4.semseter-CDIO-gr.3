@@ -10,6 +10,7 @@ import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.I_CardModel;
+import model.error.GameWonException;
 import model.error.UnendingGameException;
 
 import java.util.*;
@@ -78,6 +79,7 @@ public abstract class AbstractBoardController implements I_BoardController {
                 }
             }
         }
+
         return moves;
     }
 
@@ -172,5 +174,15 @@ public abstract class AbstractBoardController implements I_BoardController {
             throw new UnendingGameException("Game Entered Unending loop\n every move would lead to a repeated game state");
         }
 
+    }
+
+    @Override
+    public boolean hasWonGame(){
+        // if GAME has been won
+        boolean heartCom = (boardModel.getPile(SUITSTACKHEARTS).size() == 13);
+        boolean clubsCom = (boardModel.getPile(SUITSTACKCLUBS).size() == 13);
+        boolean diamoCom = (boardModel.getPile(SUITSTACKDIAMONDS).size() == 13);
+        boolean spadeCom = (boardModel.getPile(SUITSTACKSPADES).size() == 13);
+        return (heartCom && spadeCom && diamoCom && clubsCom);
     }
 }
