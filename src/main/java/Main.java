@@ -17,10 +17,9 @@ public class Main {
             if (args.length > 1) {
                 try {
                     int simNum = Integer.parseInt(args[1]);
-                    CompletableFuture[] futures = new CompletableFuture[simNum];
-
+                    CompletableFuture<Boolean>[] futures = new CompletableFuture[simNum];
                     for (int i = 0; i < futures.length; i++) {
-                        futures[i] = CompletableFuture.runAsync(() -> new GameController().startGame("sim"));
+                        futures[i] = CompletableFuture.completedFuture((new GameController()).startGame("sim"));
                     }
                         CompletableFuture.allOf(futures).get();
                 } catch (InterruptedException | ExecutionException e) {
