@@ -309,6 +309,15 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         }
         return map;
     }
+
+    @Override
+    public void turnCardsToIndex( int index ){
+        DrawStack drawStack =(DrawStack) piles[DRAWSTACK.ordinal()];
+        int numberOfTurns = drawStack.size() - index;
+        for (int i = 1; i < numberOfTurns; i++) {
+            drawStack.turnCard();
+        }
+    }
 }
 
 
