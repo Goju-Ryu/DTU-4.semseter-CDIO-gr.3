@@ -6,6 +6,7 @@ import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 public class SuitStack extends StackBase {
@@ -60,11 +61,10 @@ public class SuitStack extends StackBase {
 
         if (cards.isEmpty()) return false;
 
-
         I_CardModel card = cards.iterator().next();
-        /*for (I_CardModel inCard : cards) {
+        for (I_CardModel inCard : cards) {
             card = inCard;
-        }*/
+        }
 
         if (stack.isEmpty()){
             assert card != null;

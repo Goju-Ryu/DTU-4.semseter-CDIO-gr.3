@@ -66,12 +66,12 @@ public class BoardControllerTest {
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
-        list.add(new Card( DIAMONDS      ,  1 ));
-        list.add(new Card( HEARTS     , 2 ));
+        list.add(new Card( DIAMONDS    ,  1 ));
+        list.add(new Card( HEARTS      ,  2 ));
         list.add(new Card( SPADES      ,  8 ));
         list.add(new Card( SPADES      ,  7 ));
-        list.add(new Card( CLUBS      ,  3 ));
-        list.add(new Card( CLUBS      ,  2 ));
+        list.add(new Card( CLUBS       ,  3 ));
+        list.add(new Card( CLUBS       ,  2 ));
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);

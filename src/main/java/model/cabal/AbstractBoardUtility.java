@@ -44,7 +44,7 @@ public abstract class AbstractBoardUtility  {
             return false;
 
         var fromPile = get(from);
-        I_CardModel c = fromPile.getCard(fromPile.size() - originPos);
+        I_CardModel c = fromPile.getCard(originPos);
         if (!c.isFacedUp())
             return false;
 
