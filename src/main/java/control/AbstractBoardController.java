@@ -50,7 +50,7 @@ public abstract class AbstractBoardController implements I_BoardController {
                     improveAce = true;
                 }
 
-                for( int index = boardModel.getPile(from).size()-1 ; index >=0 ; index-- ){
+                for( int index = boardModel.getPile(from).size()-1 ; index >=0 ; index-- ){ // remember that draw pile can require more turned cards than size - 1
 
                     // data for easy debugging
                     I_SolitaireStacks s = boardModel.getPiles()[from.ordinal()];
@@ -73,7 +73,7 @@ public abstract class AbstractBoardController implements I_BoardController {
 
 
                     Move move = new Move( to,from,index, improveAce, improveCardReveal, "Move Desc");
-                    move.setDepth(boardModel.getPile(DRAWSTACK).size() - index);
+                    move.setDepth(index + 1);
                     moves.add(move);
                 }
             }
@@ -99,12 +99,12 @@ public abstract class AbstractBoardController implements I_BoardController {
     }
 
     @Override
-    public void makeMove(Move move) throws UnendingGameException {
+    public void makeMove(final Move move) throws UnendingGameException {
         if( move.moveFromStack() == DRAWSTACK ){
             if (boardModel != null) {
                 if( move.moveFromStack() == DRAWSTACK ){
                     // draw stack has a unique rule set, that makes.
-                    for (int i = 0; i < move.getDepth(); i++) {
+                    for (int i = 0; i < move.moveFromRange(); i++) {
                         boardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
                     }
                     // now when it has turned all the necessary cards in the drawstack we give it an input.

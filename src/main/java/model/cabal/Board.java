@@ -212,13 +212,13 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
 //----------  Move card methods  -----------------------------------------------------------------------------
 
     @Override
-    public void move(E_PileID origin, int originPos, E_PileID destination, Map<String, I_CardModel> imgData)
+    public void move(final E_PileID origin, final int originPos, final E_PileID destination, Map<String, I_CardModel> imgData)
             throws IllegalMoveException {
 
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
         I_CardModel card = from.getCard(originPos);
-        /*
+        /*TODO!!!!!!!!
         boolean a =isValidMove(origin, originPos, destination);
         if (!isValidMove(origin, originPos, destination))
             throw new IllegalMoveException("Cards cannot be moved between " + origin + " with card "+card+" and " + destination);
