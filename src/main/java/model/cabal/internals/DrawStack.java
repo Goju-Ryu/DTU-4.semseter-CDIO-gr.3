@@ -107,7 +107,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
     @Override
     public I_CardModel getCard(int position) {
 
-        return stack.get((getSafeDrawIndex() + position + 1) % size());
+        return stack.get((drawIndex + position +1 ) % size());
     }
 
     @Override
