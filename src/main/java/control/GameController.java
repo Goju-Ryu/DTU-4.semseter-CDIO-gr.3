@@ -3,22 +3,18 @@ package control;
 import model.GameCardDeck;
 import model.Move;
 import model.cabal.RefBoard;
-import model.cabal.internals.card.I_CardModel;
 import model.error.UnendingGameException;
 import view.I_Tui;
 import view.Tui;
 
 import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Logger;
 
 /**
  * This class is for controlling an entire game,
- * trough multiple states of the game
- * <p>
- * the diffrence on this and Board controller, is that this acts in relation
- * to multiple states of the game where as BoardController only does one.
- * However this will use BoardControler when i needs to make a move on the board
+ * through multiple states of the game the difference on this and Board controller,
+ * is that this acts in relation to multiple states of the game where as BoardController
+ * only does one. However this will use BoardController when i needs to make a move on the board
  */
 
 public class GameController implements I_GameController {

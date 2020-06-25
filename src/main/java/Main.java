@@ -1,7 +1,16 @@
 import control.GameController;
 
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,16 +24,23 @@ public class Main {
 
         if (uiChoice.equalsIgnoreCase("sim")) {
             if (args.length > 1) {
-                try {
-                    int simNum = Integer.parseInt(args[1]);
-                    CompletableFuture<Boolean>[] futures = new CompletableFuture[simNum];
-                    for (int i = 0; i < futures.length; i++) {
-                        futures[i] = CompletableFuture.completedFuture((new GameController()).startGame("sim"));
-                    }
-                        CompletableFuture.allOf(futures).get();
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
+
+
+                int simNum = Integer.parseInt(args[1]);
+                List<CompletableFuture<Boolean>> futures = new ArrayList<>(simNum);
+
+                for (int i = 0; i < simNum; i++) {
+                    futures.set(i,
+                            CompletableFuture
+                            .supplyAsync(() -> (new GameController()).startGame("sim")));
                 }
+
+
+                System.out.println(futures.parallelStream()
+                        .map(CompletableFuture::join)
+                        .collect(Collectors.toList()));
+
+
                 return;
             }
         }
