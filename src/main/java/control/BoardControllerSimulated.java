@@ -12,6 +12,7 @@ import model.cabal.internals.card.I_CardModel;
 
 import javax.management.AttributeValueExp;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static model.cabal.E_PileID.*;
@@ -67,16 +68,7 @@ public class BoardControllerSimulated extends AbstractBoardController {
         refBoardModel = refBoard;
         inputDTO = new InputSimDTO(refBoard, cardDeck);
 
-        ArrayList<I_CardModel> drawCards = new ArrayList<>();
-        int drawStackCardCount = 24;
-        for(int i = 0; i < drawStackCardCount; i++) {
-            refBoard.turnCard(Map.of());
-            I_CardModel drawCard = inputDTO.getUsrInput().get(DRAWSTACK.name());
-            drawCards.add(drawCard);
-
-            System.out.println("currDrawCard: " + drawCard);
-            System.out.println("Turning the next card in the draw stack...");
-        }
+        List<I_CardModel> drawCards = refBoard.getPile(DRAWSTACK);
 
         boardModel = new Board(inputDTO.getUsrInput(), cardDeck, drawCards);
         history = new GameHistory(boardModel);
@@ -84,8 +76,19 @@ public class BoardControllerSimulated extends AbstractBoardController {
 
     @Override
     public void makeMove(Move move) {
-        if (refBoardModel != null)
-            refBoardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
+        if (refBoardModel != null) {
+            if( move.moveFromStack() == DRAWSTACK ){
+                // draw stack has a unique rule set, that makes.
+                for (int i = 0; i < move.moveFromRange() ; i++) {
+                    boardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
+                }
+                // now when it has turned all the necessary cards in the drawstack we give it an input.
+                boardModel.turnCard(Map.of());
+                boardModel.move(move.moveFromStack(),  move.moveToStack(), inputDTO.getUsrInput());
+            }else {
+                boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
+            }
+        }
         super.makeMove(move);
     }
 
