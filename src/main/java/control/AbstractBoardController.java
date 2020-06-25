@@ -53,9 +53,8 @@ public abstract class AbstractBoardController implements I_BoardController {
                 for (int depth = 1; depth <= boardModel.getPile(from).size() ; depth++) {
 
                     // data for easy debugging
-                    I_SolitaireStacks s = boardModel.getPiles()[from.ordinal()];
-                    int a = s.size() - depth;
-                    I_CardModel c = s.getCard(a);
+                    I_SolitaireStacks stack = boardModel.getPiles()[from.ordinal()];
+
 
                     // now we need to check if the move is even possible at this index.
                     if (!boardModel.canMoveFrom(from, depth)) {
