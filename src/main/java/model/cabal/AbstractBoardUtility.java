@@ -43,7 +43,7 @@ public abstract class AbstractBoardUtility  {
         if (to.equals(DRAWSTACK))
             return false;
 
-        var fromPile = get(from);
+        I_SolitaireStacks fromPile = get(from);
         I_CardModel c = fromPile.getCard(originPos);
         if (!c.isFacedUp())
             return false;

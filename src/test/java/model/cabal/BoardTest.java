@@ -114,7 +114,6 @@ class BoardTest {
             }
         }
 
-
         System.out.println("hej");
     }
 

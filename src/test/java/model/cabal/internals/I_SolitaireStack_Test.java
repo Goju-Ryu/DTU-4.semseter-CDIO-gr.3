@@ -244,6 +244,10 @@ public class I_SolitaireStack_Test {
             I_CardModel topCard = s2.getTopCard();
             assertEquals(getCard, topCard);
         }
+
+
+
+
     }
 }
 
