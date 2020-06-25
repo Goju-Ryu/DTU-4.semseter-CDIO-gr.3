@@ -1,19 +1,34 @@
 import control.GameController;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
 public class Main {
     public static void main(String[] args) {
         var gameController = new GameController();
-        String uiChoice;
+        String uiChoice = "";
 
-        if (args.length == 0) {
-            gameController.startGame("cam");
-        } else if (args[0].equalsIgnoreCase("sim")) {
-            gameController.startGame("sim");
-        } else if (args[0].equalsIgnoreCase("cam")){
-            gameController.startGame("cam");
-        } else if (args[0].equalsIgnoreCase("gui")) {
-            gameController.startGame("ManGUI");
-        } else throw new IllegalArgumentException("Option: \"" + args[0] + "\" is not a valid option.");
+        if (args.length > 0)
+            uiChoice = args[0];
+        if (uiChoice.equalsIgnoreCase("gui"))
+            uiChoice = "ManGUI";
 
+        if (uiChoice.equalsIgnoreCase("sim")) {
+            if (args.length > 1) {
+                try {
+                    int simNum = Integer.parseInt(args[1]);
+                    CompletableFuture[] futures = new CompletableFuture[simNum];
+
+                    for (int i = 0; i < futures.length; i++) {
+                        futures[i] = CompletableFuture.runAsync(() -> new GameController().startGame("sim"));
+                    }
+                        CompletableFuture.allOf(futures).get();
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+                return;
+            }
+        }
+        gameController.startGame(uiChoice);
     }
 }

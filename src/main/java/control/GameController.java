@@ -3,6 +3,8 @@ package control;
 import model.GameCardDeck;
 import model.Move;
 import model.cabal.RefBoard;
+import model.cabal.internals.card.I_CardModel;
+import model.error.UnendingGameException;
 
 import java.util.List;
 import java.util.Scanner;
@@ -28,6 +30,9 @@ public class GameController implements I_GameController{
         if (uiChoice.equalsIgnoreCase("sim")) {
             boardCtrl = new BoardControllerSimulated();
             testGameLoop();
+        } else if (uiChoice.equalsIgnoreCase("std")) {
+            boardCtrl = new BoardControllerSimulated(new RefBoard(RefBoard.stdBoard), new GameCardDeck());
+            testGameLoop();
         } else {
             boardCtrl = new BoardController(uiChoice);
             gameLoop();
@@ -36,27 +41,56 @@ public class GameController implements I_GameController{
     }
 
     private void gameLoop() {
-        List<Move> moves;
-        do {
-            moves = boardCtrl.possibleMoves();
-            log.info("Found "+ moves.size() + " possible moves: " + moves);
-            Move move = boardCtrl.pickMove(moves);
-            log.info("Chose move: " + move);
-            promptPlayer(move);
-            if (move != null)
-                boardCtrl.makeMove(move);
-        } while (moves.size() > 0);
+        boolean wonGame = false;
+        String GAMEWONMSG = "GAME WON! congratulaztions me! ";
+
+        try {
+            List<Move> moves;
+            do {
+                moves = boardCtrl.possibleMoves();
+
+                // tjecking if the game has been won.
+                if (moves.size() == 0) {
+                    if (boardCtrl.hasWonGame()) {
+                        wonGame = true;
+                        break;
+                    }
+                }
+
+                log.info("Found " + moves.size() + " possible moves: " + moves);
+                Move move = boardCtrl.pickMove(moves);
+                log.info("Chose move: " + move);
+                promptPlayer(move);
+                if (move != null)
+                    boardCtrl.makeMove(move);
+            } while (moves.size() > 0);
+
+        }catch (UnendingGameException e){
+            System.out.println("Game has entered an Unending Loop. So the game has ended.");
+        }
+        if(wonGame){
+            System.out.println(GAMEWONMSG);
+        }
+
     }
 
+    int SLETMIG = 0;
     private void testGameLoop() {
         List<Move> moves;
         do {
+            SLETMIG++;
             moves = boardCtrl.possibleMoves();
             log.info("Found "+ moves.size() + " possible moves: " + moves);
             Move move = boardCtrl.pickMove(moves);
+            I_CardModel c = boardCtrl.getBoard().getPile(move.moveFromStack()).get(move.moveFromRange());
+
             log.info("Chose move: " + move);
             if (move != null)
                 boardCtrl.makeMove(move);
+            List <I_CardModel> list = boardCtrl.getBoard().getPile(move.moveToStack());
+            I_CardModel c2 = list.get(list.size() - 1 );
+
+            System.out.println("roundpassed");
         } while (moves.size() > 0);
     }
 

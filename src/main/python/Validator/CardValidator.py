@@ -73,7 +73,7 @@ class CardValidator:
                         out = thresh.copy()
                         out = cv2.cvtColor(out,cv2.COLOR_GRAY2BGR)
 
-                        #cv2.imshow(mSymbol.symbolName, imageTrans)
+                        # cv2.imshow(mSymbol.symbolName, imageTrans)
 
                         cv2.putText(out, mSymbol.symbolName, (0, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2, cv2.LINE_AA)
                         self.MASK = out
@@ -94,11 +94,6 @@ class CardValidator:
                 bestTwoMatches = sortedList
 
 
-            matchNames = []
-            for match in bestTwoMatches:
-                matchNames.append(match.symbolName)
-                if match.symbolName == "10_2nd":
-                    match.symbolName = "10"
 
             if len(bestTwoMatches) == 2:
                 return bestTwoMatches[0].symbolName, bestTwoMatches[1].symbolName, self.MASK , True
@@ -136,13 +131,15 @@ class CardValidator:
         compareSymbols = []
 
         for symbol in ["Hearts", "Spades", "Clubs", "Diamonds", "1", "2", "3", "4", "5", "6", "7",
-                       "8", "9", "10", "10_2nd", "11", "12", "13"]:
+                       "8", "9", "10", "11", "12", "13"]:
             compareSymbol = self.Symbol()
             filename = symbol + ".png"
             compareSymbol.name = symbol
             # filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs/"
             # filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs_mod/"
-            filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs_mod2/"
+            # filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs_mod2/"
+            filepath = os.path.dirname(os.path.abspath(__file__)) + "/Card_Imgs_2pm/"
+
             compareSymbol.img = cv2.imread(filepath + filename, cv2.IMREAD_GRAYSCALE)  # pic is 125*70 (before it was 100*70)
 
             compareSymbols.append(compareSymbol)

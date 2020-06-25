@@ -1,6 +1,7 @@
 package model.cabal;
 
 import model.GameCardDeck;
+import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.I_CardModel;
 
@@ -43,13 +44,10 @@ public abstract class AbstractBoardUtility  {
         if (to.equals(DRAWSTACK))
             return false;
 
-        var fromPile = get(from);
-
-        I_CardModel c = fromPile.getCard(fromPile.size() - originPos);//might throw null pointer
-        if ( !c.isFacedUp() )
+        I_SolitaireStacks fromPile = get(from);
+        I_CardModel c = fromPile.getCard(originPos);
+        if (!c.isFacedUp())
             return false;
-
-        //var cardSuits = fromPile.getSubset(originPos).stream().map(I_CardModel::getSuit);
 
         switch (to) {
             case SUITSTACKHEARTS:
@@ -92,4 +90,6 @@ public abstract class AbstractBoardUtility  {
         );
 
     }
+
+
 }

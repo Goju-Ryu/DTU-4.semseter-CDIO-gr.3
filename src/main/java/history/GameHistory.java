@@ -1,12 +1,16 @@
 package history;
 
+import com.google.inject.internal.util.StackTraceElements;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
 import model.cabal.internals.card.I_CardModel;
 
 import java.beans.PropertyChangeEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.function.BiPredicate;
+import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,7 +33,7 @@ public class GameHistory implements I_GameHistory {
     /**
      * A variable holding an  up to date image of the game state.
      */
-    private I_GameState currentState;
+    protected I_GameState currentState;
 
     private Logger log;
     private int numNonDrawEvents;
@@ -41,16 +45,29 @@ public class GameHistory implements I_GameHistory {
     public GameHistory(I_BoardModel board) {
         this(
                 Stream.of(E_PileID.values())
-                        .filter(pile -> board.getPile(pile) == null)
+                        .filter(pile -> board.getPile(pile) != null)
                         .map(pile -> new SimpleEntry<>(pile, board.getPile(pile)))
                         .collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue))
         );
+        board.addPropertyChangeListener(this);
     }
 
     public GameHistory(Map<E_PileID, List<I_CardModel>> boardAsMap) {
+        var name = (getClass().getSimpleName() + "-" + Thread.currentThread().getName());
+        log = Logger.getLogger(name);
+        try {
+            final String programDir = System.getProperty("user.dir");
+            var logFile = new File(programDir + "/log/history/"+log.getName()+".log");
+            logFile.delete();
+            logFile.getParentFile().mkdirs();
+            log.addHandler(new FileHandler(logFile.getAbsolutePath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         history = new LinkedList<>();
-        log = Logger.getLogger(getClass().getName());
         currentState = new State(boardAsMap);
+        addGameState();
         numNonDrawEvents = 0;
     }
 
@@ -62,9 +79,13 @@ public class GameHistory implements I_GameHistory {
      */
     @Override
     public boolean isRepeatState(BiPredicate<I_GameState, I_GameState> predicate) {
-        return getRepeatStates(predicate).size() > 0;
+        return isRepeatState(predicate, currentState);
     }
 
+    @Override
+    public boolean isRepeatState(BiPredicate<I_GameState, I_GameState> predicate, I_GameState state) {
+        return getRepeatStates(predicate, state).size() > 0;
+    }
 
 
     /**
@@ -73,11 +94,16 @@ public class GameHistory implements I_GameHistory {
      */
     @Override
     public Collection<I_GameState> getRepeatStates(BiPredicate<I_GameState, I_GameState> predicate) {
+        return getRepeatStates(predicate, currentState);
+    }
+
+    @Override
+    public Collection<I_GameState> getRepeatStates(BiPredicate<I_GameState, I_GameState> predicate, I_GameState state) {
         // start a stream of the history
         return history.stream()
                 .skip(1)
                 // remove all elements, not fulfilling the predicate
-                .filter(e -> predicate.test(currentState, e))
+                .filter(e -> predicate.test(state, e))
                 // reduce all elements down to one by removing all elements not shared by all collections
                 .collect(Collectors.toList());
     }
@@ -88,7 +114,6 @@ public class GameHistory implements I_GameHistory {
      */
     @Override
     public void propertyChange(PropertyChangeEvent event) {
-        log.info("Received event :\n\t" + event);
 
         E_PileID pileID;
         try {
@@ -105,18 +130,16 @@ public class GameHistory implements I_GameHistory {
         if ( !isNewValueTypeCorrect(event) ) return;
 
 
-
-        if (endsMove(event)) {
-            addGameState();
-            numNonDrawEvents = 0;
-        }
-
-
         try {
             Collection<I_CardModel> newValue = ((Collection<I_CardModel>)event.getNewValue());
             currentState.put(pileID, List.copyOf((Collection<? extends I_CardModel>) newValue));
         } catch (ClassCastException e) {
             log.warning("Failed to change state on event:\n\t" + event);
+        }
+
+        if (endsMove(event)) {
+            addGameState();
+            numNonDrawEvents = 0;
         }
 
     }
@@ -127,7 +150,7 @@ public class GameHistory implements I_GameHistory {
     /**
      * Makes a copy of the current state of the game and adds it to the history list
      */
-    private void addGameState() {
+    protected void addGameState() {
         history.add(0, currentState.clone());
         log.info("State added to history:\n\t" + currentState);
     }

@@ -54,10 +54,16 @@ public abstract class StackBase implements I_SolitaireStacks {
     }
 
     @Override
-    public Collection<I_CardModel> getSubset(int range) {
-        int toIndex = stack.size();
-        int frIndex = toIndex - range;
-        return stack.subList(frIndex, toIndex);
+    public Collection<I_CardModel> popSubset(int index) throws IllegalMoveException { // TODO i'm pretty sure this does the opposite of the expected
+        canMoveFrom(index);
+        List<I_CardModel> sublist = stack.subList(index, size());
+        this.stack = stack.subList(0, index);
+        return sublist;
+    }
+
+    @Override
+    public Collection<I_CardModel> getSubset(int index) {
+        return stack.subList(index, stack.size());
     }
 
     @Override

@@ -24,12 +24,23 @@ public class State extends EnumMap<E_PileID, List<I_CardModel>> implements I_Gam
         super(state);
     }
 
-    State(Map<E_PileID, List<I_CardModel>> state) {
+    public State(Map<E_PileID, List<I_CardModel>> state) {
         super(state.isEmpty() ? new EnumMap<>(E_PileID.class) : state);
     }
 
     @Override
     public State clone() {
         return (State) super.clone();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("State {\n");
+        for(var pileID : E_PileID.values()){
+            builder.append("\t" + pileID.name() + ": " + get(pileID) + "\n");
+        }
+        builder.append("}");
+
+        return builder.toString();
     }
 }

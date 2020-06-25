@@ -6,6 +6,7 @@ import org.checkerframework.checker.nullness.compatqual.NonNullType;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 public class SuitStack extends StackBase {
@@ -17,25 +18,6 @@ public class SuitStack extends StackBase {
         stack = new ArrayList<>();
     }
 
-    /**
-     * this method must only be used from one of the extending classes that overides this method
-     * */
-    @Override
-    @NonNullType
-    public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
-
-        int toIndex = stack.size();
-        int fromIndex = toIndex - range;
-
-        if (range > 1){
-            throw new IllegalMoveException("You can only take the top card!");
-        }else {
-            List<I_CardModel> subList = stack.subList(fromIndex,toIndex);
-            this.stack = stack.subList(0,fromIndex);
-
-            return new SuitStack(subList);
-        }
-    }
 
     @Override
     public boolean canMoveFrom(int range) {
@@ -57,45 +39,23 @@ public class SuitStack extends StackBase {
 
     @Override
     public boolean canMoveTo(@NonNullType Collection<I_CardModel> cards) {
+        if (cards.size() != 1) return false;
 
-        if (cards.isEmpty()) return false;
+        for (I_CardModel card : cards) {
+            if ( !card.isFacedUp() )
+                return false;
 
+            if ( this.isEmpty() )
+                return card.getRank() == 1;
 
-        I_CardModel card = cards.iterator().next();
-        /*for (I_CardModel inCard : cards) {
-            card = inCard;
-        }*/
+            if (card.getRank() - getTopCard().getRank() != 1)
+                return false;
 
-        if (stack.isEmpty()){
-            assert card != null;
-            return card.getRank() == 1;
+            if ( !card.getSuit().equals(getTopCard().getSuit()) )
+                return false;
+
         }
 
-        // get last card
-        I_CardModel card2 = null;
-        for (I_CardModel element : stack){
-            card2 = element;
-        }
-
-        // check if the suit is the same
-        assert card2 != null;
-        if (!(card2.getSuit() == card.getSuit())){
-            return false;
-        }
-
-        // check if the card in cards collection is 1 rank higher
-        if (!(card.getRank() - card2.getRank() == 1)){
-            return false;
-        }
-
-        // check if the card is face up
-        if (!cards.iterator().next().isFacedUp()){
-            return false;
-        }
-
-        if (stack.isEmpty() && card.getRank() == 1){
-            return true;
-        }
 
         return true;
     }

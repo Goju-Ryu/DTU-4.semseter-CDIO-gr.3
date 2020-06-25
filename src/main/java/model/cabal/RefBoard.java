@@ -1,6 +1,7 @@
 package model.cabal;
 
 import model.GameCardDeck;
+import model.Move;
 import model.cabal.internals.BuildStack;
 import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
@@ -111,7 +112,7 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         var oldTo = List.copyOf(to);
 
         //change state
-        to.addAll(from.popSubset(originPos));
+        to.addAll(from.popSubset( originPos));
 
         change.firePropertyChange(makePropertyChangeEvent(origin, oldFrom));
         change.firePropertyChange(makePropertyChangeEvent(destination, oldTo));
@@ -119,10 +120,12 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
 
     @Override
     public boolean canMove(E_PileID origin, int originPos, E_PileID destination) {
+
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
         Collection<I_CardModel> d = from.getSubset(originPos);
+        I_CardModel w = d.iterator().next();
         boolean a = isValidMove(origin, originPos, destination);
         boolean b = from.canMoveFrom(originPos);
         boolean c = to.canMoveTo(d);
@@ -185,73 +188,117 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
 
     public static Map<String, List<I_CardModel>> stdBoard = Map.of(
             DRAWSTACK.name(), List.of( //24 cards
-                    new Card(HEARTS,2 ),
-                    new Card(SPADES, 1),
-                    new Card(CLUBS, 6),
-                    new Card(HEARTS,5 ),
-                    new Card(DIAMONDS, 4),
-                    new Card(HEARTS, 11),
+                    new Card(CLUBS,5),
+                    new Card(SPADES, 3),
+                    new Card(SPADES, 9),
+                    new Card(CLUBS,8),
                     new Card(CLUBS, 7),
-                    new Card(CLUBS, 1),
-                    new Card(HEARTS, 12),
-                    new Card(DIAMONDS, 10),
-                    new Card(HEARTS, 3),
-                    new Card(SPADES,4 ),
+                    new Card(DIAMONDS, 12),
+                    new Card(HEARTS, 11),
+                    new Card(HEARTS, 2),
+                    new Card(CLUBS, 10),
+                    new Card(CLUBS, 13),
                     new Card(SPADES, 7),
+                    new Card(SPADES,11),
+                    new Card(HEARTS, 5),
                     new Card(CLUBS, 2),
                     new Card(HEARTS, 4),
+                    new Card(DIAMONDS, 10),
+                    new Card(DIAMONDS, 7),
                     new Card(CLUBS, 9),
-                    new Card(DIAMONDS, 11),
-                    new Card(HEARTS, 13),
-                    new Card(DIAMONDS, 5),
-                    new Card(HEARTS,10 ),
+                    new Card(HEARTS, 10),
+                    new Card(DIAMONDS,11),
+                    new Card(HEARTS, 3),
                     new Card(SPADES, 6),
-                    new Card(CLUBS, 8),
-                    new Card(HEARTS,9 ),
-                    new Card(SPADES, 5)
+                    new Card(SPADES,5),
+                    new Card(DIAMONDS, 1)
 
             ),
             BUILDSTACK1.name(), List.of( // 1 card
-                    new Card(DIAMONDS,6)
+                    new Card(CLUBS,11)
             ),
             BUILDSTACK2.name(), List.of( // 2 cards
-                    new Card(CLUBS,3),
-                    new Card(SPADES,8)
+                    new Card(SPADES,8),
+                    new Card(SPADES,1)
             ),
             BUILDSTACK3.name(), List.of( // 3 cards
+                    new Card(SPADES,13),
                     new Card(DIAMONDS,13),
-                    new Card(DIAMONDS,7),
-                    new Card(SPADES,9)
+                    new Card(SPADES,4)
             ),
             BUILDSTACK4.name(), List.of( // 4 cards
-                    new Card(SPADES,13),
-                    new Card(DIAMONDS,12),
-                    new Card(DIAMONDS,9),
-                    new Card(CLUBS,10)
+                    new Card(CLUBS,3),
+                    new Card(DIAMONDS,4),
+                    new Card(SPADES,10),
+                    new Card(HEARTS,8)
             ),
             BUILDSTACK5.name(), List.of( // 5 cards
-                    new Card(SPADES,11),
-                    new Card(CLUBS,13),
-                    new Card(SPADES,3),
-                    new Card(CLUBS,12),
-                    new Card(HEARTS,6)
+                    new Card(DIAMONDS,8),
+                    new Card(CLUBS,4),
+                    new Card(DIAMONDS,3),
+                    new Card(HEARTS,7),
+                    new Card(DIAMONDS,2)
             ),
             BUILDSTACK6.name(), List.of( // 6 cards
+                    new Card(CLUBS,1),
+                    new Card(HEARTS,13),
+                    new Card(DIAMONDS,6),
                     new Card(SPADES,12),
-                    new Card(HEARTS,8),
-                    new Card(SPADES,2),
-                    new Card(CLUBS,4),
-                    new Card(DIAMONDS,8),
-                    new Card(HEARTS,7)
+                    new Card(HEARTS,6),
+                    new Card(CLUBS,6)
             ),
             BUILDSTACK7.name(), List.of( // 7 cards
-                    new Card(DIAMONDS,2),
-                    new Card(SPADES,10),
-                    new Card(CLUBS,5),
-                    new Card(DIAMONDS,3),
-                    new Card(DIAMONDS,1),
+                    new Card(HEARTS,9),
+                    new Card(CLUBS,12),
+                    new Card(SPADES,2),
+                    new Card(DIAMONDS,5),
                     new Card(HEARTS,1),
-                    new Card(CLUBS,11)
+                    new Card(HEARTS,12),
+                    new Card(DIAMONDS,9)
             )
     );
+
+    @Override
+    public Map<E_PileID, List<I_CardModel>> makeMoveStateMap(Move m) {
+
+        I_SolitaireStacks from = get( m.moveFromStack() );
+        I_SolitaireStacks to   = get( m.moveToStack()   );
+
+        Collection<I_CardModel> subSet  = from.getSubset(m.moveFromRange());
+        Collection<I_CardModel> fromSet = new ArrayList<>(from);
+        fromSet.removeAll(subSet);
+        Collection<I_CardModel> toSet = new ArrayList<>(to);
+        toSet.addAll(subSet);
+
+        Map<E_PileID, List<I_CardModel>> map = new HashMap<>();
+        Collection<I_CardModel> col;
+
+        for (E_PileID e : E_PileID.values()) {
+
+            if (e == m.moveFromStack()) {
+
+                col = fromSet;
+
+            } else if (e == m.moveToStack()) {
+
+                col = toSet;
+
+            } else {
+
+                col = this.getPile(e);
+            }
+            map.put(e, new ArrayList<>(col) );
+        }
+        return map;
+    }
+
+    @Override
+    public void turnCardsToIndex( int index ){
+        DrawStack drawStack =(DrawStack) piles[DRAWSTACK.ordinal()];
+        int numberOfTurns = drawStack.size() - index;
+        for (int i = 1; i < numberOfTurns; i++) {
+            drawStack.turnCard();
+        }
+    }
+
 }

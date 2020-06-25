@@ -5,67 +5,13 @@ import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class BuildStackTest {
 
-    @Test
-    void popSubset() {
 
-        BuildStack buildStack = new BuildStack();
-        BuildStack subset = null;
-
-        for (int i = 0; i < 10; i++) {
-            I_CardModel card = new Card(E_CardSuit.CLUBS,i+1,true);
-            buildStack.add(card);
-        }
-
-        assertEquals(10,buildStack.size());
-
-        assertThrows(IndexOutOfBoundsException.class,
-                () -> buildStack.popSubset(12),
-                "Buildstack is only 10 in size");
-
-        if (buildStack.canMoveFrom(5)){
-            subset = (BuildStack) buildStack.popSubset(5);
-
-            assertEquals(5,buildStack.size());
-            assertEquals(5,subset.size());
-
-            BuildStack checkStack = new BuildStack();
-            for (int i = 0; i < 5 ; i++) {
-                I_CardModel card = new Card(E_CardSuit.CLUBS,i+1,true);
-                checkStack.add(card);
-            }
-
-            for (I_CardModel card : subset){
-                System.out.println("Subset list: "+card);
-            }
-            for (I_CardModel card : buildStack){
-                System.out.println("Buildstack list: "+card);
-            }
-
-            BuildStack checkStack1 = new BuildStack();
-            for (int i = 5; i < 10; i++) {
-                I_CardModel card = new Card(E_CardSuit.CLUBS,i+1,true);
-                checkStack1.add(card);
-            }
-
-            for (I_CardModel card : checkStack1){
-                System.out.println("checkstat: "+card);
-            }
-
-            for (int i = 0; i < 5; i++) {
-                assertEquals(buildStack.getCard(i), checkStack.getCard(i));
-            }
-
-            for (int i = 0; i < 5; i++) {
-                assertEquals(subset.getCard(i), checkStack1.getCard(i));
-            }
-        }else {
-            fail();
-        }
-    }
 
     @Test
     void canMoveFrom() {
@@ -91,13 +37,13 @@ class BuildStackTest {
         }
 
         // Check if the cards that is face up can be moved
-        for (int i = 1; i < 4; i++) {
-            assertTrue(buildStack.canMoveFrom(i));
+        for (int i = 0; i < 3; i++) {
+            assertFalse(buildStack.canMoveFrom(i));
         }
 
         //Check if the cards that is face down can be moved
-        for (int i = 4; i < 6; i++) {
-            assertFalse(buildStack.canMoveFrom(i));
+        for (int i = 3; i < 5; i++) {
+            assertTrue(buildStack.canMoveFrom(i));
         }
     }
 
@@ -181,15 +127,15 @@ class BuildStackTest {
             assertTrue(suitStack.canMoveTo(heartCard)); // TODO this do not work because our stacks do not have an id
         }
 
-        if (incomingStack.canMoveFrom(3)){
+        if (incomingStack.canMoveFrom(2)){
             System.out.println("first passed");
-            if (incomingStack1.canMoveFrom(3)){
+            if (incomingStack1.canMoveFrom(2)){
                 System.out.println("second passed");
-                if (incomingStack2.canMoveFrom(3)){
+                if (incomingStack2.canMoveFrom(2)){
                     System.out.println("third passed");
-                    if (incomingStack3.canMoveFrom(3)){
+                    if (incomingStack3.canMoveFrom(2)){
                         System.out.println("fourth passed");
-                        if (incomingStack4.canMoveFrom(3)){
+                        if (incomingStack4.canMoveFrom(2)){
                             System.out.println("fifth passed");
                             if (!incomingStack5.canMoveFrom()){
                                 System.out.println("sixth passed");

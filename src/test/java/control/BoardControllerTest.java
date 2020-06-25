@@ -1,34 +1,25 @@
 package control;
 
 import data.I_InputDTO;
-import data.InputSimDTO;
-import model.GameCardDeck;
 import model.Move;
-import model.cabal.AbstractBoardUtility;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
-import model.cabal.internals.BuildStack;
-import model.cabal.internals.DrawStack;
-import model.cabal.internals.I_SolitaireStacks;
-import model.cabal.internals.SuitStack;
 import model.cabal.internals.card.Card;
-import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
-import model.error.IllegalMoveException;
+import model.error.UnendingGameException;
 import org.junit.jupiter.api.Test;
 import util.TestUtil;
 
-import java.beans.PropertyChangeListener;
 import java.util.*;
 
 import static model.cabal.E_PileID.*;
 import static model.cabal.internals.card.E_CardSuit.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-class BoardControllerTest {
+public class BoardControllerTest {
 
   
-    public static class testBoardController extends BoardControllerSimulated {
+    public static class testBoardController extends AbstractBoardController {
         public testBoardController(AbstractMap.SimpleImmutableEntry<I_BoardModel, I_InputDTO> util) {
             super(util.getKey(), util.getValue());
         }
@@ -55,7 +46,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(3, result.size());
@@ -76,16 +67,16 @@ class BoardControllerTest {
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
-        list.add(new Card( DIAMONDS      ,  1 ));
-        list.add(new Card( HEARTS     , 2 ));
+        list.add(new Card( DIAMONDS    ,  1 ));
+        list.add(new Card( HEARTS      ,  2 ));
         list.add(new Card( SPADES      ,  8 ));
         list.add(new Card( SPADES      ,  7 ));
-        list.add(new Card( CLUBS      ,  3 ));
-        list.add(new Card( CLUBS      ,  2 ));
+        list.add(new Card( CLUBS       ,  3 ));
+        list.add(new Card( CLUBS       ,  2 ));
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(7,result.size());
@@ -114,7 +105,7 @@ class BoardControllerTest {
         
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(3, result.size());
@@ -138,7 +129,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(0, result.size());
@@ -161,7 +152,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(1, result.size());
@@ -183,7 +174,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(6, result.size());
@@ -206,7 +197,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(5, result.size());
@@ -235,10 +226,42 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> result = boardCnt.possibleMoves();
         assertEquals(3, result.size());
+    }
+
+    @Test
+    void PossibleMoves_testFromError_2(){
+
+        Map<String, I_CardModel> map = new HashMap<>();
+        map.put( BUILDSTACK1.name(),new Card( SPADES    , 6   ));
+        map.put( BUILDSTACK3.name(),new Card( DIAMONDS  , 12   ));
+        map.put( BUILDSTACK5.name(),new Card( HEARTS    , 13  ));
+        map.put( BUILDSTACK2.name(),new Card( DIAMONDS  , 4   ));
+        map.put( BUILDSTACK4.name(),new Card( HEARTS    , 12  ));
+        map.put( BUILDSTACK6.name(),new Card( DIAMONDS  , 2  ));
+        map.put( BUILDSTACK7.name(),new Card( SPADES    , 8   ));
+
+        // the drawStack.
+        ArrayList<I_CardModel> list = new ArrayList<>();
+        list.add(new Card( CLUBS    ,  13));
+        list.add(new Card( CLUBS    ,  2 ));
+        list.add(new Card( CLUBS    ,  3 ));
+        list.add(new Card( CLUBS    ,  8 ));
+        list.add(new Card( HEARTS   ,  1 ));
+
+        // the Board and Getting Results.
+        var util = TestUtil.getTestReadyBoard(map,list);
+        testBoardController boardCnt = new testBoardController(util);
+
+        List<Move> result = boardCnt.possibleMoves();
+        Move m = boardCnt.pickMove(result);
+
+        assertEquals(SUITSTACKHEARTS, m.moveToStack());
+        assertEquals(DRAWSTACK, m.moveFromStack());
+        assertEquals(4, m.moveFromRange());
     }
 
     @Test
@@ -264,8 +287,6 @@ class BoardControllerTest {
         list.add(new Card( CLUBS      , 9 ));
         list.add(new Card( HEARTS     , 9 ));
 
-
-
         //Move Queue
         Queue<Move> moves = new LinkedList<>();
         moves.add( new Move(  BUILDSTACK5,DRAWSTACK, 1, false , false,"") );
@@ -276,7 +297,7 @@ class BoardControllerTest {
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
         for (Move m: moves) {
             boardCnt.makeMove(m);
         }
@@ -285,6 +306,7 @@ class BoardControllerTest {
 
     @Test
     void PickAMove_NoCircle_ifOtherChoice() {
+
         // What is the top cards of the rows, anything undeclared is empty list.
         Map<String, I_CardModel> map = new HashMap<>();
         map.put( BUILDSTACK1.name(), new Card(SPADES, 1));
@@ -305,14 +327,84 @@ class BoardControllerTest {
         list.add(new Card());
         list.add(new Card());
 
-
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
-        BoardController boardCnt = new testBoardController(util);
+        AbstractBoardController boardCnt = new testBoardController(util);
 
         List<Move> moves = boardCnt.possibleMoves();
         Move m = boardCnt.pickMove(moves);
         System.out.println(m);
+
+    }
+
+    @Test
+    void RepeatState_impl_test(){
+
+        // What is the top cards of the rows, anything undeclared is empty list.
+        Map<String, I_CardModel> map = new HashMap<>();
+        map.put( BUILDSTACK1.name(),new Card( HEARTS     , 4  ));
+        map.put( BUILDSTACK2.name(),new Card( SPADES     , 11 ));
+        map.put( BUILDSTACK3.name(),new Card( SPADES     , 9  ));
+        map.put( BUILDSTACK4.name(),new Card( SPADES     , 4  ));
+        map.put( BUILDSTACK5.name(),new Card( SPADES     , 6  ));
+        map.put( BUILDSTACK6.name(),new Card( SPADES     , 8  ));
+        map.put( BUILDSTACK7.name(),new Card( DIAMONDS   , 4  ));
+
+        // the drawStack.
+        ArrayList<I_CardModel> list = new ArrayList<>();
+        list.add(new Card( CLUBS     , 3 ));
+
+        // the Board and Getting Results.
+        var util = TestUtil.getTestReadyBoard(map,list);
+        AbstractBoardController boardCnt = new testBoardController(util);
+
+        assertDoesNotThrow(() -> {
+            List<Move> moves = boardCnt.possibleMoves();
+            Move move = boardCnt.pickMove(moves);
+            boardCnt.makeMove(move);
+        });
+
+        assertDoesNotThrow(() -> {
+            List<Move> moves = boardCnt.possibleMoves();
+            Move move = boardCnt.pickMove(moves);
+            boardCnt.makeMove(move);
+        });
+
+        assertThrows(UnendingGameException.class, () -> {
+            List<Move> moves = boardCnt.possibleMoves();
+            Move move = boardCnt.pickMove(moves);
+            boardCnt.makeMove(move);
+        });
+    }
+
+    @Test
+    void testFromError_03(){
+
+        Map<String, I_CardModel> map = new HashMap<>();
+        I_CardModel arr[] ={new Card( DIAMONDS, 10), new Card( HEARTS, 13), new Card( SPADES, 8), new Card( CLUBS, 8), new Card( HEARTS, 6), new Card( CLUBS, 5), new Card( CLUBS, 3), new Card( SPADES, 3), new Card( SPADES, 12), new Card( SPADES, 11), new Card( CLUBS, 13), new Card( DIAMONDS, 9), new Card( CLUBS, 9), new Card( CLUBS, 2), new Card( SPADES, 13), new Card( DIAMONDS, 11), new Card( SPADES, 5), new Card( DIAMONDS, 8), new Card( DIAMONDS, 2), new Card( SPADES, 2), new Card( CLUBS, 4), new Card( CLUBS, 10), new Card( SPADES, 9)};
+        List<I_CardModel> list = Arrays.asList(arr);
+
+        map.put( SUITSTACKCLUBS.name() ,new Card( CLUBS, 1));
+        map.put(BUILDSTACK1.name() ,new Card( SPADES, 10));
+        map.put(BUILDSTACK2.name(), new Card( DIAMONDS, 5));
+        map.put(BUILDSTACK3.name(), new Card( HEARTS, 12));
+        map.put(BUILDSTACK4.name(), new Card( HEARTS, 8));
+        map.put(BUILDSTACK5.name(), new Card( HEARTS, 9));
+        map.put(BUILDSTACK6.name(), new Card( HEARTS, 10));
+        map.put(BUILDSTACK7.name(), new Card( SPADES, 4));
+
+        var util = TestUtil.getTestReadyBoard(map,list);
+        AbstractBoardController boardCnt = new testBoardController(util);
+        List<Move> result = boardCnt.possibleMoves();
+        Move m = boardCnt.pickMove(result);
+        boardCnt.makeMove(m);
+
+        I_CardModel card = boardCnt.boardModel.getPile(SUITSTACKSPADES).get(0);
+        assertEquals(1,card.getRank());
+        assertEquals(SPADES,card.getSuit());
+        assertEquals(17,m.moveFromRange());
+
+        System.out.println("");
 
     }
 }

@@ -8,6 +8,7 @@ import model.cabal.I_BoardModel;
 import model.cabal.internals.card.Card;
 import model.cabal.internals.card.I_CardModel;
 import org.junit.jupiter.api.Test;
+import util.TestUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +96,8 @@ class InputDTOTest {
         System.out.println(map);
 
         // checking the combination of the Board
-        I_BoardModel board = new Board(map, new GameCardDeck());
+        var test = TestUtil.getTestReadyBoard(map);
+        I_BoardModel board = test.getKey();
         System.out.println(board);
 
         for (E_PileID e: E_PileID.values() ) {
@@ -112,7 +114,6 @@ class InputDTOTest {
             assertEquals(mapsCard.getRank(), boardsCard.getRank());
             assertEquals(mapsCard.getSuit(), boardsCard.getSuit());
         }
-
     }
     private I_CardModel getTopCard(List<I_CardModel> list){
         int top = list.size()-1;

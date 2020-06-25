@@ -75,7 +75,7 @@ public interface I_SolitaireStacks extends Collection<I_CardModel> {
      * @return true if the card can be moved and false if it can't.
      */
     default boolean canMoveFrom(){
-        return canMoveFrom(1);
+        return canMoveFrom(0);
     }
 
     /**
