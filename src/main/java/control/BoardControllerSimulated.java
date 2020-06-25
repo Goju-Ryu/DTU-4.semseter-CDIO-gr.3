@@ -79,12 +79,12 @@ public class BoardControllerSimulated extends AbstractBoardController {
         if (refBoardModel != null) {
             if( move.moveFromStack() == DRAWSTACK ){
                 // draw stack has a unique rule set, that makes.
-                for (int i = 0; i < move.moveFromRange() ; i++) {
+                for (int i = 0; i < move.getDepth(); i++) {
                     refBoardModel.turnCard(Map.of()); // Empty map because we want it to ignore inputs in these iterations
                 }
                 // now when it has turned all the necessary cards in the drawstack we give it an input.
                 refBoardModel.turnCard(Map.of());
-                refBoardModel.move(move.moveFromStack(),  move.moveToStack(), inputDTO.getUsrInput());
+                refBoardModel.move(move.moveFromStack(), 0, move.moveToStack(), inputDTO.getUsrInput());
             }else {
                 refBoardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
             }
