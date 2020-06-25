@@ -74,11 +74,11 @@ public class InputSimDTO implements I_InputDTO {
                 .filter(pile -> !board.getPile(pile).isEmpty())
                 .map( // transforms elements of the stream to mapEntries
                         pile -> {
-                            var pileList = board.getPile(pile);
-                            return new AbstractMap.SimpleEntry<>(pile.name(), pileList.get(pileList.size() - 1));
+                            var pileList = board.getPiles()[pile.ordinal()];
+                            return new AbstractMap.SimpleEntry<>(pile.name(), pileList.getTopCard());
                         }
                 )
-                .peek(entry -> { if (entry.getValue() == null) entry.setValue(new Card());} )
+                .filter(entry -> entry.getValue() != null )
                 .peek(entry -> { // replaces face down cards with a randomly generated card
                             if (!entry.getValue().isFacedUp())
                                 entry.setValue(getRandCard(excluded));

@@ -129,7 +129,7 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
             var imgCard = extractImgData(imgData, pileID);
 
 
-            validatePileState(pileID, pile.getTopCard(), imgCard);
+            validatePileState(pileID, pile.isEmpty() ? null : pile.getCard(pile.size() - 1), imgCard);
         }
     }
 

@@ -12,6 +12,9 @@ import model.cabal.internals.card.I_CardModel;
 
 import javax.management.AttributeValueExp;
 import java.util.ArrayList;
+import java.util.Map;
+
+import static model.cabal.E_PileID.*;
 
 /**
  * This class is for the individual controlls of each Board,
@@ -67,7 +70,8 @@ public class BoardControllerSimulated extends AbstractBoardController {
         ArrayList<I_CardModel> drawCards = new ArrayList<>();
         int drawStackCardCount = 24;
         for(int i = 0; i < drawStackCardCount; i++) {
-            I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
+            refBoard.turnCard(Map.of());
+            I_CardModel drawCard = inputDTO.getUsrInput().get(DRAWSTACK.name());
             drawCards.add(drawCard);
 
             System.out.println("currDrawCard: " + drawCard);
