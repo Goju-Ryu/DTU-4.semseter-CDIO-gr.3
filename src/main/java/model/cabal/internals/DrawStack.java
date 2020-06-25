@@ -31,45 +31,27 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
 
 //-----------  Implementation ----------------------------------------------------------------
 
-    private List<I_CardModel> getPSubset(int range){
-        int index = (getSafeDrawIndex() + range) % size();
-        return List.of(stack.get(index));
-    }
-    public Collection<I_CardModel> popSubset() throws IllegalMoveException {
-        return popSubset(getSafeDrawIndex());
-    }
     @Override
-    public Collection<I_CardModel> popSubset(int range) throws IllegalMoveException {
+    public Collection<I_CardModel> popSubset(int index) throws IllegalMoveException {
         if (!canMoveFrom()) {
-            throw new IllegalMoveException();//todo msg
+            throw new IllegalMoveException("Can't move cards out of drawStack");
         }
 
-        if (range > 1)
-            throw new IllegalMoveException("drawstack can only move one card at a time. range: " + range);
+        var returnCards = getSubset(index);
 
-//        int rangeIndex = drawIndex + range ;
-//        if(!stack.get(rangeIndex % size()).isFacedUp()){
-//            throw new IllegalMoveException("Card at this range: "+range+" has not been turned yet");
-//        }
+        if (returnCards.size() > 1)
+            throw new IllegalMoveException("A drawstack can only pop one card. You tried to pop from "+index);
 
-        if (range == 0)
-            return List.of();
+        if ( !returnCards.isEmpty() && !returnCards.get(0).isFacedUp() )
+            throw new IllegalMoveException("Card at this index: "+index+" has not been turned yet");
 
-        var index = getSafeDrawIndex();
-        var returnCard = getSubset(index + 1).get(0);
-
-        if ( !returnCard.isFacedUp() )
-            throw new IllegalMoveException("Card at this range: "+range+" has not been turned yet");
-
-        var returnable = List.of( returnCard );
-        stack.remove( returnCard ); //remove the card
-        drawIndex = index - 1; //lower index to point to the new card that can be drawn
-        return returnable;
+        stack.removeAll( returnCards ); //remove the card
+        drawIndex--; //lower index to point to the new card that can be drawn
+        return returnCards;
     }
     @Override
     public List<I_CardModel> getSubset(int index) {
-//        int range2 = positionReversed(range);
-        return getPSubset(index);
+        return List.of(getCard(index));
     }
     @Override
     public boolean add(I_CardModel o) {
