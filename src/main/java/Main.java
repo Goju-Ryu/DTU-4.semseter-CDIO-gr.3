@@ -50,6 +50,7 @@ public class Main {
                 CompletableFuture<Boolean>[] futures = new CompletableFuture[simNum];
 
                 for (int i = 0; i < simNum; i++) {
+                    System.out.println("sim nr :" + i);
                     futures[i] = CompletableFuture
                             .supplyAsync(() -> (new GameController(builder)).startGame("sim"));
                 }
