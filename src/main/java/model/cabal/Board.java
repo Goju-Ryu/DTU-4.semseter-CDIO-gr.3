@@ -1,5 +1,6 @@
 package model.cabal;
 
+import com.google.common.base.Functions;
 import model.GameCardDeck;
 import model.Move;
 import model.cabal.internals.BuildStack;
@@ -86,9 +87,9 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
     public Board(Map<String, I_CardModel> imgData, GameCardDeck cardDeck, List<I_CardModel> drawStack) {
         this(imgData, cardDeck);
         get(DRAWSTACK).clear();
-        drawStack.remove(null);
-        get(DRAWSTACK).addAll(drawStack);
-        deck.removeAll(drawStack.stream().filter(I_CardModel::isFacedUp).collect(Collectors.toList()));
+        var filteredDrawStack = drawStack.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        get(DRAWSTACK).addAll(filteredDrawStack);
+        deck.removeAll(filteredDrawStack.stream().filter(I_CardModel::isFacedUp).collect(Collectors.toList()));
     }
 
 //---------  Genneral methods  -------------------------------------------------------------------------------------
@@ -129,7 +130,7 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
             var imgCard = extractImgData(imgData, pileID);
 
 
-            validatePileState(pileID, pile.isEmpty() ? null : pile.getCard(pile.size() - 1), imgCard);
+            validatePileState(pileID, pile.isEmpty() ? null : pile.getTopCard(), imgCard);
         }
     }
 
