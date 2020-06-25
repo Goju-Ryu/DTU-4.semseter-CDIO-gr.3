@@ -68,7 +68,7 @@ public abstract class AbstractBoardController implements I_BoardController {
                     boolean improveCardReveal = false;
                     try {
                         var pile = boardModel.getPile(from);
-                        improveCardReveal = !pile.get(index).isFacedUp();
+                        improveCardReveal = !pile.get(index-1).isFacedUp();
                     } catch (Exception ignored) {}
 
 

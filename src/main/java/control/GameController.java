@@ -7,6 +7,7 @@ import model.error.UnendingGameException;
 import view.I_Tui;
 import view.Tui;
 
+import java.io.FileWriter;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -21,8 +22,13 @@ public class GameController implements I_GameController {
 
     I_BoardController boardCtrl;
     I_Tui tui;
+    StringBuilder builder = null;
 
     public GameController() {
+    }
+
+    public GameController(StringBuilder builder) {
+        this.builder = builder;
     }
 
     @Override
@@ -42,34 +48,39 @@ public class GameController implements I_GameController {
     }
 
     private boolean gameLoop() {
+        int calcLimit = 800;
+        int counter = 0 ;
         try {
             List<Move> moves;
             do {
                 moves = boardCtrl.possibleMoves();
-
-    //            log.info("Found " + moves.size() + " possible moves: " + moves);
                 Move move = boardCtrl.pickMove(moves);
-
-    //            log.info("Chose move: " + move);
-                //tui.promptPlayer(move);
 
                 if (move != null) {
                         boardCtrl.makeMove(move);
                 }
 
                 if (boardCtrl.hasWonGame()) {
-                    tui.promptPlayer("(Y)GAME WON! congratulaztions me!");
+                    String str = "(Y)GAME WON! congratulaztions me!";
+                    if(builder != null)
+                        builder.append(str + "\n");
+                    tui.promptPlayer(str);
+
                     return true;
                 }
-
-            } while (moves.size() > 0);
+                counter++;
+            } while (moves.size() > 0 && counter < calcLimit);
         } catch (UnendingGameException e) {
-            tui.promptPlayer("(X)Game has entered an Unending Loop. So the game has ended.");
+            String str = "(X)Game has entered an Unending Loop. So the game has ended.";
+            if(builder != null)
+                builder.append(str + "\n");
+            tui.promptPlayer(str);
             return false;
         }
-
+        String str = "(Z)Game have used 800 moves, and hasent ended yet";
+        if(builder != null)
+            builder.append(str + "\n");
+        tui.promptPlayer(str);
         return false;
     }
-
-
 }

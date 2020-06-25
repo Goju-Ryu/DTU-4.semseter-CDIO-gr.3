@@ -1,6 +1,7 @@
 import control.GameController;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -18,7 +19,9 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
-        var gameController = new GameController();
+
+        GameController gameController= new GameController();
+
         Logger log = Logger.getLogger("Main");
         try {
             final String programDir = System.getProperty("user.dir");
@@ -40,16 +43,15 @@ public class Main {
         if (uiChoice.equalsIgnoreCase("gui"))
             uiChoice = "ManGUI";
 
+        StringBuilder builder = new StringBuilder();
         if (uiChoice.equalsIgnoreCase("sim")) {
             if (args.length > 1) {
-
-
                 int simNum = Integer.parseInt(args[1]);
                 CompletableFuture<Boolean>[] futures = new CompletableFuture[simNum];
 
                 for (int i = 0; i < simNum; i++) {
                     futures[i] = CompletableFuture
-                            .supplyAsync(() -> (new GameController()).startGame("sim"));
+                            .supplyAsync(() -> (new GameController(builder)).startGame("sim"));
                 }
 
                 try {
@@ -59,16 +61,23 @@ public class Main {
                     e.printStackTrace();
                 }
 
-
-
-//                System.out.println(futures.parallelStream()
-//                        .map(CompletableFuture::join)
-//                        .collect(Collectors.toList()));
-
-
+                // writing output to file
+                try {
+                    writeOutputFile(builder.toString(),"SimulationResults.txt");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 return;
             }
+
         }
         gameController.startGame(uiChoice);
+    }
+
+    private static void writeOutputFile(String output, String filename) throws IOException{
+        FileWriter fw=new FileWriter(filename);
+        for (int i = 0; i < output.length(); i++)
+            fw.write(output.charAt(i));
+        fw.close();
     }
 }
