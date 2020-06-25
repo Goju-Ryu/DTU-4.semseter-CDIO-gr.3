@@ -73,7 +73,7 @@ public abstract class AbstractBoardController implements I_BoardController {
 
 
                     Move move = new Move( to,from,index, improveAce, improveCardReveal, "Move Desc");
-                    move.setDepth(index + 1);
+                    move.setDepth(boardModel.getPile(from).size() - index);
                     moves.add(move);
                 }
             }

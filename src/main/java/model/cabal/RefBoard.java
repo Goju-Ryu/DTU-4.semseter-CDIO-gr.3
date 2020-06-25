@@ -24,7 +24,6 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
     public RefBoard() {
         this(randBoard());
     }
-
     public RefBoard(I_BoardModel boardModel) {
         this(Arrays.stream(E_PileID.values())
                 .map(pileID -> new SimpleEntry<>(pileID.name(), boardModel.getPile(pileID)))
@@ -101,7 +100,6 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
     public I_CardModel getTurnedCard() {
         return piles[DRAWSTACK.ordinal()].getTopCard();
     }
-
 
     @Override
     public void move(E_PileID origin, int originPos, E_PileID destination, Map<String, I_CardModel> imgData) throws IllegalMoveException {
