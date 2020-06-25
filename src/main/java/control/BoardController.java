@@ -15,6 +15,7 @@ import model.cabal.internals.card.Card;
 import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
 import model.error.UnendingGameException;
+import view.I_Tui;
 
 import java.util.*;
 
@@ -31,11 +32,11 @@ import static model.cabal.E_PileID.*;
 */
 public class BoardController extends AbstractBoardController {
 
-    public BoardController(String uiChoice) {
-        this(new InputDTO(uiChoice));
+    public BoardController(String uiChoice, I_Tui tui) {
+        this(new InputDTO(uiChoice), tui);
     }
 
-    public BoardController(I_InputDTO inputDTO) {
+    public BoardController(I_InputDTO inputDTO, I_Tui tui) {
         this.inputDTO = inputDTO;
         var deck = new GameCardDeck();
         ArrayList<I_CardModel> drawCards = new ArrayList<>();
@@ -44,16 +45,12 @@ public class BoardController extends AbstractBoardController {
         for(int i = 0; i < drawstackCardCount; i++) {
             I_CardModel drawCard = inputDTO.getUsrInput().get("DRAWSTACK");
             drawCards.add(drawCard);
-            ScanSingleton.getScanner().next();
-
-            System.out.println("currDrawCard: " + drawCard);
-            System.out.println("Please turn the next card in the drawstack and prompt ...");
+            tui.promptPlayer("currDrawCard: " + drawCard + "\nPlease turn the next card in the drawstack and prompt ...");
         }
 
 
-        System.out.println("Type anything followed by a whitespace char, to confirm " +
-        "continuing on from intializing the drawstack to actualy start the game");
-        ScanSingleton.getScanner().next();
+        tui.promptPlayer("Type anything followed by a whitespace char, to confirm " +
+                         "continuing on from intializing the drawstack to actualy start the game");
 
         this.boardModel = new Board(inputDTO.getUsrInput(), deck, drawCards);//, drawCards);
         this.history = new GameHistory(boardModel);

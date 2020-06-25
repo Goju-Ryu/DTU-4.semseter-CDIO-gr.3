@@ -17,7 +17,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
      */
 
     public DrawStack() {
-        this(new LinkedList<I_CardModel>());
+        this(new LinkedList<>());
     }
     public DrawStack(LinkedList<I_CardModel> list) {
         super();
@@ -29,7 +29,7 @@ public class DrawStack extends StackBase implements I_SolitaireStacks  {
     public DrawStack(List<I_CardModel> list) {
         super();
         if (list instanceof LinkedList)
-            stack = (LinkedList<I_CardModel>) list;
+            stack = list;
         else
             stack = new LinkedList<>(list);
     }

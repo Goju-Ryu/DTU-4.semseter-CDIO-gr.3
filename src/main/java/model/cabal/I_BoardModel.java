@@ -106,9 +106,8 @@ public interface I_BoardModel {
 
     boolean canMoveFrom(E_PileID origin, int range);
 
-    /**ner to the board. This subscribes it to all piles on the board.
-     * @pa
-     *      * Add a listeram listener the listener to be attached.
+    /** Adds a listener to the board. This subscribes it to all piles on the board.
+     * @param listener the listener to be attached.
      */
     void addPropertyChangeListener(PropertyChangeListener listener);
 

@@ -20,17 +20,17 @@ public class SuitStack extends StackBase {
 
 
     @Override
-    public boolean canMoveFrom(int range) {
+    public boolean canMoveFrom(int index) {
 
-        if (range != 1) {
+        if (stack.isEmpty()) {
             return false;
         }
 
-        if (stack.isEmpty()){
+        if (!(stack.get(index).equals(getTopCard()))){
             return false;
         }
 
-        if (!(stack.get(stack.size() - range).isFacedUp())){
+        if (!(stack.get(index).isFacedUp())){
             return false;
         }
 
