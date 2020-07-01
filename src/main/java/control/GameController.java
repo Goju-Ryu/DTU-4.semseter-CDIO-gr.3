@@ -4,6 +4,7 @@ import model.GameCardDeck;
 import model.Move;
 import model.cabal.RefBoard;
 import model.error.UnendingGameException;
+import view.EmptyTui;
 import view.I_Tui;
 import view.Tui;
 
@@ -28,7 +29,7 @@ public class GameController implements I_GameController {
     @Override
     public boolean startGame(String uiChoice) {
         if (uiChoice.equalsIgnoreCase("sim")) {
-            tui = new Tui(false);
+            tui = new EmptyTui();
             boardCtrl = new BoardControllerSimulated();
         } else if (uiChoice.equalsIgnoreCase("std")) {
             tui = new Tui(true);

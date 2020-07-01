@@ -1,20 +1,14 @@
 import control.GameController;
+import model.error.UnendingGameException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.function.Function;
+import java.util.Map;
+import java.util.concurrent.*;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
@@ -22,11 +16,10 @@ public class Main {
         Logger log = Logger.getLogger("Main");
         try {
             final String programDir = System.getProperty("user.dir");
-            var logFile = new File(programDir + "/log/" + log.getName() + ".xml");
+            var logFile = new File(programDir + "/log/" + log.getName() + ".log");
             logFile.delete();
             logFile.getParentFile().mkdirs();
             var handler = new FileHandler(logFile.getAbsolutePath());
-//            handler./;
             log.addHandler(handler);
         } catch (IOException e) {
             e.printStackTrace();
@@ -42,33 +35,52 @@ public class Main {
 
         if (uiChoice.equalsIgnoreCase("sim")) {
             if (args.length > 1) {
-
-
                 int simNum = Integer.parseInt(args[1]);
-                CompletableFuture<Boolean>[] futures = new CompletableFuture[simNum];
-
-                for (int i = 0; i < simNum; i++) {
-                    futures[i] = CompletableFuture
-                            .supplyAsync(() -> (new GameController()).startGame("sim"));
-                }
-
-                try {
-                    var res = CompletableFuture.allOf(futures).get(15, TimeUnit.MINUTES);
-                    log.info("res: " + res);
-                } catch (InterruptedException | TimeoutException | ExecutionException e) {
-                    e.printStackTrace();
-                }
 
 
+                var ex = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-//                System.out.println(futures.parallelStream()
-//                        .map(CompletableFuture::join)
-//                        .collect(Collectors.toList()));
+                Map<E_Result, Integer> sim = IntStream
+                        .range(0, simNum)
+                        .parallel()
+                        .mapToObj( num -> CompletableFuture.supplyAsync(GameController::new, ex))
+                        .map(future -> future.thenApply(e -> e.startGame("sim")))
+                        .map(future ->
+                            future.thenApply(result -> result ? E_Result.SUCCESS : E_Result.FAILURE)
+                                    .exceptionally(e ->
+                                    {
+                                        if (e.getCause() instanceof UnendingGameException) {
+                                            log.info("Fail reason: " + e.getCause().toString());
+                                            return E_Result.FAILURE;
+                                        } else {
+                                            log.warning("Error: " + e.toString());
+                                            return E_Result.EXCEPTION;
+                                        }
+                                    })
+                        )
+                        .map(future -> {
+                            try {
+                                return future.get(10, TimeUnit.MINUTES);
+                            } catch (InterruptedException | TimeoutException | ExecutionException e) {
+                                log.warning(e.toString());
+                                return E_Result.EXCEPTION;
+                            }
+                        })
+                        .collect(Collectors.toMap(e -> e, e -> 1, Integer::sum));
 
+                System.out.println(sim);
+                log.info("Result: " + sim);
 
-                return;
+                System.exit(0);
             }
         }
         gameController.startGame(uiChoice);
+    }
+
+
+    enum E_Result {
+        SUCCESS,
+        FAILURE,
+        EXCEPTION
     }
 }
