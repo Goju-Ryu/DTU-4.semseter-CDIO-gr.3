@@ -9,7 +9,6 @@ import view.I_Tui;
 import view.Tui;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * This class is for controlling an entire game,
@@ -27,7 +26,7 @@ public class GameController implements I_GameController {
     }
 
     @Override
-    public boolean startGame(String uiChoice) {
+    public GameResult startGame(String uiChoice) {
         if (uiChoice.equalsIgnoreCase("sim")) {
             tui = new EmptyTui();
             boardCtrl = new BoardControllerSimulated();
@@ -39,37 +38,50 @@ public class GameController implements I_GameController {
             boardCtrl = new BoardController(uiChoice, tui);
         }
 
+
         return gameLoop();
     }
 
-    private boolean gameLoop() {
+    private GameResult gameLoop() {
+        int roundCount = 0;
+        try {
+            List<Move> moves;
+            do {
+                roundCount++;
+                moves = boardCtrl.possibleMoves();
 
-        List<Move> moves;
-        do {
-            moves = boardCtrl.possibleMoves();
+                if (moves.size() <= 0) {
+                    return new GameResult(roundCount, E_Result.NO_MOVES);
+                }
 
 //            log.info("Found " + moves.size() + " possible moves: " + moves);
-            Move move = boardCtrl.pickMove(moves);
+                Move move = boardCtrl.pickMove(moves);
 
 //            log.info("Chose move: " + move);
-            tui.promptPlayer(move);
+                tui.promptPlayer(move);
 
-            if (move != null) {
-                try {
-                    boardCtrl.makeMove(move);
-                } catch (UnendingGameException e) {
-                    tui.promptPlayer("Game has entered an Unending Loop. So the game has ended.");
-                    return false;
+                if (move != null) {
+                    try {
+                        boardCtrl.makeMove(move);
+                    } catch (UnendingGameException e) {
+                        tui.promptPlayer("Game has entered an Unending Loop. So the game has ended.");
+                        return new GameResult(roundCount, E_Result.ENDLESS, e);
+                    }
+                } else {
+                    return new GameResult(roundCount, new NullPointerException("move was unexpectedly null"));
                 }
-            }
 
-            if (boardCtrl.hasWonGame()) {
-                tui.promptPlayer("GAME WON! congratulaztions me!");
-                return true;
-            }
-        } while (moves.size() > 0);
+                if (boardCtrl.hasWonGame()) {
+                    tui.promptPlayer("GAME WON! congratulaztions me!");
+                    return new GameResult(roundCount, E_Result.WON);
+                }
 
-        return false;
+            } while (moves.size() > 0);
+
+            return new GameResult(roundCount, new UnknownError("Exited game loop without resolving the game..."));
+        } catch (Throwable e) {
+            return new GameResult(roundCount, e);
+        }
     }
 
 
