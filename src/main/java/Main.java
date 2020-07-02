@@ -42,7 +42,6 @@ public class Main {
 
                 Map<E_Result, Integer> sim = IntStream
                         .range(0, simNum)
-                        .parallel()
                         .mapToObj( num -> CompletableFuture.supplyAsync(GameController::new, ex))
                         .map(future -> future.thenApply(e -> e.startGame("sim")))
                         .map(future ->
@@ -58,10 +57,10 @@ public class Main {
                                         }
                                     })
                         )
-                        .map(future -> {
+                        .map(future -> { //TODO collect here instead and wait for results in a loop that checks if user cancels to collect the results that are available at the time instead
                             try {
-                                return future.get(10, TimeUnit.MINUTES);
-                            } catch (InterruptedException | TimeoutException | ExecutionException e) {
+                                return future.get(); //TODO use join() to avoid the explicit casting of exceptions and use exceptionally instead
+                            } catch (InterruptedException | ExecutionException e) {
                                 log.warning(e.toString());
                                 return E_Result.EXCEPTION;
                             }
@@ -78,9 +77,9 @@ public class Main {
     }
 
 
-    enum E_Result {
+    enum E_Result { //TODO make this a member of a class returning the result of a game from the gameController
         SUCCESS,
         FAILURE,
-        EXCEPTION
+        EXCEPTION // Add timed out as special case of result?
     }
 }
