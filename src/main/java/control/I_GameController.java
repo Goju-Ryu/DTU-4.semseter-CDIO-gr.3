@@ -52,6 +52,15 @@ public interface I_GameController {
         }
         public E_Result getResult() {return result;}
         public Throwable getException() {return exception;}
+
+        @Override
+        public String toString() {
+            return "GameResult{" +
+                   "rounds=" + rounds +
+                   ", result=" + result +
+                   ", exception=" + (exception == null ? "null" : exception.getMessage()) +
+                   '}';
+        }
     }
 
     enum E_Result {

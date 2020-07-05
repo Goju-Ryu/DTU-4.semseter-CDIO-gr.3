@@ -1,14 +1,19 @@
 import control.GameController;
-import model.error.UnendingGameException;
+import control.I_GameController.GameResult;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.*;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+
 
 public class Main {
     public static void main(String[] args) {
@@ -38,48 +43,97 @@ public class Main {
                 int simNum = Integer.parseInt(args[1]);
 
 
-                var ex = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+                final var simulationThreadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
 
-                Map<E_Result, Integer> sim = IntStream
+                final var futureSimulations = IntStream
                         .range(0, simNum)
-                        .mapToObj( num -> CompletableFuture.supplyAsync(GameController::new, ex))
-                        .map(future -> future.thenApply(e -> e.startGame("sim")))
-                        .map(future ->
-                            future.thenApply(result -> result ? E_Result.SUCCESS : E_Result.FAILURE)
-                                    .exceptionally(e ->
-                                    {
-                                        if (e.getCause() instanceof UnendingGameException) {
-                                            log.info("Fail reason: " + e.getCause().toString());
-                                            return E_Result.FAILURE;
-                                        } else {
-                                            log.warning("Error: " + e.toString());
-                                            return E_Result.EXCEPTION;
-                                        }
-                                    })
-                        )
-                        .map(future -> { //TODO collect here instead and wait for results in a loop that checks if user cancels to collect the results that are available at the time instead
-                            try {
-                                return future.get(); //TODO use join() to avoid the explicit casting of exceptions and use exceptionally instead
-                            } catch (InterruptedException | ExecutionException e) {
-                                log.warning(e.toString());
-                                return E_Result.EXCEPTION;
-                            }
-                        })
-                        .collect(Collectors.toMap(e -> e, e -> 1, Integer::sum));
+                        .mapToObj( num -> CompletableFuture.supplyAsync(GameController::new, simulationThreadPool))
+                        .map(future -> future.thenApplyAsync(e -> e.startGame("sim")))
+                        .peek(future -> future.exceptionally(throwable -> new GameResult(-1, throwable)))
+                        .collect(Collectors.toList());
 
-                System.out.println(sim);
-                log.info("Result: " + sim);
+                final var allFutures = CompletableFuture.allOf(futureSimulations.toArray(CompletableFuture[]::new));
 
+                System.out.println("Starting to simulate.."); //TODO find bug beneath this point
+
+                final var inputStream = System.in;
+                final var scan = new Scanner(inputStream);
+                var completeNum = 0;
+
+                // wait for all futures to complete
+                while ( !allFutures.isDone() ) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    while (hasUsrInput(inputStream)) {
+                        var line = scan.nextLine();
+
+                        if (line.equalsIgnoreCase("quit")) {
+                            System.out.println("Interrupting simulations...");
+
+                            futureSimulations.forEach(
+                                    future -> future.complete(
+                                            new GameResult(
+                                                    -1,
+                                                    new InterruptedException("quit before this game finished")
+                                            )
+                                    )
+                            );
+                            break;
+
+                        }
+
+                        if (line.equalsIgnoreCase("print")) {
+                            completeNum--;
+                            break;
+                        }
+
+                    }
+
+                    final var completeFutures = futureSimulations.stream()
+                            .filter(CompletableFuture::isDone)
+                            .collect(Collectors.toList());
+
+                    if (completeFutures.size() > completeNum) {
+                        completeNum = completeFutures.size();
+                        System.out.println(
+                                completeFutures.stream()
+                                        .map(CompletableFuture::join)
+                                        .collect(Collectors.toMap(GameResult::getResult, __ -> 1, Integer::sum))
+                        );
+                    }
+                }
+
+                System.out.println("Simulations finished!");
+
+                // This variable can be used to pull different data out of the simulations
+                final var gameResults =
+                        futureSimulations.stream()
+                                .map(CompletableFuture::join)
+                                .collect(Collectors.toList());
+
+
+                // log the finished result
+                log.info(
+                        "Result: " +
+                        gameResults.stream()
+                                .collect(Collectors.toMap(GameResult::getResult, __ -> 1, Integer::sum))
+                );
+                log.info(gameResults.toString());
                 System.exit(0);
             }
         }
         gameController.startGame(uiChoice);
     }
 
-
-    enum E_Result { //TODO make this a member of a class returning the result of a game from the gameController
-        SUCCESS,
-        FAILURE,
-        EXCEPTION // Add timed out as special case of result?
+    private static boolean hasUsrInput(InputStream in) {
+        try {
+            return in.available() > 0;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

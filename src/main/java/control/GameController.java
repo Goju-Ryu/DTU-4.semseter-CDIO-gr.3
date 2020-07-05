@@ -55,25 +55,26 @@ public class GameController implements I_GameController {
                 }
 
 //            log.info("Found " + moves.size() + " possible moves: " + moves);
-                Move move = boardCtrl.pickMove(moves);
+                try {
+                    Move move = boardCtrl.pickMove(moves);
 
-//            log.info("Chose move: " + move);
-                tui.promptPlayer(move);
+//                  log.info("Chose move: " + move);
+                    tui.promptPlayer(move);
 
-                if (move != null) {
-                    try {
-                        boardCtrl.makeMove(move);
-                    } catch (UnendingGameException e) {
-                        tui.promptPlayer("Game has entered an Unending Loop. So the game has ended.");
-                        return new GameResult(roundCount, E_Result.ENDLESS, e);
+                    if (move != null) {
+
+                            boardCtrl.makeMove(move);
+                    } else {
+                        return new GameResult(roundCount, new NullPointerException("move was unexpectedly null"));
                     }
-                } else {
-                    return new GameResult(roundCount, new NullPointerException("move was unexpectedly null"));
-                }
 
-                if (boardCtrl.hasWonGame()) {
-                    tui.promptPlayer("GAME WON! congratulaztions me!");
-                    return new GameResult(roundCount, E_Result.WON);
+                    if (boardCtrl.hasWonGame()) {
+                        tui.promptPlayer("GAME WON! congratulaztions me!");
+                        return new GameResult(roundCount, E_Result.WON);
+                    }
+                } catch (UnendingGameException e) {
+                    tui.promptPlayer("Game has entered an Unending Loop. So the game has ended.");
+                    return new GameResult(roundCount, E_Result.ENDLESS, e);
                 }
 
             } while (moves.size() > 0);
