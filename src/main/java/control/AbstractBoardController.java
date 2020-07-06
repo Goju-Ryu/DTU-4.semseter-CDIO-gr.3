@@ -68,12 +68,12 @@ public abstract class AbstractBoardController implements I_BoardController {
                     boolean improveCardReveal = false;
                     try {
                         var pile = boardModel.getPile(from);
-                        improveCardReveal = !pile.get(index).isFacedUp();
+                        improveCardReveal = !pile.get(index-1).isFacedUp();
                     } catch (Exception ignored) {}
 
 
                     Move move = new Move( to,from,index, improveAce, improveCardReveal, "Move Desc");
-                    move.setDepth(index + 1);
+                    move.setDepth(boardModel.getPile(from).size() - index);
                     moves.add(move);
                 }
             }
@@ -96,6 +96,18 @@ public abstract class AbstractBoardController implements I_BoardController {
         // now that the list is sorted. we return the best element, the first one.
         moves.sort(comp);
         return pickMove_repeatCheck( moves , 0);
+
+    }
+
+    public Move ranpickMove(List<Move> moves) throws UnendingGameException {
+
+        if(moves.size()==0)
+            return null;
+
+        int ran = ( (int)( Math.random() * ((moves.size() -1)) + 1));
+        ran = ran % (moves.size());
+
+        return moves.get(ran);
 
     }
 
