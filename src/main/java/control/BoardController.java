@@ -3,23 +3,12 @@ package control;
 import data.I_InputDTO;
 import data.InputDTO;
 import history.GameHistory;
-import history.I_GameHistory;
-import history.I_GameState;
 import model.GameCardDeck;
-import model.Move;
 import model.cabal.Board;
-import model.cabal.E_PileID;
-import model.cabal.I_BoardModel;
-import model.cabal.internals.I_SolitaireStacks;
-import model.cabal.internals.card.Card;
-import model.cabal.internals.card.E_CardSuit;
 import model.cabal.internals.card.I_CardModel;
-import model.error.UnendingGameException;
 import view.I_Tui;
 
-import java.util.*;
-
-import static model.cabal.E_PileID.*;
+import java.util.ArrayList;
 
 /**
 * This class is for the individual controlls of each Board,

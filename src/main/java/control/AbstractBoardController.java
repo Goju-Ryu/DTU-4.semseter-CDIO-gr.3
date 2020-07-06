@@ -169,7 +169,7 @@ public abstract class AbstractBoardController implements I_BoardController {
                 return moves.get(i);
             }
         }else{
-            throw new UnendingGameException("Game Entered Unending loop\n every move would lead to a repeated game state");
+            throw new UnendingGameException("Game Entered Unending loop. Every move would lead to a repeated game state");
         }
 
     }
