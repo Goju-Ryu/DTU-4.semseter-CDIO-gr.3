@@ -66,10 +66,10 @@ class DrawStackTest {
         //Testing turnCard() and getTopCard()
 
         DrawStack drawStack = createDrawstack(10,E_CardSuit.DIAMONDS);
-        I_CardModel card = new Card(E_CardSuit.DIAMONDS,1);
+        I_CardModel card = new Card(E_CardSuit.DIAMONDS,9);
 
         // When no card have been turned an Index out of bounds Exception will be thrown.
-        assertNull(drawStack.getTopCard(), "No card have been turned yet");
+        assertEquals(drawStack.getTopCard(), new Card(E_CardSuit.DIAMONDS, 10));
 
         drawStack.turnCard();
 
@@ -106,8 +106,8 @@ class DrawStackTest {
 
         // -1  0  1  2  3  4
         //  /  1  2  3  4  5
-        assertEquals(1, stack.getCard(0).getRank());
-        assertEquals(5, stack.getCard(stack.size()-1).getRank());
+        assertEquals(3, stack.getCard(0).getRank());
+        assertEquals(2, stack.getCard(stack.size()-1).getRank());
 
         stackIterator = stack.iterator();
         for (int i = 0; i < 5; i++) {
