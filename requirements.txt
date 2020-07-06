@@ -3,5 +3,5 @@ numpy==1.18.5
 opencv-contrib-python==4.2.0.34
 opencv-python==4.2.0.34
 protobuf==3.*
-grpc-tools==1.*
+grpcio-tools==1.*
 six==1.15.0
