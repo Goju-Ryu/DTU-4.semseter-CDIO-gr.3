@@ -6,8 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Scanner;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -43,12 +42,16 @@ public class Main {
                 int simNum = Integer.parseInt(args[1]);
 
 
-                final var simulationThreadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
+                final var simulationThreadPool = Executors.newWorkStealingPool(Runtime.getRuntime().availableProcessors() * 2);
 
                 final var futureSimulations = IntStream
                         .range(0, simNum)
                         .mapToObj( num -> CompletableFuture.supplyAsync(GameController::new, simulationThreadPool))
                         .map(future -> future.thenApplyAsync(e -> e.startGame("sim")))
+                        .peek(future -> future.completeOnTimeout(
+                                new GameResult(-1, (new TimeoutException("Game took too long to complete"))),
+                                10,
+                                TimeUnit.MINUTES))
                         .peek(future -> future.exceptionally(throwable -> new GameResult(-1, throwable)))
                         .collect(Collectors.toList());
 
