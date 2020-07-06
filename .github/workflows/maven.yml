@@ -15,16 +15,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 11
-      uses: actions/setup-java@v1
-      with:
-        java-version: 11
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-        architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
-    - run: python my_script.py
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      # set up java
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      # set up python
+      steps:
+        - uses: actions/checkout@v2
+        - name: Set up Python 3.8
+          uses: actions/setup-python@v2
+          with:
+            python-version: 3.8
+        - name: Install dependencies
+          run: |
+            python -m pip install --upgrade pip
+            pip install flake8 pytest
+            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        - name: Lint with flake8
+          run: |
+            # stop the build if there are Python syntax errors or undefined names
+            flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+            # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+            flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        - name: Test with pytest
+          run: |
+            pytest
+
+      # build project with maven
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
