@@ -108,11 +108,13 @@ class InputDTOTest {
             List<I_CardModel> listC = board.getPile(e);
             I_CardModel boardsCard = getTopCard(listC);
 
-            if(e == E_PileID.DRAWSTACK)
-                boardsCard = board.getPile(e).get(0);
-
-            assertEquals(mapsCard.getRank(), boardsCard.getRank());
-            assertEquals(mapsCard.getSuit(), boardsCard.getSuit());
+            if(mapsCard.isFacedUp()) {
+                assertTrue(boardsCard.isFacedUp());
+                assertEquals(mapsCard.getRank(), boardsCard.getRank());
+                assertEquals(mapsCard.getSuit(), boardsCard.getSuit());
+            } else {
+                assertFalse(boardsCard.isFacedUp());
+            }
         }
     }
     private I_CardModel getTopCard(List<I_CardModel> list){
