@@ -17,73 +17,18 @@ import java.util.List;
  * only does one. However this will use BoardController when i needs to make a move on the board
  */
 
-public class GameController implements I_GameController {
-
-    I_BoardController boardCtrl;
-    I_Tui tui;
-
-    public GameController() {
+public class GameController extends A_GameController implements I_GameController {
+    public GameController(String uiChoice) {
+        this(uiChoice, new Tui(true));
     }
 
-    @Override
-    public GameResult startGame(String uiChoice) {
-        if (uiChoice.equalsIgnoreCase("sim")) {
-            tui = new EmptyTui();
-            boardCtrl = new BoardControllerSimulated();
-        } else if (uiChoice.equalsIgnoreCase("std")) {
-            tui = new Tui(true);
-            boardCtrl = new BoardControllerSimulated(new RefBoard(RefBoard.stdBoard), new GameCardDeck());
-        } else {
-            tui = new Tui(true);
-            boardCtrl = new BoardController(uiChoice, tui);
-        }
-
-
-        return gameLoop();
+    private GameController(String uiChoice, I_Tui tui) {
+        this(tui, new BoardController(uiChoice, tui));
     }
 
-    private GameResult gameLoop() {
-        int roundCount = 0;
-        try {
-            List<Move> moves;
-            do {
-                roundCount++;
-                moves = boardCtrl.possibleMoves();
-
-                if (moves.size() <= 0) {
-                    return new GameResult(roundCount, E_Result.NO_MOVES);
-                }
-
-//            log.info("Found " + moves.size() + " possible moves: " + moves);
-                try {
-                    Move move = boardCtrl.pickMove(moves);
-
-//                  log.info("Chose move: " + move);
-                    tui.promptPlayer(move);
-
-                    if (move != null) {
-
-                            boardCtrl.makeMove(move);
-                    } else {
-                        return new GameResult(roundCount, new NullPointerException("move was unexpectedly null"));
-                    }
-
-                    if (boardCtrl.hasWonGame()) {
-                        tui.promptPlayer("GAME WON! congratulaztions me!");
-                        return new GameResult(roundCount, E_Result.WON);
-                    }
-                } catch (UnendingGameException e) {
-                    tui.promptPlayer("Game has entered an Unending Loop. So the game has ended.");
-                    return new GameResult(roundCount, E_Result.ENDLESS, e);
-                }
-
-            } while (moves.size() > 0);
-
-            return new GameResult(roundCount, new UnknownError("Exited game loop without resolving the game..."));
-        } catch (Throwable e) {
-            return new GameResult(roundCount, e);
-        }
+    <boardController extends BoardController>
+    GameController(I_Tui tui, boardController boardController) {
+        this.tui = tui;
+        boardCtrl = boardController;
     }
-
-
 }
