@@ -6,9 +6,14 @@ import view.I_Tui;
 
 import java.util.List;
 
-abstract public class A_GameController implements I_GameController {
+public class A_GameController implements I_GameController {
     protected I_BoardController boardCtrl;
     protected I_Tui tui;
+
+    public A_GameController(I_BoardController boardController, I_Tui tui) {
+        boardCtrl = boardController;
+        this.tui = tui;
+    }
 
     @Override
     public GameResult startGame(String UiChoice) {
