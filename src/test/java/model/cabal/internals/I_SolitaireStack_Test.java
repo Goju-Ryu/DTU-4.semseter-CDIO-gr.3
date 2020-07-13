@@ -114,14 +114,13 @@ public class I_SolitaireStack_Test {
         I_BoardModel board = new RefBoard( map);
 
         for (E_PileID e: E_PileID.values()) {
-            I_SolitaireStacks[] s = board.getPiles();
-            I_SolitaireStacks s2 = s[e.ordinal()];
-            I_CardModel thisTopCard = s2.getTopCard();
+            List<I_CardModel> cards = board.getPile(e);
+            I_CardModel thisTopCard = cards.get(cards.size() - 1);
             I_CardModel card;
             switch (e){
                 case DRAWSTACK:
                     card = new Card( HEARTS,13 );
-                    assertEquals(card, s2.getTopCard());
+                    assertEquals(card, cards.get(cards.size() - 1));
                     break;
                 case SUITSTACKHEARTS:
                     card = new Card( HEARTS,3 );
@@ -176,14 +175,13 @@ public class I_SolitaireStack_Test {
         I_BoardModel board = new RefBoard( map);
 
         for (E_PileID e: E_PileID.values()) {
-            I_SolitaireStacks[] s = board.getPiles();
-            I_SolitaireStacks s2 = s[e.ordinal()];
-            I_CardModel thisCard = s2.getCard( s2.size() - 1 );
+            List<I_CardModel> cards = board.getPile(e);
+            I_CardModel thisCard = cards.get(cards.size() - 1);
             I_CardModel card;
             switch (e){
                 case DRAWSTACK:
                     card = new Card( HEARTS,13 );
-                    ((DrawStack)s2).turnCard();
+                    ((DrawStack)cards).turnCard();
                     assertEquals(card, thisCard);
                     break;
                 case SUITSTACKHEARTS:
@@ -227,26 +225,6 @@ public class I_SolitaireStack_Test {
         }
     }
 
-
-    @Test
-    void getCardMatchTopCard() {
-        Map<String, List<I_CardModel>> map = createMap();
-        I_BoardModel board = new RefBoard( map);
-
-        for (E_PileID e: E_PileID.values()) {
-            I_SolitaireStacks[] s = board.getPiles();
-            I_SolitaireStacks s2 = s[e.ordinal()];
-            if (e.equals(DRAWSTACK))
-                ((DrawStack)s2).turnCard();
-            I_CardModel getCard = s2.getCard( s2.size() - 1 );
-            I_CardModel topCard = s2.getTopCard();
-            assertEquals(getCard, topCard);
-        }
-
-
-
-
-    }
 }
 
 

@@ -35,19 +35,7 @@ public interface I_BoardModel {
 
 //---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
 
-    /**
-     *
-     * @return Turn a new card from the draWStack and return it.
-     */
-    I_CardModel turnCard(Map<String, I_CardModel> imgData);
-
-    /**
-     *
-     * @return Get the top card in the pile of turned cards.
-     */
-    I_CardModel getTurnedCard();
-
-    I_SolitaireStacks[] getPiles();
+    //I_SolitaireStacks[] getPiles();
 
 //----------  Move card methods  -----------------------------------------------------------------------------
 

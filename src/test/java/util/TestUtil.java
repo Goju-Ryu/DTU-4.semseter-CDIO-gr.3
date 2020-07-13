@@ -51,10 +51,10 @@ class BoardEventListener extends Board implements PropertyChangeListener {
         Collection<I_CardModel> oldValue = ((Collection<I_CardModel>)event.getOldValue());
         Collection<I_CardModel> newValue = ((Collection<I_CardModel>)event.getNewValue());
         if (oldValue.size() > newValue.size()) {
-            getPiles()[pileID.ordinal()].retainAll(newValue);
+            get(pileID).retainAll(newValue);
         } else {
             newValue.removeAll(oldValue);
-            getPiles()[pileID.ordinal()].addAll(newValue);
+            get(pileID).addAll(newValue);
         }
     }
 }

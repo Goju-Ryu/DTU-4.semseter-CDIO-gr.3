@@ -113,10 +113,10 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         return List.copyOf(get(pile));
     }
 
-    @Override
-    public I_SolitaireStacks[] getPiles() {
-        return piles;
-    }
+//    @Override
+//    public I_SolitaireStacks[] getPiles() {
+//        return piles;
+//    }
 
     /**
      * checks if state is equal to physical board
@@ -185,31 +185,7 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
 
 //---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
 
-    @Override
-    public I_CardModel turnCard(Map<String, I_CardModel> imgData) {
-        var turnPile = (DrawStack) get(DRAWSTACK);
-
-        if (turnPile.isEmpty())
-            throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
-
-        var oldVal = List.copyOf(turnPile);
-        var returnable = turnPile.turnCard();
-
-        //Validate that state is still consistent with the physical board
-        validatePileState(DRAWSTACK, returnable, extractImgData(imgData, DRAWSTACK));
-
-        //notify history
-        change.firePropertyChange(makePropertyChangeEvent(DRAWSTACK, oldVal));
-
-        return returnable;
-    }
-
-    @Override
-    public I_CardModel getTurnedCard() {
-        return get(DRAWSTACK).getTopCard();
-    }
-
-//----------  Move card methods  -----------------------------------------------------------------------------
+    //----------  Move card methods  -----------------------------------------------------------------------------
 
     @Override
     public void move(final E_PileID origin, final int originPos, final E_PileID destination, Map<String, I_CardModel> imgData)

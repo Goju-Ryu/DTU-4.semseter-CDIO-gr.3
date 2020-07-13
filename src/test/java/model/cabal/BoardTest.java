@@ -69,7 +69,7 @@ class BoardTest {
                 continue;
             }
 
-            I_CardModel c = board.getPiles()[e.ordinal()].getTopCard();
+            I_CardModel c = board.getPile(e).get(board.getPile(e).size());
             assertEquals(map.get(e.name()).getRank(),c.getRank());
             String mapsSuit = map.get(e.toString()).getSuit().toString();
             boolean SuitMatches = mapsSuit.equals( c.getSuit().toString() );

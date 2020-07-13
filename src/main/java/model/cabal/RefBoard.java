@@ -87,32 +87,6 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
     }
 
     @Override
-    public I_SolitaireStacks[] getPiles() {
-        return piles;
-    }
-
-    // draw stack specific implementation.
-    @Override
-    public I_CardModel turnCard(Map<String, I_CardModel> imgData) {
-        DrawStack turnPile = (DrawStack) get(DRAWSTACK);
-        var oldVal = List.copyOf(get(DRAWSTACK));
-
-        if (turnPile.isEmpty())
-            throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
-
-        var turnCard = turnPile.turnCard();
-
-        change.firePropertyChange(makePropertyChangeEvent(DRAWSTACK, oldVal));
-
-        return turnCard;
-    }
-
-    @Override
-    public I_CardModel getTurnedCard() {
-        return piles[DRAWSTACK.ordinal()].getTopCard();
-    }
-
-    @Override
     public void move(E_PileID origin, int originPos, E_PileID destination, Map<String, I_CardModel> imgData) throws IllegalMoveException {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);

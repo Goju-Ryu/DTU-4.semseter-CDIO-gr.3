@@ -52,10 +52,6 @@ public abstract class AbstractBoardController implements I_BoardController {
 
                 for( int index = boardModel.getPile(from).size()-1 ; index >=0 ; index-- ){ // remember that draw pile can require more turned cards than size - 1
 
-                    // data for easy debugging
-                    I_SolitaireStacks s = boardModel.getPiles()[from.ordinal()];
-                    I_CardModel c = s.getCard(index);
-
                     // now we need to check if the move is even possible at this index.
                     if (!boardModel.canMoveFrom(from,index)) {
                         break;
