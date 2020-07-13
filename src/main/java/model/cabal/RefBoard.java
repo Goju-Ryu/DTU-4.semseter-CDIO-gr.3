@@ -1,7 +1,6 @@
 package model.cabal;
 
 import model.GameCardDeck;
-import model.Move;
 import model.cabal.internals.BuildStack;
 import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
@@ -18,7 +17,7 @@ import static java.util.AbstractMap.SimpleEntry;
 import static model.cabal.E_PileID.*;
 import static model.cabal.internals.card.E_CardSuit.*;
 
-public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
+public class RefBoard extends AbstractBoardBase implements I_BoardModel {
 
 
     /**
@@ -66,26 +65,6 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
     }
 
 
-    //InterFace implementation
-    @Override
-    public boolean isStackComplete(E_PileID pileID) {
-        I_SolitaireStacks pile = get(pileID);
-
-        if (pileID.isBuildStack())
-            return pile.getCard(0).getRank() == 1; // true if ace on top
-
-        if (pileID == DRAWSTACK)
-            return pile.isEmpty();
-
-        //Now we know only suit stacks are left
-        return pile.getCard(0).getRank() == 13; // true if suitStack has a king on top
-    }
-
-    @Override
-    public List<I_CardModel> getPile(E_PileID pile) {
-        return List.copyOf(get(pile));
-    }
-
     @Override
     public void move(E_PileID origin, int originPos, E_PileID destination, Map<String, I_CardModel> imgData) throws IllegalMoveException {
         I_SolitaireStacks from = get(origin);
@@ -101,26 +80,6 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         change.firePropertyChange(makePropertyChangeEvent(destination, oldTo));
     }
 
-    @Override
-    public boolean canMove(E_PileID origin, int originPos, E_PileID destination) {
-
-        I_SolitaireStacks from = get(origin);
-        I_SolitaireStacks to = get(destination);
-
-        Collection<I_CardModel> d = from.getSubset(originPos);
-        I_CardModel w = d.iterator().next();
-        boolean a = isValidMove(origin, originPos, destination);
-        boolean b = from.canMoveFrom(originPos);
-        boolean c = to.canMoveTo(d);
-
-        return a && b && c;
-    }
-
-    @Override
-    public boolean canMoveFrom(E_PileID origin, int range) {
-        I_SolitaireStacks from = get(origin);
-        return from.canMoveFrom(range);
-    }
 
     private static Map<String, List<I_CardModel>> randBoard() {
         var map = new HashMap<String, List<I_CardModel>>();
@@ -169,7 +128,7 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         return card;
     }
 
-    public static Map<String, List<I_CardModel>> stdBoard = Map.of(
+    public static final Map<String, List<I_CardModel>> stdBoard = Map.of(
             DRAWSTACK.name(), List.of( //24 cards
                     new Card(CLUBS,5),
                     new Card(SPADES, 3),
@@ -241,47 +200,8 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
             )
     );
 
-    @Override
-    public Map<E_PileID, List<I_CardModel>> makeMoveStateMap(Move m) {
 
-        I_SolitaireStacks from = get( m.moveFromStack() );
-        I_SolitaireStacks to   = get( m.moveToStack()   );
 
-        Collection<I_CardModel> subSet  = from.getSubset(m.moveFromRange());
-        Collection<I_CardModel> fromSet = new ArrayList<>(from);
-        fromSet.removeAll(subSet);
-        Collection<I_CardModel> toSet = new ArrayList<>(to);
-        toSet.addAll(subSet);
 
-        Map<E_PileID, List<I_CardModel>> map = new HashMap<>();
-        Collection<I_CardModel> col;
-
-        for (E_PileID e : E_PileID.values()) {
-
-            if (e == m.moveFromStack()) {
-
-                col = fromSet;
-
-            } else if (e == m.moveToStack()) {
-
-                col = toSet;
-
-            } else {
-
-                col = this.getPile(e);
-            }
-            map.put(e, new ArrayList<>(col) );
-        }
-        return map;
-    }
-
-    @Override
-    public void turnCardsToIndex( int index ){
-        DrawStack drawStack =(DrawStack) piles[DRAWSTACK.ordinal()];
-        int numberOfTurns = drawStack.size() - index;
-        for (int i = 1; i < numberOfTurns; i++) {
-            drawStack.turnCard();
-        }
-    }
 
 }

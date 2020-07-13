@@ -1,7 +1,6 @@
 package model.cabal;
 
-import model.Move;
-import model.cabal.internals.I_SolitaireStacks;
+import model.I_Move;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
@@ -32,10 +31,6 @@ public interface I_BoardModel {
      */
     boolean isStackComplete(E_PileID pileID);
 
-
-//---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
-
-    //I_SolitaireStacks[] getPiles();
 
 //----------  Move card methods  -----------------------------------------------------------------------------
 
@@ -109,7 +104,7 @@ public interface I_BoardModel {
      * is used to copy a Hashmap of the boards piles and values, to use in a state object.
      *
      */
-    Map<E_PileID, List<I_CardModel>> makeMoveStateMap(Move m);
+    Map<E_PileID, List<I_CardModel>> makeMoveStateMap(I_Move m);
 
     void turnCardsToIndex( int index );
 }
