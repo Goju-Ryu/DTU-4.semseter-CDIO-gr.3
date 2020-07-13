@@ -1,34 +1,65 @@
 package control;
 
-import model.GameCardDeck;
 import model.Move;
-import model.cabal.RefBoard;
 import model.error.UnendingGameException;
-import view.EmptyTui;
 import view.I_Tui;
-import view.Tui;
 
 import java.util.List;
 
-/**
- * This class is for controlling an entire game,
- * through multiple states of the game the difference on this and Board controller,
- * is that this acts in relation to multiple states of the game where as BoardController
- * only does one. However this will use BoardController when i needs to make a move on the board
- */
+public class GameController implements I_GameController {
+    protected I_BoardController boardCtrl;
+    protected I_Tui tui;
 
-public class GameController extends A_GameController implements I_GameController {
-    public GameController(String uiChoice) {
-        this(uiChoice, new Tui(true));
-    }
-
-    private GameController(String uiChoice, I_Tui tui) {
-        this(tui, new BoardController(uiChoice, tui));
-    }
-
-    <boardController extends BoardController>
-    GameController(I_Tui tui, boardController boardController) {
-        this.tui = tui;
+    public GameController(I_BoardController boardController, I_Tui tui) {
         boardCtrl = boardController;
+        this.tui = tui;
+    }
+
+    @Override
+    public GameResult startGame(String UiChoice) {
+        return gameLoop();
+    }
+
+    private GameResult gameLoop() {
+        int roundCount = 0;
+        try {
+            List<Move> moves;
+            do {
+                roundCount++;
+                moves = boardCtrl.possibleMoves();
+
+                if (moves.size() <= 0) {
+                    return new GameResult(roundCount, E_Result.NO_MOVES);
+                }
+
+//            log.info("Found " + moves.size() + " possible moves: " + moves);
+                try {
+                    Move move = boardCtrl.pickMove(moves);
+
+//                  log.info("Chose move: " + move);
+                    tui.promptPlayer(move);
+
+                    if (move != null) {
+
+                        boardCtrl.makeMove(move);
+                    } else {
+                        return new GameResult(roundCount, new NullPointerException("move was unexpectedly null"));
+                    }
+
+                    if (boardCtrl.hasWonGame()) {
+                        tui.promptPlayer("GAME WON! congratulaztions me!");
+                        return new GameResult(roundCount, E_Result.WON);
+                    }
+                } catch (UnendingGameException e) {
+                    tui.promptPlayer("Game has entered an Unending Loop. So the game has ended.");
+                    return new GameResult(roundCount, E_Result.ENDLESS, e);
+                }
+
+            } while (moves.size() > 0);
+
+            return new GameResult(roundCount, new UnknownError("Exited game loop without resolving the game..."));
+        } catch (Throwable e) {
+            return new GameResult(roundCount, e);
+        }
     }
 }

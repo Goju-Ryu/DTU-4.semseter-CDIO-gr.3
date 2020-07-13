@@ -125,7 +125,7 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
 
         change.firePropertyChange(makePropertyChangeEvent(origin, oldFrom));
         change.firePropertyChange(makePropertyChangeEvent(destination, oldTo));
-      }
+    }
 
     @Override
     public boolean canMove(E_PileID origin, int originPos, E_PileID destination) {

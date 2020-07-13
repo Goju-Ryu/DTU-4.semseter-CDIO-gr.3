@@ -1,4 +1,4 @@
-package control;
+import control.I_GameController;
 
 import java.io.IOException;
 import java.io.InputStream;

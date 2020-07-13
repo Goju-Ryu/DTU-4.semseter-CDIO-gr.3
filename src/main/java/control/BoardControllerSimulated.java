@@ -10,10 +10,7 @@ import model.cabal.I_BoardModel;
 import model.cabal.RefBoard;
 import model.cabal.internals.card.I_CardModel;
 
-import javax.management.AttributeValueExp;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static model.cabal.E_PileID.*;
 
@@ -26,7 +23,7 @@ import static model.cabal.E_PileID.*;
  * This controller is one Game controller uses everytime it needs to make
  * a move
  */
-public class BoardControllerSimulated extends AbstractBoardController {
+class BoardControllerSimulated extends AbstractBoardController {
 
     protected I_BoardModel refBoardModel;
 
@@ -38,7 +35,6 @@ public class BoardControllerSimulated extends AbstractBoardController {
     public BoardControllerSimulated() {
         this(new RefBoard(), new GameCardDeck());
     }
-
 
 
 

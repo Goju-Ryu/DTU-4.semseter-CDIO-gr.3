@@ -1,11 +1,10 @@
-import control.GameControllerBuilder;
-import control.GameExecutor;
-import control.I_GameController;
-import control.I_GameControllerBuilder;
+import control.*;
+import view.EmptyTui;
+import view.I_Tui;
+import view.Tui;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.InvalidParameterException;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -25,42 +24,35 @@ public class Main {
             e.printStackTrace();
         }
 
-        I_GameControllerBuilder gameBuilder = new GameControllerBuilder();
-        int numGames = 1;
+        I_GameControllerFactory gameFactory = new GameControllerFactory();
+        E_GameType type = (args.length > 0 ? E_GameType.valueOf(args[0]) : E_GameType.cam);
+        int numGames = (args.length > 1 ? Integer.parseInt(args[1]) : 1);
+        I_Tui tui;
 
-        if (args.length == 0) {
-            gameBuilder.setSimulation(false);
-            gameBuilder.setUiChoice("cam");
-        } else {
-            for (String arg : args) {
-                switch (arg) {
-                    case "sim":
-                        gameBuilder.setSimulation(true);
-                        gameBuilder.setRandomGame(true);
-                        break;
-                    case "std":
-                        gameBuilder.setSimulation(true);
-                        gameBuilder.setRandomGame(false);
-                        break;
-                    case "cam":
-                        gameBuilder.setSimulation(false);
-                        gameBuilder.setUiChoice(arg);
-                        break;
-                    case "gui":
-                        gameBuilder.setSimulation(false);
-                        gameBuilder.setUiChoice("ManGUI");
-                        break;
-                    default:
-                        try {
-                            numGames = Integer.parseInt(arg);
-                        } catch (Exception e) {
-                            new RuntimeException("Couldn't recognize Argument...", e).printStackTrace();
-                        }
-                }
-            }
+        switch (type) {
+            case cam:
+                tui = new Tui(true);
+                break;
+
+            case gui:
+                tui = new Tui(false);
+                break;
+
+            // These cases both use the same tui
+            case std:
+            case sim:
+                tui = new EmptyTui();
+                break;
+
+            default:
+                tui = new Tui(true);
+
         }
 
-        var gameResults = new GameExecutor(gameBuilder::build, numGames).getResults();
+
+
+
+        var gameResults = new GameExecutor(() -> gameFactory.getBoardController(type), numGames).getResults();
 
         // log the finished result
         log.info(
