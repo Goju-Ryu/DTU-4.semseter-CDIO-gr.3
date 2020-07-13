@@ -1,44 +1,22 @@
 package control;
 
-import model.GameCardDeck;
 import model.Move;
-import model.cabal.RefBoard;
 import model.error.UnendingGameException;
-import view.EmptyTui;
 import view.I_Tui;
-import view.Tui;
 
 import java.util.List;
 
-/**
- * This class is for controlling an entire game,
- * through multiple states of the game the difference on this and Board controller,
- * is that this acts in relation to multiple states of the game where as BoardController
- * only does one. However this will use BoardController when i needs to make a move on the board
- */
-
 public class GameController implements I_GameController {
+    protected I_BoardController boardCtrl;
+    protected I_Tui tui;
 
-    I_BoardController boardCtrl;
-    I_Tui tui;
-
-    public GameController() {
+    public GameController(I_BoardController boardController, I_Tui tui) {
+        boardCtrl = boardController;
+        this.tui = tui;
     }
 
     @Override
-    public GameResult startGame(String uiChoice) {
-        if (uiChoice.equalsIgnoreCase("sim")) {
-            tui = new EmptyTui();
-            boardCtrl = new BoardControllerSimulated();
-        } else if (uiChoice.equalsIgnoreCase("std")) {
-            tui = new Tui(true);
-            boardCtrl = new BoardControllerSimulated(new RefBoard(RefBoard.stdBoard), new GameCardDeck());
-        } else {
-            tui = new Tui(true);
-            boardCtrl = new BoardController(uiChoice, tui);
-        }
-
-
+    public GameResult startGame(String UiChoice) {
         return gameLoop();
     }
 
@@ -63,7 +41,7 @@ public class GameController implements I_GameController {
 
                     if (move != null) {
 
-                            boardCtrl.makeMove(move);
+                        boardCtrl.makeMove(move);
                     } else {
                         return new GameResult(roundCount, new NullPointerException("move was unexpectedly null"));
                     }
@@ -84,6 +62,4 @@ public class GameController implements I_GameController {
             return new GameResult(roundCount, e);
         }
     }
-
-
 }

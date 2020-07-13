@@ -19,7 +19,7 @@ import java.util.ArrayList;
 * This controller is one Game controller uses everytime it needs to make
 * a move
 */
-public class BoardController extends AbstractBoardController {
+class BoardController extends AbstractBoardController {
 
     public BoardController(String uiChoice, I_Tui tui) {
         this(new InputDTO(uiChoice), tui);

@@ -21,9 +21,17 @@ import static model.cabal.internals.card.E_CardSuit.*;
 public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
 
 
+    /**
+     * A constructor making a randomly setup RefBoard
+     */
     public RefBoard() {
         this(randBoard());
     }
+
+    /**
+     * A constructor making a new RefBoard with the layout of the provided board
+     * @param boardModel The layout to copy
+     */
     public RefBoard(I_BoardModel boardModel) {
         this(Arrays.stream(E_PileID.values())
                 .map(pileID -> new SimpleEntry<>(pileID.name(), boardModel.getPile(pileID)))
@@ -31,7 +39,10 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         );
     }
 
-    //Constructors
+    /**
+     * A constructor making a new RefBoard with the provided layout
+     * @param boardData The layout to copy
+     */
     public RefBoard(Map<String, List<I_CardModel>> boardData) { //TODO board should take imgData to initialize self
         piles = new I_SolitaireStacks[E_PileID.values().length];
         change = new PropertyChangeSupport(this);
@@ -114,7 +125,7 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
 
         change.firePropertyChange(makePropertyChangeEvent(origin, oldFrom));
         change.firePropertyChange(makePropertyChangeEvent(destination, oldTo));
-      }
+    }
 
     @Override
     public boolean canMove(E_PileID origin, int originPos, E_PileID destination) {

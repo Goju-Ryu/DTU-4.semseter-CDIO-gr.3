@@ -113,15 +113,9 @@ public abstract class AbstractBoardController implements I_BoardController {
 
     @Override
     public void makeMove(final Move move) throws UnendingGameException {
+        drawStackMove(move, boardModel);
 
-        I_CardModel c = boardModel.getPile(move.moveFromStack()).get(move.moveFromRange());
-        if( move.moveFromStack() == DRAWSTACK ){
-            drawStackMove(move, boardModel);
-        }else {
-            boardModel.move(move.moveFromStack(), move.moveFromRange(), move.moveToStack(), inputDTO.getUsrInput());
-        }
-
-        if (  history.isRepeatState() ){
+        if (  history.isRepeatState() ){ //TODO is this check redundant?
             Collection<I_GameState> s = history.getRepeatStates();
             throw new UnendingGameException("I have been in this state before...");
         }
@@ -130,7 +124,6 @@ public abstract class AbstractBoardController implements I_BoardController {
     protected void drawStackMove(Move move, I_BoardModel boardModel) {
         if (boardModel != null) {
             if( move.moveFromStack() == DRAWSTACK ){
-
                 boardModel.turnCardsToIndex(move.moveFromRange());
                 int index = boardModel.getPile(DRAWSTACK).size() -1;
                 boardModel.move(move.moveFromStack(),  index, move.moveToStack(), inputDTO.getUsrInput());
