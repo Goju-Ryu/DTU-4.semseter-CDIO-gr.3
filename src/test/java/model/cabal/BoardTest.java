@@ -16,11 +16,11 @@ class BoardTest {
 
     @Test
     void constructor() {
-        Map<String, I_CardModel> map = new HashMap<>();
+        Map<E_PileID, I_CardModel> map = new HashMap<>();
         for (int i = 2; i <= 7; i++) {
-            map.put("BUILDSTACK" + i, new Card(E_CardSuit.SPADES, i+1));
+            map.put(E_PileID.valueOf("BUILDSTACK" + i), new Card(E_CardSuit.SPADES, i+1));
         }
-        map.put("BUILDSTACK1", new Card(E_CardSuit.SPADES, 1));
+        map.put(E_PileID.valueOf("BUILDSTACK1"), new Card(E_CardSuit.SPADES, 1));
 
         I_BoardModel board = new Board(map, new GameCardDeck());
 
@@ -33,7 +33,7 @@ class BoardTest {
     @Test
     void isStackComplete() { //TODO Actually test the method it says it does
 
-        Map<String, I_CardModel> map = new HashMap<>();
+        Map<E_PileID, I_CardModel> map = new HashMap<>();
 
         int i = 1;
         for (E_PileID e: E_PileID.values()) {
@@ -43,7 +43,7 @@ class BoardTest {
                 continue;
             }
 
-            map.put( e.name() , new Card(E_CardSuit.SPADES, i++) );
+            map.put( e , new Card(E_CardSuit.SPADES, i++) );
         }
         var deck = new GameCardDeck();
         var test = TestUtil.getTestReadyBoard(map);

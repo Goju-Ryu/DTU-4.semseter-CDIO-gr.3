@@ -66,7 +66,7 @@ public class RefBoard extends AbstractBoardBase implements I_BoardModel {
 
 
     @Override
-    public void move(E_PileID origin, int originPos, E_PileID destination, Map<String, I_CardModel> imgData) throws IllegalMoveException {
+    public void move(E_PileID origin, int originPos, E_PileID destination, Map<E_PileID, I_CardModel> imgData) throws IllegalMoveException {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 

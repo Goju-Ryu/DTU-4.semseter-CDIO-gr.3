@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TestUtil {
-    public static AbstractMap.SimpleImmutableEntry<I_BoardModel, I_InputDTO> getTestReadyBoard(Map<String, I_CardModel> imgData) {
+    public static AbstractMap.SimpleImmutableEntry<I_BoardModel, I_InputDTO> getTestReadyBoard(Map<E_PileID, I_CardModel> imgData) {
         var deck = new GameCardDeck();
         I_BoardModel boardModel = new BoardEventListener(imgData, deck);
         I_BoardModel ref = new RefBoard(boardModel);
@@ -26,7 +26,7 @@ public class TestUtil {
     }
 
     public static AbstractMap.SimpleImmutableEntry<I_BoardModel, I_InputDTO>
-    getTestReadyBoard(Map<String, I_CardModel> imgData, List<I_CardModel> drawStack) {
+    getTestReadyBoard(Map<E_PileID, I_CardModel> imgData, List<I_CardModel> drawStack) {
         var deck = new GameCardDeck();
         I_BoardModel boardModel = new BoardEventListener(imgData, deck, drawStack);
         I_BoardModel ref = new RefBoard(boardModel);
@@ -36,11 +36,11 @@ public class TestUtil {
 }
 
 class BoardEventListener extends Board implements PropertyChangeListener {
-    BoardEventListener(Map<String, I_CardModel> imgData, GameCardDeck gameDeck) {
+    BoardEventListener(Map<E_PileID, I_CardModel> imgData, GameCardDeck gameDeck) {
         super(imgData, gameDeck);
     }
 
-    BoardEventListener(Map<String, I_CardModel> imgData, GameCardDeck gameDeck, List<I_CardModel> drawStack) {
+    BoardEventListener(Map<E_PileID, I_CardModel> imgData, GameCardDeck gameDeck, List<I_CardModel> drawStack) {
         super(imgData, gameDeck, drawStack);
     }
 

@@ -3,7 +3,6 @@ package data;
 import model.GameCardDeck;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
-import model.cabal.internals.card.Card;
 import model.cabal.internals.card.I_CardModel;
 
 import java.util.*;
@@ -55,7 +54,7 @@ public class InputSimDTO implements I_InputDTO {
     }
 
     @Override
-    public Map<String, I_CardModel> getUsrInput(){
+    public Map<E_PileID, I_CardModel> getUsrInput(){
         if (boardModel != null)
             return getImgData(boardModel);
 
@@ -68,14 +67,14 @@ public class InputSimDTO implements I_InputDTO {
      * @param board The board to which the data should conform;
      * @return a map representing imgData as in the actual system
      */
-    private Map<String, I_CardModel> getImgData(I_BoardModel board) {
+    private Map<E_PileID, I_CardModel> getImgData(I_BoardModel board) {
         var excluded = new ArrayList<Integer>();
         var data = Stream.of(E_PileID.values())
                 .filter(pile -> !board.getPile(pile).isEmpty())
                 .map( // transforms elements of the stream to mapEntries
                         pile -> {
                             var pileList = board.getPile(pile);
-                            return new AbstractMap.SimpleEntry<>(pile.name(), pileList.get(pileList.size() - 1));
+                            return new AbstractMap.SimpleEntry<>(pile, pileList.get(pileList.size() - 1));
                         }
                 )
                 .filter(entry -> entry.getValue() != null )
@@ -96,10 +95,10 @@ public class InputSimDTO implements I_InputDTO {
      * Artificially makes an imageData that contains a random set of face up cards.
      * @return a map representing imgData as in the actual system
      */
-    private Map<String, I_CardModel> getImgData() {
+    private Map<E_PileID, I_CardModel> getImgData() {
         var excluded = new ArrayList<Integer>();
         return Stream.of(E_PileID.values())
-                .map(pile -> new AbstractMap.SimpleEntry<>(pile.name(), getRandCard(excluded)))
+                .map(pile -> new AbstractMap.SimpleEntry<>(pile, getRandCard(excluded)))
                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
     }
 

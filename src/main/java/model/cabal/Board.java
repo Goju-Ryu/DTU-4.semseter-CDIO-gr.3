@@ -24,7 +24,7 @@ import static model.cabal.E_PileID.*;
  */
 public class Board extends AbstractBoardBase implements I_BoardModel {
 
-    public Board(Map<String, I_CardModel> imgData, GameCardDeck cardDeck) { //TODO board should take imgData to initialize self
+    public Board(Map<E_PileID, I_CardModel> imgData, GameCardDeck cardDeck) { //TODO board should take imgData to initialize self
         deck = cardDeck;
         change = new PropertyChangeSupport(this);
         piles = new I_SolitaireStacks[E_PileID.values().length];
@@ -50,7 +50,7 @@ public class Board extends AbstractBoardBase implements I_BoardModel {
 
         for (E_PileID pileID : E_PileID.values()) {
             try {
-                var data = extractImgData(imgData, pileID);
+                var data = imgData.get(pileID);
 
                 if (data != null) {
 
@@ -85,7 +85,7 @@ public class Board extends AbstractBoardBase implements I_BoardModel {
      * @param imgData   the initializing data, often taken from the camera
      * @param drawStack A list of alll cards in the draw stack in the physical board / simulated board.
      */
-    public Board(Map<String, I_CardModel> imgData, GameCardDeck cardDeck, List<I_CardModel> drawStack) {
+    public Board(Map<E_PileID, I_CardModel> imgData, GameCardDeck cardDeck, List<I_CardModel> drawStack) {
         this(imgData, cardDeck);
         get(DRAWSTACK).clear();
         var filteredDrawStack = drawStack.stream().filter(Objects::nonNull).collect(Collectors.toList());
@@ -96,21 +96,16 @@ public class Board extends AbstractBoardBase implements I_BoardModel {
 //---------  Genneral methods  -------------------------------------------------------------------------------------
 
 
-//    @Override
-//    public I_SolitaireStacks[] getPiles() {
-//        return piles;
-//    }
-
     /**
      * checks if state is equal to physical board
      *
      * @param imgData state to validate against
      * @throws IllegalStateException if state is out of sync
      */
-    private void validateState(Map<String, I_CardModel> imgData) throws IllegalStateException {
+    private void validateState(Map<E_PileID, I_CardModel> imgData) throws IllegalStateException {
         for (E_PileID pileID : E_PileID.values()) {
             var pile = piles[pileID.ordinal()];
-            var imgCard = extractImgData(imgData, pileID);
+            var imgCard = imgData.get(pileID);
 
 
             validatePileState(pileID, pile.isEmpty() ? null : pile.getTopCard(), imgCard);
@@ -171,7 +166,7 @@ public class Board extends AbstractBoardBase implements I_BoardModel {
     //----------  Move card methods  -----------------------------------------------------------------------------
 
     @Override
-    public void move(final E_PileID origin, final int originPos, final E_PileID destination, Map<String, I_CardModel> imgData)
+    public void move(final E_PileID origin, final int originPos, final E_PileID destination, Map<E_PileID, I_CardModel> imgData)
             throws IllegalMoveException {
 
         I_SolitaireStacks from = get(origin);
@@ -200,12 +195,12 @@ public class Board extends AbstractBoardBase implements I_BoardModel {
         validatePileState(
                 origin,
                 from.isEmpty() ? null : from.getTopCard(),
-                extractImgData(imgData, origin)
+                imgData.get(origin)
         );
         validatePileState(
                 destination,
                 to.isEmpty() ? null : to.getTopCard(),
-                extractImgData(imgData, destination)
+                imgData.get(destination)
         );
 
         //notify listeners om state before and after state change

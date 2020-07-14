@@ -93,8 +93,8 @@ class GameHistoryTest {
 
         var game = getTestReadyBoard(
                 Map.of(
-                        BUILDSTACK1.name(), new Card(HEARTS, 1),
-                        BUILDSTACK2.name(), new Card(CLUBS, 2)
+                        BUILDSTACK1, new Card(HEARTS, 1),
+                        BUILDSTACK2, new Card(CLUBS, 2)
                 )
         );
 
@@ -115,8 +115,8 @@ class GameHistoryTest {
     void boardIntegrationTest() {
         var game = getTestReadyBoard(
                 Map.of(
-                        BUILDSTACK1.name(), new Card(HEARTS, 1),
-                        BUILDSTACK2.name(), new Card(CLUBS, 2)
+                        BUILDSTACK1, new Card(HEARTS, 1),
+                        BUILDSTACK2, new Card(CLUBS, 2)
                 )
         );
 

@@ -46,11 +46,11 @@ class InputDTOTest {
     void deserializeJson(){
         String a = "{\"DRAWSTACK\": {\"suit\": \"HEARTS\", \"rank\": 2, \"isFacedUp\": \"true\"}, \"SUITSTACKHEARTS\": null, \"SUITSTACKCLUBS\": null, \"SUITSTACKDIAMONDS\": null, \"SUITSTACKSPADES\": null, \"BUILDSTACK1\": {\"suit\": \"HEARTS\", \"rank\": 3, \"isFacedUp\": \"true\"}, \"BUILDSTACK2\": {\"suit\": \"SPADES\", \"rank\": 4, \"isFacedUp\": \"true\"}, \"BUILDSTACK3\": {\"suit\": \"DIAMONDS\", \"rank\": 5, \"isFacedUp\": \"true\"}, \"BUILDSTACK4\": {\"suit\": \"HEARTS\", \"rank\": 6, \"isFacedUp\": \"true\"}, \"BUILDSTACK5\": {\"suit\": \"CLUBS\", \"rank\": 7, \"isFacedUp\": \"true\"}, \"BUILDSTACK6\": {\"suit\": \"HEARTS\", \"rank\": 9, \"isFacedUp\": \"true\"}, \"BUILDSTACK7\": {\"suit\": \"HEARTS\", \"rank\": 10, \"isFacedUp\": \"true\"}}";
         InputDTO dto = new InputDTO("testing");
-        Map<String , I_CardModel> map = dto.deserializeJson(a);
+        Map<E_PileID , I_CardModel> map = dto.deserializeJson(a);
         System.out.println(map);
 
         for (E_PileID e: E_PileID.values()) {
-            I_CardModel mapsCard = map.get(e.toString());
+            I_CardModel mapsCard = map.get(e);
             switch(e){
                 case DRAWSTACK:
                     assertEquals(2,mapsCard.getRank());
@@ -92,7 +92,7 @@ class InputDTOTest {
     void deserializeJson_AndBoardModel(){
         String a = "{\"DRAWSTACK\": {\"suit\": \"HEARTS\", \"rank\": 2, \"isFacedUp\": \"true\"}, \"SUITSTACKHEARTS\": null, \"SUITSTACKCLUBS\": null, \"SUITSTACKDIAMONDS\": null, \"SUITSTACKSPADES\": null, \"BUILDSTACK1\": {\"suit\": \"HEARTS\", \"rank\": 3, \"isFacedUp\": \"true\"}, \"BUILDSTACK2\": {\"suit\": \"SPADES\", \"rank\": 4, \"isFacedUp\": \"true\"}, \"BUILDSTACK3\": {\"suit\": \"DIAMONDS\", \"rank\": 5, \"isFacedUp\": \"true\"}, \"BUILDSTACK4\": {\"suit\": \"HEARTS\", \"rank\": 6, \"isFacedUp\": \"true\"}, \"BUILDSTACK5\": {\"suit\": \"CLUBS\", \"rank\": 7, \"isFacedUp\": \"true\"}, \"BUILDSTACK6\": {\"suit\": \"HEARTS\", \"rank\": 9, \"isFacedUp\": \"true\"}, \"BUILDSTACK7\": {\"suit\": \"HEARTS\", \"rank\": 10, \"isFacedUp\": \"true\"}}";
         InputDTO dto = new InputDTO("testing");
-        Map<String , I_CardModel> map = dto.deserializeJson(a);
+        Map<E_PileID , I_CardModel> map = dto.deserializeJson(a);
         System.out.println(map);
 
         // checking the combination of the Board

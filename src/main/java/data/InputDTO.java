@@ -34,7 +34,7 @@ public class InputDTO implements I_InputDTO {
 
     //TODO Modify to take just one card when uiType == RevealCardGUI
     @Override
-    public Map<String, I_CardModel> getUsrInput(){
+    public Map<E_PileID, I_CardModel> getUsrInput(){
 
         ArrayList<Card> cards = new ArrayList<>();
         String usrInput ="";
@@ -74,11 +74,11 @@ public class InputDTO implements I_InputDTO {
      * @return a map representation of the top card of each pile in the physical game with the
      * {@code E_PileID.name()} as key to the card in the corresponding pile.
      */
-    Map<String, I_CardModel> deserializeJson(String jsonString){
+    Map<E_PileID, I_CardModel> deserializeJson(String jsonString){
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.serializeNulls();
         Gson gson = gsonBuilder.setPrettyPrinting().create();
-        Type mapType = new TypeToken<Map<String, Card>>(){}.getType();
+        Type mapType = new TypeToken<Map<E_PileID, Card>>(){}.getType();
         log.info("Deserialising: " + jsonString);
         return gson.fromJson(jsonString, mapType);
     }
