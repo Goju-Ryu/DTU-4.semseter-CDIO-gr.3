@@ -47,10 +47,10 @@ public class RefBoard extends AbstractBoardBase implements I_BoardModel {
         change = new PropertyChangeSupport(this);
 
         piles[DRAWSTACK.ordinal()] = new DrawStack();
-        piles[SUITSTACKHEARTS.ordinal()]  = new SuitStack();
-        piles[SUITSTACKDIAMONDS.ordinal()] = new SuitStack();
-        piles[SUITSTACKCLUBS.ordinal()]   = new SuitStack();
-        piles[SUITSTACKSPADES.ordinal()]  = new SuitStack();
+        piles[SUITSTACK_HEARTS.ordinal()]  = new SuitStack();
+        piles[SUITSTACK_DIAMONDS.ordinal()] = new SuitStack();
+        piles[SUITSTACK_CLUBS.ordinal()]   = new SuitStack();
+        piles[SUITSTACK_SPADES.ordinal()]  = new SuitStack();
 
         for (E_PileID pileID : E_PileID.values()) {
             if (pileID.isBuildStack())
@@ -96,7 +96,7 @@ public class RefBoard extends AbstractBoardBase implements I_BoardModel {
             for (int j = 0; j < i; j++) {
                 buildStack.add(getRandCard(deck));
             }
-            map.put(BUILDSTACK1.name().replace("1", Integer.toString(i)), buildStack);
+            map.put(BUILDSTACK_1.name().replace("1", Integer.toString(i)), buildStack);
         }
 
 
@@ -156,32 +156,32 @@ public class RefBoard extends AbstractBoardBase implements I_BoardModel {
                     new Card(DIAMONDS, 1)
 
             ),
-            BUILDSTACK1.name(), List.of( // 1 card
+            BUILDSTACK_1.name(), List.of( // 1 card
                     new Card(CLUBS,11)
             ),
-            BUILDSTACK2.name(), List.of( // 2 cards
+            BUILDSTACK_2.name(), List.of( // 2 cards
                     new Card(SPADES,8),
                     new Card(SPADES,1)
             ),
-            BUILDSTACK3.name(), List.of( // 3 cards
+            BUILDSTACK_3.name(), List.of( // 3 cards
                     new Card(SPADES,13),
                     new Card(DIAMONDS,13),
                     new Card(SPADES,4)
             ),
-            BUILDSTACK4.name(), List.of( // 4 cards
+            BUILDSTACK_4.name(), List.of( // 4 cards
                     new Card(CLUBS,3),
                     new Card(DIAMONDS,4),
                     new Card(SPADES,10),
                     new Card(HEARTS,8)
             ),
-            BUILDSTACK5.name(), List.of( // 5 cards
+            BUILDSTACK_5.name(), List.of( // 5 cards
                     new Card(DIAMONDS,8),
                     new Card(CLUBS,4),
                     new Card(DIAMONDS,3),
                     new Card(HEARTS,7),
                     new Card(DIAMONDS,2)
             ),
-            BUILDSTACK6.name(), List.of( // 6 cards
+            BUILDSTACK_6.name(), List.of( // 6 cards
                     new Card(CLUBS,1),
                     new Card(HEARTS,13),
                     new Card(DIAMONDS,6),
@@ -189,7 +189,7 @@ public class RefBoard extends AbstractBoardBase implements I_BoardModel {
                     new Card(HEARTS,6),
                     new Card(CLUBS,6)
             ),
-            BUILDSTACK7.name(), List.of( // 7 cards
+            BUILDSTACK_7.name(), List.of( // 7 cards
                     new Card(HEARTS,9),
                     new Card(CLUBS,12),
                     new Card(SPADES,2),

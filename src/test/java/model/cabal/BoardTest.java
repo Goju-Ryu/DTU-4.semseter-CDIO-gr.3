@@ -18,16 +18,16 @@ class BoardTest {
     void constructor() {
         Map<E_PileID, I_CardModel> map = new HashMap<>();
         for (int i = 2; i <= 7; i++) {
-            map.put(E_PileID.valueOf("BUILDSTACK" + i), new Card(E_CardSuit.SPADES, i+1));
+            map.put(E_PileID.valueOf("BUILDSTACK_" + i), new Card(E_CardSuit.SPADES, i+1));
         }
-        map.put(E_PileID.valueOf("BUILDSTACK1"), new Card(E_CardSuit.SPADES, 1));
+        map.put(E_PileID.valueOf("BUILDSTACK_1"), new Card(E_CardSuit.SPADES, 1));
 
         I_BoardModel board = new Board(map, new GameCardDeck());
 
-        assertEquals(7, board.getPile(E_PileID.BUILDSTACK7).size());
-        assertEquals(1, board.getPile(E_PileID.BUILDSTACK1).size());
+        assertEquals(7, board.getPile(E_PileID.BUILDSTACK_7).size());
+        assertEquals(1, board.getPile(E_PileID.BUILDSTACK_1).size());
         assertEquals(24, board.getPile(E_PileID.DRAWSTACK).size());
-        assertEquals(0, board.getPile(E_PileID.SUITSTACKHEARTS).size());
+        assertEquals(0, board.getPile(E_PileID.SUITSTACK_HEARTS).size());
     }
 
     @Test
@@ -56,22 +56,22 @@ class BoardTest {
             // specificly for the ace piles
             if (size == 0){
                 boolean acePile = false;
-                if(e == E_PileID.SUITSTACKCLUBS)
+                if(e == E_PileID.SUITSTACK_CLUBS)
                     acePile = true;
-                if(e == E_PileID.SUITSTACKDIAMONDS)
+                if(e == E_PileID.SUITSTACK_DIAMONDS)
                     acePile = true;
-                if(e == E_PileID.SUITSTACKHEARTS)
+                if(e == E_PileID.SUITSTACK_HEARTS)
                     acePile = true;
-                if(e == E_PileID.SUITSTACKSPADES)
+                if(e == E_PileID.SUITSTACK_SPADES)
                     acePile = true;
 
                 assertTrue(acePile);
                 continue;
             }
 
-            I_CardModel c = board.getPile(e).get(board.getPile(e).size());
-            assertEquals(map.get(e.name()).getRank(),c.getRank());
-            String mapsSuit = map.get(e.toString()).getSuit().toString();
+            I_CardModel c = board.getPile(e).get(board.getPile(e).size() - 1);
+            assertEquals(map.get(e).getRank(),c.getRank());
+            String mapsSuit = map.get(e).getSuit().toString();
             boolean SuitMatches = mapsSuit.equals( c.getSuit().toString() );
             assertTrue(SuitMatches);
         }
@@ -81,37 +81,37 @@ class BoardTest {
                 case DRAWSTACK:
                     assertEquals(25,board.getPile(e).size());
                     break;
-                case SUITSTACKCLUBS:
+                case SUITSTACK_CLUBS:
                     assertEquals(0,board.getPile(e).size());
                     break;
-                case SUITSTACKDIAMONDS:
+                case SUITSTACK_DIAMONDS:
                     assertEquals(0,board.getPile(e).size());
                     break;
-                case SUITSTACKHEARTS:
+                case SUITSTACK_HEARTS:
                     assertEquals(0,board.getPile(e).size());
                     break;
-                case SUITSTACKSPADES:
+                case SUITSTACK_SPADES:
                     assertEquals(0,board.getPile(e).size());
                     break;
-                case BUILDSTACK1:
+                case BUILDSTACK_1:
                     assertEquals(1,board.getPile(e).size());
                     break;
-                case BUILDSTACK2:
+                case BUILDSTACK_2:
                     assertEquals(2,board.getPile(e).size());
                     break;
-                case BUILDSTACK3:
+                case BUILDSTACK_3:
                     assertEquals(3,board.getPile(e).size());
                     break;
-                case BUILDSTACK4:
+                case BUILDSTACK_4:
                     assertEquals(4,board.getPile(e).size());
                     break;
-                case BUILDSTACK5:
+                case BUILDSTACK_5:
                     assertEquals(5,board.getPile(e).size());
                     break;
-                case BUILDSTACK6:
+                case BUILDSTACK_6:
                     assertEquals(6,board.getPile(e).size());
                     break;
-                case BUILDSTACK7:
+                case BUILDSTACK_7:
                     assertEquals(7,board.getPile(e).size());
             }
         }

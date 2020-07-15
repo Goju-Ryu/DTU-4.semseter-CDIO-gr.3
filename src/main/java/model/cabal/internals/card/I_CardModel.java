@@ -35,6 +35,7 @@ public interface I_CardModel {
     /**
      * A normal toString method that returns the
      */
+    @Override
     String toString();
 
 }

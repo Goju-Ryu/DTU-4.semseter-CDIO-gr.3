@@ -3,6 +3,7 @@ package model.cabal;
 import model.GameCardDeck;
 import model.I_Move;
 import model.cabal.internals.DrawStack;
+import model.cabal.internals.I_Drawable;
 import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
@@ -20,16 +21,6 @@ public abstract class AbstractBoardBase implements I_BoardModel {
     protected I_SolitaireStacks[] piles;
     protected GameCardDeck deck;
     protected PropertyChangeSupport change;
-
-    /**
-     * Query the map for the relevant data and return it.
-     * @param imgData The map of data to check extract the data from
-     * @param key The pile to which the data should correspond
-     * @return The data the map contains about the given pile
-     */
-    protected I_CardModel extractImgData(Map<String, I_CardModel> imgData, E_PileID key) {
-        return imgData.getOrDefault(key.name(), null); //This assumes a strict naming scheme and will return null if not found
-    }
 
     protected I_SolitaireStacks get(E_PileID pile){
         return piles[pile.ordinal()];
@@ -51,19 +42,19 @@ public abstract class AbstractBoardBase implements I_BoardModel {
             return false;
 
         switch (to) {
-            case SUITSTACKHEARTS:
+            case SUITSTACK_HEARTS:
                 if(!c.getSuit().equals(HEARTS))
                     return false;
                 break;
-            case SUITSTACKDIAMONDS:
+            case SUITSTACK_DIAMONDS:
                 if(!c.getSuit().equals(DIAMONDS))
                     return false;
                 break;
-            case SUITSTACKSPADES:
+            case SUITSTACK_SPADES:
                 if(!c.getSuit().equals(SPADES))
                     return false;
                 break;
-            case SUITSTACKCLUBS:
+            case SUITSTACK_CLUBS:
                 if(!c.getSuit().equals(CLUBS))
                     return false;
                 break;
@@ -170,10 +161,10 @@ public abstract class AbstractBoardBase implements I_BoardModel {
 
     @Override
     public void turnCardsToIndex( int index ){
-        DrawStack drawStack = (DrawStack) get( DRAWSTACK );
+        I_SolitaireStacks drawStack = get( DRAWSTACK );
         int numberOfTurns = drawStack.size() - index;
         for (int i = 1; i < numberOfTurns; i++) {
-            drawStack.turnCard();
+            ((I_Drawable) drawStack).turnCard();
         }
     }
 

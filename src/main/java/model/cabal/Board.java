@@ -30,10 +30,10 @@ public class Board extends AbstractBoardBase implements I_BoardModel {
         piles = new I_SolitaireStacks[E_PileID.values().length];
 
         piles[DRAWSTACK.ordinal()] = new DrawStack();
-        piles[SUITSTACKHEARTS.ordinal()] = new SuitStack();
-        piles[SUITSTACKDIAMONDS.ordinal()] = new SuitStack();
-        piles[SUITSTACKCLUBS.ordinal()] = new SuitStack();
-        piles[SUITSTACKSPADES.ordinal()] = new SuitStack();
+        piles[SUITSTACK_HEARTS.ordinal()] = new SuitStack();
+        piles[SUITSTACK_DIAMONDS.ordinal()] = new SuitStack();
+        piles[SUITSTACK_CLUBS.ordinal()] = new SuitStack();
+        piles[SUITSTACK_SPADES.ordinal()] = new SuitStack();
 
         for (int i = 0; i < 24; i++) {
             piles[DRAWSTACK.ordinal()].add(new Card());
@@ -41,10 +41,10 @@ public class Board extends AbstractBoardBase implements I_BoardModel {
 
         for (int i = 0; i < 7; i++) { // for each build pile
             for (int j = 0; j <= i; j++) {  // how many cards in this pile
-                if (piles[BUILDSTACK1.ordinal() + i] == null)
-                    piles[BUILDSTACK1.ordinal() + i] = new BuildStack();
+                if (piles[BUILDSTACK_1.ordinal() + i] == null)
+                    piles[BUILDSTACK_1.ordinal() + i] = new BuildStack();
                 else
-                    piles[BUILDSTACK1.ordinal() + i].add(new Card());
+                    piles[BUILDSTACK_1.ordinal() + i].add(new Card());
             }
         }
 

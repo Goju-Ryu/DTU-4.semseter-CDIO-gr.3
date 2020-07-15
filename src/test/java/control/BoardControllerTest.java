@@ -30,13 +30,13 @@ public class BoardControllerTest {
 
         // What is the top cards of the rows, anything undeclared is empty list.
         Map<E_PileID, I_CardModel> map = new HashMap<>();
-        map.put( BUILDSTACK1,new Card( HEARTS     , 9  ));
-        map.put( BUILDSTACK2,new Card( HEARTS     , 7  ));
-        map.put( BUILDSTACK3,new Card( CLUBS      , 9  ));
-        map.put( BUILDSTACK4,new Card( CLUBS      , 7  ));
-        map.put( BUILDSTACK5,new Card( SPADES     , 5  ));
-        map.put( BUILDSTACK6,new Card( DIAMONDS   , 9  ));
-        map.put( BUILDSTACK7,new Card( DIAMONDS   , 7  ));
+        map.put(BUILDSTACK_1,new Card( HEARTS     , 9  ));
+        map.put(BUILDSTACK_2,new Card( HEARTS     , 7  ));
+        map.put(BUILDSTACK_3,new Card( CLUBS      , 9  ));
+        map.put(BUILDSTACK_4,new Card( CLUBS      , 7  ));
+        map.put(BUILDSTACK_5,new Card( SPADES     , 5  ));
+        map.put(BUILDSTACK_6,new Card( DIAMONDS   , 9  ));
+        map.put(BUILDSTACK_7,new Card( DIAMONDS   , 7  ));
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
@@ -57,13 +57,13 @@ public class BoardControllerTest {
 
         // What is the top cards of the rows, anything undeclared is empty list.
         Map<E_PileID, I_CardModel> map = new HashMap<>();
-        map.put( BUILDSTACK1,new Card( DIAMONDS   , 3  ));
-        map.put( BUILDSTACK2,new Card( DIAMONDS   , 4  ));
-        map.put( BUILDSTACK3,new Card( HEARTS     , 9  ));
-        map.put( BUILDSTACK4,new Card( HEARTS     , 8  ));
-        map.put( BUILDSTACK5,new Card( SPADES     , 3  ));
-        map.put( BUILDSTACK6,new Card( CLUBS      , 12  ));
-        map.put( BUILDSTACK7,new Card( CLUBS      , 11  ));
+        map.put(BUILDSTACK_1,new Card( DIAMONDS   , 3  ));
+        map.put(BUILDSTACK_2,new Card( DIAMONDS   , 4  ));
+        map.put(BUILDSTACK_3,new Card( HEARTS     , 9  ));
+        map.put(BUILDSTACK_4,new Card( HEARTS     , 8  ));
+        map.put(BUILDSTACK_5,new Card( SPADES     , 3  ));
+        map.put(BUILDSTACK_6,new Card( CLUBS      , 12  ));
+        map.put(BUILDSTACK_7,new Card( CLUBS      , 11  ));
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
@@ -88,13 +88,13 @@ public class BoardControllerTest {
 
         // What is the top cards of the rows, anything undeclared is empty list.
         Map<E_PileID, I_CardModel> map = new HashMap<>();
-        map.put(BUILDSTACK1,new Card( DIAMONDS    , 3  ));
-        map.put(BUILDSTACK2,new Card( DIAMONDS    , 4  ));
-        map.put(BUILDSTACK3,new Card( HEARTS      , 9  ));
-        map.put(BUILDSTACK4,new Card( HEARTS      , 8  ));
-        map.put(BUILDSTACK5,new Card( SPADES      , 3  ));
-        map.put(BUILDSTACK6,new Card( CLUBS       , 12  ));
-        map.put(BUILDSTACK7,new Card( CLUBS       , 11  ));
+        map.put(BUILDSTACK_1,new Card( DIAMONDS    , 3  ));
+        map.put(BUILDSTACK_2,new Card( DIAMONDS    , 4  ));
+        map.put(BUILDSTACK_3,new Card( HEARTS      , 9  ));
+        map.put(BUILDSTACK_4,new Card( HEARTS      , 8  ));
+        map.put(BUILDSTACK_5,new Card( SPADES      , 3  ));
+        map.put(BUILDSTACK_6,new Card( CLUBS       , 12  ));
+        map.put(BUILDSTACK_7,new Card( CLUBS       , 11  ));
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
@@ -116,13 +116,13 @@ public class BoardControllerTest {
     void PossibleMoves_0Moves() {
 
         Map<E_PileID, I_CardModel> map = new HashMap<>();
-        map.put( BUILDSTACK1,new Card( SPADES   , 2  ));
-        map.put( BUILDSTACK2,new Card( SPADES   , 3  ));
-        map.put( BUILDSTACK3,new Card( SPADES   , 4  ));
-        map.put( BUILDSTACK4,new Card( SPADES   , 5  ));
-        map.put( BUILDSTACK5,new Card( SPADES   , 6  ));
-        map.put( BUILDSTACK6,new Card( SPADES   , 7  ));
-        map.put( BUILDSTACK7,new Card( SPADES   , 8  ));
+        map.put(BUILDSTACK_1,new Card( SPADES   , 2  ));
+        map.put(BUILDSTACK_2,new Card( SPADES   , 3  ));
+        map.put(BUILDSTACK_3,new Card( SPADES   , 4  ));
+        map.put(BUILDSTACK_4,new Card( SPADES   , 5  ));
+        map.put(BUILDSTACK_5,new Card( SPADES   , 6  ));
+        map.put(BUILDSTACK_6,new Card( SPADES   , 7  ));
+        map.put(BUILDSTACK_7,new Card( SPADES   , 8  ));
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
@@ -139,13 +139,13 @@ public class BoardControllerTest {
     @Test
     void PossibleMoves_1AceMoves() {
         Map<E_PileID, I_CardModel> map = new HashMap<>();
-        map.put( BUILDSTACK1,new Card( SPADES   , 1  ));
-        map.put( BUILDSTACK2,new Card( SPADES   , 3  ));
-        map.put( BUILDSTACK3,new Card( SPADES   , 4  ));
-        map.put( BUILDSTACK4,new Card( SPADES   , 5  ));
-        map.put( BUILDSTACK5,new Card( SPADES   , 6  ));
-        map.put( BUILDSTACK6,new Card( SPADES   , 7  ));
-        map.put( BUILDSTACK7,new Card( SPADES   , 8  ));
+        map.put(BUILDSTACK_1,new Card( SPADES   , 1  ));
+        map.put(BUILDSTACK_2,new Card( SPADES   , 3  ));
+        map.put(BUILDSTACK_3,new Card( SPADES   , 4  ));
+        map.put(BUILDSTACK_4,new Card( SPADES   , 5  ));
+        map.put(BUILDSTACK_5,new Card( SPADES   , 6  ));
+        map.put(BUILDSTACK_6,new Card( SPADES   , 7  ));
+        map.put(BUILDSTACK_7,new Card( SPADES   , 8  ));
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
@@ -161,13 +161,13 @@ public class BoardControllerTest {
     @Test
     void PossibleMoves_6Moves() {
         Map<E_PileID, I_CardModel> map = new HashMap<>();
-        map.put( BUILDSTACK1,new Card( SPADES   , 2  ));
-        map.put( BUILDSTACK2,new Card( HEARTS   , 3  ));
-        map.put( BUILDSTACK3,new Card( CLUBS    , 4  ));
-        map.put( BUILDSTACK4,new Card( HEARTS   , 5  ));
-        map.put( BUILDSTACK5,new Card( SPADES   , 6  ));
-        map.put( BUILDSTACK6,new Card( DIAMONDS , 7  ));
-        map.put( BUILDSTACK7,new Card( CLUBS    , 8  ));
+        map.put(BUILDSTACK_1,new Card( SPADES   , 2  ));
+        map.put(BUILDSTACK_2,new Card( HEARTS   , 3  ));
+        map.put(BUILDSTACK_3,new Card( CLUBS    , 4  ));
+        map.put(BUILDSTACK_4,new Card( HEARTS   , 5  ));
+        map.put(BUILDSTACK_5,new Card( SPADES   , 6  ));
+        map.put(BUILDSTACK_6,new Card( DIAMONDS , 7  ));
+        map.put(BUILDSTACK_7,new Card( CLUBS    , 8  ));
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
@@ -184,13 +184,13 @@ public class BoardControllerTest {
     @Test
     void PossibleMoves_5Moves(){
         Map<E_PileID, I_CardModel> map = new HashMap<>();
-        map.put( BUILDSTACK1,new Card( DIAMONDS , 4  ));
-        map.put( BUILDSTACK3,new Card( SPADES   , 5  ));
-        map.put( BUILDSTACK5,new Card( HEARTS   , 6  ));
-        map.put( BUILDSTACK2,new Card( SPADES   , 4  ));
-        map.put( BUILDSTACK4,new Card( HEARTS   , 5  ));
-        map.put( BUILDSTACK6,new Card( SPADES   , 6  ));
-        map.put( BUILDSTACK7,new Card( DIAMONDS , 7  ));
+        map.put(BUILDSTACK_1,new Card( DIAMONDS , 4  ));
+        map.put(BUILDSTACK_3,new Card( SPADES   , 5  ));
+        map.put(BUILDSTACK_5,new Card( HEARTS   , 6  ));
+        map.put(BUILDSTACK_2,new Card( SPADES   , 4  ));
+        map.put(BUILDSTACK_4,new Card( HEARTS   , 5  ));
+        map.put(BUILDSTACK_6,new Card( SPADES   , 6  ));
+        map.put(BUILDSTACK_7,new Card( DIAMONDS , 7  ));
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
@@ -207,13 +207,13 @@ public class BoardControllerTest {
     void PossibleMoves_testFromError(){
 
         Map<E_PileID, I_CardModel> map = new HashMap<>();
-        map.put( BUILDSTACK1,new Card( SPADES    , 9   ));
-        map.put( BUILDSTACK3,new Card( SPADES    , 8   ));
-        map.put( BUILDSTACK5,new Card( DIAMONDS  , 13  ));
-        map.put( BUILDSTACK2,new Card( DIAMONDS  , 4   ));
-        map.put( BUILDSTACK4,new Card( HEARTS    , 13  ));
-        map.put( BUILDSTACK6,new Card( SPADES    , 11  ));
-        map.put( BUILDSTACK7,new Card( DIAMONDS  , 6   ));
+        map.put(BUILDSTACK_1,new Card( SPADES    , 9   ));
+        map.put(BUILDSTACK_3,new Card( SPADES    , 8   ));
+        map.put(BUILDSTACK_5,new Card( DIAMONDS  , 13  ));
+        map.put(BUILDSTACK_2,new Card( DIAMONDS  , 4   ));
+        map.put(BUILDSTACK_4,new Card( HEARTS    , 13  ));
+        map.put(BUILDSTACK_6,new Card( SPADES    , 11  ));
+        map.put(BUILDSTACK_7,new Card( DIAMONDS  , 6   ));
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
@@ -236,13 +236,13 @@ public class BoardControllerTest {
     void PossibleMoves_testFromError_2(){
 
         Map<E_PileID, I_CardModel> map = new HashMap<>();
-        map.put( BUILDSTACK1,new Card( SPADES    , 6   ));
-        map.put( BUILDSTACK3,new Card( DIAMONDS  , 12   ));
-        map.put( BUILDSTACK5,new Card( HEARTS    , 13  ));
-        map.put( BUILDSTACK2,new Card( DIAMONDS  , 4   ));
-        map.put( BUILDSTACK4,new Card( HEARTS    , 12  ));
-        map.put( BUILDSTACK6,new Card( DIAMONDS  , 2  ));
-        map.put( BUILDSTACK7,new Card( SPADES    , 8   ));
+        map.put(BUILDSTACK_1,new Card( SPADES    , 6   ));
+        map.put(BUILDSTACK_3,new Card( DIAMONDS  , 12   ));
+        map.put(BUILDSTACK_5,new Card( HEARTS    , 13  ));
+        map.put(BUILDSTACK_2,new Card( DIAMONDS  , 4   ));
+        map.put(BUILDSTACK_4,new Card( HEARTS    , 12  ));
+        map.put(BUILDSTACK_6,new Card( DIAMONDS  , 2  ));
+        map.put(BUILDSTACK_7,new Card( SPADES    , 8   ));
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
@@ -259,7 +259,7 @@ public class BoardControllerTest {
         List<Move> result = boardCnt.possibleMoves();
         Move m = boardCnt.pickMove(result);
 
-        assertEquals(SUITSTACKHEARTS, m.moveToStack());
+        assertEquals(SUITSTACK_HEARTS, m.moveToStack());
         assertEquals(DRAWSTACK, m.moveFromStack());
         assertEquals(4, m.moveFromRange());
     }
@@ -269,13 +269,13 @@ public class BoardControllerTest {
 
         // What is the top cards of the rows, anything undeclared is empty list.
         Map<E_PileID, I_CardModel> map = new HashMap<>();
-        map.put( BUILDSTACK1,new Card( SPADES    , 3  ));
-        map.put( BUILDSTACK2,new Card( HEARTS    , 3  ));
-        map.put( BUILDSTACK3,new Card( DIAMONDS     , 10 ));
-        map.put( BUILDSTACK4,new Card( HEARTS    , 10 ));
-        map.put( BUILDSTACK5,new Card( SPADES    , 10 ));
-        map.put( BUILDSTACK6,new Card( CLUBS     , 10 ));
-        map.put( BUILDSTACK7,new Card( HEARTS    , 8  ));
+        map.put(BUILDSTACK_1,new Card( SPADES    , 3  ));
+        map.put(BUILDSTACK_2,new Card( HEARTS    , 3  ));
+        map.put(BUILDSTACK_3,new Card( DIAMONDS     , 10 ));
+        map.put(BUILDSTACK_4,new Card( HEARTS    , 10 ));
+        map.put(BUILDSTACK_5,new Card( SPADES    , 10 ));
+        map.put(BUILDSTACK_6,new Card( CLUBS     , 10 ));
+        map.put(BUILDSTACK_7,new Card( HEARTS    , 8  ));
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
@@ -289,11 +289,11 @@ public class BoardControllerTest {
 
         //Move Queue
         Queue<Move> moves = new LinkedList<>();
-        moves.add( new Move(  BUILDSTACK5,DRAWSTACK, 1, false , false,"") );
-        moves.add( new Move(  BUILDSTACK4,DRAWSTACK, 1, false , false,"") );
-        moves.add( new Move(  BUILDSTACK5,DRAWSTACK, 1, false , false,"") );
-        moves.add( new Move(  BUILDSTACK3,DRAWSTACK, 1, false , false,"") );
-        moves.add( new Move(  BUILDSTACK4,DRAWSTACK, 2, false , false,"") );
+        moves.add( new Move(BUILDSTACK_5,DRAWSTACK, 1, false , false,"") );
+        moves.add( new Move(BUILDSTACK_4,DRAWSTACK, 1, false , false,"") );
+        moves.add( new Move(BUILDSTACK_5,DRAWSTACK, 1, false , false,"") );
+        moves.add( new Move(BUILDSTACK_3,DRAWSTACK, 1, false , false,"") );
+        moves.add( new Move(BUILDSTACK_4,DRAWSTACK, 2, false , false,"") );
 
         // the Board and Getting Results.
         var util = TestUtil.getTestReadyBoard(map,list);
@@ -309,13 +309,13 @@ public class BoardControllerTest {
 
         // What is the top cards of the rows, anything undeclared is empty list.
         Map<E_PileID, I_CardModel> map = new HashMap<>();
-        map.put( BUILDSTACK1, new Card(SPADES, 1));
-        map.put( BUILDSTACK2, new Card(HEARTS, 2));
-        map.put( BUILDSTACK3, new Card(CLUBS, 3));
-        map.put( BUILDSTACK4, new Card(HEARTS, 4));
-        map.put( BUILDSTACK5, new Card(SPADES, 5));
-        map.put( BUILDSTACK6, new Card(CLUBS, 6));
-        map.put( BUILDSTACK7, new Card(HEARTS, 7));
+        map.put(BUILDSTACK_1, new Card(SPADES, 1));
+        map.put(BUILDSTACK_2, new Card(HEARTS, 2));
+        map.put(BUILDSTACK_3, new Card(CLUBS, 3));
+        map.put(BUILDSTACK_4, new Card(HEARTS, 4));
+        map.put(BUILDSTACK_5, new Card(SPADES, 5));
+        map.put(BUILDSTACK_6, new Card(CLUBS, 6));
+        map.put(BUILDSTACK_7, new Card(HEARTS, 7));
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();
@@ -342,13 +342,13 @@ public class BoardControllerTest {
 
         // What is the top cards of the rows, anything undeclared is empty list.
         Map<E_PileID, I_CardModel> map = new HashMap<>();
-        map.put( BUILDSTACK1,new Card( HEARTS     , 4  ));
-        map.put( BUILDSTACK2,new Card( SPADES     , 11 ));
-        map.put( BUILDSTACK3,new Card( SPADES     , 9  ));
-        map.put( BUILDSTACK4,new Card( SPADES     , 4  ));
-        map.put( BUILDSTACK5,new Card( SPADES     , 6  ));
-        map.put( BUILDSTACK6,new Card( SPADES     , 8  ));
-        map.put( BUILDSTACK7,new Card( DIAMONDS   , 4  ));
+        map.put(BUILDSTACK_1,new Card( HEARTS     , 4  ));
+        map.put(BUILDSTACK_2,new Card( SPADES     , 11 ));
+        map.put(BUILDSTACK_3,new Card( SPADES     , 9  ));
+        map.put(BUILDSTACK_4,new Card( SPADES     , 4  ));
+        map.put(BUILDSTACK_5,new Card( SPADES     , 6  ));
+        map.put(BUILDSTACK_6,new Card( SPADES     , 8  ));
+        map.put(BUILDSTACK_7,new Card( DIAMONDS   , 4  ));
 
         // the drawStack.
         ArrayList<I_CardModel> list = new ArrayList<>();

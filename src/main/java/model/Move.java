@@ -77,41 +77,41 @@ public class Move implements I_Move {
             boolean acePile = false;
             String name = "";
             switch (from) {
-                case SUITSTACKHEARTS:
+                case SUITSTACK_HEARTS:
                     acePile = true;
                     name = "the Heart Ace pile";
                     break;
-                case SUITSTACKCLUBS:
+                case SUITSTACK_CLUBS:
                     acePile = true;
                     name = "the Clubs Ace pile";
                     break;
-                case SUITSTACKSPADES:
+                case SUITSTACK_SPADES:
                     acePile = true;
                     name = "the Spades Ace pile";
                     break;
-                case SUITSTACKDIAMONDS:
+                case SUITSTACK_DIAMONDS:
                     acePile = true;
                     name = "the Diamond Ace pile";
                     break;
-                case BUILDSTACK1:
+                case BUILDSTACK_1:
                     name = "the first building stack from the left";
                     break;
-                case BUILDSTACK2:
+                case BUILDSTACK_2:
                     name = "the second building stack from the left";
                     break;
-                case BUILDSTACK3:
+                case BUILDSTACK_3:
                     name = "the third building stack from the left";
                     break;
-                case BUILDSTACK4:
+                case BUILDSTACK_4:
                     name = "the fourth building stack from the left";
                     break;
-                case BUILDSTACK5:
+                case BUILDSTACK_5:
                     name = "the fith building stack from the left";
                     break;
-                case BUILDSTACK6:
+                case BUILDSTACK_6:
                     name = "the sixth building stack from the left";
                     break;
-                case BUILDSTACK7:
+                case BUILDSTACK_7:
                     name = "the seventh building stack from the left";
                     break;
             }
@@ -131,41 +131,41 @@ public class Move implements I_Move {
         String name ="";
         String thirdPart = "";
         switch (to) {
-            case SUITSTACKHEARTS:
+            case SUITSTACK_HEARTS:
                 acePile = true;
                 name = "the Heart Ace pile";
                 break;
-            case SUITSTACKCLUBS:
+            case SUITSTACK_CLUBS:
                 acePile = true;
                 name = "the Clubs Ace pile";
                 break;
-            case SUITSTACKSPADES:
+            case SUITSTACK_SPADES:
                 acePile = true;
                 name = "the Spades Ace pile";
                 break;
-            case SUITSTACKDIAMONDS:
+            case SUITSTACK_DIAMONDS:
                 acePile = true;
                 name = "the Diamond Ace pile";
                 break;
-            case BUILDSTACK1:
+            case BUILDSTACK_1:
                 name = "the first building stack from the left";
                 break;
-            case BUILDSTACK2:
+            case BUILDSTACK_2:
                 name = "the second building stack from the left";
                 break;
-            case BUILDSTACK3:
+            case BUILDSTACK_3:
                 name = "the third building stack from the left";
                 break;
-            case BUILDSTACK4:
+            case BUILDSTACK_4:
                 name = "the fourth building stack from the left";
                 break;
-            case BUILDSTACK5:
+            case BUILDSTACK_5:
                 name = "the fith building stack from the left";
                 break;
-            case BUILDSTACK6:
+            case BUILDSTACK_6:
                 name = "the sixth building stack from the left";
                 break;
-            case BUILDSTACK7:
+            case BUILDSTACK_7:
                 name = "the seventh building stack from the left";
                 break;
         }

@@ -106,5 +106,5 @@ public interface I_BoardModel {
      */
     Map<E_PileID, List<I_CardModel>> makeMoveStateMap(I_Move m);
 
-    void turnCardsToIndex( int index );
+    void turnCardsToIndex(int index);
 }
