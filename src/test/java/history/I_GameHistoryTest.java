@@ -35,7 +35,7 @@ class I_GameHistoryTest {
         State state6 = new State(
                 Map.of(
                         DRAWSTACK, List.of(new Card(HEARTS, 1), new Card(CLUBS, 2)),
-                        BUILDSTACK1, List.of(new Card(HEARTS, 3)))
+                        BUILDSTACK_1, List.of(new Card(HEARTS, 3)))
         );
 
         assertTrue(I_GameHistory.PILE_SIZE_EQUAL.test(state1, state2));
@@ -58,7 +58,7 @@ class I_GameHistoryTest {
         State state6 = new State(
                 Map.of(
                         DRAWSTACK, List.of(new Card(HEARTS, 1), new Card(CLUBS, 2)),
-                        BUILDSTACK1, List.of(new Card(HEARTS, 3)))
+                        BUILDSTACK_1, List.of(new Card(HEARTS, 3)))
         );
 
         assertTrue(I_GameHistory.PILE_CONTENT_EQUAL.test(state1, state2));
@@ -81,7 +81,7 @@ class I_GameHistoryTest {
         State state6 = new State(
                 Map.of(
                         DRAWSTACK, List.of(new Card(HEARTS, 1), new Card(CLUBS, 2)),
-                        BUILDSTACK1, List.of(new Card(HEARTS, 3)))
+                        BUILDSTACK_1, List.of(new Card(HEARTS, 3)))
         );
 
         assertTrue(I_GameHistory.PILE_CONTENT_EQUAL.test(state1, state2));

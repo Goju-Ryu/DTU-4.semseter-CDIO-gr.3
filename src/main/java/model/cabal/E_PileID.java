@@ -9,38 +9,28 @@ package model.cabal;
  */
 public enum E_PileID {
 
-    DRAWSTACK(false,"The turned card pile"),
-    SUITSTACKHEARTS(false,"The ace pile for Hearts"),
-    SUITSTACKDIAMONDS(false,"The ace pile for Diamond"),
-    SUITSTACKSPADES(false,"The ace pile for Spades"),
-    SUITSTACKCLUBS(false,"The ace pile for Clubs"),
-    BUILDSTACK1(true,"The first build stack"),
-    BUILDSTACK2(true,"The second build stack"),
-    BUILDSTACK3(true,"The third build stack"),
-    BUILDSTACK4(true,"The fourth build stack"),
-    BUILDSTACK5(true,"The fifth build stack"),
-    BUILDSTACK6(true,"The sixth build stack"),
-    BUILDSTACK7(true,"The seventh build stack");
+    DRAWSTACK(false),
+    SUITSTACK_HEARTS(false),
+    SUITSTACK_DIAMONDS(false),
+    SUITSTACK_SPADES(false),
+    SUITSTACK_CLUBS(false),
+    BUILDSTACK_1(true),
+    BUILDSTACK_2(true),
+    BUILDSTACK_3(true),
+    BUILDSTACK_4(true),
+    BUILDSTACK_5(true),
+    BUILDSTACK_6(true),
+    BUILDSTACK_7(true);
 
     //Is the pile a build stack or not
     private final boolean isBuildStack;
 
-    //A description of the pile
-    private final String description;
-
-    //Constructor (Needs to be private)
-    private E_PileID(boolean isBuildStack, String description) {
+    //Constructor
+    E_PileID(boolean isBuildStack) {
         this.isBuildStack = isBuildStack;
-        this.description = description;
     }
-
-//---------------------------------Getters------------------------------------------------------------------------------
 
     public boolean isBuildStack() {
         return isBuildStack;
-    }
-
-    public String getDescription() {
-        return description;
     }
 }

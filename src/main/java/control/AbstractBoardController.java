@@ -8,7 +8,6 @@ import history.State;
 import model.Move;
 import model.cabal.E_PileID;
 import model.cabal.I_BoardModel;
-import model.cabal.internals.I_SolitaireStacks;
 import model.cabal.internals.card.I_CardModel;
 import model.error.UnendingGameException;
 
@@ -46,15 +45,11 @@ public abstract class AbstractBoardController implements I_BoardController {
                     continue;
 
                 boolean improveAce = false;
-                if (to == SUITSTACKSPADES ||to == SUITSTACKCLUBS || to == SUITSTACKDIAMONDS ||to == SUITSTACKHEARTS ){
+                if (to == SUITSTACK_SPADES || to == SUITSTACK_CLUBS || to == SUITSTACK_DIAMONDS || to == SUITSTACK_HEARTS){
                     improveAce = true;
                 }
 
                 for( int index = boardModel.getPile(from).size()-1 ; index >=0 ; index-- ){ // remember that draw pile can require more turned cards than size - 1
-
-                    // data for easy debugging
-                    I_SolitaireStacks s = boardModel.getPiles()[from.ordinal()];
-                    I_CardModel c = s.getCard(index);
 
                     // now we need to check if the move is even possible at this index.
                     if (!boardModel.canMoveFrom(from,index)) {
@@ -182,10 +177,10 @@ public abstract class AbstractBoardController implements I_BoardController {
     @Override
     public boolean hasWonGame(){
         // if GAME has been won
-        boolean heartCom = (boardModel.getPile(SUITSTACKHEARTS).size() == 13);
-        boolean clubsCom = (boardModel.getPile(SUITSTACKCLUBS).size() == 13);
-        boolean diamoCom = (boardModel.getPile(SUITSTACKDIAMONDS).size() == 13);
-        boolean spadeCom = (boardModel.getPile(SUITSTACKSPADES).size() == 13);
+        boolean heartCom = (boardModel.getPile(SUITSTACK_HEARTS).size() == 13);
+        boolean clubsCom = (boardModel.getPile(SUITSTACK_CLUBS).size() == 13);
+        boolean diamoCom = (boardModel.getPile(SUITSTACK_DIAMONDS).size() == 13);
+        boolean spadeCom = (boardModel.getPile(SUITSTACK_SPADES).size() == 13);
         return (heartCom && spadeCom && diamoCom && clubsCom);
     }
 

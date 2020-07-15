@@ -1,7 +1,6 @@
 package model.cabal;
 
-import model.Move;
-import model.cabal.internals.I_SolitaireStacks;
+import model.I_Move;
 import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
@@ -33,22 +32,6 @@ public interface I_BoardModel {
     boolean isStackComplete(E_PileID pileID);
 
 
-//---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
-
-    /**
-     *
-     * @return Turn a new card from the draWStack and return it.
-     */
-    I_CardModel turnCard(Map<String, I_CardModel> imgData);
-
-    /**
-     *
-     * @return Get the top card in the pile of turned cards.
-     */
-    I_CardModel getTurnedCard();
-
-    I_SolitaireStacks[] getPiles();
-
 //----------  Move card methods  -----------------------------------------------------------------------------
 
     /**
@@ -59,7 +42,7 @@ public interface I_BoardModel {
      * @param destination Where the pile is moved to
      * @throws IllegalMoveException If one of the piles cannot do the operation due to rules constraints.
      */
-    void move(E_PileID origin, int originPos, E_PileID destination, Map<String, I_CardModel> imgData) throws IllegalMoveException;
+    void move(E_PileID origin, int originPos, E_PileID destination, Map<E_PileID, I_CardModel> imgData) throws IllegalMoveException;
 
     /**
      * This function will move a stack of cards from one destination to another.
@@ -71,7 +54,7 @@ public interface I_BoardModel {
      * @param destination Where the pile is moved to
      * @throws IllegalMoveException If one of the piles cannot do the operation due to rules constraints.
      */
-    default void move(E_PileID origin, E_PileID destination, Map<String, I_CardModel> imgData) throws IllegalMoveException {
+    default void move(E_PileID origin, E_PileID destination, Map<E_PileID, I_CardModel> imgData) throws IllegalMoveException {
         move(origin, getPile(origin).size() - 1, destination, imgData);
     }
 
@@ -121,7 +104,7 @@ public interface I_BoardModel {
      * is used to copy a Hashmap of the boards piles and values, to use in a state object.
      *
      */
-    Map<E_PileID, List<I_CardModel>> makeMoveStateMap(Move m);
+    Map<E_PileID, List<I_CardModel>> makeMoveStateMap(I_Move m);
 
-    void turnCardsToIndex( int index );
+    void turnCardsToIndex(int index);
 }

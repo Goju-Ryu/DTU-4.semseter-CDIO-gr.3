@@ -1,7 +1,6 @@
 package model.cabal;
 
 import model.GameCardDeck;
-import model.Move;
 import model.cabal.internals.BuildStack;
 import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
@@ -18,7 +17,7 @@ import static java.util.AbstractMap.SimpleEntry;
 import static model.cabal.E_PileID.*;
 import static model.cabal.internals.card.E_CardSuit.*;
 
-public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
+public class RefBoard extends AbstractBoardBase implements I_BoardModel {
 
 
     /**
@@ -48,10 +47,10 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         change = new PropertyChangeSupport(this);
 
         piles[DRAWSTACK.ordinal()] = new DrawStack();
-        piles[SUITSTACKHEARTS.ordinal()]  = new SuitStack();
-        piles[SUITSTACKDIAMONDS.ordinal()] = new SuitStack();
-        piles[SUITSTACKCLUBS.ordinal()]   = new SuitStack();
-        piles[SUITSTACKSPADES.ordinal()]  = new SuitStack();
+        piles[SUITSTACK_HEARTS.ordinal()]  = new SuitStack();
+        piles[SUITSTACK_DIAMONDS.ordinal()] = new SuitStack();
+        piles[SUITSTACK_CLUBS.ordinal()]   = new SuitStack();
+        piles[SUITSTACK_SPADES.ordinal()]  = new SuitStack();
 
         for (E_PileID pileID : E_PileID.values()) {
             if (pileID.isBuildStack())
@@ -66,54 +65,8 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
     }
 
 
-    //InterFace implementation
     @Override
-    public boolean isStackComplete(E_PileID pileID) {
-        I_SolitaireStacks pile = get(pileID);
-
-        if (pileID.isBuildStack())
-            return pile.getCard(0).getRank() == 1; // true if ace on top
-
-        if (pileID == DRAWSTACK)
-            return pile.isEmpty();
-
-        //Now we know only suit stacks are left
-        return pile.getCard(0).getRank() == 13; // true if suitStack has a king on top
-    }
-
-    @Override
-    public List<I_CardModel> getPile(E_PileID pile) {
-        return List.copyOf(get(pile));
-    }
-
-    @Override
-    public I_SolitaireStacks[] getPiles() {
-        return piles;
-    }
-
-    // draw stack specific implementation.
-    @Override
-    public I_CardModel turnCard(Map<String, I_CardModel> imgData) {
-        DrawStack turnPile = (DrawStack) get(DRAWSTACK);
-        var oldVal = List.copyOf(get(DRAWSTACK));
-
-        if (turnPile.isEmpty())
-            throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
-
-        var turnCard = turnPile.turnCard();
-
-        change.firePropertyChange(makePropertyChangeEvent(DRAWSTACK, oldVal));
-
-        return turnCard;
-    }
-
-    @Override
-    public I_CardModel getTurnedCard() {
-        return piles[DRAWSTACK.ordinal()].getTopCard();
-    }
-
-    @Override
-    public void move(E_PileID origin, int originPos, E_PileID destination, Map<String, I_CardModel> imgData) throws IllegalMoveException {
+    public void move(E_PileID origin, int originPos, E_PileID destination, Map<E_PileID, I_CardModel> imgData) throws IllegalMoveException {
         I_SolitaireStacks from = get(origin);
         I_SolitaireStacks to = get(destination);
 
@@ -127,26 +80,6 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         change.firePropertyChange(makePropertyChangeEvent(destination, oldTo));
     }
 
-    @Override
-    public boolean canMove(E_PileID origin, int originPos, E_PileID destination) {
-
-        I_SolitaireStacks from = get(origin);
-        I_SolitaireStacks to = get(destination);
-
-        Collection<I_CardModel> d = from.getSubset(originPos);
-        I_CardModel w = d.iterator().next();
-        boolean a = isValidMove(origin, originPos, destination);
-        boolean b = from.canMoveFrom(originPos);
-        boolean c = to.canMoveTo(d);
-
-        return a && b && c;
-    }
-
-    @Override
-    public boolean canMoveFrom(E_PileID origin, int range) {
-        I_SolitaireStacks from = get(origin);
-        return from.canMoveFrom(range);
-    }
 
     private static Map<String, List<I_CardModel>> randBoard() {
         var map = new HashMap<String, List<I_CardModel>>();
@@ -163,7 +96,7 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
             for (int j = 0; j < i; j++) {
                 buildStack.add(getRandCard(deck));
             }
-            map.put(BUILDSTACK1.name().replace("1", Integer.toString(i)), buildStack);
+            map.put(BUILDSTACK_1.name().replace("1", Integer.toString(i)), buildStack);
         }
 
 
@@ -195,7 +128,7 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
         return card;
     }
 
-    public static Map<String, List<I_CardModel>> stdBoard = Map.of(
+    public static final Map<String, List<I_CardModel>> stdBoard = Map.of(
             DRAWSTACK.name(), List.of( //24 cards
                     new Card(CLUBS,5),
                     new Card(SPADES, 3),
@@ -223,32 +156,32 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
                     new Card(DIAMONDS, 1)
 
             ),
-            BUILDSTACK1.name(), List.of( // 1 card
+            BUILDSTACK_1.name(), List.of( // 1 card
                     new Card(CLUBS,11)
             ),
-            BUILDSTACK2.name(), List.of( // 2 cards
+            BUILDSTACK_2.name(), List.of( // 2 cards
                     new Card(SPADES,8),
                     new Card(SPADES,1)
             ),
-            BUILDSTACK3.name(), List.of( // 3 cards
+            BUILDSTACK_3.name(), List.of( // 3 cards
                     new Card(SPADES,13),
                     new Card(DIAMONDS,13),
                     new Card(SPADES,4)
             ),
-            BUILDSTACK4.name(), List.of( // 4 cards
+            BUILDSTACK_4.name(), List.of( // 4 cards
                     new Card(CLUBS,3),
                     new Card(DIAMONDS,4),
                     new Card(SPADES,10),
                     new Card(HEARTS,8)
             ),
-            BUILDSTACK5.name(), List.of( // 5 cards
+            BUILDSTACK_5.name(), List.of( // 5 cards
                     new Card(DIAMONDS,8),
                     new Card(CLUBS,4),
                     new Card(DIAMONDS,3),
                     new Card(HEARTS,7),
                     new Card(DIAMONDS,2)
             ),
-            BUILDSTACK6.name(), List.of( // 6 cards
+            BUILDSTACK_6.name(), List.of( // 6 cards
                     new Card(CLUBS,1),
                     new Card(HEARTS,13),
                     new Card(DIAMONDS,6),
@@ -256,7 +189,7 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
                     new Card(HEARTS,6),
                     new Card(CLUBS,6)
             ),
-            BUILDSTACK7.name(), List.of( // 7 cards
+            BUILDSTACK_7.name(), List.of( // 7 cards
                     new Card(HEARTS,9),
                     new Card(CLUBS,12),
                     new Card(SPADES,2),
@@ -267,47 +200,8 @@ public class RefBoard extends AbstractBoardUtility implements I_BoardModel {
             )
     );
 
-    @Override
-    public Map<E_PileID, List<I_CardModel>> makeMoveStateMap(Move m) {
 
-        I_SolitaireStacks from = get( m.moveFromStack() );
-        I_SolitaireStacks to   = get( m.moveToStack()   );
 
-        Collection<I_CardModel> subSet  = from.getSubset(m.moveFromRange());
-        Collection<I_CardModel> fromSet = new ArrayList<>(from);
-        fromSet.removeAll(subSet);
-        Collection<I_CardModel> toSet = new ArrayList<>(to);
-        toSet.addAll(subSet);
 
-        Map<E_PileID, List<I_CardModel>> map = new HashMap<>();
-        Collection<I_CardModel> col;
-
-        for (E_PileID e : E_PileID.values()) {
-
-            if (e == m.moveFromStack()) {
-
-                col = fromSet;
-
-            } else if (e == m.moveToStack()) {
-
-                col = toSet;
-
-            } else {
-
-                col = this.getPile(e);
-            }
-            map.put(e, new ArrayList<>(col) );
-        }
-        return map;
-    }
-
-    @Override
-    public void turnCardsToIndex( int index ){
-        DrawStack drawStack =(DrawStack) piles[DRAWSTACK.ordinal()];
-        int numberOfTurns = drawStack.size() - index;
-        for (int i = 1; i < numberOfTurns; i++) {
-            drawStack.turnCard();
-        }
-    }
 
 }

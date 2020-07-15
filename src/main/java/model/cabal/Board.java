@@ -1,8 +1,6 @@
 package model.cabal;
 
-import com.google.common.base.Functions;
 import model.GameCardDeck;
-import model.Move;
 import model.cabal.internals.BuildStack;
 import model.cabal.internals.DrawStack;
 import model.cabal.internals.I_SolitaireStacks;
@@ -12,7 +10,10 @@ import model.cabal.internals.card.I_CardModel;
 import model.error.IllegalMoveException;
 
 import java.beans.PropertyChangeSupport;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static model.cabal.E_PileID.*;
@@ -21,18 +22,18 @@ import static model.cabal.E_PileID.*;
 /**
  * This is the model of the entire cabal
  */
-public class Board extends AbstractBoardUtility implements I_BoardModel {
+public class Board extends AbstractBoardBase implements I_BoardModel {
 
-    public Board(Map<String, I_CardModel> imgData, GameCardDeck cardDeck) { //TODO board should take imgData to initialize self
+    public Board(Map<E_PileID, I_CardModel> imgData, GameCardDeck cardDeck) { //TODO board should take imgData to initialize self
         deck = cardDeck;
         change = new PropertyChangeSupport(this);
         piles = new I_SolitaireStacks[E_PileID.values().length];
 
         piles[DRAWSTACK.ordinal()] = new DrawStack();
-        piles[SUITSTACKHEARTS.ordinal()] = new SuitStack();
-        piles[SUITSTACKDIAMONDS.ordinal()] = new SuitStack();
-        piles[SUITSTACKCLUBS.ordinal()] = new SuitStack();
-        piles[SUITSTACKSPADES.ordinal()] = new SuitStack();
+        piles[SUITSTACK_HEARTS.ordinal()] = new SuitStack();
+        piles[SUITSTACK_DIAMONDS.ordinal()] = new SuitStack();
+        piles[SUITSTACK_CLUBS.ordinal()] = new SuitStack();
+        piles[SUITSTACK_SPADES.ordinal()] = new SuitStack();
 
         for (int i = 0; i < 24; i++) {
             piles[DRAWSTACK.ordinal()].add(new Card());
@@ -40,16 +41,16 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
 
         for (int i = 0; i < 7; i++) { // for each build pile
             for (int j = 0; j <= i; j++) {  // how many cards in this pile
-                if (piles[BUILDSTACK1.ordinal() + i] == null)
-                    piles[BUILDSTACK1.ordinal() + i] = new BuildStack();
+                if (piles[BUILDSTACK_1.ordinal() + i] == null)
+                    piles[BUILDSTACK_1.ordinal() + i] = new BuildStack();
                 else
-                    piles[BUILDSTACK1.ordinal() + i].add(new Card());
+                    piles[BUILDSTACK_1.ordinal() + i].add(new Card());
             }
         }
 
         for (E_PileID pileID : E_PileID.values()) {
             try {
-                var data = extractImgData(imgData, pileID);
+                var data = imgData.get(pileID);
 
                 if (data != null) {
 
@@ -84,7 +85,7 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
      * @param imgData   the initializing data, often taken from the camera
      * @param drawStack A list of alll cards in the draw stack in the physical board / simulated board.
      */
-    public Board(Map<String, I_CardModel> imgData, GameCardDeck cardDeck, List<I_CardModel> drawStack) {
+    public Board(Map<E_PileID, I_CardModel> imgData, GameCardDeck cardDeck, List<I_CardModel> drawStack) {
         this(imgData, cardDeck);
         get(DRAWSTACK).clear();
         var filteredDrawStack = drawStack.stream().filter(Objects::nonNull).collect(Collectors.toList());
@@ -94,29 +95,6 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
 
 //---------  Genneral methods  -------------------------------------------------------------------------------------
 
-    @Override
-    public boolean isStackComplete(E_PileID pileID) {
-        var pile = get(pileID);
-
-        if (pileID.isBuildStack())
-            return pile.getCard(pile.size() - 1).getRank() == 1; // true if ace on top
-
-        if (pileID == DRAWSTACK)
-            return pile.isEmpty();
-
-        //Now we know only suit stacks are left
-        return pile.getCard(pile.size() - 1).getRank() == 13; // true if suitStack has a king on top
-    }
-
-    @Override
-    public List<I_CardModel> getPile(E_PileID pile) {
-        return List.copyOf(get(pile));
-    }
-
-    @Override
-    public I_SolitaireStacks[] getPiles() {
-        return piles;
-    }
 
     /**
      * checks if state is equal to physical board
@@ -124,10 +102,10 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
      * @param imgData state to validate against
      * @throws IllegalStateException if state is out of sync
      */
-    private void validateState(Map<String, I_CardModel> imgData) throws IllegalStateException {
+    private void validateState(Map<E_PileID, I_CardModel> imgData) throws IllegalStateException {
         for (E_PileID pileID : E_PileID.values()) {
             var pile = piles[pileID.ordinal()];
-            var imgCard = extractImgData(imgData, pileID);
+            var imgCard = imgData.get(pileID);
 
 
             validatePileState(pileID, pile.isEmpty() ? null : pile.getTopCard(), imgCard);
@@ -185,34 +163,10 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
 
 //---------  Methods for the cardPile and the turnPile  --------------------------------------------------------
 
-    @Override
-    public I_CardModel turnCard(Map<String, I_CardModel> imgData) {
-        var turnPile = (DrawStack) get(DRAWSTACK);
-
-        if (turnPile.isEmpty())
-            throw new IndexOutOfBoundsException("There are no cards to turn. All cards have been drawn.");
-
-        var oldVal = List.copyOf(turnPile);
-        var returnable = turnPile.turnCard();
-
-        //Validate that state is still consistent with the physical board
-        validatePileState(DRAWSTACK, returnable, extractImgData(imgData, DRAWSTACK));
-
-        //notify history
-        change.firePropertyChange(makePropertyChangeEvent(DRAWSTACK, oldVal));
-
-        return returnable;
-    }
+    //----------  Move card methods  -----------------------------------------------------------------------------
 
     @Override
-    public I_CardModel getTurnedCard() {
-        return get(DRAWSTACK).getTopCard();
-    }
-
-//----------  Move card methods  -----------------------------------------------------------------------------
-
-    @Override
-    public void move(final E_PileID origin, final int originPos, final E_PileID destination, Map<String, I_CardModel> imgData)
+    public void move(final E_PileID origin, final int originPos, final E_PileID destination, Map<E_PileID, I_CardModel> imgData)
             throws IllegalMoveException {
 
         I_SolitaireStacks from = get(origin);
@@ -241,12 +195,12 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         validatePileState(
                 origin,
                 from.isEmpty() ? null : from.getTopCard(),
-                extractImgData(imgData, origin)
+                imgData.get(origin)
         );
         validatePileState(
                 destination,
                 to.isEmpty() ? null : to.getTopCard(),
-                extractImgData(imgData, destination)
+                imgData.get(destination)
         );
 
         //notify listeners om state before and after state change
@@ -254,70 +208,6 @@ public class Board extends AbstractBoardUtility implements I_BoardModel {
         change.firePropertyChange(makePropertyChangeEvent(destination, oldDest));
     }
 
-    @Override
-    public boolean canMove(E_PileID origin, int originPos, E_PileID destination) throws IllegalMoveException {
-        I_SolitaireStacks from = get(origin);
-        I_SolitaireStacks to = get(destination);
-
-        if (!isValidMove(origin, originPos, destination))
-            return false;
-        if (!from.canMoveFrom(originPos))
-            return false;
-        if (!to.canMoveTo(from.getSubset(originPos)))
-            return false;
-
-        return true;
-
-    }
-
-    @Override
-    public boolean canMoveFrom(E_PileID origin, int range) {
-        I_SolitaireStacks from = get(origin);
-        return from.canMoveFrom(range);
-    }
-
-    @Override
-    public Map<E_PileID, List<I_CardModel>> makeMoveStateMap(Move m) {
-
-        I_SolitaireStacks from = get( m.moveFromStack() );
-        I_SolitaireStacks to   = get( m.moveToStack()   );
-
-        Collection<I_CardModel> subSet  = from.getSubset(m.moveFromRange());
-        Collection<I_CardModel> fromSet = new ArrayList<>(from);
-        fromSet.removeAll(subSet);
-        Collection<I_CardModel> toSet = new ArrayList<>(to);
-        toSet.addAll(subSet);
-
-        Map<E_PileID, List<I_CardModel>> map = new HashMap<>();
-        Collection<I_CardModel> col;
-
-        for (E_PileID e : E_PileID.values()) {
-
-            if (e == m.moveFromStack()) {
-
-                col = fromSet;
-
-            } else if (e == m.moveToStack()) {
-
-                col = toSet;
-
-            } else {
-
-                col = this.getPile(e);
-            }
-            map.put(e, new ArrayList<>(col) );
-        }
-        return map;
-    }
-
-    @Override
-    public void turnCardsToIndex( int index ){
-        DrawStack drawStack =(DrawStack) piles[DRAWSTACK.ordinal()];
-        int numberOfTurns = drawStack.size() - index;
-        for (int i = 1; i < numberOfTurns; i++) {
-            drawStack.turnCard();
-        }
-    }
 }
 
 
